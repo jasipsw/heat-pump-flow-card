@@ -1,0 +1,186 @@
+# Example Configuration for Chiltrix CX50-2 Heat Pump
+# This configuration is specifically designed for the CX50 system
+# with buffer tank and radiant floor heating
+
+type: custom:heat-pump-flow-card
+title: CX50 Heat Pump Flow
+
+# Heat Pump Configuration (CX50)
+heat_pump:
+  # Electrical power input from Modbus
+  power_entity: sensor.cx50_heat_pump_watts
+
+  # Calculated thermal output
+  thermal_entity: sensor.heat_pump_thermal_power_output
+
+  # Calculated COP
+  cop_entity: sensor.heat_pump_cop
+
+  # CX50 outlet temperature (to buffer tank)
+  outlet_temp_entity: sensor.heat_pump_outlet_temperature
+
+  # CX50 inlet temperature (from buffer tank)
+  inlet_temp_entity: sensor.heat_pump_inlet_temperature
+
+  # CX50 flow rate (primary loop: HP → Buffer)
+  flow_rate_entity: sensor.cx50_pump_flow_lpm
+
+  name: "CX50-2 Heat Pump"
+  icon: mdi:heat-pump
+
+# Buffer Tank Configuration
+buffer_tank:
+  # Shelly temperature sensor on supply line
+  supply_temp_entity: sensor.shellyplus1_c4d8d5543fc0_temperature
+
+  # Shelly temperature sensor on return line
+  return_temp_entity: sensor.shellyplus1_c4d8d5543fc0_temperature_3
+
+  name: "Buffer Tank"
+  icon: mdi:water-boiler
+
+# HVAC/Radiant Floor Configuration
+hvac:
+  # Calculated thermal power used by HVAC
+  thermal_entity: sensor.hvac_thermal_power_used
+
+  # DROPLET flow sensor (secondary loop: Buffer → Radiant Floor)
+  flow_rate_entity: sensor.hydronic_flow_flow_rate
+
+  # Supply temperature to radiant floor (from buffer)
+  supply_temp_entity: sensor.hvac_buffer_tank_supply_temperature
+
+  # Return temperature from radiant floor (to buffer)
+  return_temp_entity: sensor.hvac_buffer_tank_return_temperature
+
+  name: "Radiant Floor"
+  icon: mdi:floor-plan
+
+# Animation Configuration
+animation:
+  # Fastest animation: 1 second for dot to travel pipe length
+  # (Used when flow rate is at maximum ~50 L/min)
+  min_flow_rate: 1
+
+  # Slowest animation: 5 seconds for dot to travel
+  # (Used when flow rate is very low ~3 L/min)
+  max_flow_rate: 5
+
+  # Size of animated water droplet dots
+  dot_size: 8
+
+  # Spacing between dots
+  dot_spacing: 30
+
+# Temperature Color Configuration
+temperature:
+  # Minimum temperature for color scale (coldest = full blue)
+  # CX50 typically runs 60-90°F, set range to see color variation
+  min_temp: 50    # °F (or 10°C if using Celsius sensors)
+
+  # Maximum temperature for color scale (hottest = full red)
+  max_temp: 110   # °F (or 43°C if using Celsius sensors)
+
+  # Blue for cold water
+  cold_color: "#0066FF"
+
+  # Red for hot water
+  hot_color: "#FF3300"
+
+  # Temperature unit - match your sensor units
+  # "F" for Fahrenheit (if using converted sensors)
+  # "C" for Celsius (if using direct Shelly readings)
+  unit: "F"
+
+# Display Configuration
+display:
+  show_values: true
+  show_labels: true
+  show_icons: true
+  compact: false
+  decimal_places: 1
+
+---
+
+# Alternative: Celsius Configuration
+# If you prefer to use Celsius temperatures directly from Shelly sensors
+
+type: custom:heat-pump-flow-card
+title: CX50 Heat Pump Flow (Celsius)
+
+heat_pump:
+  power_entity: sensor.cx50_heat_pump_watts
+  thermal_entity: sensor.heat_pump_thermal_power_output
+  cop_entity: sensor.heat_pump_cop
+
+  # Direct Celsius readings from CX50 Modbus
+  outlet_temp_entity: sensor.cx50_outlet_temperature_c
+  inlet_temp_entity: sensor.cx50_inlet_temperature_c
+
+  flow_rate_entity: sensor.cx50_pump_flow_lpm
+
+buffer_tank:
+  # Direct Celsius from Shelly (no conversion)
+  supply_temp_entity: sensor.shellyplus1_c4d8d5543fc0_temperature
+  return_temp_entity: sensor.shellyplus1_c4d8d5543fc0_temperature_3
+
+hvac:
+  thermal_entity: sensor.hvac_thermal_power_used
+  flow_rate_entity: sensor.hydronic_flow_flow_rate
+  supply_temp_entity: sensor.shellyplus1_c4d8d5543fc0_temperature
+  return_temp_entity: sensor.shellyplus1_c4d8d5543fc0_temperature_3
+
+animation:
+  min_flow_rate: 1
+  max_flow_rate: 5
+  dot_size: 8
+  dot_spacing: 30
+
+temperature:
+  min_temp: 10    # 10°C (50°F)
+  max_temp: 43    # 43°C (110°F)
+  cold_color: "#0066FF"
+  hot_color: "#FF3300"
+  unit: "C"       # Celsius
+
+display:
+  show_values: true
+  show_labels: true
+  show_icons: true
+  compact: false
+  decimal_places: 1
+
+---
+
+# Notes for CX50 System:
+
+# Flow Sensors:
+# - sensor.cx50_pump_flow_lpm: Primary loop (HP → Buffer) ~3 L/min idle, higher when running
+# - sensor.hydronic_flow_flow_rate: Secondary loop (Buffer → Radiant Floor) ~35.5 L/min constant
+#
+# These flow rates are DIFFERENT and that's normal! The buffer tank decouples the two loops.
+# The card handles this correctly by using each flow sensor for its respective pipe animation.
+
+# Temperature Sensors:
+# - CX50 Modbus provides inlet/outlet temps for heat pump
+# - Shelly sensors provide supply/return temps at buffer tank
+# - Use consistent units (all F or all C) for best visualization
+
+# COP Calculation:
+# The card displays COP from sensor.heat_pump_cop which is calculated as:
+# COP = Thermal Output (W) / Electrical Input (W)
+#
+# Target: 4.55 COP at 47°F ambient
+# Current: ~2.0-2.5 (being optimized)
+
+# Thermal Power Sensors:
+# - sensor.heat_pump_thermal_power_output: Calculated from CX50 flow × ΔT
+# - sensor.hvac_thermal_power_used: Calculated from HVAC flow × ΔT (now FIXED!)
+#
+# After the Celsius fix, these should match within 10-15% (system losses)
+
+# Color Visualization Tips:
+# - Hot outlet from HP should show red/orange
+# - Return to HP should show blue (cooled by radiant floor)
+# - If colors look wrong, adjust min_temp/max_temp range
+# - Wider range = more subtle colors, narrower = more dramatic colors

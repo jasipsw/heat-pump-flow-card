@@ -1,0 +1,49 @@
+{
+  "name": "heat-pump-flow-card",
+  "version": "0.1.0",
+  "description": "Animated heat pump flow visualization card for Home Assistant",
+  "main": "dist/heat-pump-flow-card.js",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write src/**/*.ts"
+  },
+  "keywords": [
+    "home-assistant",
+    "heat-pump",
+    "hvac",
+    "lovelace",
+    "custom-card",
+    "hacs"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YOUR_USERNAME/heat-pump-flow-card.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/heat-pump-flow-card/issues"
+  },
+  "homepage": "https://github.com/YOUR_USERNAME/heat-pump-flow-card#readme",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.4",
+    "rollup": "^4.9.6",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "custom-card-helpers": "^1.9.0",
+    "home-assistant-js-websocket": "^9.1.0",
+    "lit": "^3.1.1"
+  }
+}
