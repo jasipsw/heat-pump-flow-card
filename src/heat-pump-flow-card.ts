@@ -405,9 +405,11 @@ export class HeatPumpFlowCard extends LitElement {
           data-index="${i}"
           cx="0"
           cy="0"
-          r="${this.config.animation!.dot_size}"
-          fill="${color}"
-          opacity="0.9">
+          r="20"
+          fill="lime"
+          opacity="1"
+          stroke="red"
+          stroke-width="3">
         </circle>
       `);
     }
