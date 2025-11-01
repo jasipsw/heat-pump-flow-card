@@ -83,13 +83,6 @@ export class HeatPumpFlowCard extends LitElement {
 
   private startAnimationLoop(): void {
     const animate = () => {
-      this.frameCount++;
-
-      // Log every 60 frames (once per second at 60fps)
-      if (this.frameCount % 60 === 0) {
-        console.log(`🔄 Frame ${this.frameCount} - Animation running`);
-      }
-
       // Get all circles
       const circles = this.shadowRoot?.querySelectorAll('circle.flow-dot');
       if (!circles || circles.length === 0) {
@@ -118,8 +111,8 @@ export class HeatPumpFlowCard extends LitElement {
         const distance = progress * pathLength;
 
         const point = path.getPointAtLength(distance);
-        circle.setAttribute('cx', point.x.toString());
-        circle.setAttribute('cy', point.y.toString());
+        // Use transform instead of cx/cy to force repaint
+        circle.setAttribute('transform', `translate(${point.x}, ${point.y})`);
       });
 
       this.animationFrameId = requestAnimationFrame(animate);
@@ -390,9 +383,7 @@ export class HeatPumpFlowCard extends LitElement {
           data-index="${i}"
           r="${this.config.animation!.dot_size}"
           fill="${color}"
-          opacity="0.9"
-          cx="0"
-          cy="0">
+          opacity="0.9">
         </circle>
       `);
     }
