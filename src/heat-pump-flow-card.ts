@@ -319,25 +319,30 @@ export class HeatPumpFlowCard extends LitElement {
     const dotCount = 5;
     const dots = [];
     const duration = 3; // Default 3 seconds
+    const size = this.config.animation!.dot_size;
 
     for (let i = 0; i < dotCount; i++) {
       const delay = i * 0.6;
       dots.push(html`
-        <circle
+        <div
           class="flow-dot"
-          r="${this.config.animation!.dot_size}"
-          fill="${color}"
-          opacity="0.9"
           style="
+            position: absolute;
+            width: ${size * 2}px;
+            height: ${size * 2}px;
+            border-radius: 50%;
+            background: ${color};
+            opacity: 0.9;
+            filter: drop-shadow(0 0 4px ${color});
             offset-path: path('${this.getPathData(pathId)}');
             animation-duration: ${duration}s;
             animation-delay: ${delay}s;
           ">
-        </circle>
+        </div>
       `);
     }
 
-    return html`<g id="${id}">${dots}</g>`;
+    return html`<div id="${id}" style="position: relative; width: 100%; height: 100%;">${dots}</div>`;
   }
 
   private getPathData(pathId: string): string {
