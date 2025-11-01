@@ -287,14 +287,6 @@ export class HeatPumpFlowCard extends LitElement {
 
         <div class="card-content">
           <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
-            <!-- TEST: Big red rectangle to verify coordinate system -->
-            <rect x="300" y="170" width="60" height="30" fill="red" opacity="0.5" stroke="yellow" stroke-width="2"/>
-
-            <!-- TEST: Fixed circles at known positions -->
-            <circle cx="170" cy="180" r="10" fill="lime" opacity="1"/>
-            <circle cx="260" cy="180" r="10" fill="cyan" opacity="1"/>
-            <circle cx="350" cy="180" r="10" fill="magenta" opacity="1"/>
-
             <!-- Heat Pump (left side) -->
             <g id="heat-pump" transform="translate(50, 150)">
               <rect width="120" height="100" rx="10" fill="#2c3e50" stroke="#34495e" stroke-width="2"/>
@@ -350,48 +342,42 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- Pipe: HP to Buffer (hot) -->
-            <g id="hp-to-buffer">
-              <path id="hp-to-buffer-path"
-                    d="M 170 180 L 350 180"
-                    stroke="${hpOutletColor}"
-                    stroke-width="12"
-                    fill="none"
-                    stroke-linecap="round"/>
-              ${this.renderFlowDots('hp-to-buffer-flow', 'hp-to-buffer-path', hpOutletColor)}
-            </g>
+            <path id="hp-to-buffer-path"
+                  d="M 170 180 L 350 180"
+                  stroke="${hpOutletColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="round"/>
 
             <!-- Pipe: Buffer to HP (cold return) -->
-            <g id="buffer-to-hp">
-              <path id="buffer-to-hp-path"
-                    d="M 350 220 L 170 220"
-                    stroke="${hpInletColor}"
-                    stroke-width="12"
-                    fill="none"
-                    stroke-linecap="round"/>
-              ${this.renderFlowDots('buffer-to-hp-flow', 'buffer-to-hp-path', hpInletColor)}
-            </g>
+            <path id="buffer-to-hp-path"
+                  d="M 350 220 L 170 220"
+                  stroke="${hpInletColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="round"/>
 
             <!-- Pipe: Buffer to HVAC (hot) -->
-            <g id="buffer-to-hvac">
-              <path id="buffer-to-hvac-path"
-                    d="M 450 180 L 630 180"
-                    stroke="${bufferSupplyColor}"
-                    stroke-width="12"
-                    fill="none"
-                    stroke-linecap="round"/>
-              ${this.renderFlowDots('buffer-to-hvac-flow', 'buffer-to-hvac-path', bufferSupplyColor)}
-            </g>
+            <path id="buffer-to-hvac-path"
+                  d="M 450 180 L 630 180"
+                  stroke="${bufferSupplyColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="round"/>
 
             <!-- Pipe: HVAC to Buffer (cold return) -->
-            <g id="hvac-to-buffer">
-              <path id="hvac-to-buffer-path"
-                    d="M 630 220 L 450 220"
-                    stroke="${hvacReturnColor}"
-                    stroke-width="12"
-                    fill="none"
-                    stroke-linecap="round"/>
-              ${this.renderFlowDots('hvac-to-buffer-flow', 'hvac-to-buffer-path', hvacReturnColor)}
-            </g>
+            <path id="hvac-to-buffer-path"
+                  d="M 630 220 L 450 220"
+                  stroke="${hvacReturnColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="round"/>
+
+            <!-- Flow dots - rendered LAST so they appear on top -->
+            ${this.renderFlowDots('hp-to-buffer-flow', 'hp-to-buffer-path', hpOutletColor)}
+            ${this.renderFlowDots('buffer-to-hp-flow', 'buffer-to-hp-path', hpInletColor)}
+            ${this.renderFlowDots('buffer-to-hvac-flow', 'buffer-to-hvac-path', bufferSupplyColor)}
+            ${this.renderFlowDots('hvac-to-buffer-flow', 'hvac-to-buffer-path', hvacReturnColor)}
           </svg>
         </div>
       </ha-card>
