@@ -181,13 +181,14 @@ export class HeatPumpFlowCard extends LitElement {
       // Stagger the dots
       const delay = (index * this.config.animation!.dot_spacing!) / 100;
       anim.setAttribute('dur', `${duration}s`);
-      anim.setAttribute('begin', `${delay}s`);
 
-      // Pause if no flow
+      // Control animation through begin attribute
       if (flowRate <= 0) {
-        (anim as any).endElement();
+        // Pause animation by setting begin to indefinite
+        anim.setAttribute('begin', 'indefinite');
       } else {
-        (anim as any).beginElement();
+        // Resume/start animation with delay
+        anim.setAttribute('begin', `${delay}s`);
       }
     });
   }
