@@ -82,6 +82,7 @@ export class HeatPumpFlowCard extends LitElement {
   private frameCount = 0;
 
   private startAnimationLoop(): void {
+    let firstRun = true;
     const animate = () => {
       // Get all circles
       const circles = this.shadowRoot?.querySelectorAll('circle.flow-dot');
@@ -115,7 +116,18 @@ export class HeatPumpFlowCard extends LitElement {
         // Update cx and cy attributes directly
         circle.setAttribute('cx', point.x.toString());
         circle.setAttribute('cy', point.y.toString());
+
+        // Log first frame positions
+        if (firstRun && index === 0) {
+          console.log(`✅ Circle 0 positioned at (${point.x.toFixed(1)}, ${point.y.toFixed(1)}), path: ${pathId}`);
+          console.log(`Circle attributes: cx=${circle.getAttribute('cx')}, cy=${circle.getAttribute('cy')}, r=${circle.getAttribute('r')}, fill=${circle.getAttribute('fill')}`);
+        }
       });
+
+      if (firstRun) {
+        firstRun = false;
+        console.log(`✅ First animation frame complete - ${circles.length} circles positioned`);
+      }
 
       this.animationFrameId = requestAnimationFrame(animate);
     };
