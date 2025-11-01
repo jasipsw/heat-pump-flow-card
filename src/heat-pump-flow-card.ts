@@ -72,20 +72,6 @@ export class HeatPumpFlowCard extends LitElement {
     }
   }
 
-  protected firstUpdated(): void {
-    // Manually start all SVG animations after first render
-    setTimeout(() => {
-      const animations = this.shadowRoot?.querySelectorAll('animateMotion');
-      animations?.forEach(anim => {
-        try {
-          (anim as any).beginElement();
-        } catch (e) {
-          console.warn('Could not start animation:', e);
-        }
-      });
-    }, 100);
-  }
-
   private getHeatPumpState(): HeatPumpState {
     const cfg = this.config.heat_pump || {};
     return {
@@ -332,21 +318,37 @@ export class HeatPumpFlowCard extends LitElement {
   private renderFlowDots(id: string, pathId: string, color: string) {
     const dotCount = 5;
     const dots = [];
+    const duration = 3; // Default 3 seconds
 
     for (let i = 0; i < dotCount; i++) {
+      const delay = i * 0.6;
       dots.push(html`
-        <circle r="${this.config.animation!.dot_size}" fill="${color}" opacity="0.9">
-          <animateMotion
-            dur="3s"
-            repeatCount="indefinite"
-            begin="${i * 0.6}s">
-            <mpath href="#${pathId}"/>
-          </animateMotion>
+        <circle
+          class="flow-dot"
+          r="${this.config.animation!.dot_size}"
+          fill="${color}"
+          opacity="0.9"
+          style="
+            offset-path: path('${this.getPathData(pathId)}');
+            animation-duration: ${duration}s;
+            animation-delay: ${delay}s;
+          ">
         </circle>
       `);
     }
 
     return html`<g id="${id}">${dots}</g>`;
+  }
+
+  private getPathData(pathId: string): string {
+    // Return the path 'd' attribute for each flow
+    const paths: Record<string, string> = {
+      'hp-to-buffer-path': 'M 170 180 L 350 180',
+      'buffer-to-hp-path': 'M 350 220 L 170 220',
+      'buffer-to-hvac-path': 'M 450 180 L 630 180',
+      'hvac-to-buffer-path': 'M 630 220 L 450 220',
+    };
+    return paths[pathId] || '';
   }
 
   static get styles() {

@@ -34,6 +34,22 @@ export const cardStyles = css`
     filter: drop-shadow(0 0 4px currentColor);
   }
 
+  /* CSS animations for flow dots */
+  @keyframes flow {
+    from {
+      offset-distance: 0%;
+    }
+    to {
+      offset-distance: 100%;
+    }
+  }
+
+  .flow-dot {
+    offset-path: var(--flow-path);
+    animation: flow var(--flow-duration, 3s) linear infinite;
+    animation-delay: var(--flow-delay, 0s);
+  }
+
   /* Pipe styling */
   path {
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
