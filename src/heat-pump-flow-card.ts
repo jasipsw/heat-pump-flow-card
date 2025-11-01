@@ -369,6 +369,7 @@ export class HeatPumpFlowCard extends LitElement {
       dots.push(html`
         <circle
           class="flow-dot"
+          data-index="${i}"
           r="${this.config.animation!.dot_size}"
           fill="${color}"
           opacity="0.9"
