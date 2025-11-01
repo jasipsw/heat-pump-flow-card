@@ -16,10 +16,10 @@ export class HeatPumpFlowCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @state() private config!: HeatPumpFlowCardConfig;
 
-  @query('#hp-to-buffer-flow') hpToBufferFlow?: SVGSVGElement;
-  @query('#buffer-to-hp-flow') bufferToHpFlow?: SVGSVGElement;
-  @query('#buffer-to-hvac-flow') bufferToHvacFlow?: SVGSVGElement;
-  @query('#hvac-to-buffer-flow') hvacToBufferFlow?: SVGSVGElement;
+  @query('#hp-to-buffer-flow') hpToBufferFlow?: SVGGElement;
+  @query('#buffer-to-hp-flow') bufferToHpFlow?: SVGGElement;
+  @query('#buffer-to-hvac-flow') bufferToHvacFlow?: SVGGElement;
+  @query('#hvac-to-buffer-flow') hvacToBufferFlow?: SVGGElement;
 
   public static getConfigElement(): LovelaceCardEditor | undefined {
     // No visual editor yet - users can edit YAML directly
@@ -334,7 +334,7 @@ export class HeatPumpFlowCard extends LitElement {
       `);
     }
 
-    return html`<svg id="${id}">${dots}</svg>`;
+    return html`<g id="${id}">${dots}</g>`;
   }
 
   static get styles() {
