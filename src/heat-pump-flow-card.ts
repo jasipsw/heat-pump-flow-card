@@ -21,8 +21,9 @@ export class HeatPumpFlowCard extends LitElement {
   @query('#buffer-to-hvac-flow') bufferToHvacFlow?: SVGSVGElement;
   @query('#hvac-to-buffer-flow') hvacToBufferFlow?: SVGSVGElement;
 
-  public static getConfigElement(): LovelaceCardEditor {
-    return document.createElement('heat-pump-flow-card-editor') as LovelaceCardEditor;
+  public static getConfigElement(): LovelaceCardEditor | undefined {
+    // No visual editor yet - users can edit YAML directly
+    return undefined;
   }
 
   public static getStubConfig(): Record<string, unknown> {
