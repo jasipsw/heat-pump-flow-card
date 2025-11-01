@@ -111,8 +111,10 @@ export class HeatPumpFlowCard extends LitElement {
         const distance = progress * pathLength;
 
         const point = path.getPointAtLength(distance);
-        // Use transform instead of cx/cy to force repaint
-        circle.setAttribute('transform', `translate(${point.x}, ${point.y})`);
+
+        // Update cx and cy attributes directly
+        circle.setAttribute('cx', point.x.toString());
+        circle.setAttribute('cy', point.y.toString());
       });
 
       this.animationFrameId = requestAnimationFrame(animate);
@@ -381,6 +383,8 @@ export class HeatPumpFlowCard extends LitElement {
         <circle
           class="flow-dot"
           data-index="${i}"
+          cx="0"
+          cy="0"
           r="${this.config.animation!.dot_size}"
           fill="${color}"
           opacity="0.9">
