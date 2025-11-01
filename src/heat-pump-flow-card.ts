@@ -235,6 +235,8 @@ export class HeatPumpFlowCard extends LitElement {
     const hpState = this.getHeatPumpState();
     const hvacState = this.getHVACState();
 
+    console.log(`📊 Flow rates - HP: ${hpState.flowRate}, HVAC: ${hvacState.flowRate}`);
+
     // Update flow speeds based on flow rates
     this.updateFlowSpeed(this.hpToBufferFlow, hpState.flowRate);
     this.updateFlowSpeed(this.bufferToHpFlow, hpState.flowRate);
@@ -256,6 +258,8 @@ export class HeatPumpFlowCard extends LitElement {
         circle.style.opacity = '0.9';
       }
     });
+
+    console.log(`🔄 updateFlowSpeed: group=${group.id}, flowRate=${flowRate}, circles=${circles.length}, opacity=${flowRate <= 0 ? '0' : '0.9'}`);
 
     // Note: Changing animation duration dynamically doesn't work well with declarative SVG
     // The animations will run at the speed defined in the template
