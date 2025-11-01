@@ -345,6 +345,16 @@ export class HeatPumpFlowCard extends LitElement {
   }
 }
 
+// Register the card with Home Assistant
+(window as any).customCards = (window as any).customCards || [];
+(window as any).customCards.push({
+  type: 'heat-pump-flow-card',
+  name: 'Heat Pump Flow Card',
+  description: 'Animated heat pump flow visualization card',
+  preview: true,
+  documentationURL: 'https://github.com/YOUR_USERNAME/heat-pump-flow-card',
+});
+
 declare global {
   interface HTMLElementTagNameMap {
     'heat-pump-flow-card': HeatPumpFlowCard;
