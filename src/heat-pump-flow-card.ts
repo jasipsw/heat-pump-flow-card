@@ -79,9 +79,17 @@ export class HeatPumpFlowCard extends LitElement {
   }
 
   private animationFrameId?: number;
+  private frameCount = 0;
 
   private startAnimationLoop(): void {
     const animate = () => {
+      this.frameCount++;
+
+      // Log every 60 frames (once per second at 60fps)
+      if (this.frameCount % 60 === 0) {
+        console.log(`🔄 Frame ${this.frameCount} - Animation running`);
+      }
+
       // Get all circles
       const circles = this.shadowRoot?.querySelectorAll('circle.flow-dot');
       if (!circles || circles.length === 0) {
@@ -95,14 +103,12 @@ export class HeatPumpFlowCard extends LitElement {
         const group = circle.parentElement as SVGGElement;
         const pathId = group?.dataset?.pathId;
         if (!pathId) {
-          console.warn('❌ No pathId for circle', index);
-          return;
+          return; // Silently skip if no pathId
         }
 
         const path = this.shadowRoot?.querySelector(`#${pathId}`) as SVGPathElement;
         if (!path) {
-          console.warn('❌ Path not found:', pathId);
-          return;
+          return; // Silently skip if path not found
         }
 
         const pathLength = path.getTotalLength();
