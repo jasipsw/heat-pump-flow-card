@@ -72,6 +72,52 @@ export class HeatPumpFlowCard extends LitElement {
     }
   }
 
+  protected firstUpdated(): void {
+    // Start the animation loop
+    this.startAnimationLoop();
+  }
+
+  private animationFrameId?: number;
+
+  private startAnimationLoop(): void {
+    const animate = () => {
+      // Get all circles
+      const circles = this.shadowRoot?.querySelectorAll('circle.flow-dot');
+      if (!circles) return;
+
+      const time = Date.now() / 1000; // Current time in seconds
+
+      circles.forEach((circle, index) => {
+        const pathId = (circle.parentElement as any)?.dataset?.pathId;
+        if (!pathId) return;
+
+        const path = this.shadowRoot?.querySelector(`#${pathId}`) as SVGPathElement;
+        if (!path) return;
+
+        const pathLength = path.getTotalLength();
+        const duration = 3; // 3 seconds for full loop
+        const delay = (index % 5) * 0.6; // Stagger dots
+        const progress = ((time + delay) % duration) / duration;
+        const distance = progress * pathLength;
+
+        const point = path.getPointAtLength(distance);
+        circle.setAttribute('cx', point.x.toString());
+        circle.setAttribute('cy', point.y.toString());
+      });
+
+      this.animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animate();
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+    }
+  }
+
   private getHeatPumpState(): HeatPumpState {
     const cfg = this.config.heat_pump || {};
     return {
@@ -321,19 +367,18 @@ export class HeatPumpFlowCard extends LitElement {
 
     for (let i = 0; i < dotCount; i++) {
       dots.push(html`
-        <circle r="${this.config.animation!.dot_size}" fill="${color}" opacity="0.9">
-          <animateMotion
-            dur="3s"
-            repeatCount="indefinite"
-            begin="${i * 0.6}s"
-            fill="freeze">
-            <mpath href="#${pathId}"/>
-          </animateMotion>
+        <circle
+          class="flow-dot"
+          r="${this.config.animation!.dot_size}"
+          fill="${color}"
+          opacity="0.9"
+          cx="0"
+          cy="0">
         </circle>
       `);
     }
 
-    return html`<g id="${id}">${dots}</g>`;
+    return html`<g id="${id}" data-path-id="${pathId}">${dots}</g>`;
   }
 
   static get styles() {
