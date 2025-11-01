@@ -73,6 +73,7 @@ export class HeatPumpFlowCard extends LitElement {
   }
 
   protected firstUpdated(): void {
+    console.log('🎬 firstUpdated called, starting animation loop');
     // Start the animation loop
     this.startAnimationLoop();
   }
@@ -83,16 +84,26 @@ export class HeatPumpFlowCard extends LitElement {
     const animate = () => {
       // Get all circles
       const circles = this.shadowRoot?.querySelectorAll('circle.flow-dot');
-      if (!circles) return;
+      if (!circles || circles.length === 0) {
+        console.warn('❌ No circles found, stopping animation');
+        return;
+      }
 
       const time = Date.now() / 1000; // Current time in seconds
 
       circles.forEach((circle, index) => {
-        const pathId = (circle.parentElement as any)?.dataset?.pathId;
-        if (!pathId) return;
+        const group = circle.parentElement as SVGGElement;
+        const pathId = group?.dataset?.pathId;
+        if (!pathId) {
+          console.warn('❌ No pathId for circle', index);
+          return;
+        }
 
         const path = this.shadowRoot?.querySelector(`#${pathId}`) as SVGPathElement;
-        if (!path) return;
+        if (!path) {
+          console.warn('❌ Path not found:', pathId);
+          return;
+        }
 
         const pathLength = path.getTotalLength();
         const duration = 3; // 3 seconds for full loop
@@ -108,6 +119,7 @@ export class HeatPumpFlowCard extends LitElement {
       this.animationFrameId = requestAnimationFrame(animate);
     };
 
+    console.log('🚀 Starting animation loop');
     animate();
   }
 
