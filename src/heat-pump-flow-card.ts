@@ -318,49 +318,22 @@ export class HeatPumpFlowCard extends LitElement {
   private renderFlowDots(id: string, pathId: string, color: string) {
     const dotCount = 5;
     const dots = [];
-    const duration = 3; // Default 3 seconds
-    const size = this.config.animation!.dot_size;
 
     for (let i = 0; i < dotCount; i++) {
-      const delay = i * 0.6;
       dots.push(html`
-        <foreignObject
-          class="flow-dot"
-          width="${size * 2}"
-          height="${size * 2}"
-          style="
-            overflow: visible;
-            offset-path: path('${this.getPathData(pathId)}');
-            animation-duration: ${duration}s;
-            animation-delay: ${delay}s;
-          ">
-          <div
-            xmlns="http://www.w3.org/1999/xhtml"
-            style="
-              width: ${size * 2}px;
-              height: ${size * 2}px;
-              border-radius: 50%;
-              background: ${color};
-              opacity: 0.9;
-              filter: drop-shadow(0 0 4px ${color});
-            ">
-          </div>
-        </foreignObject>
+        <circle r="${this.config.animation!.dot_size}" fill="${color}" opacity="0.9">
+          <animateMotion
+            dur="3s"
+            repeatCount="indefinite"
+            begin="${i * 0.6}s"
+            fill="freeze">
+            <mpath href="#${pathId}"/>
+          </animateMotion>
+        </circle>
       `);
     }
 
     return html`<g id="${id}">${dots}</g>`;
-  }
-
-  private getPathData(pathId: string): string {
-    // Return the path 'd' attribute for each flow
-    const paths: Record<string, string> = {
-      'hp-to-buffer-path': 'M 170 180 L 350 180',
-      'buffer-to-hp-path': 'M 350 220 L 170 220',
-      'buffer-to-hvac-path': 'M 450 180 L 630 180',
-      'hvac-to-buffer-path': 'M 630 220 L 450 220',
-    };
-    return paths[pathId] || '';
   }
 
   static get styles() {
