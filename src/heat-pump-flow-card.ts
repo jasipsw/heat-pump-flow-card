@@ -72,6 +72,20 @@ export class HeatPumpFlowCard extends LitElement {
     }
   }
 
+  protected firstUpdated(): void {
+    // Manually start all SVG animations after first render
+    setTimeout(() => {
+      const animations = this.shadowRoot?.querySelectorAll('animateMotion');
+      animations?.forEach(anim => {
+        try {
+          (anim as any).beginElement();
+        } catch (e) {
+          console.warn('Could not start animation:', e);
+        }
+      });
+    }, 100);
+  }
+
   private getHeatPumpState(): HeatPumpState {
     const cfg = this.config.heat_pump || {};
     return {
