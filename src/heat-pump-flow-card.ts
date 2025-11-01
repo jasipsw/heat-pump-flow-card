@@ -73,7 +73,6 @@ export class HeatPumpFlowCard extends LitElement {
   }
 
   protected firstUpdated(): void {
-    console.log('🎬 firstUpdated called, starting animation loop');
     // Start the animation loop
     this.startAnimationLoop();
   }
@@ -82,12 +81,10 @@ export class HeatPumpFlowCard extends LitElement {
   private frameCount = 0;
 
   private startAnimationLoop(): void {
-    let firstRun = true;
     const animate = () => {
       // Get all circles
       const circles = this.shadowRoot?.querySelectorAll('circle.flow-dot');
       if (!circles || circles.length === 0) {
-        console.warn('❌ No circles found, stopping animation');
         return;
       }
 
@@ -97,12 +94,12 @@ export class HeatPumpFlowCard extends LitElement {
         const group = circle.parentElement as SVGGElement;
         const pathId = group?.dataset?.pathId;
         if (!pathId) {
-          return; // Silently skip if no pathId
+          return;
         }
 
         const path = this.shadowRoot?.querySelector(`#${pathId}`) as SVGPathElement;
         if (!path) {
-          return; // Silently skip if path not found
+          return;
         }
 
         const pathLength = path.getTotalLength();
@@ -116,23 +113,11 @@ export class HeatPumpFlowCard extends LitElement {
         // Update cx and cy attributes directly
         circle.setAttribute('cx', point.x.toString());
         circle.setAttribute('cy', point.y.toString());
-
-        // Log first frame positions
-        if (firstRun && index === 0) {
-          console.log(`✅ Circle 0 positioned at (${point.x.toFixed(1)}, ${point.y.toFixed(1)}), path: ${pathId}`);
-          console.log(`Circle attributes: cx=${circle.getAttribute('cx')}, cy=${circle.getAttribute('cy')}, r=${circle.getAttribute('r')}, fill=${circle.getAttribute('fill')}`);
-        }
       });
-
-      if (firstRun) {
-        firstRun = false;
-        console.log(`✅ First animation frame complete - ${circles.length} circles positioned`);
-      }
 
       this.animationFrameId = requestAnimationFrame(animate);
     };
 
-    console.log('🚀 Starting animation loop');
     animate();
   }
 
@@ -235,8 +220,6 @@ export class HeatPumpFlowCard extends LitElement {
     const hpState = this.getHeatPumpState();
     const hvacState = this.getHVACState();
 
-    console.log(`📊 Flow rates - HP: ${hpState.flowRate}, HVAC: ${hvacState.flowRate}`);
-
     // Update flow speeds based on flow rates
     this.updateFlowSpeed(this.hpToBufferFlow, hpState.flowRate);
     this.updateFlowSpeed(this.bufferToHpFlow, hpState.flowRate);
@@ -258,8 +241,6 @@ export class HeatPumpFlowCard extends LitElement {
         circle.style.opacity = '0.9';
       }
     });
-
-    console.log(`🔄 updateFlowSpeed: group=${group.id}, flowRate=${flowRate}, circles=${circles.length}, opacity=${flowRate <= 0 ? '0' : '0.9'}`);
 
     // Note: Changing animation duration dynamically doesn't work well with declarative SVG
     // The animations will run at the speed defined in the template
