@@ -175,22 +175,19 @@ export class HeatPumpFlowCard extends LitElement {
     if (!group) return;
 
     const duration = this.getAnimationDuration(flowRate);
-    const animations = group.querySelectorAll('animateMotion');
+    const circles = group.querySelectorAll('circle');
 
-    animations.forEach((anim, index) => {
-      // Stagger the dots
-      const delay = (index * this.config.animation!.dot_spacing!) / 100;
-      anim.setAttribute('dur', `${duration}s`);
-
-      // Control animation through begin attribute
+    circles.forEach((circle, index) => {
+      // Control visibility based on flow rate
       if (flowRate <= 0) {
-        // Pause animation by setting begin to indefinite
-        anim.setAttribute('begin', 'indefinite');
+        circle.style.opacity = '0';
       } else {
-        // Resume/start animation with delay
-        anim.setAttribute('begin', `${delay}s`);
+        circle.style.opacity = '0.9';
       }
     });
+
+    // Note: Changing animation duration dynamically doesn't work well with declarative SVG
+    // The animations will run at the speed defined in the template
   }
 
   protected render() {
