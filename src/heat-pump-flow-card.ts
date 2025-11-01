@@ -287,6 +287,14 @@ export class HeatPumpFlowCard extends LitElement {
 
         <div class="card-content">
           <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <!-- TEST: Big red rectangle to verify coordinate system -->
+            <rect x="300" y="170" width="60" height="30" fill="red" opacity="0.5" stroke="yellow" stroke-width="2"/>
+
+            <!-- TEST: Fixed circles at known positions -->
+            <circle cx="170" cy="180" r="10" fill="lime" opacity="1"/>
+            <circle cx="260" cy="180" r="10" fill="cyan" opacity="1"/>
+            <circle cx="350" cy="180" r="10" fill="magenta" opacity="1"/>
+
             <!-- Heat Pump (left side) -->
             <g id="heat-pump" transform="translate(50, 150)">
               <rect width="120" height="100" rx="10" fill="#2c3e50" stroke="#34495e" stroke-width="2"/>
