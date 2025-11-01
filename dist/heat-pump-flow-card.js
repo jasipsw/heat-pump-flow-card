@@ -168,9 +168,17 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,s){var o,r=argume
         </div>
       </ha-card>
     `}renderFlowDots(t,e,i){const s=[],o=this.config.animation.dot_size;for(let t=0;t<5;t++){const r=.6*t;s.push(B`
-        <foreignObject width="${2*o}" height="${2*o}" style="overflow: visible;">
+        <foreignObject
+          class="flow-dot"
+          width="${2*o}"
+          height="${2*o}"
+          style="
+            overflow: visible;
+            offset-path: path('${this.getPathData(e)}');
+            animation-duration: ${3}s;
+            animation-delay: ${r}s;
+          ">
           <div
-            class="flow-dot"
             xmlns="http://www.w3.org/1999/xhtml"
             style="
               width: ${2*o}px;
@@ -179,9 +187,6 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,s){var o,r=argume
               background: ${i};
               opacity: 0.9;
               filter: drop-shadow(0 0 4px ${i});
-              offset-path: path('${this.getPathData(e)}');
-              animation-duration: ${3}s;
-              animation-delay: ${r}s;
             ">
           </div>
         </foreignObject>
