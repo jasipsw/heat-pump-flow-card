@@ -324,25 +324,27 @@ export class HeatPumpFlowCard extends LitElement {
     for (let i = 0; i < dotCount; i++) {
       const delay = i * 0.6;
       dots.push(html`
-        <div
-          class="flow-dot"
-          style="
-            position: absolute;
-            width: ${size * 2}px;
-            height: ${size * 2}px;
-            border-radius: 50%;
-            background: ${color};
-            opacity: 0.9;
-            filter: drop-shadow(0 0 4px ${color});
-            offset-path: path('${this.getPathData(pathId)}');
-            animation-duration: ${duration}s;
-            animation-delay: ${delay}s;
-          ">
-        </div>
+        <foreignObject width="${size * 2}" height="${size * 2}" style="overflow: visible;">
+          <div
+            class="flow-dot"
+            xmlns="http://www.w3.org/1999/xhtml"
+            style="
+              width: ${size * 2}px;
+              height: ${size * 2}px;
+              border-radius: 50%;
+              background: ${color};
+              opacity: 0.9;
+              filter: drop-shadow(0 0 4px ${color});
+              offset-path: path('${this.getPathData(pathId)}');
+              animation-duration: ${duration}s;
+              animation-delay: ${delay}s;
+            ">
+          </div>
+        </foreignObject>
       `);
     }
 
-    return html`<div id="${id}" style="position: relative; width: 100%; height: 100%;">${dots}</div>`;
+    return html`<g id="${id}">${dots}</g>`;
   }
 
   private getPathData(pathId: string): string {
