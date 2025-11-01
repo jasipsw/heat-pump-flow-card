@@ -171,11 +171,11 @@ export class HeatPumpFlowCard extends LitElement {
     this.updateFlowSpeed(this.hvacToBufferFlow, hvacState.flowRate);
   }
 
-  private updateFlowSpeed(svg: SVGSVGElement | undefined, flowRate: number): void {
-    if (!svg) return;
+  private updateFlowSpeed(group: SVGGElement | undefined, flowRate: number): void {
+    if (!group) return;
 
     const duration = this.getAnimationDuration(flowRate);
-    const animations = svg.querySelectorAll('animateMotion');
+    const animations = group.querySelectorAll('animateMotion');
 
     animations.forEach((anim, index) => {
       // Stagger the dots
