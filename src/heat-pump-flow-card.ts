@@ -73,8 +73,39 @@ export class HeatPumpFlowCard extends LitElement {
   }
 
   protected firstUpdated(): void {
+    // Create circles using DOM manipulation instead of Lit templates
+    this.createFlowDots();
+
     // Start animation
-    this.startAnimationLoop();
+    setTimeout(() => this.startAnimationLoop(), 100);
+  }
+
+  private createFlowDots(): void {
+    const svg = this.shadowRoot?.querySelector('svg');
+    if (!svg) return;
+
+    const paths = [
+      { id: 'hp-to-buffer-path', color: this.getTempColor(this.getHeatPumpState().outletTemp) },
+      { id: 'buffer-to-hp-path', color: this.getTempColor(this.getHeatPumpState().inletTemp) },
+      { id: 'buffer-to-hvac-path', color: this.getTempColor(this.getBufferTankState().supplyTemp) },
+      { id: 'hvac-to-buffer-path', color: this.getTempColor(this.getHVACState().returnTemp) }
+    ];
+
+    paths.forEach(pathInfo => {
+      for (let i = 0; i < 5; i++) {
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('data-path-id', pathInfo.id);
+        circle.setAttribute('data-index', i.toString());
+        circle.setAttribute('cx', '200');
+        circle.setAttribute('cy', '180');
+        circle.setAttribute('r', '15');
+        circle.setAttribute('fill', pathInfo.color);
+        circle.setAttribute('stroke', 'black');
+        circle.setAttribute('stroke-width', '2');
+        circle.setAttribute('opacity', '1');
+        svg.appendChild(circle);
+      }
+    });
   }
 
   private animationFrameId?: number;
@@ -349,16 +380,7 @@ export class HeatPumpFlowCard extends LitElement {
                   fill="none"
                   stroke-linecap="round"/>
 
-            <!-- TEST: Static circles - no animation, no classes, just pure SVG -->
-            <circle cx="260" cy="180" r="15" fill="yellow" stroke="black" stroke-width="2" opacity="1"/>
-            <circle cx="260" cy="220" r="15" fill="cyan" stroke="black" stroke-width="2" opacity="1"/>
-            <circle cx="540" cy="180" r="15" fill="magenta" stroke="black" stroke-width="2" opacity="1"/>
-
-            <!-- Flow dots from function - should now render correctly -->
-            ${this.renderFlowDots('hp-to-buffer-flow', 'hp-to-buffer-path', hpOutletColor)}
-            ${this.renderFlowDots('buffer-to-hp-flow', 'buffer-to-hp-path', hpInletColor)}
-            ${this.renderFlowDots('buffer-to-hvac-flow', 'buffer-to-hvac-path', bufferSupplyColor)}
-            ${this.renderFlowDots('hvac-to-buffer-flow', 'hvac-to-buffer-path', hvacReturnColor)}
+            <!-- Flow dots created programmatically in firstUpdated() -->
           </svg>
         </div>
       </ha-card>
