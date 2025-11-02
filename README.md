@@ -10,7 +10,11 @@ A beautiful, animated Home Assistant card that visualizes heat pump water flow b
 
 🌡️ **Temperature-Based Colors** - Pipes change color from blue (cold) to red (hot) based on actual water temperature
 
-📊 **Real-Time Data** - Shows thermal power, COP, temperatures, and flow rates from your heat pump system
+🌀 **Animated Heat Pump** - Spinning fan that rotates based on actual fan speed (0-100%)
+
+🎨 **State-Based Coloring** - Heat pump changes color based on operating mode (heating=red, cooling=blue, DHW=orange, defrost=yellow)
+
+📊 **Real-Time Data** - Shows thermal power, COP, temperatures, flow rates, energy consumption, and costs
 
 ⚙️ **Highly Configurable** - Customize colors, animation speeds, temperature ranges, and display options
 
@@ -38,6 +42,30 @@ resources:
   - url: /local/heat-pump-flow-card.js
     type: module
 ```
+
+### Updating the Card
+
+When you update to a new version, Home Assistant and your browser may cache the old code. For the most reliable updates:
+
+**Quick Method**: Add a version parameter to your resource URL:
+```yaml
+resources:
+  - url: /hacsfiles/heat-pump-flow-card/heat-pump-flow-card.js?v=0.9.0
+    type: module
+```
+
+When updating, just increment the version number (`?v=0.9.1`) and restart HA.
+
+**Complete Guide**: See [CACHE_BUSTING.md](CACHE_BUSTING.md) for detailed instructions on clearing all caches.
+
+**Verify Version**: Press F12 in your browser, check the Console tab for:
+```
+HEAT-PUMP-FLOW-CARD
+Version X.X.X
+Built: [timestamp]
+```
+
+The build timestamp confirms you have the latest code.
 
 ## Configuration
 
@@ -134,6 +162,13 @@ display:
 | `outlet_temp_entity` | string | Heat pump outlet temperature sensor |
 | `inlet_temp_entity` | string | Heat pump inlet (return) temperature sensor |
 | `flow_rate_entity` | string | Water flow rate sensor (L/min) |
+| `fan_speed_entity` | string | Fan speed sensor (0-100%) - controls animation speed |
+| `mode_entity` | string | Operating mode sensor (heating/cooling/dhw/idle/off) |
+| `defrost_entity` | string | Defrost mode binary sensor (on/off) |
+| `error_entity` | string | Error/alarm sensor |
+| `energy_entity` | string | Total energy consumed (kWh) |
+| `cost_entity` | string | Energy cost |
+| `runtime_entity` | string | Runtime tracking sensor (seconds) |
 | `name` | string | Custom name for heat pump |
 | `icon` | string | Custom icon for heat pump |
 
@@ -186,6 +221,30 @@ display:
 | `show_icons` | boolean | true | Show entity icons |
 | `compact` | boolean | false | Compact layout mode |
 | `decimal_places` | number | 1 | Decimal places for values |
+
+### Heat Pump Visual Options (`heat_pump_visual`) - NEW in v0.9.0
+
+Configure the appearance and behavior of the animated heat pump visualization.
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `off_color` | string | #95a5a6 | Color when heat pump is powered off (gray) |
+| `heating_color` | string | #e74c3c | Color when in heating mode (red) |
+| `cooling_color` | string | #3498db | Color when in cooling mode (blue) |
+| `dhw_color` | string | #e67e22 | Color when in DHW/hot water mode (orange) |
+| `defrost_color` | string | #f1c40f | Color when defrosting (yellow) - highest priority |
+| `show_metrics` | boolean | true | Show detailed metrics below heat pump |
+| `animate_fan` | boolean | true | Enable fan rotation animation |
+
+**Example:**
+```yaml
+heat_pump_visual:
+  heating_color: '#FF0000'      # Bright red when heating
+  cooling_color: '#0000FF'      # Bright blue when cooling
+  defrost_color: '#FFA500'      # Orange when defrosting
+  show_metrics: true            # Display power, COP, temps, etc.
+  animate_fan: true             # Spin the fan based on fan_speed_entity
+```
 
 ## How It Works
 
