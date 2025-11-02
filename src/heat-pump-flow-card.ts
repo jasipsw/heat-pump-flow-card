@@ -47,8 +47,15 @@ export class HeatPumpFlowCard extends LitElement {
       animation: {
         min_flow_rate: 5,
         max_flow_rate: 1,
+        max_flow_rate_value: 50,
         dot_size: 8,
         dot_spacing: 30,
+        use_temp_color: true,
+        dot_color: '#3498db',
+        dot_stroke_color: 'white',
+        dot_stroke_width: 1.5,
+        dot_opacity: 1,
+        dot_shadow: true,
         ...animation,
       },
       temperature: {
@@ -93,30 +100,34 @@ export class HeatPumpFlowCard extends LitElement {
       this.cachedFanSpeed = hpState.fanSpeed || 0;
 
       // Cache flow configuration for each path
+      // Respect use_temp_color setting for dynamic colors
+      const useTempColor = this.config.animation.use_temp_color;
+      const fixedColor = this.config.animation.dot_color;
+
       this.cachedFlowConfig = {
         'hp-to-buffer-path': {
           flowRate: hpState.flowRate,
           temp: hpState.outletTemp,
           duration: this.getAnimationDuration(hpState.flowRate),
-          color: this.getTempColor(hpState.outletTemp)
+          color: useTempColor ? this.getTempColor(hpState.outletTemp) : fixedColor!
         },
         'buffer-to-hp-path': {
           flowRate: hpState.flowRate,
           temp: hpState.inletTemp,
           duration: this.getAnimationDuration(hpState.flowRate),
-          color: this.getTempColor(hpState.inletTemp)
+          color: useTempColor ? this.getTempColor(hpState.inletTemp) : fixedColor!
         },
         'buffer-to-hvac-path': {
           flowRate: hvacState.flowRate,
           temp: bufferState.supplyTemp,
           duration: this.getAnimationDuration(hvacState.flowRate),
-          color: this.getTempColor(bufferState.supplyTemp)
+          color: useTempColor ? this.getTempColor(bufferState.supplyTemp) : fixedColor!
         },
         'hvac-to-buffer-path': {
           flowRate: hvacState.flowRate,
           temp: hvacState.returnTemp,
           duration: this.getAnimationDuration(hvacState.flowRate),
-          color: this.getTempColor(hvacState.returnTemp)
+          color: useTempColor ? this.getTempColor(hvacState.returnTemp) : fixedColor!
         }
       };
     }
@@ -172,11 +183,15 @@ export class HeatPumpFlowCard extends LitElement {
     const bufferState = this.getBufferTankState();
     const hvacState = this.getHVACState();
 
+    // Determine dot colors based on configuration
+    const useTempColor = this.config.animation.use_temp_color;
+    const fixedColor = this.config.animation.dot_color;
+
     const paths = [
-      { id: 'hp-to-buffer-path', color: this.getTempColor(hpState.outletTemp) },
-      { id: 'buffer-to-hp-path', color: this.getTempColor(hpState.inletTemp) },
-      { id: 'buffer-to-hvac-path', color: this.getTempColor(bufferState.supplyTemp) },
-      { id: 'hvac-to-buffer-path', color: this.getTempColor(hvacState.returnTemp) }
+      { id: 'hp-to-buffer-path', color: useTempColor ? this.getTempColor(hpState.outletTemp) : fixedColor },
+      { id: 'buffer-to-hp-path', color: useTempColor ? this.getTempColor(hpState.inletTemp) : fixedColor },
+      { id: 'buffer-to-hvac-path', color: useTempColor ? this.getTempColor(bufferState.supplyTemp) : fixedColor },
+      { id: 'hvac-to-buffer-path', color: useTempColor ? this.getTempColor(hvacState.returnTemp) : fixedColor }
     ];
 
     paths.forEach(pathInfo => {
@@ -186,15 +201,19 @@ export class HeatPumpFlowCard extends LitElement {
         circle.setAttribute('data-index', i.toString());
         circle.setAttribute('cx', '0');
         circle.setAttribute('cy', '0');
-        // Make dots smaller and more distinct
-        circle.setAttribute('r', '5');
-        circle.setAttribute('fill', pathInfo.color);
-        // Add white stroke for contrast against pipe
-        circle.setAttribute('stroke', 'white');
-        circle.setAttribute('stroke-width', '1.5');
-        circle.setAttribute('opacity', '1');
-        // Add subtle shadow for depth
-        circle.setAttribute('filter', 'drop-shadow(0px 0px 2px rgba(0,0,0,0.3))');
+
+        // Apply configured styling
+        circle.setAttribute('r', this.config.animation.dot_size.toString());
+        circle.setAttribute('fill', pathInfo.color!);
+        circle.setAttribute('stroke', this.config.animation.dot_stroke_color!);
+        circle.setAttribute('stroke-width', this.config.animation.dot_stroke_width!.toString());
+        circle.setAttribute('opacity', this.config.animation.dot_opacity!.toString());
+
+        // Conditionally add shadow
+        if (this.config.animation.dot_shadow) {
+          circle.setAttribute('filter', 'drop-shadow(0px 0px 2px rgba(0,0,0,0.3))');
+        }
+
         svg.appendChild(circle);
       }
     });
@@ -234,9 +253,9 @@ export class HeatPumpFlowCard extends LitElement {
           circle.setAttribute('fill', config.color);
         }
 
-        // Hide/show dots based on flow
+        // Hide/show dots based on flow (use configured opacity when visible)
         const currentOpacity = circle.getAttribute('opacity');
-        const targetOpacity = config.flowRate <= 0 ? '0' : '1';
+        const targetOpacity = config.flowRate <= 0 ? '0' : this.config.animation.dot_opacity!.toString();
         if (currentOpacity !== targetOpacity) {
           circle.setAttribute('opacity', targetOpacity);
         }
@@ -395,13 +414,15 @@ export class HeatPumpFlowCard extends LitElement {
 
   private getAnimationDuration(flowRate: number): number {
     const cfg = this.config.animation!;
-    if (flowRate <= 0) return cfg.max_flow_rate!;
+    if (flowRate <= 0) return cfg.min_flow_rate!;  // No flow = slowest (longest duration)
 
-    // Normalize flow rate (assuming max ~50 L/min for heat pumps)
-    const normalized = Math.min(flowRate / 50, 1);
+    // Normalize flow rate based on configured maximum
+    const normalized = Math.min(flowRate / cfg.max_flow_rate_value!, 1);
 
-    // Interpolate between min and max duration (faster flow = shorter duration)
-    return cfg.max_flow_rate! - (normalized * (cfg.max_flow_rate! - cfg.min_flow_rate!));
+    // Interpolate: higher flow = shorter duration (faster animation)
+    // At normalized=0 (low flow): use min_flow_rate (slow, e.g., 5 seconds)
+    // At normalized=1 (high flow): use max_flow_rate (fast, e.g., 1 second)
+    return cfg.min_flow_rate! - (normalized * (cfg.min_flow_rate! - cfg.max_flow_rate!));
   }
 
   private updateAnimations(): void {
@@ -456,6 +477,39 @@ export class HeatPumpFlowCard extends LitElement {
 
         <div class="card-content">
           <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+            <!-- Flow Pipes (rendered first so they appear behind entities) -->
+            <!-- Pipe: HP to Buffer (hot) -->
+            <path id="hp-to-buffer-path"
+                  d="M 170 180 L 350 180"
+                  stroke="${hpOutletColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="round"/>
+
+            <!-- Pipe: Buffer to HP (cold return) -->
+            <path id="buffer-to-hp-path"
+                  d="M 350 220 L 170 220"
+                  stroke="${hpInletColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="round"/>
+
+            <!-- Pipe: Buffer to HVAC (hot) -->
+            <path id="buffer-to-hvac-path"
+                  d="M 450 180 L 630 180"
+                  stroke="${bufferSupplyColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="round"/>
+
+            <!-- Pipe: HVAC to Buffer (cold return) -->
+            <path id="hvac-to-buffer-path"
+                  d="M 630 220 L 450 220"
+                  stroke="${hvacReturnColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="round"/>
+
             <!-- Heat Pump (left side) -->
             <g id="heat-pump" transform="translate(50, 100)">
               <!-- Heat pump body with state-based color -->
@@ -558,38 +612,6 @@ export class HeatPumpFlowCard extends LitElement {
                 Supply: ${this.formatValue(hvacState.supplyTemp, 1)}°
               </text>
             </g>
-
-            <!-- Pipe: HP to Buffer (hot) -->
-            <path id="hp-to-buffer-path"
-                  d="M 170 180 L 350 180"
-                  stroke="${hpOutletColor}"
-                  stroke-width="12"
-                  fill="none"
-                  stroke-linecap="round"/>
-
-            <!-- Pipe: Buffer to HP (cold return) -->
-            <path id="buffer-to-hp-path"
-                  d="M 350 220 L 170 220"
-                  stroke="${hpInletColor}"
-                  stroke-width="12"
-                  fill="none"
-                  stroke-linecap="round"/>
-
-            <!-- Pipe: Buffer to HVAC (hot) -->
-            <path id="buffer-to-hvac-path"
-                  d="M 450 180 L 630 180"
-                  stroke="${bufferSupplyColor}"
-                  stroke-width="12"
-                  fill="none"
-                  stroke-linecap="round"/>
-
-            <!-- Pipe: HVAC to Buffer (cold return) -->
-            <path id="hvac-to-buffer-path"
-                  d="M 630 220 L 450 220"
-                  stroke="${hvacReturnColor}"
-                  stroke-width="12"
-                  fill="none"
-                  stroke-linecap="round"/>
 
             <!-- Flow dots created programmatically in firstUpdated() -->
           </svg>
