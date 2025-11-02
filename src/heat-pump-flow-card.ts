@@ -84,11 +84,15 @@ export class HeatPumpFlowCard extends LitElement {
     const svg = this.shadowRoot?.querySelector('svg');
     if (!svg) return;
 
+    const hpState = this.getHeatPumpState();
+    const bufferState = this.getBufferTankState();
+    const hvacState = this.getHVACState();
+
     const paths = [
-      { id: 'hp-to-buffer-path', color: this.getTempColor(this.getHeatPumpState().outletTemp) },
-      { id: 'buffer-to-hp-path', color: this.getTempColor(this.getHeatPumpState().inletTemp) },
-      { id: 'buffer-to-hvac-path', color: this.getTempColor(this.getBufferTankState().supplyTemp) },
-      { id: 'hvac-to-buffer-path', color: this.getTempColor(this.getHVACState().returnTemp) }
+      { id: 'hp-to-buffer-path', color: this.getTempColor(hpState.outletTemp) },
+      { id: 'buffer-to-hp-path', color: this.getTempColor(hpState.inletTemp) },
+      { id: 'buffer-to-hvac-path', color: this.getTempColor(bufferState.supplyTemp) },
+      { id: 'hvac-to-buffer-path', color: this.getTempColor(hvacState.returnTemp) }
     ];
 
     paths.forEach(pathInfo => {
@@ -96,13 +100,11 @@ export class HeatPumpFlowCard extends LitElement {
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         circle.setAttribute('data-path-id', pathInfo.id);
         circle.setAttribute('data-index', i.toString());
-        circle.setAttribute('cx', '200');
-        circle.setAttribute('cy', '180');
-        circle.setAttribute('r', '15');
+        circle.setAttribute('cx', '0');
+        circle.setAttribute('cy', '0');
+        circle.setAttribute('r', this.config.animation!.dot_size!.toString());
         circle.setAttribute('fill', pathInfo.color);
-        circle.setAttribute('stroke', 'black');
-        circle.setAttribute('stroke-width', '2');
-        circle.setAttribute('opacity', '1');
+        circle.setAttribute('opacity', '0.9');
         svg.appendChild(circle);
       }
     });
@@ -384,28 +386,6 @@ export class HeatPumpFlowCard extends LitElement {
           </svg>
         </div>
       </ha-card>
-    `;
-  }
-
-  private renderFlowDots(id: string, pathId: string, color: string) {
-    const dotCount = 5;
-    const startPositions = [200, 240, 280, 320, 360];
-
-    // Return as a single template, not an array
-    return html`
-      ${startPositions.map((pos, i) => html`
-        <circle
-          data-path-id="${pathId}"
-          data-index="${i}"
-          cx="${pos}"
-          cy="180"
-          r="15"
-          fill="${color}"
-          stroke="black"
-          stroke-width="2"
-          opacity="1">
-        </circle>
-      `)}
     `;
   }
 
