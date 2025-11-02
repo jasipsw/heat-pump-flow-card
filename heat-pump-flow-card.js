@@ -50,7 +50,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var s,r=argume
         ${this.config.title?D`<h1 class="card-header">${this.config.title}</h1>`:""}
 
         <div class="card-content">
-          <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
             <!-- Heat Pump (left side) -->
             <g id="heat-pump" transform="translate(50, 100)">
               <!-- Heat pump body with state-based color -->
@@ -85,36 +85,36 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var s,r=argume
 
             <!-- Heat Pump Metrics -->
             ${this.config.heat_pump_visual?.show_metrics?D`
-              <g id="hp-metrics" transform="translate(50, 260)">
+              <g id="hp-metrics" transform="translate(50, 265)">
                 <!-- Metrics display in compact 2-column layout -->
                 <!-- Left column -->
-                <text x="0" y="0" fill="#95a5a6" font-size="9" font-weight="bold">Power In:</text>
-                <text x="0" y="12" fill="#3498db" font-size="10">${this.formatValue(t.power,0)} W</text>
+                <text x="0" y="0" fill="#95a5a6" font-size="11" font-weight="bold">Power In:</text>
+                <text x="0" y="16" fill="#3498db" font-size="12">${this.formatValue(t.power,0)} W</text>
 
-                <text x="0" y="28" fill="#95a5a6" font-size="9" font-weight="bold">Thermal Out:</text>
-                <text x="0" y="40" fill="#e74c3c" font-size="10">${this.formatValue(t.thermal,0)} W</text>
+                <text x="0" y="36" fill="#95a5a6" font-size="11" font-weight="bold">Thermal Out:</text>
+                <text x="0" y="52" fill="#e74c3c" font-size="12">${this.formatValue(t.thermal,0)} W</text>
 
-                <text x="0" y="56" fill="#95a5a6" font-size="9" font-weight="bold">COP:</text>
-                <text x="0" y="68" fill="#f1c40f" font-size="10">${this.formatValue(t.cop,2)}</text>
+                <text x="0" y="72" fill="#95a5a6" font-size="11" font-weight="bold">COP:</text>
+                <text x="0" y="88" fill="#f1c40f" font-size="12">${this.formatValue(t.cop,2)}</text>
 
-                <text x="0" y="84" fill="#95a5a6" font-size="9" font-weight="bold">Flow:</text>
-                <text x="0" y="96" fill="#9b59b6" font-size="10">${this.formatValue(t.flowRate,1)} L/min</text>
+                <text x="0" y="108" fill="#95a5a6" font-size="11" font-weight="bold">Flow:</text>
+                <text x="0" y="124" fill="#9b59b6" font-size="12">${this.formatValue(t.flowRate,1)} L/min</text>
 
                 <!-- Right column -->
-                <text x="70" y="0" fill="#95a5a6" font-size="9" font-weight="bold">In Temp:</text>
-                <text x="70" y="12" fill="${s}" font-size="10">${this.formatValue(t.inletTemp,1)}°</text>
+                <text x="80" y="0" fill="#95a5a6" font-size="11" font-weight="bold">In Temp:</text>
+                <text x="80" y="16" fill="${s}" font-size="12">${this.formatValue(t.inletTemp,1)}°</text>
 
-                <text x="70" y="28" fill="#95a5a6" font-size="9" font-weight="bold">Out Temp:</text>
-                <text x="70" y="40" fill="${o}" font-size="10">${this.formatValue(t.outletTemp,1)}°</text>
+                <text x="80" y="36" fill="#95a5a6" font-size="11" font-weight="bold">Out Temp:</text>
+                <text x="80" y="52" fill="${o}" font-size="12">${this.formatValue(t.outletTemp,1)}°</text>
 
                 ${void 0!==t.energy?D`
-                  <text x="70" y="56" fill="#95a5a6" font-size="9" font-weight="bold">Energy:</text>
-                  <text x="70" y="68" fill="#16a085" font-size="10">${this.formatValue(t.energy,2)} kWh</text>
+                  <text x="80" y="72" fill="#95a5a6" font-size="11" font-weight="bold">Energy:</text>
+                  <text x="80" y="88" fill="#16a085" font-size="12">${this.formatValue(t.energy,2)} kWh</text>
                 `:""}
 
                 ${void 0!==t.cost?D`
-                  <text x="70" y="84" fill="#95a5a6" font-size="9" font-weight="bold">Cost:</text>
-                  <text x="70" y="96" fill="#27ae60" font-size="10">$${this.formatValue(t.cost,2)}</text>
+                  <text x="80" y="108" fill="#95a5a6" font-size="11" font-weight="bold">Cost:</text>
+                  <text x="80" y="124" fill="#27ae60" font-size="12">$${this.formatValue(t.cost,2)}</text>
                 `:""}
               </g>
             `:""}
