@@ -510,6 +510,27 @@ export class HeatPumpFlowCard extends LitElement {
                   fill="none"
                   stroke-linecap="butt"/>
 
+            <!-- Temperature labels on pipes -->
+            <!-- HP to Buffer (hot outlet) - above pipe -->
+            <text x="260" y="170" text-anchor="middle" fill="${hpOutletColor}" font-size="11" font-weight="bold">
+              Out: ${this.formatValue(hpState.outletTemp, 1)}°
+            </text>
+
+            <!-- Buffer to HP (cold inlet) - below pipe -->
+            <text x="260" y="240" text-anchor="middle" fill="${hpInletColor}" font-size="11" font-weight="bold">
+              In: ${this.formatValue(hpState.inletTemp, 1)}°
+            </text>
+
+            <!-- Buffer to HVAC (hot supply) - above pipe -->
+            <text x="540" y="170" text-anchor="middle" fill="${bufferSupplyColor}" font-size="11" font-weight="bold">
+              Supply: ${this.formatValue(bufferState.supplyTemp, 1)}°
+            </text>
+
+            <!-- HVAC to Buffer (cold return) - below pipe -->
+            <text x="540" y="240" text-anchor="middle" fill="${hvacReturnColor}" font-size="11" font-weight="bold">
+              Return: ${this.formatValue(hvacState.returnTemp, 1)}°
+            </text>
+
             <!-- Heat Pump (left side) -->
             <g id="heat-pump" transform="translate(50, 100)">
               <!-- Heat pump body with state-based color -->
@@ -559,20 +580,14 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="0" y="124" fill="#9b59b6" font-size="12">${this.formatValue(hpState.flowRate, 1)} L/min</text>
 
               <!-- Right column -->
-              <text x="80" y="0" fill="#95a5a6" font-size="11" font-weight="bold">In Temp:</text>
-              <text x="80" y="16" fill="${hpInletColor}" font-size="12">${this.formatValue(hpState.inletTemp, 1)}°</text>
-
-              <text x="80" y="36" fill="#95a5a6" font-size="11" font-weight="bold">Out Temp:</text>
-              <text x="80" y="52" fill="${hpOutletColor}" font-size="12">${this.formatValue(hpState.outletTemp, 1)}°</text>
-
               ${hpState.energy !== undefined ? html`
-                <text x="80" y="72" fill="#95a5a6" font-size="11" font-weight="bold">Energy:</text>
-                <text x="80" y="88" fill="#16a085" font-size="12">${this.formatValue(hpState.energy, 2)} kWh</text>
+                <text x="80" y="0" fill="#95a5a6" font-size="11" font-weight="bold">Energy:</text>
+                <text x="80" y="16" fill="#16a085" font-size="12">${this.formatValue(hpState.energy, 2)} kWh</text>
               ` : ''}
 
               ${hpState.cost !== undefined ? html`
-                <text x="80" y="108" fill="#95a5a6" font-size="11" font-weight="bold">Cost:</text>
-                <text x="80" y="124" fill="#27ae60" font-size="12">$${this.formatValue(hpState.cost, 2)}</text>
+                <text x="80" y="36" fill="#95a5a6" font-size="11" font-weight="bold">Cost:</text>
+                <text x="80" y="52" fill="#27ae60" font-size="12">$${this.formatValue(hpState.cost, 2)}</text>
               ` : ''}
             </g>
 
@@ -582,17 +597,11 @@ export class HeatPumpFlowCard extends LitElement {
               <ellipse cx="50" cy="100" rx="55" ry="95" fill="#95a5a6"/>
               <!-- Water level indicator -->
               <rect x="5" y="110" width="90" height="80" fill="${bufferSupplyColor}" opacity="0.7"/>
-              <text x="50" y="50" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
+              <text x="50" y="60" text-anchor="middle" fill="white" font-size="14" font-weight="bold">
                 BUFFER
               </text>
-              <text x="50" y="70" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
+              <text x="50" y="80" text-anchor="middle" fill="white" font-size="14" font-weight="bold">
                 TANK
-              </text>
-              <text x="50" y="110" text-anchor="middle" fill="white" font-size="11">
-                Supply: ${this.formatValue(bufferState.supplyTemp, 1)}°
-              </text>
-              <text x="50" y="125" text-anchor="middle" fill="white" font-size="11">
-                Return: ${this.formatValue(bufferState.returnTemp, 1)}°
               </text>
             </g>
 
@@ -607,9 +616,6 @@ export class HeatPumpFlowCard extends LitElement {
               </text>
               <text x="60" y="75" text-anchor="middle" fill="#95a5a6" font-size="12">
                 Flow: ${this.formatValue(hvacState.flowRate, 1)} L/min
-              </text>
-              <text x="60" y="90" text-anchor="middle" fill="${hvacSupplyColor}" font-size="11">
-                Supply: ${this.formatValue(hvacState.supplyTemp, 1)}°
               </text>
             </g>
 
