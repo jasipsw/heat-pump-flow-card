@@ -222,17 +222,21 @@ export class HeatPumpFlowCard extends LitElement {
 
         const pathLength = path.getTotalLength();
 
-        // Update color based on current temperature (pre-calculated in cache)
-        circle.setAttribute('fill', config.color);
-
-        // Hide dots if no flow
-        if (config.flowRate <= 0) {
-          circle.setAttribute('opacity', '0');
-        } else {
-          circle.setAttribute('opacity', '0.9');
+        // Update color only if it changed (avoid expensive setAttribute calls at 60fps)
+        const currentColor = circle.getAttribute('fill');
+        if (currentColor !== config.color) {
+          circle.setAttribute('fill', config.color);
         }
 
-        const delay = index * 0.6;
+        // Hide/show dots based on flow
+        const currentOpacity = circle.getAttribute('opacity');
+        const targetOpacity = config.flowRate <= 0 ? '0' : '0.9';
+        if (currentOpacity !== targetOpacity) {
+          circle.setAttribute('opacity', targetOpacity);
+        }
+
+        // Space dots evenly as a percentage of duration (20% apart for 5 dots)
+        const delay = index * 0.2 * config.duration;
         const progress = ((time + delay) % config.duration) / config.duration;
         const distance = progress * pathLength;
 
@@ -335,7 +339,18 @@ export class HeatPumpFlowCard extends LitElement {
   }
 
   private hexToRgb(hex: string): { r: number; g: number; b: number } {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    // Handle CSS color names
+    const colorNames: Record<string, string> = {
+      'black': '#000000', 'white': '#FFFFFF', 'red': '#FF0000', 'green': '#008000',
+      'blue': '#0000FF', 'yellow': '#FFFF00', 'cyan': '#00FFFF', 'magenta': '#FF00FF',
+      'orange': '#FFA500', 'purple': '#800080', 'pink': '#FFC0CB', 'brown': '#A52A2A',
+      'gray': '#808080', 'grey': '#808080'
+    };
+
+    // Convert color name to hex if needed
+    const color = colorNames[hex.toLowerCase()] || hex;
+
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
     return result
       ? {
           r: parseInt(result[1], 16),
