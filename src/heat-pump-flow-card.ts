@@ -73,18 +73,8 @@ export class HeatPumpFlowCard extends LitElement {
   }
 
   protected firstUpdated(): void {
-    // Start the animation loop
-    this.startAnimationLoop();
-
-    // Quick diagnostic
-    setTimeout(() => {
-      const animatedCircles = this.shadowRoot?.querySelectorAll('circle[data-path-id]');
-      console.log(`🔍 Animated circles: ${animatedCircles?.length}`);
-      if (animatedCircles && animatedCircles.length > 0) {
-        const first = animatedCircles[0] as SVGCircleElement;
-        console.log(`First animated circle: cx=${first.getAttribute('cx')}, cy=${first.getAttribute('cy')}, r=${first.getAttribute('r')}, fill=${first.getAttribute('fill')}`);
-      }
-    }, 500);
+    // Animation disabled for testing - circles should be visible at hardcoded positions
+    // this.startAnimationLoop();
   }
 
   private animationFrameId?: number;
@@ -381,14 +371,12 @@ export class HeatPumpFlowCard extends LitElement {
     const dotCount = 5;
     const dots = [];
 
-    // Start circles at visible positions instead of 0,0
+    // Start circles at visible positions - NO data attributes
     const startPositions = [200, 240, 280, 320, 360];
 
     for (let i = 0; i < dotCount; i++) {
       dots.push(html`
         <circle
-          data-path-id="${pathId}"
-          data-index="${i}"
           cx="${startPositions[i]}"
           cy="180"
           r="15"
