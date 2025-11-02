@@ -5,7 +5,8 @@
   "type": "module",
   "main": "dist/heat-pump-flow-card.js",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && npm run copy-to-root",
+    "copy-to-root": "cp dist/heat-pump-flow-card.js heat-pump-flow-card.js && cp dist/heat-pump-flow-card.js.map heat-pump-flow-card.js.map",
     "watch": "rollup -c -w",
     "lint": "eslint src --ext .ts",
     "format": "prettier --write src/**/*.ts"
