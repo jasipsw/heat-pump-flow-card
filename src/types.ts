@@ -14,6 +14,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     flow_rate_entity?: string;   // Flow rate (L/min)
     fan_speed_entity?: string;   // Fan speed (0-100%)
     mode_entity?: string;        // Operating mode (heating/cooling/dhw/idle/off)
+    mode_display_entity?: string; // Mode display text entity (e.g., "Heat+DHW", "Heating Only")
     defrost_entity?: string;     // Defrost mode (binary sensor)
     error_entity?: string;       // Error/alarm sensor
     energy_entity?: string;      // Total energy consumed (kWh)
@@ -41,6 +42,21 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     level_entity?: string;         // Tank level (optional)
     name?: string;
     icon?: string;
+  };
+
+  // DHW (Domestic Hot Water) Tank Configuration
+  dhw_tank?: {
+    inlet_temp_entity?: string;    // DHW coil inlet temperature
+    outlet_temp_entity?: string;   // DHW coil outlet temperature
+    tank_temp_entity?: string;     // DHW tank temperature (optional)
+    name?: string;
+    icon?: string;
+  };
+
+  // G2 Valve Configuration (diverter valve between buffer and DHW)
+  g2_valve?: {
+    state_entity?: string;         // Entity indicating valve state (on=DHW mode, off=heating mode)
+    name?: string;
   };
 
   // HVAC/Load Configuration
@@ -96,6 +112,7 @@ export interface HeatPumpState {
   flowRate: number;
   fanSpeed?: number;           // Fan speed percentage (0-100)
   mode?: string;               // Operating mode
+  modeDisplay?: string;        // Mode display text (e.g., "Heat+DHW")
   defrost?: boolean;           // Defrost active
   error?: string;              // Error message
   energy?: number;             // Total energy (kWh)
@@ -114,4 +131,14 @@ export interface HVACState {
   flowRate: number;
   supplyTemp: number;
   returnTemp: number;
+}
+
+export interface DHWTankState {
+  inletTemp: number;
+  outletTemp: number;
+  tankTemp?: number;
+}
+
+export interface G2ValveState {
+  isActive: boolean;  // true = DHW mode, false = heating mode
 }
