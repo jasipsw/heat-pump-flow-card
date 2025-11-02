@@ -541,34 +541,34 @@ export class HeatPumpFlowCard extends LitElement {
           <svg viewBox="0 0 800 700" xmlns="http://www.w3.org/2000/svg">
             <!-- Flow Pipes (rendered first so they appear behind entities) -->
 
-            <!-- Simplified: Always show heating mode pipes (DHW functionality to be added later if needed) -->
-            <!-- Pipe: HP to Buffer (hot) -->
+            <!-- Pipes with 10px gaps from entities for clean appearance -->
+            <!-- Pipe: HP to Buffer (hot) - 10px gap from HP -->
             <path id="hp-to-buffer-path"
-                  d="M 170 180 L 350 180"
+                  d="M 180 180 L 350 180"
                   stroke="${hpOutletColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"/>
 
-            <!-- Pipe: Buffer to HP (cold return) -->
+            <!-- Pipe: Buffer to HP (cold return) - 10px gap from HP -->
             <path id="buffer-to-hp-path"
-                  d="M 350 220 L 170 220"
+                  d="M 350 220 L 180 220"
                   stroke="${hpInletColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"/>
 
-            <!-- Pipe: Buffer to HVAC (hot) -->
+            <!-- Pipe: Buffer to HVAC (hot) - 10px gap from HVAC -->
             <path id="buffer-to-hvac-path"
-                  d="M 450 180 L 630 180"
+                  d="M 450 180 L 620 180"
                   stroke="${bufferSupplyColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"/>
 
-            <!-- Pipe: HVAC to Buffer (cold return) -->
+            <!-- Pipe: HVAC to Buffer (cold return) - 10px gap from HVAC -->
             <path id="hvac-to-buffer-path"
-                  d="M 630 220 L 450 220"
+                  d="M 620 220 L 450 220"
                   stroke="${hvacReturnColor}"
                   stroke-width="12"
                   fill="none"
