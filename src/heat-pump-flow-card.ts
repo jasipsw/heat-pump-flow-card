@@ -59,10 +59,10 @@ export class HeatPumpFlowCard extends LitElement {
         ...animation,
       },
       temperature: {
-        min_temp: 0,
-        max_temp: 100,
-        cold_color: '#0066FF',
-        hot_color: '#FF3300',
+        delta_threshold: 10,
+        hot_color: '#e74c3c',
+        cold_color: '#3498db',
+        neutral_color: '#95a5a6',
         unit: 'C',
         ...temperature,
       },
@@ -100,34 +100,37 @@ export class HeatPumpFlowCard extends LitElement {
       this.cachedFanSpeed = hpState.fanSpeed || 0;
 
       // Cache flow configuration for each path
-      // Respect use_temp_color setting for dynamic colors
+      // Calculate pipe colors based on temperature delta
       const useTempColor = this.config.animation.use_temp_color;
       const fixedColor = this.config.animation.dot_color;
+
+      const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
+      const hvacPipeColors = this.getPipeColors(bufferState.supplyTemp, hvacState.returnTemp, hvacState.flowRate);
 
       this.cachedFlowConfig = {
         'hp-to-buffer-path': {
           flowRate: hpState.flowRate,
           temp: hpState.outletTemp,
           duration: this.getAnimationDuration(hpState.flowRate),
-          color: useTempColor ? this.getTempColor(hpState.outletTemp) : fixedColor!
+          color: useTempColor ? hpPipeColors.hotPipe : fixedColor!
         },
         'buffer-to-hp-path': {
           flowRate: hpState.flowRate,
           temp: hpState.inletTemp,
           duration: this.getAnimationDuration(hpState.flowRate),
-          color: useTempColor ? this.getTempColor(hpState.inletTemp) : fixedColor!
+          color: useTempColor ? hpPipeColors.coldPipe : fixedColor!
         },
         'buffer-to-hvac-path': {
           flowRate: hvacState.flowRate,
           temp: bufferState.supplyTemp,
           duration: this.getAnimationDuration(hvacState.flowRate),
-          color: useTempColor ? this.getTempColor(bufferState.supplyTemp) : fixedColor!
+          color: useTempColor ? hvacPipeColors.hotPipe : fixedColor!
         },
         'hvac-to-buffer-path': {
           flowRate: hvacState.flowRate,
           temp: hvacState.returnTemp,
           duration: this.getAnimationDuration(hvacState.flowRate),
-          color: useTempColor ? this.getTempColor(hvacState.returnTemp) : fixedColor!
+          color: useTempColor ? hvacPipeColors.coldPipe : fixedColor!
         }
       };
     }
@@ -187,11 +190,14 @@ export class HeatPumpFlowCard extends LitElement {
     const useTempColor = this.config.animation.use_temp_color;
     const fixedColor = this.config.animation.dot_color;
 
+    const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
+    const hvacPipeColors = this.getPipeColors(bufferState.supplyTemp, hvacState.returnTemp, hvacState.flowRate);
+
     const paths = [
-      { id: 'hp-to-buffer-path', color: useTempColor ? this.getTempColor(hpState.outletTemp) : fixedColor },
-      { id: 'buffer-to-hp-path', color: useTempColor ? this.getTempColor(hpState.inletTemp) : fixedColor },
-      { id: 'buffer-to-hvac-path', color: useTempColor ? this.getTempColor(bufferState.supplyTemp) : fixedColor },
-      { id: 'hvac-to-buffer-path', color: useTempColor ? this.getTempColor(hvacState.returnTemp) : fixedColor }
+      { id: 'hp-to-buffer-path', color: useTempColor ? hpPipeColors.hotPipe : fixedColor },
+      { id: 'buffer-to-hp-path', color: useTempColor ? hpPipeColors.coldPipe : fixedColor },
+      { id: 'buffer-to-hvac-path', color: useTempColor ? hvacPipeColors.hotPipe : fixedColor },
+      { id: 'hvac-to-buffer-path', color: useTempColor ? hvacPipeColors.coldPipe : fixedColor }
     ];
 
     paths.forEach(pathInfo => {
@@ -347,20 +353,35 @@ export class HeatPumpFlowCard extends LitElement {
     return value.toFixed(decimals);
   }
 
-  private getTempColor(temp: number): string {
+  /**
+   * Calculate pipe colors based on temperature delta between supply and return
+   * Returns {hotPipe, coldPipe} colors based on delta threshold
+   */
+  private getPipeColors(hotTemp: number, coldTemp: number, flowRate: number): { hotPipe: string; coldPipe: string } {
     const cfg = this.config.temperature!;
-    const normalized = (temp - cfg.min_temp!) / (cfg.max_temp! - cfg.min_temp!);
-    const clamped = Math.max(0, Math.min(1, normalized));
+    const delta = Math.abs(hotTemp - coldTemp);
 
-    // Interpolate between cold and hot colors
-    const cold = this.hexToRgb(cfg.cold_color!);
-    const hot = this.hexToRgb(cfg.hot_color!);
+    // If no flow or delta below threshold, both pipes are neutral
+    if (flowRate <= 0 || delta < cfg.delta_threshold!) {
+      return {
+        hotPipe: cfg.neutral_color!,
+        coldPipe: cfg.neutral_color!
+      };
+    }
 
-    const r = Math.round(cold.r + (hot.r - cold.r) * clamped);
-    const g = Math.round(cold.g + (hot.g - cold.g) * clamped);
-    const b = Math.round(cold.b + (hot.b - cold.b) * clamped);
-
-    return `rgb(${r}, ${g}, ${b})`;
+    // Delta above threshold - color based on which is hotter
+    if (hotTemp > coldTemp) {
+      return {
+        hotPipe: cfg.hot_color!,
+        coldPipe: cfg.cold_color!
+      };
+    } else {
+      // If coldTemp is actually hotter (reversed flow?)
+      return {
+        hotPipe: cfg.cold_color!,
+        coldPipe: cfg.hot_color!
+      };
+    }
   }
 
   private hexToRgb(hex: string): { r: number; g: number; b: number } {
@@ -464,12 +485,15 @@ export class HeatPumpFlowCard extends LitElement {
     const bufferState = this.getBufferTankState();
     const hvacState = this.getHVACState();
 
-    const hpOutletColor = this.getTempColor(hpState.outletTemp);
-    const hpInletColor = this.getTempColor(hpState.inletTemp);
-    const bufferSupplyColor = this.getTempColor(bufferState.supplyTemp);
-    const bufferReturnColor = this.getTempColor(bufferState.returnTemp);
-    const hvacSupplyColor = this.getTempColor(hvacState.supplyTemp);
-    const hvacReturnColor = this.getTempColor(hvacState.returnTemp);
+    // Calculate pipe colors based on temperature delta
+    const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
+    const hvacPipeColors = this.getPipeColors(bufferState.supplyTemp, hvacState.returnTemp, hvacState.flowRate);
+
+    // Extract individual pipe colors
+    const hpOutletColor = hpPipeColors.hotPipe;
+    const hpInletColor = hpPipeColors.coldPipe;
+    const bufferSupplyColor = hvacPipeColors.hotPipe;
+    const hvacReturnColor = hvacPipeColors.coldPipe;
 
     return html`
       <ha-card>
