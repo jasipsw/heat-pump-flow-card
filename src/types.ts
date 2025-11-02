@@ -68,13 +68,13 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     dot_shadow?: boolean;       // Show dot shadow for depth (default: true)
   };
 
-  // Temperature Color Configuration
+  // Temperature Color Configuration (Delta-based pipe coloring)
   temperature?: {
-    min_temp?: number;      // Minimum temperature for color scale (°C or °F)
-    max_temp?: number;      // Maximum temperature for color scale
-    cold_color?: string;    // Color for minimum temp (default: blue)
-    hot_color?: string;     // Color for maximum temp (default: red)
-    unit?: 'C' | 'F';       // Temperature unit
+    delta_threshold?: number;  // Minimum temp difference to show hot/cold colors (default: 10)
+    hot_color?: string;        // Color for hotter pipe (default: #e74c3c red)
+    cold_color?: string;       // Color for cooler pipe (default: #3498db blue)
+    neutral_color?: string;    // Color when delta < threshold or no flow (default: #95a5a6 gray)
+    unit?: 'C' | 'F';          // Temperature unit
   };
 
   // Display Configuration

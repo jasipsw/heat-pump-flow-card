@@ -59,10 +59,10 @@ export class HeatPumpFlowCard extends LitElement {
         ...animation,
       },
       temperature: {
-        min_temp: 0,
-        max_temp: 100,
-        cold_color: '#0066FF',
-        hot_color: '#FF3300',
+        delta_threshold: 10,
+        hot_color: '#e74c3c',
+        cold_color: '#3498db',
+        neutral_color: '#95a5a6',
         unit: 'C',
         ...temperature,
       },
@@ -100,34 +100,37 @@ export class HeatPumpFlowCard extends LitElement {
       this.cachedFanSpeed = hpState.fanSpeed || 0;
 
       // Cache flow configuration for each path
-      // Respect use_temp_color setting for dynamic colors
+      // Calculate pipe colors based on temperature delta
       const useTempColor = this.config.animation.use_temp_color;
       const fixedColor = this.config.animation.dot_color;
+
+      const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
+      const hvacPipeColors = this.getPipeColors(bufferState.supplyTemp, hvacState.returnTemp, hvacState.flowRate);
 
       this.cachedFlowConfig = {
         'hp-to-buffer-path': {
           flowRate: hpState.flowRate,
           temp: hpState.outletTemp,
           duration: this.getAnimationDuration(hpState.flowRate),
-          color: useTempColor ? this.getTempColor(hpState.outletTemp) : fixedColor!
+          color: useTempColor ? hpPipeColors.hotPipe : fixedColor!
         },
         'buffer-to-hp-path': {
           flowRate: hpState.flowRate,
           temp: hpState.inletTemp,
           duration: this.getAnimationDuration(hpState.flowRate),
-          color: useTempColor ? this.getTempColor(hpState.inletTemp) : fixedColor!
+          color: useTempColor ? hpPipeColors.coldPipe : fixedColor!
         },
         'buffer-to-hvac-path': {
           flowRate: hvacState.flowRate,
           temp: bufferState.supplyTemp,
           duration: this.getAnimationDuration(hvacState.flowRate),
-          color: useTempColor ? this.getTempColor(bufferState.supplyTemp) : fixedColor!
+          color: useTempColor ? hvacPipeColors.hotPipe : fixedColor!
         },
         'hvac-to-buffer-path': {
           flowRate: hvacState.flowRate,
           temp: hvacState.returnTemp,
           duration: this.getAnimationDuration(hvacState.flowRate),
-          color: useTempColor ? this.getTempColor(hvacState.returnTemp) : fixedColor!
+          color: useTempColor ? hvacPipeColors.coldPipe : fixedColor!
         }
       };
     }
@@ -187,11 +190,14 @@ export class HeatPumpFlowCard extends LitElement {
     const useTempColor = this.config.animation.use_temp_color;
     const fixedColor = this.config.animation.dot_color;
 
+    const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
+    const hvacPipeColors = this.getPipeColors(bufferState.supplyTemp, hvacState.returnTemp, hvacState.flowRate);
+
     const paths = [
-      { id: 'hp-to-buffer-path', color: useTempColor ? this.getTempColor(hpState.outletTemp) : fixedColor },
-      { id: 'buffer-to-hp-path', color: useTempColor ? this.getTempColor(hpState.inletTemp) : fixedColor },
-      { id: 'buffer-to-hvac-path', color: useTempColor ? this.getTempColor(bufferState.supplyTemp) : fixedColor },
-      { id: 'hvac-to-buffer-path', color: useTempColor ? this.getTempColor(hvacState.returnTemp) : fixedColor }
+      { id: 'hp-to-buffer-path', color: useTempColor ? hpPipeColors.hotPipe : fixedColor },
+      { id: 'buffer-to-hp-path', color: useTempColor ? hpPipeColors.coldPipe : fixedColor },
+      { id: 'buffer-to-hvac-path', color: useTempColor ? hvacPipeColors.hotPipe : fixedColor },
+      { id: 'hvac-to-buffer-path', color: useTempColor ? hvacPipeColors.coldPipe : fixedColor }
     ];
 
     paths.forEach(pathInfo => {
@@ -347,20 +353,35 @@ export class HeatPumpFlowCard extends LitElement {
     return value.toFixed(decimals);
   }
 
-  private getTempColor(temp: number): string {
+  /**
+   * Calculate pipe colors based on temperature delta between supply and return
+   * Returns {hotPipe, coldPipe} colors based on delta threshold
+   */
+  private getPipeColors(hotTemp: number, coldTemp: number, flowRate: number): { hotPipe: string; coldPipe: string } {
     const cfg = this.config.temperature!;
-    const normalized = (temp - cfg.min_temp!) / (cfg.max_temp! - cfg.min_temp!);
-    const clamped = Math.max(0, Math.min(1, normalized));
+    const delta = Math.abs(hotTemp - coldTemp);
 
-    // Interpolate between cold and hot colors
-    const cold = this.hexToRgb(cfg.cold_color!);
-    const hot = this.hexToRgb(cfg.hot_color!);
+    // If no flow or delta below threshold, both pipes are neutral
+    if (flowRate <= 0 || delta < cfg.delta_threshold!) {
+      return {
+        hotPipe: cfg.neutral_color!,
+        coldPipe: cfg.neutral_color!
+      };
+    }
 
-    const r = Math.round(cold.r + (hot.r - cold.r) * clamped);
-    const g = Math.round(cold.g + (hot.g - cold.g) * clamped);
-    const b = Math.round(cold.b + (hot.b - cold.b) * clamped);
-
-    return `rgb(${r}, ${g}, ${b})`;
+    // Delta above threshold - color based on which is hotter
+    if (hotTemp > coldTemp) {
+      return {
+        hotPipe: cfg.hot_color!,
+        coldPipe: cfg.cold_color!
+      };
+    } else {
+      // If coldTemp is actually hotter (reversed flow?)
+      return {
+        hotPipe: cfg.cold_color!,
+        coldPipe: cfg.hot_color!
+      };
+    }
   }
 
   private hexToRgb(hex: string): { r: number; g: number; b: number } {
@@ -464,12 +485,15 @@ export class HeatPumpFlowCard extends LitElement {
     const bufferState = this.getBufferTankState();
     const hvacState = this.getHVACState();
 
-    const hpOutletColor = this.getTempColor(hpState.outletTemp);
-    const hpInletColor = this.getTempColor(hpState.inletTemp);
-    const bufferSupplyColor = this.getTempColor(bufferState.supplyTemp);
-    const bufferReturnColor = this.getTempColor(bufferState.returnTemp);
-    const hvacSupplyColor = this.getTempColor(hvacState.supplyTemp);
-    const hvacReturnColor = this.getTempColor(hvacState.returnTemp);
+    // Calculate pipe colors based on temperature delta
+    const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
+    const hvacPipeColors = this.getPipeColors(bufferState.supplyTemp, hvacState.returnTemp, hvacState.flowRate);
+
+    // Extract individual pipe colors
+    const hpOutletColor = hpPipeColors.hotPipe;
+    const hpInletColor = hpPipeColors.coldPipe;
+    const bufferSupplyColor = hvacPipeColors.hotPipe;
+    const hvacReturnColor = hvacPipeColors.coldPipe;
 
     return html`
       <ha-card>
@@ -484,7 +508,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke="${hpOutletColor}"
                   stroke-width="12"
                   fill="none"
-                  stroke-linecap="round"/>
+                  stroke-linecap="butt"/>
 
             <!-- Pipe: Buffer to HP (cold return) -->
             <path id="buffer-to-hp-path"
@@ -492,7 +516,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke="${hpInletColor}"
                   stroke-width="12"
                   fill="none"
-                  stroke-linecap="round"/>
+                  stroke-linecap="butt"/>
 
             <!-- Pipe: Buffer to HVAC (hot) -->
             <path id="buffer-to-hvac-path"
@@ -500,7 +524,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke="${bufferSupplyColor}"
                   stroke-width="12"
                   fill="none"
-                  stroke-linecap="round"/>
+                  stroke-linecap="butt"/>
 
             <!-- Pipe: HVAC to Buffer (cold return) -->
             <path id="hvac-to-buffer-path"
@@ -508,7 +532,28 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke="${hvacReturnColor}"
                   stroke-width="12"
                   fill="none"
-                  stroke-linecap="round"/>
+                  stroke-linecap="butt"/>
+
+            <!-- Temperature labels on pipes -->
+            <!-- HP to Buffer (hot outlet) - above pipe -->
+            <text x="260" y="170" text-anchor="middle" fill="${hpOutletColor}" font-size="11" font-weight="bold">
+              Out: ${this.formatValue(hpState.outletTemp, 1)}°
+            </text>
+
+            <!-- Buffer to HP (cold inlet) - below pipe -->
+            <text x="260" y="240" text-anchor="middle" fill="${hpInletColor}" font-size="11" font-weight="bold">
+              In: ${this.formatValue(hpState.inletTemp, 1)}°
+            </text>
+
+            <!-- Buffer to HVAC (hot supply) - above pipe -->
+            <text x="540" y="170" text-anchor="middle" fill="${bufferSupplyColor}" font-size="11" font-weight="bold">
+              Supply: ${this.formatValue(bufferState.supplyTemp, 1)}°
+            </text>
+
+            <!-- HVAC to Buffer (cold return) - below pipe -->
+            <text x="540" y="240" text-anchor="middle" fill="${hvacReturnColor}" font-size="11" font-weight="bold">
+              Return: ${this.formatValue(hvacState.returnTemp, 1)}°
+            </text>
 
             <!-- Heat Pump (left side) -->
             <g id="heat-pump" transform="translate(50, 100)">
@@ -559,20 +604,14 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="0" y="124" fill="#9b59b6" font-size="12">${this.formatValue(hpState.flowRate, 1)} L/min</text>
 
               <!-- Right column -->
-              <text x="80" y="0" fill="#95a5a6" font-size="11" font-weight="bold">In Temp:</text>
-              <text x="80" y="16" fill="${hpInletColor}" font-size="12">${this.formatValue(hpState.inletTemp, 1)}°</text>
-
-              <text x="80" y="36" fill="#95a5a6" font-size="11" font-weight="bold">Out Temp:</text>
-              <text x="80" y="52" fill="${hpOutletColor}" font-size="12">${this.formatValue(hpState.outletTemp, 1)}°</text>
-
               ${hpState.energy !== undefined ? html`
-                <text x="80" y="72" fill="#95a5a6" font-size="11" font-weight="bold">Energy:</text>
-                <text x="80" y="88" fill="#16a085" font-size="12">${this.formatValue(hpState.energy, 2)} kWh</text>
+                <text x="80" y="0" fill="#95a5a6" font-size="11" font-weight="bold">Energy:</text>
+                <text x="80" y="16" fill="#16a085" font-size="12">${this.formatValue(hpState.energy, 2)} kWh</text>
               ` : ''}
 
               ${hpState.cost !== undefined ? html`
-                <text x="80" y="108" fill="#95a5a6" font-size="11" font-weight="bold">Cost:</text>
-                <text x="80" y="124" fill="#27ae60" font-size="12">$${this.formatValue(hpState.cost, 2)}</text>
+                <text x="80" y="36" fill="#95a5a6" font-size="11" font-weight="bold">Cost:</text>
+                <text x="80" y="52" fill="#27ae60" font-size="12">$${this.formatValue(hpState.cost, 2)}</text>
               ` : ''}
             </g>
 
@@ -582,17 +621,11 @@ export class HeatPumpFlowCard extends LitElement {
               <ellipse cx="50" cy="100" rx="55" ry="95" fill="#95a5a6"/>
               <!-- Water level indicator -->
               <rect x="5" y="110" width="90" height="80" fill="${bufferSupplyColor}" opacity="0.7"/>
-              <text x="50" y="50" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
+              <text x="50" y="60" text-anchor="middle" fill="white" font-size="14" font-weight="bold">
                 BUFFER
               </text>
-              <text x="50" y="70" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
+              <text x="50" y="80" text-anchor="middle" fill="white" font-size="14" font-weight="bold">
                 TANK
-              </text>
-              <text x="50" y="110" text-anchor="middle" fill="white" font-size="11">
-                Supply: ${this.formatValue(bufferState.supplyTemp, 1)}°
-              </text>
-              <text x="50" y="125" text-anchor="middle" fill="white" font-size="11">
-                Return: ${this.formatValue(bufferState.returnTemp, 1)}°
               </text>
             </g>
 
@@ -607,9 +640,6 @@ export class HeatPumpFlowCard extends LitElement {
               </text>
               <text x="60" y="75" text-anchor="middle" fill="#95a5a6" font-size="12">
                 Flow: ${this.formatValue(hvacState.flowRate, 1)} L/min
-              </text>
-              <text x="60" y="90" text-anchor="middle" fill="${hvacSupplyColor}" font-size="11">
-                Supply: ${this.formatValue(hvacState.supplyTemp, 1)}°
               </text>
             </g>
 
