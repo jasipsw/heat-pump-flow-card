@@ -648,13 +648,30 @@ export class HeatPumpFlowCard extends LitElement {
               ` : ''}
             </g>
 
-            <!-- Buffer Tank (center) -->
+            <!-- Improved Buffer Tank (center) -->
             <g id="buffer-tank" transform="translate(350, 100)">
-              <ellipse cx="50" cy="100" rx="60" ry="100" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
-              <ellipse cx="50" cy="100" rx="55" ry="95" fill="#95a5a6"/>
-              <!-- Water level indicator -->
-              <rect x="5" y="110" width="90" height="80" fill="${bufferSupplyColor}" opacity="0.7"/>
-              <text x="50" y="70" text-anchor="middle" fill="white" font-size="14" font-weight="bold">
+              <!-- Tank cylinder body -->
+              <rect x="10" y="20" width="80" height="160" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
+
+              <!-- Top rounded cap -->
+              <ellipse cx="50" cy="20" rx="40" ry="15" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
+
+              <!-- Bottom rounded cap -->
+              <ellipse cx="50" cy="180" rx="40" ry="15" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
+
+              <!-- Inner cylinder (water background) -->
+              <rect x="15" y="25" width="70" height="150" fill="#7f8c8d"/>
+
+              <!-- Water level indicator with color based on temperature -->
+              <rect x="15" y="100" width="70" height="75" fill="${bufferSupplyColor}" opacity="0.8"/>
+
+              <!-- Structural bands -->
+              <line x1="10" y1="60" x2="90" y2="60" stroke="#2c3e50" stroke-width="2"/>
+              <line x1="10" y1="100" x2="90" y2="100" stroke="#2c3e50" stroke-width="2"/>
+              <line x1="10" y1="140" x2="90" y2="140" stroke="#2c3e50" stroke-width="2"/>
+
+              <!-- Tank label at top -->
+              <text x="50" y="12" text-anchor="middle" fill="white" font-size="13" font-weight="bold">
                 ${this.config.labels!.buffer_tank}
               </text>
             </g>
