@@ -354,6 +354,11 @@ export class HeatPumpFlowCard extends LitElement {
                   fill="none"
                   stroke-linecap="round"/>
 
+            <!-- TEST: Static circles - no animation, no classes, just pure SVG -->
+            <circle cx="260" cy="180" r="15" fill="yellow" stroke="black" stroke-width="2" opacity="1"/>
+            <circle cx="260" cy="220" r="15" fill="cyan" stroke="black" stroke-width="2" opacity="1"/>
+            <circle cx="540" cy="180" r="15" fill="magenta" stroke="black" stroke-width="2" opacity="1"/>
+
             <!-- Flow dots - rendered LAST so they appear on top -->
             ${this.renderFlowDots('hp-to-buffer-flow', 'hp-to-buffer-path', hpOutletColor)}
             ${this.renderFlowDots('buffer-to-hp-flow', 'buffer-to-hp-path', hpInletColor)}
