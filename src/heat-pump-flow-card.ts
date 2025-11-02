@@ -78,10 +78,9 @@ export class HeatPumpFlowCard extends LitElement {
 
     // Quick diagnostic
     setTimeout(() => {
-      const flowGroups = this.shadowRoot?.querySelectorAll('g[data-path-id]');
-      const animatedCircles = Array.from(flowGroups || []).flatMap(g => Array.from(g.querySelectorAll('circle')));
-      console.log(`🔍 Flow groups: ${flowGroups?.length}, Animated circles: ${animatedCircles.length}`);
-      if (animatedCircles.length > 0) {
+      const animatedCircles = this.shadowRoot?.querySelectorAll('circle[data-path-id]');
+      console.log(`🔍 Animated circles: ${animatedCircles?.length}`);
+      if (animatedCircles && animatedCircles.length > 0) {
         const first = animatedCircles[0] as SVGCircleElement;
         console.log(`First animated circle: cx=${first.getAttribute('cx')}, cy=${first.getAttribute('cy')}, r=${first.getAttribute('r')}, fill=${first.getAttribute('fill')}`);
       }
@@ -93,36 +92,34 @@ export class HeatPumpFlowCard extends LitElement {
 
   private startAnimationLoop(): void {
     const animate = () => {
-      // Get all circles inside flow groups
-      const flowGroups = this.shadowRoot?.querySelectorAll('g[data-path-id]');
-      if (!flowGroups || flowGroups.length === 0) {
+      // Get all animated circles by data attribute
+      const circles = this.shadowRoot?.querySelectorAll('circle[data-path-id]');
+      if (!circles || circles.length === 0) {
         return;
       }
 
       const time = Date.now() / 1000; // Current time in seconds
 
-      flowGroups.forEach((group) => {
-        const pathId = (group as SVGGElement).dataset.pathId;
+      circles.forEach((circle) => {
+        const pathId = (circle as SVGCircleElement).dataset.pathId;
+        const index = parseInt((circle as SVGCircleElement).dataset.index || '0');
+
         if (!pathId) return;
 
         const path = this.shadowRoot?.querySelector(`#${pathId}`) as SVGPathElement;
         if (!path) return;
 
         const pathLength = path.getTotalLength();
-        const circles = group.querySelectorAll('circle');
+        const duration = 3; // 3 seconds for full loop
+        const delay = index * 0.6; // Stagger dots
+        const progress = ((time + delay) % duration) / duration;
+        const distance = progress * pathLength;
 
-        circles.forEach((circle, index) => {
-          const duration = 3; // 3 seconds for full loop
-          const delay = index * 0.6; // Stagger dots
-          const progress = ((time + delay) % duration) / duration;
-          const distance = progress * pathLength;
+        const point = path.getPointAtLength(distance);
 
-          const point = path.getPointAtLength(distance);
-
-          // Update cx and cy attributes directly
-          circle.setAttribute('cx', point.x.toString());
-          circle.setAttribute('cy', point.y.toString());
-        });
+        // Update cx and cy attributes directly
+        circle.setAttribute('cx', point.x.toString());
+        circle.setAttribute('cy', point.y.toString());
       });
 
       this.animationFrameId = requestAnimationFrame(animate);
@@ -369,7 +366,7 @@ export class HeatPumpFlowCard extends LitElement {
             <circle cx="260" cy="220" r="15" fill="cyan" stroke="black" stroke-width="2" opacity="1"/>
             <circle cx="540" cy="180" r="15" fill="magenta" stroke="black" stroke-width="2" opacity="1"/>
 
-            <!-- Flow dots - rendered LAST so they appear on top -->
+            <!-- Flow dots - NO GROUPS, render directly like static circles -->
             ${this.renderFlowDots('hp-to-buffer-flow', 'hp-to-buffer-path', hpOutletColor)}
             ${this.renderFlowDots('buffer-to-hp-flow', 'buffer-to-hp-path', hpInletColor)}
             ${this.renderFlowDots('buffer-to-hvac-flow', 'buffer-to-hvac-path', bufferSupplyColor)}
@@ -387,6 +384,7 @@ export class HeatPumpFlowCard extends LitElement {
     for (let i = 0; i < dotCount; i++) {
       dots.push(html`
         <circle
+          data-path-id="${pathId}"
           data-index="${i}"
           cx="0"
           cy="0"
@@ -399,7 +397,7 @@ export class HeatPumpFlowCard extends LitElement {
       `);
     }
 
-    return html`<g id="${id}" data-path-id="${pathId}">${dots}</g>`;
+    return dots;
   }
 
   static get styles() {
