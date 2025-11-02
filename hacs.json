@@ -1,5 +1,7 @@
 {
   "name": "Heat Pump Flow Card",
+  "content_in_root": true,
   "render_readme": true,
-  "filename": "heat-pump-flow-card.js"
+  "filename": "heat-pump-flow-card.js",
+  "homeassistant": "2024.1.0"
 }
