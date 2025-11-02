@@ -75,35 +75,6 @@ export class HeatPumpFlowCard extends LitElement {
   protected firstUpdated(): void {
     // Start the animation loop
     this.startAnimationLoop();
-
-    // Diagnostic: Check DOM structure after first render
-    setTimeout(() => {
-      const svg = this.shadowRoot?.querySelector('svg');
-      const flowGroups = this.shadowRoot?.querySelectorAll('g[id$="-flow"]');
-      const circles = this.shadowRoot?.querySelectorAll('circle.flow-dot');
-
-      console.log('🔍 DOM Diagnostic:');
-      console.log(`  SVG element: ${svg ? 'Found' : 'Missing'}`);
-      console.log(`  Flow groups: ${flowGroups?.length || 0}`);
-      console.log(`  Flow circles: ${circles?.length || 0}`);
-
-      if (circles && circles.length > 0) {
-        const firstCircle = circles[0] as SVGCircleElement;
-        console.log(`  First circle cx: ${firstCircle.getAttribute('cx')}`);
-        console.log(`  First circle cy: ${firstCircle.getAttribute('cy')}`);
-        console.log(`  First circle r: ${firstCircle.getAttribute('r')}`);
-        console.log(`  First circle fill: ${firstCircle.getAttribute('fill')}`);
-        console.log(`  First circle opacity: ${firstCircle.style.opacity || firstCircle.getAttribute('opacity')}`);
-        console.log(`  First circle parent: ${firstCircle.parentElement?.tagName} id=${firstCircle.parentElement?.id}`);
-      }
-
-      // Check if flow groups are at the end
-      if (svg && flowGroups && flowGroups.length > 0) {
-        const svgChildren = Array.from(svg.children);
-        const lastFewElements = svgChildren.slice(-5).map(el => `${el.tagName}#${el.id}`);
-        console.log(`  Last 5 SVG children: ${lastFewElements.join(', ')}`);
-      }
-    }, 100);
   }
 
   private animationFrameId?: number;
@@ -405,11 +376,9 @@ export class HeatPumpFlowCard extends LitElement {
           data-index="${i}"
           cx="0"
           cy="0"
-          r="20"
-          fill="lime"
-          opacity="1"
-          stroke="red"
-          stroke-width="3">
+          r="${this.config.animation!.dot_size}"
+          fill="${color}"
+          opacity="0.9">
         </circle>
       `);
     }
