@@ -186,9 +186,15 @@ export class HeatPumpFlowCard extends LitElement {
         circle.setAttribute('data-index', i.toString());
         circle.setAttribute('cx', '0');
         circle.setAttribute('cy', '0');
-        circle.setAttribute('r', this.config.animation!.dot_size!.toString());
+        // Make dots smaller and more distinct
+        circle.setAttribute('r', '5');
         circle.setAttribute('fill', pathInfo.color);
-        circle.setAttribute('opacity', '0.9');
+        // Add white stroke for contrast against pipe
+        circle.setAttribute('stroke', 'white');
+        circle.setAttribute('stroke-width', '1.5');
+        circle.setAttribute('opacity', '1');
+        // Add subtle shadow for depth
+        circle.setAttribute('filter', 'drop-shadow(0px 0px 2px rgba(0,0,0,0.3))');
         svg.appendChild(circle);
       }
     });
@@ -230,7 +236,7 @@ export class HeatPumpFlowCard extends LitElement {
 
         // Hide/show dots based on flow
         const currentOpacity = circle.getAttribute('opacity');
-        const targetOpacity = config.flowRate <= 0 ? '0' : '0.9';
+        const targetOpacity = config.flowRate <= 0 ? '0' : '1';
         if (currentOpacity !== targetOpacity) {
           circle.setAttribute('opacity', targetOpacity);
         }
