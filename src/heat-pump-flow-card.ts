@@ -381,13 +381,16 @@ export class HeatPumpFlowCard extends LitElement {
     const dotCount = 5;
     const dots = [];
 
+    // Start circles at visible positions instead of 0,0
+    const startPositions = [200, 240, 280, 320, 360];
+
     for (let i = 0; i < dotCount; i++) {
       dots.push(html`
         <circle
           data-path-id="${pathId}"
           data-index="${i}"
-          cx="0"
-          cy="0"
+          cx="${startPositions[i]}"
+          cy="180"
           r="15"
           fill="${color}"
           stroke="black"
