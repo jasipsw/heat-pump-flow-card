@@ -368,6 +368,13 @@ export class HeatPumpFlowCard extends LitElement {
       return html``;
     }
 
+    // Debug logging
+    console.log('🔍 Config check:', {
+      has_heat_pump_visual: !!this.config.heat_pump_visual,
+      show_metrics: this.config.heat_pump_visual?.show_metrics,
+      full_heat_pump_visual: this.config.heat_pump_visual
+    });
+
     const hpState = this.getHeatPumpState();
     const bufferState = this.getBufferTankState();
     const hvacState = this.getHVACState();
@@ -418,7 +425,13 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- Heat Pump Metrics -->
+            <!-- DEBUG: This red text should always appear -->
+            <text x="50" y="280" fill="red" font-size="14" font-weight="bold">DEBUG: Before metrics check</text>
+
             ${this.config.heat_pump_visual?.show_metrics ? html`
+              <!-- DEBUG: If you see this green text, the condition passed -->
+              <text x="50" y="300" fill="lime" font-size="14" font-weight="bold">DEBUG: Metrics condition TRUE</text>
+
               <g id="hp-metrics" transform="translate(50, 265)">
                 <!-- Metrics display in compact 2-column layout -->
                 <!-- Left column -->
