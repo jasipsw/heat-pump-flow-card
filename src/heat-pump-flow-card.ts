@@ -73,8 +73,8 @@ export class HeatPumpFlowCard extends LitElement {
   }
 
   protected firstUpdated(): void {
-    // Animation disabled for testing - circles should be visible at hardcoded positions
-    // this.startAnimationLoop();
+    // Start animation
+    this.startAnimationLoop();
   }
 
   private animationFrameId?: number;
@@ -82,13 +82,12 @@ export class HeatPumpFlowCard extends LitElement {
 
   private startAnimationLoop(): void {
     const animate = () => {
-      // Get all animated circles by data attribute
       const circles = this.shadowRoot?.querySelectorAll('circle[data-path-id]');
       if (!circles || circles.length === 0) {
         return;
       }
 
-      const time = Date.now() / 1000; // Current time in seconds
+      const time = Date.now() / 1000;
 
       circles.forEach((circle) => {
         const pathId = (circle as SVGCircleElement).dataset.pathId;
@@ -100,14 +99,13 @@ export class HeatPumpFlowCard extends LitElement {
         if (!path) return;
 
         const pathLength = path.getTotalLength();
-        const duration = 3; // 3 seconds for full loop
-        const delay = index * 0.6; // Stagger dots
+        const duration = 3;
+        const delay = index * 0.6;
         const progress = ((time + delay) % duration) / duration;
         const distance = progress * pathLength;
 
         const point = path.getPointAtLength(distance);
 
-        // Update cx and cy attributes directly
         circle.setAttribute('cx', point.x.toString());
         circle.setAttribute('cy', point.y.toString());
       });
@@ -356,10 +354,11 @@ export class HeatPumpFlowCard extends LitElement {
             <circle cx="260" cy="220" r="15" fill="cyan" stroke="black" stroke-width="2" opacity="1"/>
             <circle cx="540" cy="180" r="15" fill="magenta" stroke="black" stroke-width="2" opacity="1"/>
 
-            <!-- TEST: Inline circles EXACTLY like the function would create -->
-            <circle cx="200" cy="180" r="15" fill="lime" stroke="black" stroke-width="2" opacity="1"/>
-            <circle cx="240" cy="180" r="15" fill="lime" stroke="black" stroke-width="2" opacity="1"/>
-            <circle cx="280" cy="180" r="15" fill="lime" stroke="black" stroke-width="2" opacity="1"/>
+            <!-- Flow dots from function - should now render correctly -->
+            ${this.renderFlowDots('hp-to-buffer-flow', 'hp-to-buffer-path', hpOutletColor)}
+            ${this.renderFlowDots('buffer-to-hp-flow', 'buffer-to-hp-path', hpInletColor)}
+            ${this.renderFlowDots('buffer-to-hvac-flow', 'buffer-to-hvac-path', bufferSupplyColor)}
+            ${this.renderFlowDots('hvac-to-buffer-flow', 'hvac-to-buffer-path', hvacReturnColor)}
           </svg>
         </div>
       </ha-card>
@@ -368,15 +367,15 @@ export class HeatPumpFlowCard extends LitElement {
 
   private renderFlowDots(id: string, pathId: string, color: string) {
     const dotCount = 5;
-    const dots = [];
-
-    // Start circles at visible positions - NO data attributes
     const startPositions = [200, 240, 280, 320, 360];
 
-    for (let i = 0; i < dotCount; i++) {
-      dots.push(html`
+    // Return as a single template, not an array
+    return html`
+      ${startPositions.map((pos, i) => html`
         <circle
-          cx="${startPositions[i]}"
+          data-path-id="${pathId}"
+          data-index="${i}"
+          cx="${pos}"
           cy="180"
           r="15"
           fill="${color}"
@@ -384,10 +383,8 @@ export class HeatPumpFlowCard extends LitElement {
           stroke-width="2"
           opacity="1">
         </circle>
-      `);
-    }
-
-    return dots;
+      `)}
+    `;
   }
 
   static get styles() {
