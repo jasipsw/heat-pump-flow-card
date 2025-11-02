@@ -417,41 +417,39 @@ export class HeatPumpFlowCard extends LitElement {
               ` : ''}
             </g>
 
-            <!-- Heat Pump Metrics -->
-            ${this.config.heat_pump_visual?.show_metrics ? html`
-              <g id="hp-metrics" transform="translate(50, 265)">
-                <!-- Metrics display in compact 2-column layout -->
-                <!-- Left column -->
-                <text x="0" y="0" fill="#95a5a6" font-size="11" font-weight="bold">Power In:</text>
-                <text x="0" y="16" fill="#3498db" font-size="12">${this.formatValue(hpState.power, 0)} W</text>
+            <!-- Heat Pump Metrics (always visible - Lit conditional rendering doesn't work for SVG text) -->
+            <g id="hp-metrics" transform="translate(50, 265)">
+              <!-- Metrics display in compact 2-column layout -->
+              <!-- Left column -->
+              <text x="0" y="0" fill="#95a5a6" font-size="11" font-weight="bold">Power In:</text>
+              <text x="0" y="16" fill="#3498db" font-size="12">${this.formatValue(hpState.power, 0)} W</text>
 
-                <text x="0" y="36" fill="#95a5a6" font-size="11" font-weight="bold">Thermal Out:</text>
-                <text x="0" y="52" fill="#e74c3c" font-size="12">${this.formatValue(hpState.thermal, 0)} W</text>
+              <text x="0" y="36" fill="#95a5a6" font-size="11" font-weight="bold">Thermal Out:</text>
+              <text x="0" y="52" fill="#e74c3c" font-size="12">${this.formatValue(hpState.thermal, 0)} W</text>
 
-                <text x="0" y="72" fill="#95a5a6" font-size="11" font-weight="bold">COP:</text>
-                <text x="0" y="88" fill="#f1c40f" font-size="12">${this.formatValue(hpState.cop, 2)}</text>
+              <text x="0" y="72" fill="#95a5a6" font-size="11" font-weight="bold">COP:</text>
+              <text x="0" y="88" fill="#f1c40f" font-size="12">${this.formatValue(hpState.cop, 2)}</text>
 
-                <text x="0" y="108" fill="#95a5a6" font-size="11" font-weight="bold">Flow:</text>
-                <text x="0" y="124" fill="#9b59b6" font-size="12">${this.formatValue(hpState.flowRate, 1)} L/min</text>
+              <text x="0" y="108" fill="#95a5a6" font-size="11" font-weight="bold">Flow:</text>
+              <text x="0" y="124" fill="#9b59b6" font-size="12">${this.formatValue(hpState.flowRate, 1)} L/min</text>
 
-                <!-- Right column -->
-                <text x="80" y="0" fill="#95a5a6" font-size="11" font-weight="bold">In Temp:</text>
-                <text x="80" y="16" fill="${hpInletColor}" font-size="12">${this.formatValue(hpState.inletTemp, 1)}°</text>
+              <!-- Right column -->
+              <text x="80" y="0" fill="#95a5a6" font-size="11" font-weight="bold">In Temp:</text>
+              <text x="80" y="16" fill="${hpInletColor}" font-size="12">${this.formatValue(hpState.inletTemp, 1)}°</text>
 
-                <text x="80" y="36" fill="#95a5a6" font-size="11" font-weight="bold">Out Temp:</text>
-                <text x="80" y="52" fill="${hpOutletColor}" font-size="12">${this.formatValue(hpState.outletTemp, 1)}°</text>
+              <text x="80" y="36" fill="#95a5a6" font-size="11" font-weight="bold">Out Temp:</text>
+              <text x="80" y="52" fill="${hpOutletColor}" font-size="12">${this.formatValue(hpState.outletTemp, 1)}°</text>
 
-                ${hpState.energy !== undefined ? html`
-                  <text x="80" y="72" fill="#95a5a6" font-size="11" font-weight="bold">Energy:</text>
-                  <text x="80" y="88" fill="#16a085" font-size="12">${this.formatValue(hpState.energy, 2)} kWh</text>
-                ` : ''}
+              ${hpState.energy !== undefined ? html`
+                <text x="80" y="72" fill="#95a5a6" font-size="11" font-weight="bold">Energy:</text>
+                <text x="80" y="88" fill="#16a085" font-size="12">${this.formatValue(hpState.energy, 2)} kWh</text>
+              ` : ''}
 
-                ${hpState.cost !== undefined ? html`
-                  <text x="80" y="108" fill="#95a5a6" font-size="11" font-weight="bold">Cost:</text>
-                  <text x="80" y="124" fill="#27ae60" font-size="12">$${this.formatValue(hpState.cost, 2)}</text>
-                ` : ''}
-              </g>
-            ` : ''}
+              ${hpState.cost !== undefined ? html`
+                <text x="80" y="108" fill="#95a5a6" font-size="11" font-weight="bold">Cost:</text>
+                <text x="80" y="124" fill="#27ae60" font-size="12">$${this.formatValue(hpState.cost, 2)}</text>
+              ` : ''}
+            </g>
 
             <!-- Buffer Tank (center) -->
             <g id="buffer-tank" transform="translate(350, 100)">
