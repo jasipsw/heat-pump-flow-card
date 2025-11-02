@@ -12,8 +12,26 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     outlet_temp_entity?: string; // Outlet temperature
     inlet_temp_entity?: string;  // Inlet temperature
     flow_rate_entity?: string;   // Flow rate (L/min)
+    fan_speed_entity?: string;   // Fan speed (0-100%)
+    mode_entity?: string;        // Operating mode (heating/cooling/dhw/idle/off)
+    defrost_entity?: string;     // Defrost mode (binary sensor)
+    error_entity?: string;       // Error/alarm sensor
+    energy_entity?: string;      // Total energy consumed (kWh)
+    cost_entity?: string;        // Energy cost
+    runtime_entity?: string;     // Runtime sensor (optional)
     name?: string;
     icon?: string;
+  };
+
+  // Heat Pump Visual Configuration
+  heat_pump_visual?: {
+    off_color?: string;         // Color when off (default: #95a5a6 gray)
+    heating_color?: string;     // Color in heating mode (default: #e74c3c red)
+    cooling_color?: string;     // Color in cooling mode (default: #3498db blue)
+    dhw_color?: string;         // Color in DHW mode (default: #e67e22 orange)
+    defrost_color?: string;     // Color in defrost mode (default: #f1c40f yellow)
+    show_metrics?: boolean;     // Show metrics below heat pump (default: true)
+    animate_fan?: boolean;      // Animate fan rotation (default: true)
   };
 
   // Buffer Tank Configuration
@@ -69,6 +87,13 @@ export interface HeatPumpState {
   outletTemp: number;
   inletTemp: number;
   flowRate: number;
+  fanSpeed?: number;           // Fan speed percentage (0-100)
+  mode?: string;               // Operating mode
+  defrost?: boolean;           // Defrost active
+  error?: string;              // Error message
+  energy?: number;             // Total energy (kWh)
+  cost?: number;               // Energy cost
+  runtime?: number;            // Runtime in seconds
 }
 
 export interface BufferTankState {
