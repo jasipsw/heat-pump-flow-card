@@ -75,6 +75,17 @@ export class HeatPumpFlowCard extends LitElement {
   protected firstUpdated(): void {
     // Start the animation loop
     this.startAnimationLoop();
+
+    // Quick diagnostic
+    setTimeout(() => {
+      const flowGroups = this.shadowRoot?.querySelectorAll('g[data-path-id]');
+      const animatedCircles = Array.from(flowGroups || []).flatMap(g => Array.from(g.querySelectorAll('circle')));
+      console.log(`🔍 Flow groups: ${flowGroups?.length}, Animated circles: ${animatedCircles.length}`);
+      if (animatedCircles.length > 0) {
+        const first = animatedCircles[0] as SVGCircleElement;
+        console.log(`First animated circle: cx=${first.getAttribute('cx')}, cy=${first.getAttribute('cy')}, r=${first.getAttribute('r')}, fill=${first.getAttribute('fill')}`);
+      }
+    }, 500);
   }
 
   private animationFrameId?: number;
