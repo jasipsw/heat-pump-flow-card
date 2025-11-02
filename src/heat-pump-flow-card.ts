@@ -659,19 +659,26 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Bottom rounded cap -->
               <ellipse cx="50" cy="180" rx="40" ry="15" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
 
-              <!-- Inner cylinder (water background) -->
-              <rect x="15" y="25" width="70" height="150" fill="#7f8c8d"/>
+              <!-- Thermal stratification (tank is 100% full, hot rises to top) -->
+              <!-- Top section (hottest - supply temp) -->
+              <rect x="15" y="25" width="70" height="35" fill="${bufferSupplyColor}" opacity="0.9"/>
 
-              <!-- Water level indicator with color based on temperature -->
-              <rect x="15" y="100" width="70" height="75" fill="${bufferSupplyColor}" opacity="0.8"/>
+              <!-- Upper-middle section (warm) -->
+              <rect x="15" y="60" width="70" height="40" fill="${bufferSupplyColor}" opacity="0.7"/>
+
+              <!-- Lower-middle section (cooling) -->
+              <rect x="15" y="100" width="70" height="40" fill="${hvacReturnColor}" opacity="0.7"/>
+
+              <!-- Bottom section (coldest - return temp) -->
+              <rect x="15" y="140" width="70" height="35" fill="${hvacReturnColor}" opacity="0.9"/>
 
               <!-- Structural bands -->
               <line x1="10" y1="60" x2="90" y2="60" stroke="#2c3e50" stroke-width="2"/>
               <line x1="10" y1="100" x2="90" y2="100" stroke="#2c3e50" stroke-width="2"/>
               <line x1="10" y1="140" x2="90" y2="140" stroke="#2c3e50" stroke-width="2"/>
 
-              <!-- Tank label at top -->
-              <text x="50" y="12" text-anchor="middle" fill="white" font-size="13" font-weight="bold">
+              <!-- Tank label inside top section -->
+              <text x="50" y="45" text-anchor="middle" fill="white" font-size="13" font-weight="bold">
                 ${this.config.labels!.buffer_tank}
               </text>
             </g>
