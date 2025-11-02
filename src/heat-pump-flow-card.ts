@@ -106,20 +106,9 @@ export class HeatPumpFlowCard extends LitElement {
 
       const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
       const hvacPipeColors = this.getPipeColors(bufferState.supplyTemp, hvacState.returnTemp, hvacState.flowRate);
-      const dhwState = this.getDHWTankState();
-      const dhwPipeColors = this.getPipeColors(dhwState.inletTemp, dhwState.outletTemp, hpState.flowRate);
 
-      // Cache config for all possible paths (both heating and DHW modes)
       this.cachedFlowConfig = {
-        // Common path
-        'hp-to-g2-path': {
-          flowRate: hpState.flowRate,
-          temp: hpState.outletTemp,
-          duration: this.getAnimationDuration(hpState.flowRate),
-          color: useTempColor ? hpPipeColors.hotPipe : fixedColor!
-        },
-        // Heating mode paths
-        'g2-to-buffer-path': {
+        'hp-to-buffer-path': {
           flowRate: hpState.flowRate,
           temp: hpState.outletTemp,
           duration: this.getAnimationDuration(hpState.flowRate),
@@ -142,19 +131,6 @@ export class HeatPumpFlowCard extends LitElement {
           temp: hvacState.returnTemp,
           duration: this.getAnimationDuration(hvacState.flowRate),
           color: useTempColor ? hvacPipeColors.coldPipe : fixedColor!
-        },
-        // DHW mode paths
-        'g2-to-dhw-path': {
-          flowRate: hpState.flowRate,
-          temp: dhwState.inletTemp,
-          duration: this.getAnimationDuration(hpState.flowRate),
-          color: useTempColor ? dhwPipeColors.hotPipe : fixedColor!
-        },
-        'dhw-to-hp-path': {
-          flowRate: hpState.flowRate,
-          temp: dhwState.outletTemp,
-          duration: this.getAnimationDuration(hpState.flowRate),
-          color: useTempColor ? dhwPipeColors.coldPipe : fixedColor!
         }
       };
     }
@@ -209,7 +185,6 @@ export class HeatPumpFlowCard extends LitElement {
     const hpState = this.getHeatPumpState();
     const bufferState = this.getBufferTankState();
     const hvacState = this.getHVACState();
-    const dhwState = this.getDHWTankState();
 
     // Determine dot colors based on configuration
     const useTempColor = this.config.animation.use_temp_color;
@@ -217,23 +192,12 @@ export class HeatPumpFlowCard extends LitElement {
 
     const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
     const hvacPipeColors = this.getPipeColors(bufferState.supplyTemp, hvacState.returnTemp, hvacState.flowRate);
-    const dhwPipeColors = this.getPipeColors(dhwState.inletTemp, dhwState.outletTemp, hpState.flowRate);
 
-    // Create dots for all possible paths (both heating and DHW modes)
-    // The animation loop will only animate paths that exist in the DOM
     const paths = [
-      // Common path
-      { id: 'hp-to-g2-path', color: useTempColor ? hpPipeColors.hotPipe : fixedColor },
-
-      // Heating mode paths
-      { id: 'g2-to-buffer-path', color: useTempColor ? hpPipeColors.hotPipe : fixedColor },
+      { id: 'hp-to-buffer-path', color: useTempColor ? hpPipeColors.hotPipe : fixedColor },
       { id: 'buffer-to-hp-path', color: useTempColor ? hpPipeColors.coldPipe : fixedColor },
       { id: 'buffer-to-hvac-path', color: useTempColor ? hvacPipeColors.hotPipe : fixedColor },
-      { id: 'hvac-to-buffer-path', color: useTempColor ? hvacPipeColors.coldPipe : fixedColor },
-
-      // DHW mode paths
-      { id: 'g2-to-dhw-path', color: useTempColor ? dhwPipeColors.hotPipe : fixedColor },
-      { id: 'dhw-to-hp-path', color: useTempColor ? dhwPipeColors.coldPipe : fixedColor }
+      { id: 'hvac-to-buffer-path', color: useTempColor ? hvacPipeColors.coldPipe : fixedColor }
     ];
 
     paths.forEach(pathInfo => {
@@ -540,129 +504,74 @@ export class HeatPumpFlowCard extends LitElement {
     const hpState = this.getHeatPumpState();
     const bufferState = this.getBufferTankState();
     const hvacState = this.getHVACState();
-    const dhwState = this.getDHWTankState();
-    const g2ValveState = this.getG2ValveState();
 
     // Calculate pipe colors based on temperature delta
     const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
     const hvacPipeColors = this.getPipeColors(bufferState.supplyTemp, hvacState.returnTemp, hvacState.flowRate);
-    const dhwPipeColors = this.getPipeColors(dhwState.inletTemp, dhwState.outletTemp, hpState.flowRate);
 
-    // Extract individual pipe colors for buffer/HVAC loop
+    // Extract individual pipe colors
     const hpOutletColor = hpPipeColors.hotPipe;
     const hpInletColor = hpPipeColors.coldPipe;
     const bufferSupplyColor = hvacPipeColors.hotPipe;
     const hvacReturnColor = hvacPipeColors.coldPipe;
-
-    // Extract pipe colors for DHW loop
-    const dhwInletColor = dhwPipeColors.hotPipe;
-    const dhwOutletColor = dhwPipeColors.coldPipe;
 
     return html`
       <ha-card>
         ${this.config.title ? html`<h1 class="card-header">${this.config.title}</h1>` : ''}
 
         <div class="card-content">
-          <svg viewBox="0 0 800 650" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
             <!-- Flow Pipes (rendered first so they appear behind entities) -->
 
-            ${g2ValveState.isActive ? html`
-              <!-- DHW Mode: HP → G2 Valve → DHW Tank → HP -->
-              <!-- Pipe: HP to G2 Valve (hot outlet) -->
-              <path id="hp-to-g2-path"
-                    d="M 170 180 L 220 180"
-                    stroke="${dhwInletColor}"
-                    stroke-width="12"
-                    fill="none"
-                    stroke-linecap="butt"/>
+            <!-- Simplified: Always show heating mode pipes (DHW functionality to be added later if needed) -->
+            <!-- Pipe: HP to Buffer (hot) -->
+            <path id="hp-to-buffer-path"
+                  d="M 170 180 L 350 180"
+                  stroke="${hpOutletColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="butt"/>
 
-              <!-- Pipe: G2 Valve to DHW Tank (hot to coil) -->
-              <path id="g2-to-dhw-path"
-                    d="M 220 195 L 220 380 L 350 380"
-                    stroke="${dhwInletColor}"
-                    stroke-width="12"
-                    fill="none"
-                    stroke-linecap="butt"/>
+            <!-- Pipe: Buffer to HP (cold return) -->
+            <path id="buffer-to-hp-path"
+                  d="M 350 220 L 170 220"
+                  stroke="${hpInletColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="butt"/>
 
-              <!-- Pipe: DHW Tank to HP (cold return from coil) -->
-              <path id="dhw-to-hp-path"
-                    d="M 350 420 L 220 420 L 220 240 L 170 240"
-                    stroke="${dhwOutletColor}"
-                    stroke-width="12"
-                    fill="none"
-                    stroke-linecap="butt"/>
+            <!-- Pipe: Buffer to HVAC (hot) -->
+            <path id="buffer-to-hvac-path"
+                  d="M 450 180 L 630 180"
+                  stroke="${bufferSupplyColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="butt"/>
 
-              <!-- Temperature labels for DHW mode -->
-              <text x="195" y="170" text-anchor="middle" fill="${dhwInletColor}" font-size="11" font-weight="bold">
-                Supply: ${this.formatValue(hpState.outletTemp, 1)}°
-              </text>
-              <text x="195" y="260" text-anchor="middle" fill="${dhwOutletColor}" font-size="11" font-weight="bold">
-                Return: ${this.formatValue(hpState.inletTemp, 1)}°
-              </text>
+            <!-- Pipe: HVAC to Buffer (cold return) -->
+            <path id="hvac-to-buffer-path"
+                  d="M 630 220 L 450 220"
+                  stroke="${hvacReturnColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="butt"/>
 
-            ` : html`
-              <!-- Heating Mode: HP → G2 Valve → Buffer Tank → HVAC → Buffer → HP -->
-              <!-- Pipe: HP to G2 Valve (hot outlet) -->
-              <path id="hp-to-g2-path"
-                    d="M 170 180 L 220 180"
-                    stroke="${hpOutletColor}"
-                    stroke-width="12"
-                    fill="none"
-                    stroke-linecap="butt"/>
+            <!-- Temperature labels -->
+            <text x="260" y="170" text-anchor="middle" fill="${hpOutletColor}" font-size="11" font-weight="bold">
+              HP Supply: ${this.formatValue(hpState.outletTemp, 1)}°
+            </text>
 
-              <!-- Pipe: G2 Valve to Buffer (hot) -->
-              <path id="g2-to-buffer-path"
-                    d="M 235 180 L 350 180"
-                    stroke="${hpOutletColor}"
-                    stroke-width="12"
-                    fill="none"
-                    stroke-linecap="butt"/>
+            <text x="260" y="240" text-anchor="middle" fill="${hpInletColor}" font-size="11" font-weight="bold">
+              HP Return: ${this.formatValue(hpState.inletTemp, 1)}°
+            </text>
 
-              <!-- Pipe: Buffer to HP (cold return) -->
-              <path id="buffer-to-hp-path"
-                    d="M 350 220 L 220 220 L 220 240 L 170 240"
-                    stroke="${hpInletColor}"
-                    stroke-width="12"
-                    fill="none"
-                    stroke-linecap="butt"/>
+            <text x="540" y="170" text-anchor="middle" fill="${bufferSupplyColor}" font-size="11" font-weight="bold">
+              HVAC Supply: ${this.formatValue(bufferState.supplyTemp, 1)}°
+            </text>
 
-              <!-- Pipe: Buffer to HVAC (hot) -->
-              <path id="buffer-to-hvac-path"
-                    d="M 450 180 L 630 180"
-                    stroke="${bufferSupplyColor}"
-                    stroke-width="12"
-                    fill="none"
-                    stroke-linecap="butt"/>
-
-              <!-- Pipe: HVAC to Buffer (cold return) -->
-              <path id="hvac-to-buffer-path"
-                    d="M 630 220 L 450 220"
-                    stroke="${hvacReturnColor}"
-                    stroke-width="12"
-                    fill="none"
-                    stroke-linecap="butt"/>
-
-              <!-- Temperature labels for heating mode -->
-              <!-- Heat Pump Supply (hot) - above pipe -->
-              <text x="280" y="170" text-anchor="middle" fill="${hpOutletColor}" font-size="11" font-weight="bold">
-                HP Supply: ${this.formatValue(hpState.outletTemp, 1)}°
-              </text>
-
-              <!-- Heat Pump Return (cold) - below pipe -->
-              <text x="280" y="260" text-anchor="middle" fill="${hpInletColor}" font-size="11" font-weight="bold">
-                HP Return: ${this.formatValue(hpState.inletTemp, 1)}°
-              </text>
-
-              <!-- HVAC Supply (hot from buffer) - above pipe -->
-              <text x="540" y="170" text-anchor="middle" fill="${bufferSupplyColor}" font-size="11" font-weight="bold">
-                HVAC Supply: ${this.formatValue(bufferState.supplyTemp, 1)}°
-              </text>
-
-              <!-- HVAC Return (cold to buffer) - below pipe -->
-              <text x="540" y="240" text-anchor="middle" fill="${hvacReturnColor}" font-size="11" font-weight="bold">
-                HVAC Return: ${this.formatValue(hvacState.returnTemp, 1)}°
-              </text>
-            `}
+            <text x="540" y="240" text-anchor="middle" fill="${hvacReturnColor}" font-size="11" font-weight="bold">
+              HVAC Return: ${this.formatValue(hvacState.returnTemp, 1)}°
+            </text>
 
             <!-- Heat Pump (left side) -->
             <g id="heat-pump" transform="translate(50, 100)">
@@ -696,18 +605,8 @@ export class HeatPumpFlowCard extends LitElement {
               ` : ''}
             </g>
 
-            <!-- Heat Pump Mode Display (below heat pump) -->
-            ${hpState.modeDisplay ? html`
-              <g id="hp-mode-display" transform="translate(50, 250)">
-                <rect x="0" y="0" width="120" height="30" rx="5" fill="#2c3e50" opacity="0.8"/>
-                <text x="60" y="20" text-anchor="middle" fill="#f1c40f" font-size="12" font-weight="bold">
-                  ${hpState.modeDisplay}
-                </text>
-              </g>
-            ` : ''}
-
             <!-- Heat Pump Metrics (always visible - Lit conditional rendering doesn't work for SVG text) -->
-            <g id="hp-metrics" transform="translate(50, 285)">
+            <g id="hp-metrics" transform="translate(50, 265)">
               <!-- Metrics display in compact 2-column layout -->
               <!-- Left column -->
               <text x="0" y="0" fill="#95a5a6" font-size="11" font-weight="bold">Power In:</text>
@@ -734,79 +633,18 @@ export class HeatPumpFlowCard extends LitElement {
               ` : ''}
             </g>
 
-            <!-- G2 Valve (diverter valve after HP) -->
-            <g id="g2-valve" transform="translate(220, 180)">
-              <!-- Valve body -->
-              <circle cx="0" cy="0" r="15" fill="${g2ValveState.isActive ? this.config.heat_pump_visual?.dhw_color : this.config.heat_pump_visual?.heating_color}" stroke="#2c3e50" stroke-width="2"/>
-              <!-- Valve indicator arrow -->
-              ${g2ValveState.isActive ? html`
-                <!-- Arrow pointing down (DHW mode) -->
-                <path d="M 0 -8 L 0 8 M -5 3 L 0 8 L 5 3" stroke="white" stroke-width="2" fill="none"/>
-              ` : html`
-                <!-- Arrow pointing right (Heating mode) -->
-                <path d="M -8 0 L 8 0 M 3 -5 L 8 0 L 3 5" stroke="white" stroke-width="2" fill="none"/>
-              `}
-              <!-- Valve label -->
-              <text x="0" y="-25" text-anchor="middle" fill="#95a5a6" font-size="10" font-weight="bold">
-                G2 ${g2ValveState.isActive ? 'DHW' : 'HEAT'}
-              </text>
-            </g>
-
-            <!-- Improved Buffer Tank (center-top) -->
-            <g id="buffer-tank" transform="translate(350, 80)">
-              <!-- Tank cylinder body -->
-              <rect x="10" y="20" width="80" height="120" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
-              <!-- Top rounded cap -->
-              <ellipse cx="50" cy="20" rx="40" ry="20" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
-              <!-- Bottom rounded cap -->
-              <ellipse cx="50" cy="140" rx="40" ry="20" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
-              <!-- Inner cylinder (water) -->
-              <rect x="15" y="25" width="70" height="110" fill="#7f8c8d"/>
-              <!-- Water level indicator with color -->
-              <rect x="15" y="80" width="70" height="55" fill="${bufferSupplyColor}" opacity="0.8"/>
-              <!-- Structural bands -->
-              <line x1="10" y1="50" x2="90" y2="50" stroke="#2c3e50" stroke-width="2"/>
-              <line x1="10" y1="80" x2="90" y2="80" stroke="#2c3e50" stroke-width="2"/>
-              <line x1="10" y1="110" x2="90" y2="110" stroke="#2c3e50" stroke-width="2"/>
-              <!-- Tank label -->
-              <text x="50" y="15" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
+            <!-- Buffer Tank (center) -->
+            <g id="buffer-tank" transform="translate(350, 100)">
+              <ellipse cx="50" cy="100" rx="60" ry="100" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
+              <ellipse cx="50" cy="100" rx="55" ry="95" fill="#95a5a6"/>
+              <!-- Water level indicator -->
+              <rect x="5" y="110" width="90" height="80" fill="${bufferSupplyColor}" opacity="0.7"/>
+              <text x="50" y="60" text-anchor="middle" fill="white" font-size="14" font-weight="bold">
                 BUFFER
               </text>
-            </g>
-
-            <!-- DHW Tank with Coil (center-bottom) -->
-            <g id="dhw-tank" transform="translate(350, 330)">
-              <!-- Tank cylinder body -->
-              <rect x="10" y="20" width="80" height="120" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
-              <!-- Top rounded cap -->
-              <ellipse cx="50" cy="20" rx="40" ry="20" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
-              <!-- Bottom rounded cap -->
-              <ellipse cx="50" cy="140" rx="40" ry="20" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
-              <!-- Inner cylinder (DHW water) -->
-              <rect x="15" y="25" width="70" height="110" fill="#3498db" opacity="0.3"/>
-              <!-- Heating coil inside tank (spiral) -->
-              <path d="M 30 40 Q 50 45, 70 40 Q 50 48, 30 55 Q 50 60, 70 55 Q 50 63, 30 70 Q 50 75, 70 70 Q 50 78, 30 85 Q 50 90, 70 85 Q 50 93, 30 100 Q 50 105, 70 100 Q 50 108, 30 115 Q 50 120, 70 115"
-                    stroke="${dhwInletColor}"
-                    stroke-width="4"
-                    fill="none"
-                    opacity="0.8"/>
-              <!-- Coil inlet/outlet connection points (small circles) -->
-              <circle cx="30" cy="40" r="3" fill="${dhwInletColor}"/>
-              <circle cx="70" cy="115" r="3" fill="${dhwOutletColor}"/>
-              <!-- Structural bands -->
-              <line x1="10" y1="50" x2="90" y2="50" stroke="#2c3e50" stroke-width="2"/>
-              <line x1="10" y1="80" x2="90" y2="80" stroke="#2c3e50" stroke-width="2"/>
-              <line x1="10" y1="110" x2="90" y2="110" stroke="#2c3e50" stroke-width="2"/>
-              <!-- Tank label -->
-              <text x="50" y="15" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
-                DHW
+              <text x="50" y="80" text-anchor="middle" fill="white" font-size="14" font-weight="bold">
+                TANK
               </text>
-              <!-- Tank temperature if available -->
-              ${dhwState.tankTemp ? html`
-                <text x="50" y="170" text-anchor="middle" fill="#3498db" font-size="11" font-weight="bold">
-                  Tank: ${this.formatValue(dhwState.tankTemp, 1)}°
-                </text>
-              ` : ''}
             </g>
 
             <!-- HVAC Load (right side) -->
