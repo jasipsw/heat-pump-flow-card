@@ -38,13 +38,18 @@ export class HeatPumpFlowCard extends LitElement {
     if (!config) {
       throw new Error('Invalid configuration');
     }
+
+    // Merge config with defaults, preserving nested object defaults
+    const { animation, temperature, display, heat_pump_visual, ...restConfig } = config;
+
     this.config = {
+      ...restConfig,
       animation: {
         min_flow_rate: 5,
         max_flow_rate: 1,
         dot_size: 8,
         dot_spacing: 30,
-        ...config.animation,
+        ...animation,
       },
       temperature: {
         min_temp: 0,
@@ -52,7 +57,7 @@ export class HeatPumpFlowCard extends LitElement {
         cold_color: '#0066FF',
         hot_color: '#FF3300',
         unit: 'C',
-        ...config.temperature,
+        ...temperature,
       },
       display: {
         show_values: true,
@@ -60,7 +65,7 @@ export class HeatPumpFlowCard extends LitElement {
         show_icons: true,
         compact: false,
         decimal_places: 1,
-        ...config.display,
+        ...display,
       },
       heat_pump_visual: {
         off_color: '#95a5a6',
@@ -70,9 +75,8 @@ export class HeatPumpFlowCard extends LitElement {
         defrost_color: '#f1c40f',
         show_metrics: true,
         animate_fan: true,
-        ...config.heat_pump_visual,
+        ...heat_pump_visual,
       },
-      ...config,
     };
   }
 
