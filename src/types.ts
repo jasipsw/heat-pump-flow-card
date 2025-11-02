@@ -101,6 +101,22 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     compact?: boolean;        // Compact layout
     decimal_places?: number;  // Decimal places for values
   };
+
+  // Labels Configuration (for internationalization)
+  labels?: {
+    hp_supply?: string;       // Heat pump supply label (default: "HP Supply")
+    hp_return?: string;       // Heat pump return label (default: "HP Return")
+    hvac_supply?: string;     // HVAC supply label (default: "HVAC Supply")
+    hvac_return?: string;     // HVAC return label (default: "HVAC Return")
+    buffer_tank?: string;     // Buffer tank label (default: "BUFFER TANK")
+    dhw_tank?: string;        // DHW tank label (default: "DHW")
+    power_in?: string;        // Power in label (default: "Power In")
+    thermal_out?: string;     // Thermal out label (default: "Thermal Out")
+    cop?: string;             // COP label (default: "COP")
+    flow?: string;            // Flow label (default: "Flow")
+    energy?: string;          // Energy label (default: "Energy")
+    cost?: string;            // Cost label (default: "Cost")
+  };
 }
 
 export interface HeatPumpState {

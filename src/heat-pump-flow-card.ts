@@ -40,7 +40,7 @@ export class HeatPumpFlowCard extends LitElement {
     }
 
     // Merge config with defaults, preserving nested object defaults
-    const { animation, temperature, display, heat_pump_visual, ...restConfig } = config;
+    const { animation, temperature, display, heat_pump_visual, labels, ...restConfig } = config;
 
     this.config = {
       ...restConfig,
@@ -83,6 +83,21 @@ export class HeatPumpFlowCard extends LitElement {
         show_metrics: true,
         animate_fan: true,
         ...heat_pump_visual,
+      },
+      labels: {
+        hp_supply: 'HP Supply',
+        hp_return: 'HP Return',
+        hvac_supply: 'HVAC Supply',
+        hvac_return: 'HVAC Return',
+        buffer_tank: 'BUFFER',
+        dhw_tank: 'DHW',
+        power_in: 'Power In',
+        thermal_out: 'Thermal Out',
+        cop: 'COP',
+        flow: 'Flow',
+        energy: 'Energy',
+        cost: 'Cost',
+        ...labels,
       },
     };
   }
@@ -558,19 +573,19 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Temperature labels -->
             <text x="260" y="170" text-anchor="middle" fill="${hpOutletColor}" font-size="11" font-weight="bold">
-              HP Supply: ${this.formatValue(hpState.outletTemp, 1)}°
+              ${this.config.labels!.hp_supply}: ${this.formatValue(hpState.outletTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
             <text x="260" y="240" text-anchor="middle" fill="${hpInletColor}" font-size="11" font-weight="bold">
-              HP Return: ${this.formatValue(hpState.inletTemp, 1)}°
+              ${this.config.labels!.hp_return}: ${this.formatValue(hpState.inletTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
             <text x="540" y="170" text-anchor="middle" fill="${bufferSupplyColor}" font-size="11" font-weight="bold">
-              HVAC Supply: ${this.formatValue(bufferState.supplyTemp, 1)}°
+              ${this.config.labels!.hvac_supply}: ${this.formatValue(bufferState.supplyTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
             <text x="540" y="240" text-anchor="middle" fill="${hvacReturnColor}" font-size="11" font-weight="bold">
-              HVAC Return: ${this.formatValue(hvacState.returnTemp, 1)}°
+              ${this.config.labels!.hvac_return}: ${this.formatValue(hvacState.returnTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
             <!-- Heat Pump (left side) -->
@@ -609,26 +624,26 @@ export class HeatPumpFlowCard extends LitElement {
             <g id="hp-metrics" transform="translate(50, 265)">
               <!-- Metrics display in compact 2-column layout -->
               <!-- Left column -->
-              <text x="0" y="0" fill="#95a5a6" font-size="11" font-weight="bold">Power In:</text>
+              <text x="0" y="0" fill="#95a5a6" font-size="11" font-weight="bold">${this.config.labels!.power_in}:</text>
               <text x="0" y="16" fill="#3498db" font-size="12">${this.formatValue(hpState.power, 0)} W</text>
 
-              <text x="0" y="36" fill="#95a5a6" font-size="11" font-weight="bold">Thermal Out:</text>
+              <text x="0" y="36" fill="#95a5a6" font-size="11" font-weight="bold">${this.config.labels!.thermal_out}:</text>
               <text x="0" y="52" fill="#e74c3c" font-size="12">${this.formatValue(hpState.thermal, 0)} W</text>
 
-              <text x="0" y="72" fill="#95a5a6" font-size="11" font-weight="bold">COP:</text>
+              <text x="0" y="72" fill="#95a5a6" font-size="11" font-weight="bold">${this.config.labels!.cop}:</text>
               <text x="0" y="88" fill="#f1c40f" font-size="12">${this.formatValue(hpState.cop, 2)}</text>
 
-              <text x="0" y="108" fill="#95a5a6" font-size="11" font-weight="bold">Flow:</text>
+              <text x="0" y="108" fill="#95a5a6" font-size="11" font-weight="bold">${this.config.labels!.flow}:</text>
               <text x="0" y="124" fill="#9b59b6" font-size="12">${this.formatValue(hpState.flowRate, 1)} L/min</text>
 
               <!-- Right column -->
               ${hpState.energy !== undefined ? html`
-                <text x="80" y="0" fill="#95a5a6" font-size="11" font-weight="bold">Energy:</text>
+                <text x="80" y="0" fill="#95a5a6" font-size="11" font-weight="bold">${this.config.labels!.energy}:</text>
                 <text x="80" y="16" fill="#16a085" font-size="12">${this.formatValue(hpState.energy, 2)} kWh</text>
               ` : ''}
 
               ${hpState.cost !== undefined ? html`
-                <text x="80" y="36" fill="#95a5a6" font-size="11" font-weight="bold">Cost:</text>
+                <text x="80" y="36" fill="#95a5a6" font-size="11" font-weight="bold">${this.config.labels!.cost}:</text>
                 <text x="80" y="52" fill="#27ae60" font-size="12">$${this.formatValue(hpState.cost, 2)}</text>
               ` : ''}
             </g>
@@ -639,11 +654,8 @@ export class HeatPumpFlowCard extends LitElement {
               <ellipse cx="50" cy="100" rx="55" ry="95" fill="#95a5a6"/>
               <!-- Water level indicator -->
               <rect x="5" y="110" width="90" height="80" fill="${bufferSupplyColor}" opacity="0.7"/>
-              <text x="50" y="60" text-anchor="middle" fill="white" font-size="14" font-weight="bold">
-                BUFFER
-              </text>
-              <text x="50" y="80" text-anchor="middle" fill="white" font-size="14" font-weight="bold">
-                TANK
+              <text x="50" y="70" text-anchor="middle" fill="white" font-size="14" font-weight="bold">
+                ${this.config.labels!.buffer_tank}
               </text>
             </g>
 
