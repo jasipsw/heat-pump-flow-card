@@ -82,37 +82,36 @@ export class HeatPumpFlowCard extends LitElement {
 
   private startAnimationLoop(): void {
     const animate = () => {
-      // Get all circles
-      const circles = this.shadowRoot?.querySelectorAll('circle.flow-dot');
-      if (!circles || circles.length === 0) {
+      // Get all circles inside flow groups
+      const flowGroups = this.shadowRoot?.querySelectorAll('g[data-path-id]');
+      if (!flowGroups || flowGroups.length === 0) {
         return;
       }
 
       const time = Date.now() / 1000; // Current time in seconds
 
-      circles.forEach((circle, index) => {
-        const group = circle.parentElement as SVGGElement;
-        const pathId = group?.dataset?.pathId;
-        if (!pathId) {
-          return;
-        }
+      flowGroups.forEach((group) => {
+        const pathId = (group as SVGGElement).dataset.pathId;
+        if (!pathId) return;
 
         const path = this.shadowRoot?.querySelector(`#${pathId}`) as SVGPathElement;
-        if (!path) {
-          return;
-        }
+        if (!path) return;
 
         const pathLength = path.getTotalLength();
-        const duration = 3; // 3 seconds for full loop
-        const delay = (index % 5) * 0.6; // Stagger dots
-        const progress = ((time + delay) % duration) / duration;
-        const distance = progress * pathLength;
+        const circles = group.querySelectorAll('circle');
 
-        const point = path.getPointAtLength(distance);
+        circles.forEach((circle, index) => {
+          const duration = 3; // 3 seconds for full loop
+          const delay = index * 0.6; // Stagger dots
+          const progress = ((time + delay) % duration) / duration;
+          const distance = progress * pathLength;
 
-        // Update cx and cy attributes directly
-        circle.setAttribute('cx', point.x.toString());
-        circle.setAttribute('cy', point.y.toString());
+          const point = path.getPointAtLength(distance);
+
+          // Update cx and cy attributes directly
+          circle.setAttribute('cx', point.x.toString());
+          circle.setAttribute('cy', point.y.toString());
+        });
       });
 
       this.animationFrameId = requestAnimationFrame(animate);
@@ -377,7 +376,6 @@ export class HeatPumpFlowCard extends LitElement {
     for (let i = 0; i < dotCount; i++) {
       dots.push(html`
         <circle
-          class="flow-dot"
           data-index="${i}"
           cx="0"
           cy="0"
