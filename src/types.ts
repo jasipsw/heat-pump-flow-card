@@ -55,10 +55,16 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
 
   // Animation Configuration
   animation?: {
-    min_flow_rate?: number;  // Minimum animation speed (seconds for dot to travel)
-    max_flow_rate?: number;  // Maximum animation speed (seconds)
-    dot_size?: number;       // Size of animated dots
-    dot_spacing?: number;    // Spacing between dots
+    min_flow_rate?: number;     // Minimum animation speed (seconds for dot to travel)
+    max_flow_rate?: number;     // Maximum animation speed (seconds)
+    dot_size?: number;          // Size of animated dots (radius)
+    dot_spacing?: number;       // Spacing between dots
+    use_temp_color?: boolean;   // Use temperature-based coloring (default: true)
+    dot_color?: string;         // Fixed dot color (overrides temp color if use_temp_color is false)
+    dot_stroke_color?: string;  // Dot border color (default: 'white')
+    dot_stroke_width?: number;  // Dot border width (default: 1.5)
+    dot_opacity?: number;       // Dot opacity 0-1 (default: 1)
+    dot_shadow?: boolean;       // Show dot shadow for depth (default: true)
   };
 
   // Temperature Color Configuration
