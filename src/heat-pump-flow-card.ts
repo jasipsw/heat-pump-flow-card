@@ -47,6 +47,7 @@ export class HeatPumpFlowCard extends LitElement {
       animation: {
         min_flow_rate: 5,
         max_flow_rate: 1,
+        max_flow_rate_value: 50,
         dot_size: 8,
         dot_spacing: 30,
         use_temp_color: true,
@@ -413,13 +414,15 @@ export class HeatPumpFlowCard extends LitElement {
 
   private getAnimationDuration(flowRate: number): number {
     const cfg = this.config.animation!;
-    if (flowRate <= 0) return cfg.max_flow_rate!;
+    if (flowRate <= 0) return cfg.min_flow_rate!;  // No flow = slowest (longest duration)
 
-    // Normalize flow rate (assuming max ~50 L/min for heat pumps)
-    const normalized = Math.min(flowRate / 50, 1);
+    // Normalize flow rate based on configured maximum
+    const normalized = Math.min(flowRate / cfg.max_flow_rate_value!, 1);
 
-    // Interpolate between min and max duration (faster flow = shorter duration)
-    return cfg.max_flow_rate! - (normalized * (cfg.max_flow_rate! - cfg.min_flow_rate!));
+    // Interpolate: higher flow = shorter duration (faster animation)
+    // At normalized=0 (low flow): use min_flow_rate (slow, e.g., 5 seconds)
+    // At normalized=1 (high flow): use max_flow_rate (fast, e.g., 1 second)
+    return cfg.min_flow_rate! - (normalized * (cfg.min_flow_rate! - cfg.max_flow_rate!));
   }
 
   private updateAnimations(): void {

@@ -55,8 +55,9 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
 
   // Animation Configuration
   animation?: {
-    min_flow_rate?: number;     // Minimum animation speed (seconds for dot to travel)
-    max_flow_rate?: number;     // Maximum animation speed (seconds)
+    min_flow_rate?: number;     // SLOW animation duration in seconds (used at low flow)
+    max_flow_rate?: number;     // FAST animation duration in seconds (used at high flow)
+    max_flow_rate_value?: number;  // Flow rate (L/min) that triggers fastest animation (default: 50)
     dot_size?: number;          // Size of animated dots (radius)
     dot_spacing?: number;       // Spacing between dots
     use_temp_color?: boolean;   // Use temperature-based coloring (default: true)
