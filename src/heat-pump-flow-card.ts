@@ -186,8 +186,8 @@ export class HeatPumpFlowCard extends LitElement {
         circle.setAttribute('data-index', i.toString());
         circle.setAttribute('cx', '0');
         circle.setAttribute('cy', '0');
-        // Make dots smaller and more distinct
-        circle.setAttribute('r', '5');
+        // Use configured dot size (radius)
+        circle.setAttribute('r', this.config.animation.dot_size.toString());
         circle.setAttribute('fill', pathInfo.color);
         // Add white stroke for contrast against pipe
         circle.setAttribute('stroke', 'white');
