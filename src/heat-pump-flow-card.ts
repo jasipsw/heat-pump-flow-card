@@ -519,23 +519,26 @@ export class HeatPumpFlowCard extends LitElement {
     const hpState = this.getHeatPumpState();
     const bufferState = this.getBufferTankState();
     const hvacState = this.getHVACState();
+    const dhwState = this.getDHWTankState();
 
     // Calculate pipe colors based on temperature delta
     const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
     const hvacPipeColors = this.getPipeColors(bufferState.supplyTemp, hvacState.returnTemp, hvacState.flowRate);
+    const dhwPipeColors = this.getPipeColors(dhwState.inletTemp, dhwState.outletTemp, hpState.flowRate);
 
     // Extract individual pipe colors
     const hpOutletColor = hpPipeColors.hotPipe;
     const hpInletColor = hpPipeColors.coldPipe;
     const bufferSupplyColor = hvacPipeColors.hotPipe;
     const hvacReturnColor = hvacPipeColors.coldPipe;
+    const dhwCoilColor = dhwPipeColors.hotPipe;
 
     return html`
       <ha-card>
         ${this.config.title ? html`<h1 class="card-header">${this.config.title}</h1>` : ''}
 
         <div class="card-content">
-          <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 800 700" xmlns="http://www.w3.org/2000/svg">
             <!-- Flow Pipes (rendered first so they appear behind entities) -->
 
             <!-- Simplified: Always show heating mode pipes (DHW functionality to be added later if needed) -->
@@ -681,6 +684,49 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="50" y="45" text-anchor="middle" fill="white" font-size="13" font-weight="bold">
                 ${this.config.labels!.buffer_tank}
               </text>
+            </g>
+
+            <!-- DHW (Domestic Hot Water) Tank with Coil (center-bottom) -->
+            <g id="dhw-tank" transform="translate(350, 370)">
+              <!-- Tank cylinder body -->
+              <rect x="10" y="20" width="80" height="160" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
+
+              <!-- Top rounded cap -->
+              <ellipse cx="50" cy="20" rx="40" ry="15" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
+
+              <!-- Bottom rounded cap -->
+              <ellipse cx="50" cy="180" rx="40" ry="15" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
+
+              <!-- Inner cylinder (DHW water - always blue/cold) -->
+              <rect x="15" y="25" width="70" height="150" fill="#3498db" opacity="0.3"/>
+
+              <!-- Heating coil inside tank (spiral) -->
+              <path d="M 30 50 Q 50 55, 70 50 Q 50 58, 30 65 Q 50 70, 70 65 Q 50 78, 30 85 Q 50 90, 70 85 Q 50 98, 30 105 Q 50 110, 70 105 Q 50 118, 30 125 Q 50 130, 70 125 Q 50 138, 30 145 Q 50 150, 70 145 Q 50 158, 30 165"
+                    stroke="${dhwCoilColor}"
+                    stroke-width="4"
+                    fill="none"
+                    opacity="0.9"/>
+
+              <!-- Coil inlet/outlet markers -->
+              <circle cx="30" cy="50" r="3" fill="${dhwCoilColor}"/>
+              <circle cx="30" cy="165" r="3" fill="${dhwCoilColor}"/>
+
+              <!-- Structural bands -->
+              <line x1="10" y1="60" x2="90" y2="60" stroke="#2c3e50" stroke-width="2"/>
+              <line x1="10" y1="100" x2="90" y2="100" stroke="#2c3e50" stroke-width="2"/>
+              <line x1="10" y1="140" x2="90" y2="140" stroke="#2c3e50" stroke-width="2"/>
+
+              <!-- Tank label inside top section -->
+              <text x="50" y="45" text-anchor="middle" fill="white" font-size="13" font-weight="bold">
+                ${this.config.labels!.dhw_tank}
+              </text>
+
+              <!-- Tank temperature if available -->
+              ${dhwState.tankTemp ? html`
+                <text x="50" y="200" text-anchor="middle" fill="#3498db" font-size="11" font-weight="bold">
+                  Tank: ${this.formatValue(dhwState.tankTemp, 1)}°${this.config.temperature?.unit || 'C'}
+                </text>
+              ` : ''}
             </g>
 
             <!-- HVAC Load (right side) -->
