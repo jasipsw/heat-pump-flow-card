@@ -84,6 +84,9 @@ export class HeatPumpFlowCard extends LitElement {
     super.updated(changedProps);
     if (changedProps.has('hass') && this.hass) {
       this.updateAnimations();
+      // Update cached fan speed for animation performance
+      const hpState = this.getHeatPumpState();
+      this.cachedFanSpeed = hpState.fanSpeed || 0;
     }
   }
 
@@ -101,23 +104,22 @@ export class HeatPumpFlowCard extends LitElement {
   }
 
   private fanRotation = 0;
+  private cachedFanSpeed = 0;
 
   private startFanAnimation(): void {
     const animate = () => {
       const fanBlades = this.shadowRoot?.querySelector('#fan-blades');
       if (!fanBlades) {
+        requestAnimationFrame(animate);
         return;
       }
 
-      const hpState = this.getHeatPumpState();
-      const fanSpeed = hpState.fanSpeed || 0;
-
       // Only rotate if fan is running (speed > 0)
-      if (fanSpeed > 0) {
+      if (this.cachedFanSpeed > 0) {
         // Rotation speed based on fan speed (0-100%)
         // At 100% fan speed, complete rotation every ~1 second (360deg/s)
         // At 50% fan speed, every ~2 seconds (180deg/s)
-        const rotationSpeed = (fanSpeed / 100) * 6; // degrees per frame at 60fps
+        const rotationSpeed = (this.cachedFanSpeed / 100) * 6; // degrees per frame at 60fps
         this.fanRotation = (this.fanRotation + rotationSpeed) % 360;
 
         fanBlades.setAttribute('transform', `rotate(${this.fanRotation} 60 40)`);
