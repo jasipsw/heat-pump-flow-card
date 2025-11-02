@@ -484,7 +484,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke="${hpOutletColor}"
                   stroke-width="12"
                   fill="none"
-                  stroke-linecap="round"/>
+                  stroke-linecap="butt"/>
 
             <!-- Pipe: Buffer to HP (cold return) -->
             <path id="buffer-to-hp-path"
@@ -492,7 +492,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke="${hpInletColor}"
                   stroke-width="12"
                   fill="none"
-                  stroke-linecap="round"/>
+                  stroke-linecap="butt"/>
 
             <!-- Pipe: Buffer to HVAC (hot) -->
             <path id="buffer-to-hvac-path"
@@ -500,7 +500,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke="${bufferSupplyColor}"
                   stroke-width="12"
                   fill="none"
-                  stroke-linecap="round"/>
+                  stroke-linecap="butt"/>
 
             <!-- Pipe: HVAC to Buffer (cold return) -->
             <path id="hvac-to-buffer-path"
@@ -508,7 +508,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke="${hvacReturnColor}"
                   stroke-width="12"
                   fill="none"
-                  stroke-linecap="round"/>
+                  stroke-linecap="butt"/>
 
             <!-- Heat Pump (left side) -->
             <g id="heat-pump" transform="translate(50, 100)">
