@@ -84,9 +84,41 @@ export class HeatPumpFlowCard extends LitElement {
     super.updated(changedProps);
     if (changedProps.has('hass') && this.hass) {
       this.updateAnimations();
-      // Update cached fan speed for animation performance
+
+      // Update cached values for animation performance (avoid reading state 60fps)
       const hpState = this.getHeatPumpState();
+      const hvacState = this.getHVACState();
+      const bufferState = this.getBufferTankState();
+
       this.cachedFanSpeed = hpState.fanSpeed || 0;
+
+      // Cache flow configuration for each path
+      this.cachedFlowConfig = {
+        'hp-to-buffer-path': {
+          flowRate: hpState.flowRate,
+          temp: hpState.outletTemp,
+          duration: this.getAnimationDuration(hpState.flowRate),
+          color: this.getTempColor(hpState.outletTemp)
+        },
+        'buffer-to-hp-path': {
+          flowRate: hpState.flowRate,
+          temp: hpState.inletTemp,
+          duration: this.getAnimationDuration(hpState.flowRate),
+          color: this.getTempColor(hpState.inletTemp)
+        },
+        'buffer-to-hvac-path': {
+          flowRate: hvacState.flowRate,
+          temp: bufferState.supplyTemp,
+          duration: this.getAnimationDuration(hvacState.flowRate),
+          color: this.getTempColor(bufferState.supplyTemp)
+        },
+        'hvac-to-buffer-path': {
+          flowRate: hvacState.flowRate,
+          temp: hvacState.returnTemp,
+          duration: this.getAnimationDuration(hvacState.flowRate),
+          color: this.getTempColor(hvacState.returnTemp)
+        }
+      };
     }
   }
 
@@ -105,6 +137,7 @@ export class HeatPumpFlowCard extends LitElement {
 
   private fanRotation = 0;
   private cachedFanSpeed = 0;
+  private cachedFlowConfig: Record<string, { flowRate: number; temp: number; duration: number; color: string }> = {};
 
   private startFanAnimation(): void {
     const animate = () => {
@@ -168,6 +201,7 @@ export class HeatPumpFlowCard extends LitElement {
     const animate = () => {
       const circles = this.shadowRoot?.querySelectorAll('circle[data-path-id]');
       if (!circles || circles.length === 0) {
+        this.animationFrameId = requestAnimationFrame(animate);
         return;
       }
 
@@ -179,13 +213,27 @@ export class HeatPumpFlowCard extends LitElement {
 
         if (!pathId) return;
 
+        // Use cached config (updated only when HA state changes, not 60fps)
+        const config = this.cachedFlowConfig[pathId];
+        if (!config) return;
+
         const path = this.shadowRoot?.querySelector(`#${pathId}`) as SVGPathElement;
         if (!path) return;
 
         const pathLength = path.getTotalLength();
-        const duration = 3;
+
+        // Update color based on current temperature (pre-calculated in cache)
+        circle.setAttribute('fill', config.color);
+
+        // Hide dots if no flow
+        if (config.flowRate <= 0) {
+          circle.setAttribute('opacity', '0');
+        } else {
+          circle.setAttribute('opacity', '0.9');
+        }
+
         const delay = index * 0.6;
-        const progress = ((time + delay) % duration) / duration;
+        const progress = ((time + delay) % config.duration) / config.duration;
         const distance = progress * pathLength;
 
         const point = path.getPointAtLength(distance);
