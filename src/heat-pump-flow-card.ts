@@ -356,11 +356,10 @@ export class HeatPumpFlowCard extends LitElement {
             <circle cx="260" cy="220" r="15" fill="cyan" stroke="black" stroke-width="2" opacity="1"/>
             <circle cx="540" cy="180" r="15" fill="magenta" stroke="black" stroke-width="2" opacity="1"/>
 
-            <!-- Flow dots - NO GROUPS, render directly like static circles -->
-            ${this.renderFlowDots('hp-to-buffer-flow', 'hp-to-buffer-path', hpOutletColor)}
-            ${this.renderFlowDots('buffer-to-hp-flow', 'buffer-to-hp-path', hpInletColor)}
-            ${this.renderFlowDots('buffer-to-hvac-flow', 'buffer-to-hvac-path', bufferSupplyColor)}
-            ${this.renderFlowDots('hvac-to-buffer-flow', 'hvac-to-buffer-path', hvacReturnColor)}
+            <!-- TEST: Inline circles EXACTLY like the function would create -->
+            <circle cx="200" cy="180" r="15" fill="lime" stroke="black" stroke-width="2" opacity="1"/>
+            <circle cx="240" cy="180" r="15" fill="lime" stroke="black" stroke-width="2" opacity="1"/>
+            <circle cx="280" cy="180" r="15" fill="lime" stroke="black" stroke-width="2" opacity="1"/>
           </svg>
         </div>
       </ha-card>
