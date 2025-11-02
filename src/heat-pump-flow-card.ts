@@ -61,6 +61,16 @@ export class HeatPumpFlowCard extends LitElement {
         decimal_places: 1,
         ...config.display,
       },
+      heat_pump_visual: {
+        off_color: '#95a5a6',
+        heating_color: '#e74c3c',
+        cooling_color: '#3498db',
+        dhw_color: '#e67e22',
+        defrost_color: '#f1c40f',
+        show_metrics: true,
+        animate_fan: true,
+        ...config.heat_pump_visual,
+      },
       ...config,
     };
   }
@@ -76,8 +86,42 @@ export class HeatPumpFlowCard extends LitElement {
     // Create circles using DOM manipulation instead of Lit templates
     this.createFlowDots();
 
-    // Start animation
-    setTimeout(() => this.startAnimationLoop(), 100);
+    // Start animations
+    setTimeout(() => {
+      this.startAnimationLoop();
+      if (this.config.heat_pump_visual?.animate_fan) {
+        this.startFanAnimation();
+      }
+    }, 100);
+  }
+
+  private fanRotation = 0;
+
+  private startFanAnimation(): void {
+    const animate = () => {
+      const fanBlades = this.shadowRoot?.querySelector('#fan-blades');
+      if (!fanBlades) {
+        return;
+      }
+
+      const hpState = this.getHeatPumpState();
+      const fanSpeed = hpState.fanSpeed || 0;
+
+      // Only rotate if fan is running (speed > 0)
+      if (fanSpeed > 0) {
+        // Rotation speed based on fan speed (0-100%)
+        // At 100% fan speed, complete rotation every ~1 second (360deg/s)
+        // At 50% fan speed, every ~2 seconds (180deg/s)
+        const rotationSpeed = (fanSpeed / 100) * 6; // degrees per frame at 60fps
+        this.fanRotation = (this.fanRotation + rotationSpeed) % 360;
+
+        fanBlades.setAttribute('transform', `rotate(${this.fanRotation} 60 40)`);
+      }
+
+      requestAnimationFrame(animate);
+    };
+
+    animate();
   }
 
   private createFlowDots(): void {
@@ -165,7 +209,20 @@ export class HeatPumpFlowCard extends LitElement {
       outletTemp: this.getStateValue(cfg.outlet_temp_entity) || 0,
       inletTemp: this.getStateValue(cfg.inlet_temp_entity) || 0,
       flowRate: this.getStateValue(cfg.flow_rate_entity) || 0,
+      fanSpeed: this.getStateValue(cfg.fan_speed_entity),
+      mode: this.getStateString(cfg.mode_entity),
+      defrost: this.getStateString(cfg.defrost_entity) === 'on',
+      error: this.getStateString(cfg.error_entity),
+      energy: this.getStateValue(cfg.energy_entity),
+      cost: this.getStateValue(cfg.cost_entity),
+      runtime: this.getStateValue(cfg.runtime_entity),
     };
+  }
+
+  private getStateString(entityId: string | undefined): string | undefined {
+    if (!entityId || !this.hass) return undefined;
+    const state = this.hass.states[entityId];
+    return state?.state;
   }
 
   private getBufferTankState(): BufferTankState {
@@ -233,6 +290,33 @@ export class HeatPumpFlowCard extends LitElement {
       : { r: 0, g: 0, b: 0 };
   }
 
+  private getHeatPumpColor(state: HeatPumpState): string {
+    const cfg = this.config.heat_pump_visual!;
+
+    // Priority: defrost > mode > power
+    if (state.defrost) {
+      return cfg.defrost_color!;
+    }
+
+    // Check if heat pump is powered on
+    if (state.power <= 0) {
+      return cfg.off_color!;
+    }
+
+    // Determine color based on mode
+    const mode = state.mode?.toLowerCase();
+    if (mode?.includes('heat')) {
+      return cfg.heating_color!;
+    } else if (mode?.includes('cool')) {
+      return cfg.cooling_color!;
+    } else if (mode?.includes('dhw') || mode?.includes('hot water')) {
+      return cfg.dhw_color!;
+    }
+
+    // Default to off color if mode unknown but power is low
+    return cfg.off_color!;
+  }
+
   private getAnimationDuration(flowRate: number): number {
     const cfg = this.config.animation!;
     if (flowRate <= 0) return cfg.max_flow_rate!;
@@ -297,21 +381,72 @@ export class HeatPumpFlowCard extends LitElement {
         <div class="card-content">
           <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
             <!-- Heat Pump (left side) -->
-            <g id="heat-pump" transform="translate(50, 150)">
-              <rect width="120" height="100" rx="10" fill="#2c3e50" stroke="#34495e" stroke-width="2"/>
-              <text x="60" y="30" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
-                HEAT PUMP
+            <g id="heat-pump" transform="translate(50, 100)">
+              <!-- Heat pump body with state-based color -->
+              <rect width="120" height="150" rx="10" fill="${this.getHeatPumpColor(hpState)}" fill-opacity="0.2" stroke="${this.getHeatPumpColor(hpState)}" stroke-width="3"/>
+
+              <!-- Fan housing -->
+              <circle cx="60" cy="40" r="30" fill="#34495e" stroke="${this.getHeatPumpColor(hpState)}" stroke-width="2"/>
+
+              <!-- Fan blades (will be animated) -->
+              <g id="fan-blades" transform-origin="60 40">
+                <!-- 4 fan blades -->
+                <path d="M 60 10 Q 70 30, 60 40 Q 50 30, 60 10" fill="#7f8c8d" opacity="0.8"/>
+                <path d="M 90 40 Q 70 50, 60 40 Q 70 30, 90 40" fill="#7f8c8d" opacity="0.8"/>
+                <path d="M 60 70 Q 50 50, 60 40 Q 70 50, 60 70" fill="#7f8c8d" opacity="0.8"/>
+                <path d="M 30 40 Q 50 30, 60 40 Q 50 50, 30 40" fill="#7f8c8d" opacity="0.8"/>
+                <!-- Center cap -->
+                <circle cx="60" cy="40" r="8" fill="#2c3e50"/>
+              </g>
+
+              <!-- Heat pump label -->
+              <text x="60" y="85" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
+                ${hpState.mode?.toUpperCase() || 'OFF'}
               </text>
-              <text x="60" y="55" text-anchor="middle" fill="#3498db" font-size="20" font-weight="bold">
-                ${this.formatValue(hpState.thermal, 0)} W
-              </text>
-              <text x="60" y="75" text-anchor="middle" fill="#95a5a6" font-size="12">
-                COP: ${this.formatValue(hpState.cop, 2)}
-              </text>
-              <text x="60" y="90" text-anchor="middle" fill="${hpOutletColor}" font-size="11">
-                Out: ${this.formatValue(hpState.outletTemp, 1)}°
-              </text>
+
+              <!-- Error indicator -->
+              ${hpState.error ? html`
+                <text x="60" y="100" text-anchor="middle" fill="#e74c3c" font-size="10" font-weight="bold">
+                  ⚠ ${hpState.error}
+                </text>
+              ` : ''}
             </g>
+
+            <!-- Heat Pump Metrics -->
+            ${this.config.heat_pump_visual?.show_metrics ? html`
+              <g id="hp-metrics" transform="translate(50, 260)">
+                <!-- Metrics display in compact 2-column layout -->
+                <!-- Left column -->
+                <text x="0" y="0" fill="#95a5a6" font-size="9" font-weight="bold">Power In:</text>
+                <text x="0" y="12" fill="#3498db" font-size="10">${this.formatValue(hpState.power, 0)} W</text>
+
+                <text x="0" y="28" fill="#95a5a6" font-size="9" font-weight="bold">Thermal Out:</text>
+                <text x="0" y="40" fill="#e74c3c" font-size="10">${this.formatValue(hpState.thermal, 0)} W</text>
+
+                <text x="0" y="56" fill="#95a5a6" font-size="9" font-weight="bold">COP:</text>
+                <text x="0" y="68" fill="#f1c40f" font-size="10">${this.formatValue(hpState.cop, 2)}</text>
+
+                <text x="0" y="84" fill="#95a5a6" font-size="9" font-weight="bold">Flow:</text>
+                <text x="0" y="96" fill="#9b59b6" font-size="10">${this.formatValue(hpState.flowRate, 1)} L/min</text>
+
+                <!-- Right column -->
+                <text x="70" y="0" fill="#95a5a6" font-size="9" font-weight="bold">In Temp:</text>
+                <text x="70" y="12" fill="${hpInletColor}" font-size="10">${this.formatValue(hpState.inletTemp, 1)}°</text>
+
+                <text x="70" y="28" fill="#95a5a6" font-size="9" font-weight="bold">Out Temp:</text>
+                <text x="70" y="40" fill="${hpOutletColor}" font-size="10">${this.formatValue(hpState.outletTemp, 1)}°</text>
+
+                ${hpState.energy !== undefined ? html`
+                  <text x="70" y="56" fill="#95a5a6" font-size="9" font-weight="bold">Energy:</text>
+                  <text x="70" y="68" fill="#16a085" font-size="10">${this.formatValue(hpState.energy, 2)} kWh</text>
+                ` : ''}
+
+                ${hpState.cost !== undefined ? html`
+                  <text x="70" y="84" fill="#95a5a6" font-size="9" font-weight="bold">Cost:</text>
+                  <text x="70" y="96" fill="#27ae60" font-size="10">$${this.formatValue(hpState.cost, 2)}</text>
+                ` : ''}
+              </g>
+            ` : ''}
 
             <!-- Buffer Tank (center) -->
             <g id="buffer-tank" transform="translate(350, 100)">
