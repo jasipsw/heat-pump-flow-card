@@ -520,6 +520,7 @@ export class HeatPumpFlowCard extends LitElement {
     const bufferState = this.getBufferTankState();
     const hvacState = this.getHVACState();
     const dhwState = this.getDHWTankState();
+    const g2ValveState = this.getG2ValveState();
 
     // Calculate pipe colors based on temperature delta
     const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
@@ -649,6 +650,41 @@ export class HeatPumpFlowCard extends LitElement {
                 <text x="80" y="36" fill="#95a5a6" font-size="11" font-weight="bold">${this.config.labels!.cost}:</text>
                 <text x="80" y="52" fill="#27ae60" font-size="12">$${this.formatValue(hpState.cost, 2)}</text>
               ` : ''}
+            </g>
+
+            <!-- G2 Diverter Valve (between HP and tanks) -->
+            <g id="g2-valve" transform="translate(240, 200)">
+              <!-- Valve body circle -->
+              <circle cx="0" cy="0" r="18"
+                      fill="${g2ValveState.isActive ? this.config.heat_pump_visual?.dhw_color : this.config.heat_pump_visual?.heating_color}"
+                      stroke="#2c3e50"
+                      stroke-width="3"
+                      opacity="0.9"/>
+
+              <!-- Directional indicator -->
+              ${g2ValveState.isActive ? html`
+                <!-- DHW Mode: Arrow pointing DOWN to DHW tank -->
+                <path d="M 0 -10 L 0 10 M -6 4 L 0 10 L 6 4"
+                      stroke="white"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      fill="none"/>
+              ` : html`
+                <!-- Heating Mode: Arrow pointing RIGHT to buffer -->
+                <path d="M -10 0 L 10 0 M 4 -6 L 10 0 L 4 6"
+                      stroke="white"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      fill="none"/>
+              `}
+
+              <!-- Valve label above -->
+              <text x="0" y="-28" text-anchor="middle" fill="#2c3e50" font-size="11" font-weight="bold">
+                G2
+              </text>
+              <text x="0" y="-16" text-anchor="middle" fill="${g2ValveState.isActive ? this.config.heat_pump_visual?.dhw_color : this.config.heat_pump_visual?.heating_color}" font-size="10" font-weight="bold">
+                ${g2ValveState.isActive ? 'DHW' : 'HEAT'}
+              </text>
             </g>
 
             <!-- Improved Buffer Tank (center) -->
