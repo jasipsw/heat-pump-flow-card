@@ -460,8 +460,8 @@ export class HeatPumpFlowCard extends LitElement {
       return cfg.off_color!;
     }
 
-    // Determine color based on mode
-    const mode = state.mode?.toLowerCase();
+    // Determine color based on mode (use modeDisplay as fallback if mode not configured)
+    const mode = (state.mode || state.modeDisplay)?.toLowerCase();
     if (mode?.includes('heat')) {
       return cfg.heating_color!;
     } else if (mode?.includes('cool')) {
