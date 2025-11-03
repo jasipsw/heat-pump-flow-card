@@ -518,21 +518,58 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Pipes with 10px gaps from entities for clean appearance -->
             <!-- SWAPPED: Return on top, Supply on bottom for cleaner DHW routing -->
 
-            <!-- Pipe: Buffer to HP (cold return) - TOP - 10px gap from HP -->
-            <path id="buffer-to-hp-path"
-                  d="M 350 180 L 180 180"
-                  stroke="${hpInletColor}"
-                  stroke-width="12"
-                  fill="none"
-                  stroke-linecap="butt"/>
+            <!-- HEATING MODE PIPES (visible when G2 valve is in heating mode) -->
+            ${!g2ValveState.isActive ? html`
+              <!-- Pipe: Buffer to HP (cold return) - TOP - 10px gap from HP -->
+              <path id="buffer-to-hp-path"
+                    d="M 350 180 L 180 180"
+                    stroke="${hpInletColor}"
+                    stroke-width="12"
+                    fill="none"
+                    stroke-linecap="butt"/>
 
-            <!-- Pipe: HP to Buffer (hot supply) - BOTTOM - 10px gap from HP -->
-            <path id="hp-to-buffer-path"
-                  d="M 180 220 L 350 220"
-                  stroke="${hpOutletColor}"
-                  stroke-width="12"
-                  fill="none"
-                  stroke-linecap="butt"/>
+              <!-- Pipe: HP to Buffer (hot supply) - BOTTOM - 10px gap from HP -->
+              <path id="hp-to-buffer-path"
+                    d="M 180 220 L 350 220"
+                    stroke="${hpOutletColor}"
+                    stroke-width="12"
+                    fill="none"
+                    stroke-linecap="butt"/>
+            ` : html`
+              <!-- DHW MODE PIPES (visible when G2 valve is in DHW mode) -->
+
+              <!-- Pipe: HP to G2 valve (hot supply) -->
+              <path id="hp-to-g2-path"
+                    d="M 180 220 L 240 220 L 240 200"
+                    stroke="${hpOutletColor}"
+                    stroke-width="12"
+                    fill="none"
+                    stroke-linecap="butt"/>
+
+              <!-- Pipe: G2 valve down to DHW tank inlet -->
+              <path id="g2-to-dhw-path"
+                    d="M 240 200 L 240 370 L 350 370 L 350 420 L 380 420"
+                    stroke="${dhwCoilColor}"
+                    stroke-width="12"
+                    fill="none"
+                    stroke-linecap="butt"/>
+
+              <!-- DHW coil spiral path (for flow animation) -->
+              <path id="dhw-coil-path"
+                    d="M 380 420 Q 400 425, 420 420 Q 400 428, 380 435 Q 400 440, 420 435 Q 400 448, 380 455 Q 400 460, 420 455 Q 400 468, 380 475 Q 400 480, 420 475 Q 400 488, 380 495 Q 400 500, 420 495 Q 400 508, 380 515 Q 400 520, 420 515 Q 400 528, 380 535"
+                    stroke="none"
+                    stroke-width="0"
+                    fill="none"
+                    opacity="0"/>
+
+              <!-- Pipe: DHW outlet up to HP return merge -->
+              <path id="dhw-to-hp-return-path"
+                    d="M 380 535 L 350 535 L 350 180 L 240 180 L 180 180"
+                    stroke="${hpInletColor}"
+                    stroke-width="12"
+                    fill="none"
+                    stroke-linecap="butt"/>
+            `}
 
             <!-- Pipe: Buffer to HVAC (hot) - 10px gap from HVAC -->
             <path id="buffer-to-hvac-path"
