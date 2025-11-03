@@ -105,6 +105,8 @@ export class HeatPumpFlowCard extends LitElement {
 
   private lastRenderTime = 0;
   private lastHassState: any = {};
+  private lastG2State: boolean | null = null;
+  private lastHpMode: string | null = null;
 
   protected shouldUpdate(changedProps: PropertyValues): boolean {
     // Always update on config changes
@@ -393,7 +395,7 @@ export class HeatPumpFlowCard extends LitElement {
 
   private getHeatPumpState(): HeatPumpState {
     const cfg = this.config.heat_pump || {};
-    const state = {
+    return {
       power: this.getStateValue(cfg.power_entity) || 0,
       thermal: this.getStateValue(cfg.thermal_entity) || 0,
       cop: this.getStateValue(cfg.cop_entity) || 0,
@@ -409,13 +411,6 @@ export class HeatPumpFlowCard extends LitElement {
       cost: this.getStateValue(cfg.cost_entity),
       runtime: this.getStateValue(cfg.runtime_entity),
     };
-
-    // DEBUG: Log heat pump mode
-    console.log('HP Mode Entity:', cfg.mode_entity);
-    console.log('HP Mode:', state.mode);
-    console.log('HP Power:', state.power);
-
-    return state;
   }
 
   private getStateString(entityId: string | undefined): string | undefined {
@@ -457,12 +452,6 @@ export class HeatPumpFlowCard extends LitElement {
     const stateString = this.getStateString(cfg.state_entity);
     // Consider 'on', 'true', '1' as active (DHW mode)
     const isActive = stateString === 'on' || stateString === 'true' || stateString === '1';
-
-    // DEBUG: Log G2 valve entity and state
-    console.log('G2 Valve Entity:', cfg.state_entity);
-    console.log('G2 Valve State String:', stateString);
-    console.log('G2 Valve isActive:', isActive);
-
     return {
       isActive,
     };
@@ -593,10 +582,24 @@ export class HeatPumpFlowCard extends LitElement {
     const dhwState = this.getDHWTankState();
     const g2ValveState = this.getG2ValveState();
 
-    // DEBUG: Log G2 valve state
-    console.log('G2 Valve State:', g2ValveState);
-    console.log('G2 isActive:', g2ValveState.isActive);
-    console.log('Will render:', g2ValveState.isActive ? 'DHW pipes' : 'Heating pipes');
+    // DEBUG: Only log when G2 state or HP mode changes (not on every render)
+    if (this.lastG2State !== g2ValveState.isActive) {
+      console.log('═══════════════════════════════════════');
+      console.log('🔄 G2 VALVE STATE CHANGED');
+      console.log('G2 isActive:', g2ValveState.isActive);
+      console.log('Will render:', g2ValveState.isActive ? '🔵 DHW pipes' : '🔴 Heating pipes');
+      this.lastG2State = g2ValveState.isActive;
+      console.log('═══════════════════════════════════════');
+    }
+
+    if (this.lastHpMode !== hpState.mode) {
+      console.log('═══════════════════════════════════════');
+      console.log('⚡ HP MODE CHANGED');
+      console.log('HP Mode:', hpState.mode || '(undefined)');
+      console.log('HP Power:', hpState.power, 'W');
+      this.lastHpMode = hpState.mode || null;
+      console.log('═══════════════════════════════════════');
+    }
 
     // Calculate pipe colors based on temperature delta
     const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
@@ -609,9 +612,6 @@ export class HeatPumpFlowCard extends LitElement {
     const bufferSupplyColor = hvacPipeColors.hotPipe;
     const hvacReturnColor = hvacPipeColors.coldPipe;
     const dhwCoilColor = dhwPipeColors.hotPipe;
-
-    // DEBUG: Log pipe colors
-    console.log('Pipe colors:', { hpOutletColor, hpInletColor, dhwCoilColor });
 
     return html`
       <ha-card>
