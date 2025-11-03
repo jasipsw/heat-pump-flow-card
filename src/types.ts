@@ -71,6 +71,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
 
   // Animation Configuration
   animation?: {
+    enabled?: boolean;          // Enable/disable all animations (default: true)
     min_flow_rate?: number;     // SLOW animation duration in seconds (used at low flow)
     max_flow_rate?: number;     // FAST animation duration in seconds (used at high flow)
     max_flow_rate_value?: number;  // Flow rate (L/min) that triggers fastest animation (default: 50)
