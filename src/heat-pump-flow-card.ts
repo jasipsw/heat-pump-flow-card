@@ -194,14 +194,18 @@ export class HeatPumpFlowCard extends LitElement {
   private fanRotation = 0;
   private lastFanRotation = -1; // Track last applied rotation to avoid redundant updates
   private cachedFanSpeed = 0;
+  private cachedFanBlades: Element | null = null; // Cache fan blades element
   private cachedFlowConfig: Record<string, { flowRate: number; temp: number; duration: number; color: string }> = {};
 
   private startFanAnimation(): void {
     const animate = () => {
-      const fanBlades = this.shadowRoot?.querySelector('#fan-blades');
-      if (!fanBlades) {
-        requestAnimationFrame(animate);
-        return;
+      // Cache fan blades element on first access, reuse thereafter
+      if (!this.cachedFanBlades) {
+        this.cachedFanBlades = this.shadowRoot?.querySelector('#fan-blades') || null;
+        if (!this.cachedFanBlades) {
+          requestAnimationFrame(animate);
+          return;
+        }
       }
 
       // Only rotate if fan is running (speed > 0)
@@ -215,7 +219,7 @@ export class HeatPumpFlowCard extends LitElement {
         // Only update DOM if rotation changed by at least 1 degree (reduces updates by ~6x)
         const roundedRotation = Math.round(this.fanRotation);
         if (roundedRotation !== this.lastFanRotation) {
-          fanBlades.setAttribute('transform', `rotate(${this.fanRotation} 60 40)`);
+          this.cachedFanBlades.setAttribute('transform', `rotate(${this.fanRotation} 60 40)`);
           this.lastFanRotation = roundedRotation;
         }
       }
@@ -276,19 +280,46 @@ export class HeatPumpFlowCard extends LitElement {
   private animationFrameId?: number;
   private frameCount = 0;
 
+  // Cache DOM elements and calculations to avoid 1,200+ queries per second
+  private cachedCircles: SVGCircleElement[] = [];
+  private cachedPaths: Map<string, { element: SVGPathElement; length: number }> = new Map();
+
+  private cacheDOMReferences(): void {
+    // Cache all circle elements
+    const circles = this.shadowRoot?.querySelectorAll('circle[data-path-id]');
+    this.cachedCircles = circles ? Array.from(circles) as SVGCircleElement[] : [];
+
+    // Cache all path elements and their lengths
+    const pathIds = ['hp-to-buffer-path', 'buffer-to-hp-path', 'buffer-to-hvac-path', 'hvac-to-buffer-path'];
+    this.cachedPaths.clear();
+
+    pathIds.forEach(pathId => {
+      const path = this.shadowRoot?.querySelector(`#${pathId}`) as SVGPathElement;
+      if (path) {
+        this.cachedPaths.set(pathId, {
+          element: path,
+          length: path.getTotalLength()
+        });
+      }
+    });
+  }
+
   private startAnimationLoop(): void {
     const animate = () => {
-      const circles = this.shadowRoot?.querySelectorAll('circle[data-path-id]');
-      if (!circles || circles.length === 0) {
-        this.animationFrameId = requestAnimationFrame(animate);
-        return;
+      // Use cached circles instead of querying every frame
+      if (this.cachedCircles.length === 0) {
+        this.cacheDOMReferences();
+        if (this.cachedCircles.length === 0) {
+          this.animationFrameId = requestAnimationFrame(animate);
+          return;
+        }
       }
 
       const time = Date.now() / 1000;
 
-      circles.forEach((circle) => {
-        const pathId = (circle as SVGCircleElement).dataset.pathId;
-        const index = parseInt((circle as SVGCircleElement).dataset.index || '0');
+      this.cachedCircles.forEach((circle) => {
+        const pathId = circle.dataset.pathId;
+        const index = parseInt(circle.dataset.index || '0');
 
         if (!pathId) return;
 
@@ -296,10 +327,11 @@ export class HeatPumpFlowCard extends LitElement {
         const config = this.cachedFlowConfig[pathId];
         if (!config) return;
 
-        const path = this.shadowRoot?.querySelector(`#${pathId}`) as SVGPathElement;
-        if (!path) return;
+        // Use cached path and length instead of querying every frame
+        const pathCache = this.cachedPaths.get(pathId);
+        if (!pathCache) return;
 
-        const pathLength = path.getTotalLength();
+        const pathLength = pathCache.length;
 
         // Update color only if it changed (avoid expensive setAttribute calls at 60fps)
         const currentColor = circle.getAttribute('fill');
@@ -319,7 +351,8 @@ export class HeatPumpFlowCard extends LitElement {
         const progress = ((time + delay) % config.duration) / config.duration;
         const distance = progress * pathLength;
 
-        const point = path.getPointAtLength(distance);
+        // Use cached path element
+        const point = pathCache.element.getPointAtLength(distance);
 
         // Use setAttribute for SVG circles (CSS transforms don't work reliably with SVG)
         circle.setAttribute('cx', point.x.toString());
