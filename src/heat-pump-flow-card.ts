@@ -45,6 +45,7 @@ export class HeatPumpFlowCard extends LitElement {
     this.config = {
       ...restConfig,
       animation: {
+        enabled: true,
         min_flow_rate: 5,
         max_flow_rate: 1,
         max_flow_rate_value: 50,
@@ -179,16 +180,19 @@ export class HeatPumpFlowCard extends LitElement {
   }
 
   protected firstUpdated(): void {
-    // Create circles using DOM manipulation instead of Lit templates
-    this.createFlowDots();
+    // Only create dots and start animations if enabled
+    if (this.config.animation.enabled) {
+      // Create circles using DOM manipulation instead of Lit templates
+      this.createFlowDots();
 
-    // Start animations
-    setTimeout(() => {
-      this.startAnimationLoop();
-      if (this.config.heat_pump_visual?.animate_fan) {
-        this.startFanAnimation();
-      }
-    }, 100);
+      // Start animations
+      setTimeout(() => {
+        this.startAnimationLoop();
+        if (this.config.heat_pump_visual?.animate_fan) {
+          this.startFanAnimation();
+        }
+      }, 100);
+    }
   }
 
   private fanRotation = 0;
