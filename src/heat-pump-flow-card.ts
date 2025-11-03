@@ -116,8 +116,8 @@ export class HeatPumpFlowCard extends LitElement {
     if (changedProps.has('hass')) {
       const now = Date.now();
       if (now - this.lastRenderTime < 1000) {
-        // Still update cached values for animation, but don't re-render
-        this.updateCachedValues();
+        // Still update CSS animation variables even when not re-rendering
+        this.updateAnimationVariables();
         return false;
       }
       this.lastRenderTime = now;
@@ -126,113 +126,26 @@ export class HeatPumpFlowCard extends LitElement {
     return super.shouldUpdate(changedProps);
   }
 
-  private updateCachedValues(): void {
-    if (!this.hass) return;
-
-    // Update cached values for animation performance (avoid reading state 60fps)
-    const hpState = this.getHeatPumpState();
-    const hvacState = this.getHVACState();
-    const bufferState = this.getBufferTankState();
-
-    this.cachedFanSpeed = hpState.fanSpeed || 0;
-
-    // Cache flow configuration for each path
-    const useTempColor = this.config.animation.use_temp_color;
-    const fixedColor = this.config.animation.dot_color;
-
-    const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
-    const hvacPipeColors = this.getPipeColors(bufferState.supplyTemp, hvacState.returnTemp, hvacState.flowRate);
-
-    this.cachedFlowConfig = {
-      'hp-to-buffer-path': {
-        flowRate: hpState.flowRate,
-        temp: hpState.outletTemp,
-        duration: this.getAnimationDuration(hpState.flowRate),
-        color: useTempColor ? hpPipeColors.hotPipe : fixedColor!
-      },
-      'buffer-to-hp-path': {
-        flowRate: hpState.flowRate,
-        temp: hpState.inletTemp,
-        duration: this.getAnimationDuration(hpState.flowRate),
-        color: useTempColor ? hpPipeColors.coldPipe : fixedColor!
-      },
-      'buffer-to-hvac-path': {
-        flowRate: hvacState.flowRate,
-        temp: bufferState.supplyTemp,
-        duration: this.getAnimationDuration(hvacState.flowRate),
-        color: useTempColor ? hvacPipeColors.hotPipe : fixedColor!
-      },
-      'hvac-to-buffer-path': {
-        flowRate: hvacState.flowRate,
-        temp: hvacState.returnTemp,
-        duration: this.getAnimationDuration(hvacState.flowRate),
-        color: useTempColor ? hvacPipeColors.coldPipe : fixedColor!
-      }
-    };
-  }
-
   protected updated(changedProps: PropertyValues): void {
     super.updated(changedProps);
     if (changedProps.has('hass') && this.hass) {
-      this.updateAnimations();
-      this.updateCachedValues();
+      // Update CSS animation variables (CSS handles the actual animation loop)
+      this.updateAnimationVariables();
     }
   }
 
   protected firstUpdated(): void {
-    // Only create dots and start animations if enabled
+    // Only create dots if animations enabled (CSS handles animation automatically)
     if (this.config.animation.enabled) {
-      // Create circles using DOM manipulation instead of Lit templates
       this.createFlowDots();
-
-      // Start animations
+      // Initial animation variable setup
       setTimeout(() => {
-        this.startAnimationLoop();
-        if (this.config.heat_pump_visual?.animate_fan) {
-          this.startFanAnimation();
-        }
+        this.updateAnimationVariables();
       }, 100);
     }
   }
 
-  private fanRotation = 0;
-  private lastFanRotation = -1; // Track last applied rotation to avoid redundant updates
-  private cachedFanSpeed = 0;
-  private cachedFanBlades: Element | null = null; // Cache fan blades element
-  private cachedFlowConfig: Record<string, { flowRate: number; temp: number; duration: number; color: string }> = {};
-
-  private startFanAnimation(): void {
-    const animate = () => {
-      // Cache fan blades element on first access, reuse thereafter
-      if (!this.cachedFanBlades) {
-        this.cachedFanBlades = this.shadowRoot?.querySelector('#fan-blades') || null;
-        if (!this.cachedFanBlades) {
-          requestAnimationFrame(animate);
-          return;
-        }
-      }
-
-      // Only rotate if fan is running (speed > 0)
-      if (this.cachedFanSpeed > 0) {
-        // Rotation speed based on fan speed (0-100%)
-        // At 100% fan speed, complete rotation every ~1 second (360deg/s)
-        // At 50% fan speed, every ~2 seconds (180deg/s)
-        const rotationSpeed = (this.cachedFanSpeed / 100) * 6; // degrees per frame at 60fps
-        this.fanRotation = (this.fanRotation + rotationSpeed) % 360;
-
-        // Only update DOM if rotation changed by at least 1 degree (reduces updates by ~6x)
-        const roundedRotation = Math.round(this.fanRotation);
-        if (roundedRotation !== this.lastFanRotation) {
-          this.cachedFanBlades.setAttribute('transform', `rotate(${this.fanRotation} 60 40)`);
-          this.lastFanRotation = roundedRotation;
-        }
-      }
-
-      requestAnimationFrame(animate);
-    };
-
-    animate();
-  }
+  // No more JavaScript animation loops - CSS handles everything!
 
   private createFlowDots(): void {
     const svg = this.shadowRoot?.querySelector('svg');
@@ -242,137 +155,154 @@ export class HeatPumpFlowCard extends LitElement {
     const bufferState = this.getBufferTankState();
     const hvacState = this.getHVACState();
 
-    // Determine dot colors based on configuration
-    const useTempColor = this.config.animation.use_temp_color;
-    const fixedColor = this.config.animation.dot_color;
-
-    const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
-    const hvacPipeColors = this.getPipeColors(bufferState.supplyTemp, hvacState.returnTemp, hvacState.flowRate);
-
-    const paths = [
-      { id: 'hp-to-buffer-path', color: useTempColor ? hpPipeColors.hotPipe : fixedColor },
-      { id: 'buffer-to-hp-path', color: useTempColor ? hpPipeColors.coldPipe : fixedColor },
-      { id: 'buffer-to-hvac-path', color: useTempColor ? hvacPipeColors.hotPipe : fixedColor },
-      { id: 'hvac-to-buffer-path', color: useTempColor ? hvacPipeColors.coldPipe : fixedColor }
+    // Get path elements to extract path data for CSS offset-path
+    const pathConfigs = [
+      {
+        id: 'hp-to-buffer-path',
+        flowRate: hpState.flowRate,
+        supplyTemp: hpState.outletTemp,
+        returnTemp: hpState.inletTemp
+      },
+      {
+        id: 'buffer-to-hp-path',
+        flowRate: hpState.flowRate,
+        supplyTemp: hpState.outletTemp,
+        returnTemp: hpState.inletTemp
+      },
+      {
+        id: 'buffer-to-hvac-path',
+        flowRate: hvacState.flowRate,
+        supplyTemp: bufferState.supplyTemp,
+        returnTemp: hvacState.returnTemp
+      },
+      {
+        id: 'hvac-to-buffer-path',
+        flowRate: hvacState.flowRate,
+        supplyTemp: bufferState.supplyTemp,
+        returnTemp: hvacState.returnTemp
+      }
     ];
 
-    paths.forEach(pathInfo => {
-      for (let i = 0; i < 5; i++) {
+    pathConfigs.forEach((pathConfig, pathIndex) => {
+      const pathElement = this.shadowRoot?.querySelector(`#${pathConfig.id}`) as SVGPathElement;
+      if (!pathElement) return;
+
+      // Get path data for CSS offset-path
+      const pathData = pathElement.getAttribute('d');
+      if (!pathData) return;
+
+      // Calculate color and duration
+      const pipeColors = this.getPipeColors(pathConfig.supplyTemp, pathConfig.returnTemp, pathConfig.flowRate);
+      const isHotPipe = pathIndex % 2 === 0; // Even indices are hot pipes
+      const dotColor = this.config.animation.use_temp_color
+        ? (isHotPipe ? pipeColors.hotPipe : pipeColors.coldPipe)
+        : this.config.animation.dot_color;
+
+      const duration = this.getAnimationDuration(pathConfig.flowRate);
+      const isFlowing = pathConfig.flowRate > 0;
+
+      // Create 3 dots per path (reduced from 5 for better performance)
+      for (let i = 0; i < 3; i++) {
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circle.setAttribute('data-path-id', pathInfo.id);
-        circle.setAttribute('data-index', i.toString());
+
+        // Add CSS class for animation
+        circle.classList.add('flow-dot');
+        circle.setAttribute('data-path-id', pathConfig.id);
+
+        // Position at origin (CSS offset-path will move it)
         circle.setAttribute('cx', '0');
         circle.setAttribute('cy', '0');
-
-        // Apply configured styling
         circle.setAttribute('r', this.config.animation.dot_size.toString());
-        circle.setAttribute('fill', pathInfo.color!);
+        circle.setAttribute('fill', dotColor!);
         circle.setAttribute('stroke', this.config.animation.dot_stroke_color!);
         circle.setAttribute('stroke-width', this.config.animation.dot_stroke_width!.toString());
-        circle.setAttribute('opacity', this.config.animation.dot_opacity!.toString());
 
-        // Conditionally add shadow
-        if (this.config.animation.dot_shadow) {
-          circle.setAttribute('filter', 'drop-shadow(0px 0px 2px rgba(0,0,0,0.3))');
-        }
+        // Set CSS variables for animation control
+        const delay = (i / 3) * duration; // Space dots evenly
+        circle.style.setProperty('--dot-path', `path('${pathData}')`);
+        circle.style.setProperty('--dot-duration', `${duration}s`);
+        circle.style.setProperty('--dot-delay', `${delay}s`);
+        circle.style.setProperty('--dot-opacity', isFlowing ? this.config.animation.dot_opacity!.toString() : '0');
 
         svg.appendChild(circle);
       }
     });
   }
 
-  private animationFrameId?: number;
-  private frameCount = 0;
+  // Update CSS animation variables when state changes (CSS handles the actual animation)
+  private updateAnimationVariables(): void {
+    if (!this.config.animation.enabled) return;
 
-  // Cache DOM elements and calculations to avoid 1,200+ queries per second
-  private cachedCircles: SVGCircleElement[] = [];
-  private cachedPaths: Map<string, { element: SVGPathElement; length: number }> = new Map();
+    const hpState = this.getHeatPumpState();
+    const bufferState = this.getBufferTankState();
+    const hvacState = this.getHVACState();
 
-  private cacheDOMReferences(): void {
-    // Cache all circle elements
-    const circles = this.shadowRoot?.querySelectorAll('circle[data-path-id]');
-    this.cachedCircles = circles ? Array.from(circles) as SVGCircleElement[] : [];
-
-    // Cache all path elements and their lengths
-    const pathIds = ['hp-to-buffer-path', 'buffer-to-hp-path', 'buffer-to-hvac-path', 'hvac-to-buffer-path'];
-    this.cachedPaths.clear();
-
-    pathIds.forEach(pathId => {
-      const path = this.shadowRoot?.querySelector(`#${pathId}`) as SVGPathElement;
-      if (path) {
-        this.cachedPaths.set(pathId, {
-          element: path,
-          length: path.getTotalLength()
-        });
+    const pathConfigs = [
+      {
+        id: 'hp-to-buffer-path',
+        flowRate: hpState.flowRate,
+        supplyTemp: hpState.outletTemp,
+        returnTemp: hpState.inletTemp
+      },
+      {
+        id: 'buffer-to-hp-path',
+        flowRate: hpState.flowRate,
+        supplyTemp: hpState.outletTemp,
+        returnTemp: hpState.inletTemp
+      },
+      {
+        id: 'buffer-to-hvac-path',
+        flowRate: hvacState.flowRate,
+        supplyTemp: bufferState.supplyTemp,
+        returnTemp: hvacState.returnTemp
+      },
+      {
+        id: 'hvac-to-buffer-path',
+        flowRate: hvacState.flowRate,
+        supplyTemp: bufferState.supplyTemp,
+        returnTemp: hvacState.returnTemp
       }
-    });
-  }
+    ];
 
-  private startAnimationLoop(): void {
-    const animate = () => {
-      // Use cached circles instead of querying every frame
-      if (this.cachedCircles.length === 0) {
-        this.cacheDOMReferences();
-        if (this.cachedCircles.length === 0) {
-          this.animationFrameId = requestAnimationFrame(animate);
-          return;
-        }
-      }
+    pathConfigs.forEach((pathConfig, pathIndex) => {
+      const dots = this.shadowRoot?.querySelectorAll(`.flow-dot[data-path-id="${pathConfig.id}"]`);
+      if (!dots) return;
 
-      const time = Date.now() / 1000;
+      const pipeColors = this.getPipeColors(pathConfig.supplyTemp, pathConfig.returnTemp, pathConfig.flowRate);
+      const isHotPipe = pathIndex % 2 === 0;
+      const dotColor = this.config.animation.use_temp_color
+        ? (isHotPipe ? pipeColors.hotPipe : pipeColors.coldPipe)
+        : this.config.animation.dot_color;
 
-      this.cachedCircles.forEach((circle) => {
-        const pathId = circle.dataset.pathId;
-        const index = parseInt(circle.dataset.index || '0');
+      const duration = this.getAnimationDuration(pathConfig.flowRate);
+      const isFlowing = pathConfig.flowRate > 0;
 
-        if (!pathId) return;
-
-        // Use cached config (updated only when HA state changes, not 60fps)
-        const config = this.cachedFlowConfig[pathId];
-        if (!config) return;
-
-        // Use cached path and length instead of querying every frame
-        const pathCache = this.cachedPaths.get(pathId);
-        if (!pathCache) return;
-
-        const pathLength = pathCache.length;
-
-        // Update color only if it changed (avoid expensive setAttribute calls at 60fps)
-        const currentColor = circle.getAttribute('fill');
-        if (currentColor !== config.color) {
-          circle.setAttribute('fill', config.color);
-        }
-
-        // Hide/show dots based on flow (use configured opacity when visible)
-        const currentOpacity = circle.getAttribute('opacity');
-        const targetOpacity = config.flowRate <= 0 ? '0' : this.config.animation.dot_opacity!.toString();
-        if (currentOpacity !== targetOpacity) {
-          circle.setAttribute('opacity', targetOpacity);
-        }
-
-        // Space dots evenly as a percentage of duration (20% apart for 5 dots)
-        const delay = index * 0.2 * config.duration;
-        const progress = ((time + delay) % config.duration) / config.duration;
-        const distance = progress * pathLength;
-
-        // Use cached path element
-        const point = pathCache.element.getPointAtLength(distance);
-
-        // Use setAttribute for SVG circles (CSS transforms don't work reliably with SVG)
-        circle.setAttribute('cx', point.x.toString());
-        circle.setAttribute('cy', point.y.toString());
+      dots.forEach((dot) => {
+        (dot as SVGCircleElement).setAttribute('fill', dotColor!);
+        (dot as SVGCircleElement).style.setProperty('--dot-duration', `${duration}s`);
+        (dot as SVGCircleElement).style.setProperty('--dot-opacity', isFlowing ? this.config.animation.dot_opacity!.toString() : '0');
       });
+    });
 
-      this.animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animate();
+    // Update fan animation speed
+    this.updateFanAnimation();
   }
 
-  disconnectedCallback(): void {
-    super.disconnectedCallback();
-    if (this.animationFrameId) {
-      cancelAnimationFrame(this.animationFrameId);
+  private updateFanAnimation(): void {
+    const fanBlades = this.shadowRoot?.querySelector('#fan-blades');
+    if (!fanBlades || !this.config.heat_pump_visual?.animate_fan) return;
+
+    const hpState = this.getHeatPumpState();
+    const fanSpeed = hpState.fanSpeed || 0;
+
+    if (fanSpeed > 0) {
+      // Add CSS animation class
+      fanBlades.classList.add('fan-rotating');
+      // At 100% speed: 1 second per rotation, at 50%: 2 seconds, etc.
+      const duration = fanSpeed > 0 ? (100 / fanSpeed) : 999;
+      (fanBlades as SVGElement).style.setProperty('--fan-duration', `${duration}s`);
+    } else {
+      fanBlades.classList.remove('fan-rotating');
     }
   }
 
@@ -552,35 +482,7 @@ export class HeatPumpFlowCard extends LitElement {
     return cfg.min_flow_rate! - (normalized * (cfg.min_flow_rate! - cfg.max_flow_rate!));
   }
 
-  private updateAnimations(): void {
-    const hpState = this.getHeatPumpState();
-    const hvacState = this.getHVACState();
-
-    // Update flow speeds based on flow rates
-    this.updateFlowSpeed(this.hpToBufferFlow, hpState.flowRate);
-    this.updateFlowSpeed(this.bufferToHpFlow, hpState.flowRate);
-    this.updateFlowSpeed(this.bufferToHvacFlow, hvacState.flowRate);
-    this.updateFlowSpeed(this.hvacToBufferFlow, hvacState.flowRate);
-  }
-
-  private updateFlowSpeed(group: SVGGElement | undefined, flowRate: number): void {
-    if (!group) return;
-
-    const duration = this.getAnimationDuration(flowRate);
-    const circles = group.querySelectorAll('circle');
-
-    circles.forEach((circle, index) => {
-      // Control visibility based on flow rate
-      if (flowRate <= 0) {
-        circle.style.opacity = '0';
-      } else {
-        circle.style.opacity = '0.9';
-      }
-    });
-
-    // Note: Changing animation duration dynamically doesn't work well with declarative SVG
-    // The animations will run at the speed defined in the template
-  }
+  // Old animation methods removed - CSS handles all animations now!
 
   protected render() {
     if (!this.config || !this.hass) {
