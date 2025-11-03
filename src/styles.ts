@@ -29,9 +29,40 @@ export const cardStyles = css`
     font-family: var(--paper-font-body1_-_font-family);
   }
 
-  /* Animation for dots */
-  circle {
+  /* CSS-based flow dot animations (hardware-accelerated) */
+  .flow-dot {
+    offset-path: var(--dot-path);
+    offset-rotate: 0deg;
+    animation: flow-along-path linear infinite;
+    animation-duration: var(--dot-duration, 5s);
+    animation-delay: var(--dot-delay, 0s);
+    opacity: var(--dot-opacity, 1);
     filter: drop-shadow(0 0 4px currentColor);
+  }
+
+  @keyframes flow-along-path {
+    from {
+      offset-distance: 0%;
+    }
+    to {
+      offset-distance: 100%;
+    }
+  }
+
+  /* Fan rotation animation */
+  .fan-rotating {
+    transform-origin: 60px 40px;
+    animation: fan-spin linear infinite;
+    animation-duration: var(--fan-duration, 1s);
+  }
+
+  @keyframes fan-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   /* Pipe styling */
