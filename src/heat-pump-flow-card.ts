@@ -600,7 +600,7 @@ export class HeatPumpFlowCard extends LitElement {
               <circle cx="60" cy="40" r="30" fill="#34495e" stroke="${this.getHeatPumpColor(hpState)}" stroke-width="2"/>
 
               <!-- Fan blades (will be animated) -->
-              <g id="fan-blades" transform-origin="60 40">
+              <g id="fan-blades">
                 <!-- 4 fan blades -->
                 <path d="M 60 10 Q 70 30, 60 40 Q 50 30, 60 10" fill="#7f8c8d" opacity="0.8"/>
                 <path d="M 90 40 Q 70 50, 60 40 Q 70 30, 90 40" fill="#7f8c8d" opacity="0.8"/>
