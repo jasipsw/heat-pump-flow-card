@@ -885,6 +885,11 @@ export class HeatPumpFlowCard extends LitElement {
               </text>
             </g>
 
+            <!-- Version display (upper right corner) -->
+            <text x="790" y="15" text-anchor="end" fill="#95a5a6" font-size="10" opacity="0.7">
+              v${CARD_VERSION}
+            </text>
+
             <!-- Flow dots created programmatically in firstUpdated() -->
           </svg>
         </div>
