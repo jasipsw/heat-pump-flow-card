@@ -165,6 +165,7 @@ export class HeatPumpFlowCard extends LitElement {
   }
 
   private fanRotation = 0;
+  private lastFanRotation = -1; // Track last applied rotation to avoid redundant updates
   private cachedFanSpeed = 0;
   private cachedFlowConfig: Record<string, { flowRate: number; temp: number; duration: number; color: string }> = {};
 
@@ -184,7 +185,12 @@ export class HeatPumpFlowCard extends LitElement {
         const rotationSpeed = (this.cachedFanSpeed / 100) * 6; // degrees per frame at 60fps
         this.fanRotation = (this.fanRotation + rotationSpeed) % 360;
 
-        fanBlades.setAttribute('transform', `rotate(${this.fanRotation} 60 40)`);
+        // Only update DOM if rotation changed by at least 1 degree (reduces updates by ~6x)
+        const roundedRotation = Math.round(this.fanRotation);
+        if (roundedRotation !== this.lastFanRotation) {
+          fanBlades.setAttribute('transform', `rotate(${this.fanRotation} 60 40)`);
+          this.lastFanRotation = roundedRotation;
+        }
       }
 
       requestAnimationFrame(animate);
@@ -288,8 +294,8 @@ export class HeatPumpFlowCard extends LitElement {
 
         const point = path.getPointAtLength(distance);
 
-        circle.setAttribute('cx', point.x.toString());
-        circle.setAttribute('cy', point.y.toString());
+        // Use CSS transform for hardware-accelerated positioning (much faster than setAttribute)
+        (circle as SVGCircleElement).style.transform = `translate(${point.x}px, ${point.y}px)`;
       });
 
       this.animationFrameId = requestAnimationFrame(animate);
