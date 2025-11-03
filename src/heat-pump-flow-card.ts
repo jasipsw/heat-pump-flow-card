@@ -154,32 +154,68 @@ export class HeatPumpFlowCard extends LitElement {
     const hpState = this.getHeatPumpState();
     const bufferState = this.getBufferTankState();
     const hvacState = this.getHVACState();
+    const dhwState = this.getDHWTankState();
 
-    // Get path elements to extract path data for CSS offset-path
+    // Create dots for ALL paths (heating and DHW mode)
+    // They'll be shown/hidden based on active mode
     const pathConfigs = [
+      // Heating mode paths
       {
         id: 'hp-to-buffer-path',
         flowRate: hpState.flowRate,
         supplyTemp: hpState.outletTemp,
-        returnTemp: hpState.inletTemp
+        returnTemp: hpState.inletTemp,
+        mode: 'heating'
       },
       {
         id: 'buffer-to-hp-path',
         flowRate: hpState.flowRate,
         supplyTemp: hpState.outletTemp,
-        returnTemp: hpState.inletTemp
+        returnTemp: hpState.inletTemp,
+        mode: 'heating'
       },
       {
         id: 'buffer-to-hvac-path',
         flowRate: hvacState.flowRate,
         supplyTemp: bufferState.supplyTemp,
-        returnTemp: hvacState.returnTemp
+        returnTemp: hvacState.returnTemp,
+        mode: 'both'  // Always visible
       },
       {
         id: 'hvac-to-buffer-path',
         flowRate: hvacState.flowRate,
         supplyTemp: bufferState.supplyTemp,
-        returnTemp: hvacState.returnTemp
+        returnTemp: hvacState.returnTemp,
+        mode: 'both'  // Always visible
+      },
+      // DHW mode paths
+      {
+        id: 'hp-to-g2-path',
+        flowRate: hpState.flowRate,
+        supplyTemp: hpState.outletTemp,
+        returnTemp: hpState.inletTemp,
+        mode: 'dhw'
+      },
+      {
+        id: 'g2-to-dhw-path',
+        flowRate: hpState.flowRate,
+        supplyTemp: dhwState.inletTemp,
+        returnTemp: dhwState.outletTemp,
+        mode: 'dhw'
+      },
+      {
+        id: 'dhw-coil-path',
+        flowRate: hpState.flowRate,
+        supplyTemp: dhwState.inletTemp,
+        returnTemp: dhwState.outletTemp,
+        mode: 'dhw'
+      },
+      {
+        id: 'dhw-to-hp-return-path',
+        flowRate: hpState.flowRate,
+        supplyTemp: hpState.outletTemp,
+        returnTemp: hpState.inletTemp,
+        mode: 'dhw'
       }
     ];
 
@@ -236,31 +272,77 @@ export class HeatPumpFlowCard extends LitElement {
     const hpState = this.getHeatPumpState();
     const bufferState = this.getBufferTankState();
     const hvacState = this.getHVACState();
+    const dhwState = this.getDHWTankState();
+    const g2ValveState = this.getG2ValveState();
 
+    // Define all path configs with mode flags
     const pathConfigs = [
+      // Heating mode paths (only visible when G2 valve not active)
       {
         id: 'hp-to-buffer-path',
         flowRate: hpState.flowRate,
         supplyTemp: hpState.outletTemp,
-        returnTemp: hpState.inletTemp
+        returnTemp: hpState.inletTemp,
+        mode: 'heating',
+        visible: !g2ValveState.isActive
       },
       {
         id: 'buffer-to-hp-path',
         flowRate: hpState.flowRate,
         supplyTemp: hpState.outletTemp,
-        returnTemp: hpState.inletTemp
+        returnTemp: hpState.inletTemp,
+        mode: 'heating',
+        visible: !g2ValveState.isActive
       },
+      // HVAC paths (always visible)
       {
         id: 'buffer-to-hvac-path',
         flowRate: hvacState.flowRate,
         supplyTemp: bufferState.supplyTemp,
-        returnTemp: hvacState.returnTemp
+        returnTemp: hvacState.returnTemp,
+        mode: 'both',
+        visible: true
       },
       {
         id: 'hvac-to-buffer-path',
         flowRate: hvacState.flowRate,
         supplyTemp: bufferState.supplyTemp,
-        returnTemp: hvacState.returnTemp
+        returnTemp: hvacState.returnTemp,
+        mode: 'both',
+        visible: true
+      },
+      // DHW mode paths (only visible when G2 valve active)
+      {
+        id: 'hp-to-g2-path',
+        flowRate: hpState.flowRate,
+        supplyTemp: hpState.outletTemp,
+        returnTemp: hpState.inletTemp,
+        mode: 'dhw',
+        visible: g2ValveState.isActive
+      },
+      {
+        id: 'g2-to-dhw-path',
+        flowRate: hpState.flowRate,
+        supplyTemp: dhwState.inletTemp,
+        returnTemp: dhwState.outletTemp,
+        mode: 'dhw',
+        visible: g2ValveState.isActive
+      },
+      {
+        id: 'dhw-coil-path',
+        flowRate: hpState.flowRate,
+        supplyTemp: dhwState.inletTemp,
+        returnTemp: dhwState.outletTemp,
+        mode: 'dhw',
+        visible: g2ValveState.isActive
+      },
+      {
+        id: 'dhw-to-hp-return-path',
+        flowRate: hpState.flowRate,
+        supplyTemp: hpState.outletTemp,
+        returnTemp: hpState.inletTemp,
+        mode: 'dhw',
+        visible: g2ValveState.isActive
       }
     ];
 
@@ -277,10 +359,13 @@ export class HeatPumpFlowCard extends LitElement {
       const duration = this.getAnimationDuration(pathConfig.flowRate);
       const isFlowing = pathConfig.flowRate > 0;
 
+      // Hide dots if this path is not visible in current mode, or if not flowing
+      const shouldShow = pathConfig.visible && isFlowing;
+
       dots.forEach((dot) => {
         (dot as SVGCircleElement).setAttribute('fill', dotColor!);
         (dot as SVGCircleElement).style.setProperty('--dot-duration', `${duration}s`);
-        (dot as SVGCircleElement).style.setProperty('--dot-opacity', isFlowing ? this.config.animation.dot_opacity!.toString() : '0');
+        (dot as SVGCircleElement).style.setProperty('--dot-opacity', shouldShow ? this.config.animation.dot_opacity!.toString() : '0');
       });
     });
 
