@@ -16,6 +16,14 @@ None
 
 ## Version History
 
+## v0.20.15 (2025-11-07)
+**Fixed: Brand logo not rendering due to nested html template**
+- Changed from nested `html` template to opacity-based conditional rendering
+- Image element now always rendered with opacity 0 when no logo_url configured
+- Fixes issue where logo element was not created in DOM
+- Logo now displays correctly at 16x16px in upper left corner
+- Resolves Lit SVG rendering limitation with nested template wrappers
+
 ## v0.20.14 (2025-11-07)
 **Updated: Brand logo size to favicon standard (16x16px)**
 - Increased logo from 12x12px to 16x16px (favicon standard size)
