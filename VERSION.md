@@ -16,6 +16,15 @@ None
 
 ## Version History
 
+## v0.21.6 (2025-11-07)
+**Fixed: DHW pipe horizontal separation**
+
+Critical fix for overlapping DHW pipes:
+- Fixed DHW supply pipe: connects to tank at x=418 (actual coil inlet position)
+- Fixed DHW return pipe: exits tank at x=418, routes left to x=370 before going down
+- Horizontal separation between supply (x=348 vertical run) and return (x=370 vertical run)
+- Updated coil animation path to match actual coil inlet/outlet positions
+
 ## v0.21.5 (2025-11-07)
 **Fixed: G2 valve positioning, aux heater animation, and pipe spacing**
 
