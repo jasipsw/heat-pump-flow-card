@@ -16,6 +16,11 @@ None
 
 ## Version History
 
+## v0.20.10 (2025-11-07)
+**Adjusted: G2 valve size further reduced**
+- Scaled G2 valve down from 0.85 to 0.7 for better proportions
+- 30% smaller than original size
+
 ## v0.20.9 (2025-11-07)
 **Fixed: Brand logo visibility, G2 valve position and size**
 - Fixed brand logo rendering by removing nested html wrapper (always render with conditional opacity)
