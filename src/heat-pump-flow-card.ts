@@ -798,13 +798,6 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Heat pump body with state-based color -->
               <rect width="120" height="150" rx="10" fill="${this.getHeatPumpColor(hpState)}" fill-opacity="0.2" stroke="${this.getHeatPumpColor(hpState)}" stroke-width="3"/>
 
-              <!-- Brand name (at top, above fan) -->
-              ${this.config.heat_pump?.display_name ? html`
-                <text x="60" y="20" text-anchor="middle" fill="${hpTextColor}" font-size="10" font-weight="bold">
-                  ${this.config.heat_pump.display_name}
-                </text>
-              ` : ''}
-
               <!-- Fan housing -->
               <circle cx="60" cy="40" r="30" fill="#34495e" stroke="${this.getHeatPumpColor(hpState)}" stroke-width="2"/>
 
@@ -818,6 +811,13 @@ export class HeatPumpFlowCard extends LitElement {
                 <!-- Center cap -->
                 <circle cx="60" cy="40" r="8" fill="#2c3e50"/>
               </g>
+
+              <!-- Brand name (rendered after fan so it appears on top) -->
+              ${this.config.heat_pump?.display_name ? html`
+                <text x="60" y="20" text-anchor="middle" fill="${hpTextColor}" font-size="10" font-weight="bold">
+                  ${this.config.heat_pump.display_name}
+                </text>
+              ` : ''}
 
               <!-- Heat pump label -->
               <text x="60" y="85" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
@@ -1053,6 +1053,22 @@ export class HeatPumpFlowCard extends LitElement {
   preview: true,
   documentationURL: 'https://github.com/YOUR_USERNAME/heat-pump-flow-card',
 });
+
+// Debug helper: Add findHeatPumpCard to window for console debugging
+(window as any).findHeatPumpCard = function(root: Document | ShadowRoot = document): HeatPumpFlowCard | null {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
+  let node: Node | null;
+  while (node = walker.nextNode()) {
+    if ((node as Element).tagName === 'HEAT-PUMP-FLOW-CARD') {
+      return node as HeatPumpFlowCard;
+    }
+    if ((node as Element).shadowRoot) {
+      const found = (window as any).findHeatPumpCard((node as Element).shadowRoot);
+      if (found) return found;
+    }
+  }
+  return null;
+};
 
 declare global {
   interface HTMLElementTagNameMap {
