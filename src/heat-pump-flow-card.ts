@@ -679,10 +679,10 @@ export class HeatPumpFlowCard extends LitElement {
       const b = Math.round(grayB + (hotB - grayB) * auxIntensity);
       auxCylinderColor = `rgb(${r}, ${g}, ${b})`;
     }
-    // Glow intensity - blur radius from 0 to 8 for SVG filter
-    const auxGlowBlur = auxIntensity * 8;
-    // Glow opacity for filter
-    const auxGlowOpacity = auxIntensity;
+    // Glow intensity - stronger blur radius from 0 to 20 for SVG filter
+    const auxGlowBlur = auxIntensity * 20;
+    // Glow opacity for filter - boosted for visibility
+    const auxGlowOpacity = Math.min(auxIntensity * 1.5, 1.0);
 
     return html`
       <ha-card>
@@ -692,12 +692,23 @@ export class HeatPumpFlowCard extends LitElement {
           <svg viewBox="0 0 800 700" xmlns="http://www.w3.org/2000/svg">
             <!-- SVG Filter Definitions -->
             <defs>
-              <!-- Dynamic glow filter for aux heater -->
-              <filter id="aux-heater-glow" x="-50%" y="-50%" width="200%" height="200%">
+              <!-- Dynamic glow filter for aux heater with drop shadow -->
+              <filter id="aux-heater-glow" x="-100%" y="-100%" width="300%" height="300%">
+                <!-- Drop shadow for depth -->
+                <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="shadow-blur"/>
+                <feOffset in="shadow-blur" dx="0" dy="2" result="shadow-offset"/>
+                <feFlood flood-color="#000000" flood-opacity="0.4" result="shadow-color"/>
+                <feComposite in="shadow-color" in2="shadow-offset" operator="in" result="shadow"/>
+
+                <!-- Strong glow effect -->
                 <feGaussianBlur in="SourceGraphic" stdDeviation="${auxGlowBlur}" result="blur"/>
-                <feFlood flood-color="#ff4422" flood-opacity="${auxGlowOpacity}" result="color"/>
-                <feComposite in="color" in2="blur" operator="in" result="glow"/>
+                <feFlood flood-color="#ff4422" flood-opacity="${auxGlowOpacity}" result="glow-color"/>
+                <feComposite in="glow-color" in2="blur" operator="in" result="glow"/>
+
+                <!-- Combine shadow, multiple glow layers, and original -->
                 <feMerge>
+                  <feMergeNode in="shadow"/>
+                  <feMergeNode in="glow"/>
                   <feMergeNode in="glow"/>
                   <feMergeNode in="glow"/>
                   <feMergeNode in="SourceGraphic"/>
@@ -745,7 +756,7 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Pipe: DHW outlet to HP return (BOTTOM) - routed away from buffer tank - BEHIND -->
             <path id="dhw-to-hp-return-path"
-                  d="M 418 483 L 300 483 L 300 220 L 180 220"
+                  d="M 418 415 L 300 415 L 300 220 L 180 220"
                   stroke="${g2ValveState.isActive ? hpInletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -761,9 +772,9 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
 
-            <!-- DHW coil spiral path (for flow animation) -->
+            <!-- DHW coil spiral path (for flow animation) - shortened to 40px vertical span -->
             <path id="dhw-coil-path"
-                  d="M 418 375 Q 438 379, 458 375 Q 438 383, 418 388 Q 438 393, 458 388 Q 438 401, 418 406 Q 438 411, 458 406 Q 438 419, 418 424 Q 438 429, 458 424 Q 438 437, 418 442 Q 438 447, 458 442 Q 438 455, 418 460 Q 438 465, 458 460 Q 438 473, 418 478 Q 438 483, 418 483"
+                  d="M 418 375 Q 438 380, 458 375 Q 438 385, 418 390 Q 438 395, 458 390 Q 438 400, 418 405 Q 438 410, 458 405 Q 438 415, 418 415"
                   stroke="none"
                   stroke-width="0"
                   fill="none"
@@ -772,7 +783,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Z-ORDER: Return first (behind), supply on top -->
             <!-- Pipe: HVAC to Buffer (cold return) - 10px gap from buffer - BEHIND -->
             <path id="hvac-to-buffer-path"
-                  d="M 620 220 L 470 220"
+                  d="M 620 220 L 480 220"
                   stroke="${hvacReturnColor}"
                   stroke-width="12"
                   fill="none"
@@ -780,7 +791,7 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Pipe: Buffer to HVAC (hot supply) - 10px gap from buffer - ON TOP -->
             <path id="buffer-to-hvac-path"
-                  d="M 470 180 L 620 180"
+                  d="M 480 180 L 620 180"
                   stroke="${bufferSupplyColor}"
                   stroke-width="12"
                   fill="none"
@@ -811,7 +822,7 @@ export class HeatPumpFlowCard extends LitElement {
             </text>
 
             <!-- Supply temp (top) - above supply pipe, centered horizontally -->
-            <text x="545" y="170" text-anchor="middle" fill="${bufferSupplyColor}"
+            <text x="550" y="170" text-anchor="middle" fill="${bufferSupplyColor}"
                   font-size="${this.config.text_style?.font_size || 11}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
@@ -819,7 +830,7 @@ export class HeatPumpFlowCard extends LitElement {
             </text>
 
             <!-- Flow rate - centered vertically between pipes, centered horizontally -->
-            <text x="545" y="200" text-anchor="middle" fill="#95a5a6"
+            <text x="550" y="200" text-anchor="middle" fill="#95a5a6"
                   font-size="${(this.config.text_style?.font_size || 11) - 1}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="normal">
@@ -827,7 +838,7 @@ export class HeatPumpFlowCard extends LitElement {
             </text>
 
             <!-- Return temp (bottom) - below return pipe, centered horizontally -->
-            <text x="545" y="240" text-anchor="middle" fill="${hvacReturnColor}"
+            <text x="550" y="240" text-anchor="middle" fill="${hvacReturnColor}"
                   font-size="${this.config.text_style?.font_size || 11}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
@@ -1022,8 +1033,8 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Inner cylinder (DHW water - always blue/cold) -->
               <rect x="15" y="25" width="60" height="130" fill="#3498db" opacity="0.3"/>
 
-              <!-- Heating coil inside tank (spiral) - gray when no flow, hot when flowing -->
-              <path d="M 28 45 Q 45 49, 62 45 Q 45 54, 28 58 Q 45 63, 62 58 Q 45 72, 28 77 Q 45 82, 62 77 Q 45 91, 28 96 Q 45 101, 62 96 Q 45 110, 28 115 Q 45 120, 62 115 Q 45 129, 28 134 Q 45 139, 62 134 Q 45 148, 28 153"
+              <!-- Heating coil inside tank (spiral) - gray when no flow, hot when flowing - 40px vertical span -->
+              <path d="M 28 45 Q 45 50, 62 45 Q 45 55, 28 60 Q 45 65, 62 60 Q 45 70, 28 75 Q 45 80, 62 75 Q 45 85, 28 85"
                     stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                     stroke-width="4"
                     fill="none"
@@ -1031,7 +1042,7 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- Coil inlet/outlet markers -->
               <circle cx="28" cy="45" r="3" fill="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"/>
-              <circle cx="28" cy="153" r="3" fill="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"/>
+              <circle cx="28" cy="85" r="3" fill="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"/>
 
               <!-- Structural bands -->
               <line x1="10" y1="55" x2="80" y2="55" stroke="#2c3e50" stroke-width="2"/>
@@ -1063,10 +1074,10 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- Auxiliary Heater - Simplified glowing cylinder -->
-            <!-- Compact inline heater element on horizontal pipe -->
+            <!-- Compact inline heater element on horizontal pipe, centered between HP and G2 -->
             <g id="aux-heater" opacity="${auxHeaterState.enabled ? '1' : '0'}">
               <!-- Heated cylinder - color transitions from gray to red-orange, glows with intensity -->
-              <rect x="225" y="172" width="60" height="16" rx="2" ry="2"
+              <rect x="220" y="172" width="60" height="16" rx="2" ry="2"
                     fill="${auxCylinderColor}"
                     stroke="#2d3748"
                     stroke-width="1.5"
