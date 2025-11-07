@@ -791,14 +791,9 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Heat pump body with state-based color -->
               <rect width="120" height="150" rx="10" fill="${this.getHeatPumpColor(hpState)}" fill-opacity="0.2" stroke="${this.getHeatPumpColor(hpState)}" stroke-width="3"/>
 
-              <!-- Brand logo (if configured) -->
-              ${this.config.heat_pump?.logo_url ? html`
-                <image href="${this.config.heat_pump.logo_url}" x="10" y="5" width="100" height="20" preserveAspectRatio="xMidYMid meet"/>
-              ` : ''}
-
-              <!-- Brand name (if configured) -->
+              <!-- Brand name (at top, above fan) -->
               ${this.config.heat_pump?.display_name ? html`
-                <text x="60" y="${this.config.heat_pump?.logo_url ? '30' : '15'}" text-anchor="middle" fill="${this.getContrastTextColor(this.getHeatPumpColor(hpState))}" font-size="8" font-weight="bold">
+                <text x="60" y="12" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="9" font-weight="bold">
                   ${this.config.heat_pump.display_name}
                 </text>
               ` : ''}
@@ -831,17 +826,19 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- Critical metrics inside HP box (2-column: Input | Output) -->
               ${(() => {
-                const textColor = this.getContrastTextColor(this.getHeatPumpColor(hpState));
+                const bgColor = this.getHeatPumpColor(hpState);
+                const textColor = this.getContrastTextColor(bgColor);
+                const metricsY = hpState.error ? 115 : 100;  // Lower if error shown
                 return html`
                   <!-- Left column: INPUT parameters -->
-                  <text x="8" y="105" fill="${textColor}" font-size="10" font-weight="bold">IN</text>
-                  <text x="8" y="119" fill="${textColor}" font-size="10">${this.formatValue(hpState.power/1000, 1)} kW</text>
-                  <text x="8" y="133" fill="${textColor}" font-size="10">${this.formatValue(hpState.flowRate, 1)} L/m</text>
+                  <text x="8" y="${metricsY}" fill="${textColor}" font-size="10" font-weight="bold">IN</text>
+                  <text x="8" y="${metricsY + 14}" fill="${textColor}" font-size="10">${this.formatValue(hpState.power/1000, 1)} kW</text>
+                  <text x="8" y="${metricsY + 28}" fill="${textColor}" font-size="9">${this.formatValue(hpState.flowRate, 1)} L/m</text>
 
                   <!-- Right column: OUTPUT parameters -->
-                  <text x="62" y="105" fill="${textColor}" font-size="10" font-weight="bold">OUT</text>
-                  <text x="62" y="119" fill="${textColor}" font-size="10">${this.formatValue(hpState.thermal/1000, 1)} kW</text>
-                  <text x="62" y="133" fill="${textColor}" font-size="10">COP ${this.formatValue(hpState.cop, 2)}</text>
+                  <text x="62" y="${metricsY}" fill="${textColor}" font-size="10" font-weight="bold">OUT</text>
+                  <text x="62" y="${metricsY + 14}" fill="${textColor}" font-size="10">${this.formatValue(hpState.thermal/1000, 1)} kW</text>
+                  <text x="62" y="${metricsY + 28}" fill="${textColor}" font-size="9">COP ${this.formatValue(hpState.cop, 2)}</text>
                 `;
               })()}
             </g>
