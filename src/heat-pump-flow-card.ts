@@ -785,9 +785,7 @@ export class HeatPumpFlowCard extends LitElement {
               </g>
 
               <!-- Brand name with logo (upper left corner) -->
-              ${this.config.heat_pump?.logo_url ? html`
-                <image x="5" y="1" width="16" height="16" href="${this.config.heat_pump.logo_url}" opacity="0.9"/>
-              ` : ''}
+              <image x="5" y="1" width="16" height="16" href="${this.config.heat_pump?.logo_url || ''}" opacity="${this.config.heat_pump?.logo_url ? '0.9' : '0'}"/>
               <text x="24" y="10" text-anchor="start" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
                 ${this.config.heat_pump?.display_name || ''}
               </text>
