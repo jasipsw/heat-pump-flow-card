@@ -813,17 +813,15 @@ export class HeatPumpFlowCard extends LitElement {
               </g>
 
               <!-- Brand name with icon (rendered after fan so it appears on top) -->
-              ${this.config.heat_pump?.display_name ? html`
-                <!-- Brand icon (simple building/factory) -->
-                <g transform="translate(35, 4)">
-                  <rect x="0" y="3" width="5" height="6" fill="${this.getHeatPumpColor(hpState)}" opacity="0.8"/>
-                  <rect x="6" y="1" width="5" height="8" fill="${this.getHeatPumpColor(hpState)}" opacity="0.8"/>
-                  <rect x="12" y="3" width="5" height="6" fill="${this.getHeatPumpColor(hpState)}" opacity="0.8"/>
-                </g>
-                <text x="60" y="10" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
-                  ${this.config.heat_pump.display_name}
-                </text>
-              ` : ''}
+              <!-- Brand icon (simple building/factory) -->
+              <g transform="translate(35, 4)" opacity="${this.config.heat_pump?.display_name ? 0.8 : 0}">
+                <rect x="0" y="3" width="5" height="6" fill="${this.getHeatPumpColor(hpState)}"/>
+                <rect x="6" y="1" width="5" height="8" fill="${this.getHeatPumpColor(hpState)}"/>
+                <rect x="12" y="3" width="5" height="6" fill="${this.getHeatPumpColor(hpState)}"/>
+              </g>
+              <text x="60" y="10" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
+                ${this.config.heat_pump?.display_name || ''}
+              </text>
 
               <!-- Heat pump label (moved down 5px) -->
               <text x="60" y="90" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
