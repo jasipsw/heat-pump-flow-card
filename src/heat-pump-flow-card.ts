@@ -1089,19 +1089,83 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- Heating coil wraps - helical pattern around cylinder -->
               <!-- Dynamic color: orange (low) -> yellow (medium) -> red (high) -->
-              ${[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => {
-                const x = 203 + i * 10;
-                const isEven = i % 2 === 0;
-                const yControl = isEven ? 168 : 192; // Top curve if even, bottom if odd
-                return html`
-                  <path d="M ${x} 180 Q ${x + 3} ${yControl}, ${x + 6} 180"
-                        stroke="${auxCoilColor}"
-                        stroke-width="2.5"
-                        fill="none"
-                        stroke-linecap="round"
-                        filter="${auxGlowFilter}"/>
-                `;
-              })}
+              <!-- Coil 0 (top) -->
+              <path d="M 203 180 Q 206 168, 209 180"
+                    stroke="${auxCoilColor}"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke-linecap="round"
+                    filter="${auxGlowFilter}"/>
+              <!-- Coil 1 (bottom) -->
+              <path d="M 213 180 Q 216 192, 219 180"
+                    stroke="${auxCoilColor}"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke-linecap="round"
+                    filter="${auxGlowFilter}"/>
+              <!-- Coil 2 (top) -->
+              <path d="M 223 180 Q 226 168, 229 180"
+                    stroke="${auxCoilColor}"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke-linecap="round"
+                    filter="${auxGlowFilter}"/>
+              <!-- Coil 3 (bottom) -->
+              <path d="M 233 180 Q 236 192, 239 180"
+                    stroke="${auxCoilColor}"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke-linecap="round"
+                    filter="${auxGlowFilter}"/>
+              <!-- Coil 4 (top) -->
+              <path d="M 243 180 Q 246 168, 249 180"
+                    stroke="${auxCoilColor}"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke-linecap="round"
+                    filter="${auxGlowFilter}"/>
+              <!-- Coil 5 (bottom) -->
+              <path d="M 253 180 Q 256 192, 259 180"
+                    stroke="${auxCoilColor}"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke-linecap="round"
+                    filter="${auxGlowFilter}"/>
+              <!-- Coil 6 (top) -->
+              <path d="M 263 180 Q 266 168, 269 180"
+                    stroke="${auxCoilColor}"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke-linecap="round"
+                    filter="${auxGlowFilter}"/>
+              <!-- Coil 7 (bottom) -->
+              <path d="M 273 180 Q 276 192, 279 180"
+                    stroke="${auxCoilColor}"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke-linecap="round"
+                    filter="${auxGlowFilter}"/>
+              <!-- Coil 8 (top) -->
+              <path d="M 283 180 Q 286 168, 289 180"
+                    stroke="${auxCoilColor}"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke-linecap="round"
+                    filter="${auxGlowFilter}"/>
+              <!-- Coil 9 (bottom) -->
+              <path d="M 293 180 Q 296 192, 299 180"
+                    stroke="${auxCoilColor}"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke-linecap="round"
+                    filter="${auxGlowFilter}"/>
+              <!-- Coil 10 (top) -->
+              <path d="M 303 180 Q 306 168, 309 180"
+                    stroke="${auxCoilColor}"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke-linecap="round"
+                    filter="${auxGlowFilter}"/>
 
               <!-- End caps (darker metallic) -->
               <rect x="198" y="169" width="4" height="22" rx="1" ry="1"
