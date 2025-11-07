@@ -16,6 +16,16 @@ None
 
 ## Version History
 
+## v0.21.7 (2025-11-07)
+**Fixed: Aux heater glow animation and DHW coil path**
+
+Fixes for visibility and completeness:
+- Added SVG blur filters for aux heater glow layers (outer: 12px, middle: 8px, inner: 4px)
+- Applied blur filters to all 3 glow rectangles for visible pulsing effect
+- Fixed DHW coil path: added final segment from cy=124 to cy=140 to complete connection to outlet marker
+- Added console logging for aux heater debugging (check browser console)
+- Console logs: enabled, power, intensity, colors, and opacity values
+
 ## v0.21.6 (2025-11-07)
 **Fixed: DHW pipe horizontal separation**
 
