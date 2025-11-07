@@ -708,9 +708,9 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
 
-            <!-- Pipe: HP to G2 valve (hot supply from TOP) - leaves room for aux heater - ON TOP -->
+            <!-- Pipe: HP to G2 valve (hot supply from TOP) - extends to buffer to cover gray pipe - ON TOP -->
             <path id="hp-to-g2-path"
-                  d="M 180 180 L 362 180"
+                  d="M 180 180 L 390 180"
                   stroke="${g2ValveState.isActive ? hpOutletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -719,7 +719,7 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) -->
             <path id="g2-to-dhw-path"
-                  d="M 375 192 L 375 460 L 420 460"
+                  d="M 363 192 L 363 460 L 420 460"
                   stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -760,8 +760,8 @@ export class HeatPumpFlowCard extends LitElement {
               ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_supply}: ` : ''}${this.formatValue(hpState.outletTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
-            <!-- Flow rate between pipes (HP side) -->
-            <text x="260" y="200" text-anchor="middle" fill="#95a5a6"
+            <!-- Flow rate between pipes (HP to G2/Buffer) -->
+            <text x="277" y="205" text-anchor="middle" fill="#95a5a6"
                   font-size="${(this.config.text_style?.font_size || 11) - 1}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="normal">
@@ -782,8 +782,8 @@ export class HeatPumpFlowCard extends LitElement {
               ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_supply}: ` : ''}${this.formatValue(bufferState.supplyTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
-            <!-- Flow rate between pipes (HVAC side) -->
-            <text x="540" y="200" text-anchor="middle" fill="#95a5a6"
+            <!-- Flow rate between pipes (Buffer to HVAC) -->
+            <text x="560" y="205" text-anchor="middle" fill="#95a5a6"
                   font-size="${(this.config.text_style?.font_size || 11) - 1}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="normal">
@@ -849,7 +849,6 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Left column: INPUT parameters -->
               <text x="8" y="${metricsY}" fill="${hpTextColor}" font-size="10" font-weight="bold">IN</text>
               <text x="8" y="${metricsY + 14}" fill="${hpTextColor}" font-size="10">${this.formatValue(hpState.power/1000, 1)} kW</text>
-              <text x="8" y="${metricsY + 28}" fill="${hpTextColor}" font-size="9">${this.formatValue(hpState.flowRate, 1)} L/m</text>
 
               <!-- Right column: OUTPUT parameters -->
               <text x="62" y="${metricsY}" fill="${hpTextColor}" font-size="10" font-weight="bold">OUT</text>
@@ -1023,9 +1022,6 @@ export class HeatPumpFlowCard extends LitElement {
               </text>
               <text x="60" y="55" text-anchor="middle" fill="#e74c3c" font-size="20" font-weight="bold">
                 ${this.formatValue(hvacState.thermal, 0)} W
-              </text>
-              <text x="60" y="75" text-anchor="middle" fill="#95a5a6" font-size="12">
-                Flow: ${this.formatValue(hvacState.flowRate, 1)} L/min
               </text>
             </g>
 

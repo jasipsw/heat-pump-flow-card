@@ -16,6 +16,25 @@ None
 
 ## Version History
 
+## v0.20.21 (2025-11-07)
+**Fixed: Flow rate positioning and pipe alignment issues**
+
+Flow rate display improvements:
+- Removed flow rate from HP metrics box (inside heat pump entity)
+- Removed flow rate from HVAC load box
+- Repositioned HP flow rate from x=260 to x=277 (centered between HP and G2 valve)
+- Repositioned HVAC flow rate from x=540 to x=560 (centered between buffer and HVAC)
+- Adjusted vertical position from y=200 to y=205 (better centered between supply/return)
+
+G2 valve pipe alignment:
+- Fixed G2-to-DHW vertical pipe alignment with valve bottom outlet
+- Changed pipe start from x=375 to x=363 (aligns with valve outlet center)
+
+Gray pipe visibility fix:
+- Extended HP-to-G2 pipe from x=362 to x=390 (to buffer edge)
+- Completely covers gray heating-mode pipe in DHW mode
+- No more gray pipe visible between G2 valve and buffer
+
 ## v0.20.20 (2025-11-07)
 **Fixed: Temperature/flow rate display and G2 valve label (#93, #99)**
 
