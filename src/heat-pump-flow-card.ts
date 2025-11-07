@@ -813,11 +813,7 @@ export class HeatPumpFlowCard extends LitElement {
               </g>
 
               <!-- Brand name (rendered after fan so it appears on top) -->
-              ${this.config.heat_pump?.display_name ? html`
-                <text x="60" y="20" text-anchor="middle" fill="${hpTextColor}" font-size="10" font-weight="bold">
-                  ${this.config.heat_pump.display_name}
-                </text>
-              ` : ''}
+              ${this.config.heat_pump?.display_name ? html`<text x="60" y="20" text-anchor="middle" fill="${hpTextColor}" font-size="10" font-weight="bold">${this.config.heat_pump.display_name}</text>` : ''}
 
               <!-- Heat pump label -->
               <text x="60" y="85" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
