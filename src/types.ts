@@ -69,6 +69,23 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     icon?: string;
   };
 
+  // House/Building Performance Configuration
+  house?: {
+    heat_loss_kw_entity?: string;                    // Real-time heat loss (kW)
+    heat_loss_btu_h_entity?: string;                 // Real-time heat loss (BTU/h)
+    projected_max_heat_loss_kw_entity?: string;      // Manual J projected max (kW)
+    projected_max_heat_loss_btu_h_entity?: string;   // Manual J projected max (BTU/h)
+    heat_loss_coefficient_kw_c_entity?: string;      // Calculated coefficient (kW/°C)
+    heat_loss_coefficient_energy_entity?: string;    // Energy-based coefficient
+    indoor_temp_entity?: string;                     // Average indoor temperature
+    outdoor_temp_entity?: string;                    // Outdoor temperature
+    delta_t_raw_entity?: string;                     // Raw delta-T (indoor - outdoor)
+    delta_t_24h_mean_entity?: string;                // 24-hour mean delta-T
+    thermal_energy_used_daily_entity?: string;       // Daily HVAC energy used
+    thermal_energy_produced_daily_entity?: string;   // Daily HP energy produced
+    name?: string;
+  };
+
   // Animation Configuration
   animation?: {
     enabled?: boolean;          // Enable/disable all animations (default: true)
@@ -158,4 +175,19 @@ export interface DHWTankState {
 
 export interface G2ValveState {
   isActive: boolean;  // true = DHW mode, false = heating mode
+}
+
+export interface HousePerformanceState {
+  heatLossKw?: number;                // Real-time heat loss (kW)
+  heatLossBtuH?: number;              // Real-time heat loss (BTU/h)
+  projectedMaxHeatLossKw?: number;    // Manual J projected max (kW)
+  projectedMaxHeatLossBtuH?: number;  // Manual J projected max (BTU/h)
+  heatLossCoefficientKwC?: number;    // Calculated coefficient (kW/°C)
+  heatLossCoefficientEnergy?: number; // Energy-based coefficient
+  indoorTemp?: number;                // Average indoor temperature
+  outdoorTemp?: number;               // Outdoor temperature
+  deltaTRaw?: number;                 // Raw delta-T
+  deltaT24hMean?: number;             // 24-hour mean delta-T
+  thermalEnergyUsedDaily?: number;    // Daily HVAC energy used
+  thermalEnergyProducedDaily?: number; // Daily HP energy produced
 }
