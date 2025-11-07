@@ -16,6 +16,27 @@ None
 
 ## Version History
 
+## v0.20.19 (2025-11-07)
+**Fixed: Three critical issues (#98, #100, #105)**
+
+Issue #98 - Aux heater not displaying:
+- Root cause: Nested `html` templates in SVG prevented rendering (same as logo issue)
+- Fixed by converting to opacity-based conditional rendering
+- Aux heater now always rendered, visibility controlled via opacity
+- Removes nested templates at lines 1009 and 1027
+
+Issue #100 - G2 valve positioning:
+- Moved G2 valve from x=345 to x=375 (30px right)
+- Extended HP-to-G2 pipe from x=307 to x=362 (covers gray pipe behind)
+- Updated G2-to-DHW pipe start from x=345 to x=375 (aligns with valve)
+- Gray heating-mode pipe no longer visible behind DHW-mode supply
+
+Issue #105 - Text contrast on light backgrounds:
+- Lowered contrast threshold from 0.5 to 0.35 luminance
+- Accounts for semi-transparent background (opacity 0.2)
+- Red (#e74c3c, luminance 0.47) now gets dark text instead of white
+- Improves readability on light-colored heat pump states
+
 ## v0.20.18 (2025-11-07)
 **Added: Configurable brand text color and additional spacing adjustments**
 - Added `logo_text_color` configuration option in heat_pump config
