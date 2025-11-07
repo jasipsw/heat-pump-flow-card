@@ -89,17 +89,19 @@ export const cardStyles = css`
     transition: fill 0.3s ease;
   }
 
-  /* Aux heater pulsing animation */
+  /* Aux heater pulsing animation - more dramatic for visibility */
   .aux-heater-pulsing {
-    animation: aux-heater-pulse 2.5s ease-in-out infinite;
+    animation: aux-heater-pulse 2s ease-in-out infinite;
   }
 
   @keyframes aux-heater-pulse {
     0%, 100% {
-      opacity: 0.95;
+      opacity: 0.85;
+      filter: brightness(1);
     }
     50% {
       opacity: 1;
+      filter: brightness(1.2);
     }
   }
 

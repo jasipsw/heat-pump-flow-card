@@ -679,10 +679,10 @@ export class HeatPumpFlowCard extends LitElement {
       const b = Math.round(grayB + (hotB - grayB) * auxIntensity);
       auxCylinderColor = `rgb(${r}, ${g}, ${b})`;
     }
-    // Glow intensity - blur radius from 0 to 8 for SVG filter
-    const auxGlowBlur = auxIntensity * 8;
-    // Glow opacity for filter
-    const auxGlowOpacity = auxIntensity;
+    // Glow intensity - stronger blur radius from 0 to 20 for SVG filter
+    const auxGlowBlur = auxIntensity * 20;
+    // Glow opacity for filter - boosted for visibility
+    const auxGlowOpacity = Math.min(auxIntensity * 1.5, 1.0);
 
     return html`
       <ha-card>
@@ -692,12 +692,23 @@ export class HeatPumpFlowCard extends LitElement {
           <svg viewBox="0 0 800 700" xmlns="http://www.w3.org/2000/svg">
             <!-- SVG Filter Definitions -->
             <defs>
-              <!-- Dynamic glow filter for aux heater -->
-              <filter id="aux-heater-glow" x="-50%" y="-50%" width="200%" height="200%">
+              <!-- Dynamic glow filter for aux heater with drop shadow -->
+              <filter id="aux-heater-glow" x="-100%" y="-100%" width="300%" height="300%">
+                <!-- Drop shadow for depth -->
+                <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="shadow-blur"/>
+                <feOffset in="shadow-blur" dx="0" dy="2" result="shadow-offset"/>
+                <feFlood flood-color="#000000" flood-opacity="0.4" result="shadow-color"/>
+                <feComposite in="shadow-color" in2="shadow-offset" operator="in" result="shadow"/>
+
+                <!-- Strong glow effect -->
                 <feGaussianBlur in="SourceGraphic" stdDeviation="${auxGlowBlur}" result="blur"/>
-                <feFlood flood-color="#ff4422" flood-opacity="${auxGlowOpacity}" result="color"/>
-                <feComposite in="color" in2="blur" operator="in" result="glow"/>
+                <feFlood flood-color="#ff4422" flood-opacity="${auxGlowOpacity}" result="glow-color"/>
+                <feComposite in="glow-color" in2="blur" operator="in" result="glow"/>
+
+                <!-- Combine shadow, multiple glow layers, and original -->
                 <feMerge>
+                  <feMergeNode in="shadow"/>
+                  <feMergeNode in="glow"/>
                   <feMergeNode in="glow"/>
                   <feMergeNode in="glow"/>
                   <feMergeNode in="SourceGraphic"/>

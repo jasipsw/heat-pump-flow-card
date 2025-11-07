@@ -26,6 +26,8 @@ Multiple alignment and spacing fixes:
 - Fixed HVAC temperature/flow rate positioning (centered at x=550 between buffer and HVAC)
 - Fixed DHW coil vertical spacing (108px→40px to match buffer-HVAC consistency)
 - Centered aux heater between HP and G2 valve (x=220)
+- Enhanced aux heater glow visibility (3x stronger blur, drop shadow, 3 glow layers)
+- Improved aux heater pulsing animation (more dramatic opacity and brightness changes)
 
 ## v0.21.0 (2025-11-07)
 **Major: Layout improvements and pipe flow fixes (#94, #102 partial)**
