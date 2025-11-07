@@ -613,8 +613,11 @@ export class HeatPumpFlowCard extends LitElement {
     // Calculate relative luminance using WCAG formula
     const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 
-    // Return black for light backgrounds, white for dark backgrounds
-    return luminance > 0.5 ? '#2c3e50' : '#ffffff';
+    // Account for semi-transparent background (opacity 0.2 over light background)
+    // Effective luminance is much higher due to background showing through
+    // Use lower threshold (0.35) so medium-luminance colors get dark text
+    // This ensures red (#e74c3c, luminance ~0.47) gets dark text for readability
+    return luminance > 0.35 ? '#2c3e50' : '#ffffff';
   }
 
   private getAnimationDuration(flowRate: number): number {
@@ -707,7 +710,7 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Pipe: HP to G2 valve (hot supply from TOP) - leaves room for aux heater - ON TOP -->
             <path id="hp-to-g2-path"
-                  d="M 180 180 L 307 180"
+                  d="M 180 180 L 362 180"
                   stroke="${g2ValveState.isActive ? hpOutletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -716,7 +719,7 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) -->
             <path id="g2-to-dhw-path"
-                  d="M 345 192 L 345 460 L 420 460"
+                  d="M 375 192 L 375 460 L 420 460"
                   stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -854,7 +857,7 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- G2 Diverter Valve (3-way valve between HP and tanks) -->
-            <g id="g2-valve" transform="translate(345, 180) scale(0.7)">
+            <g id="g2-valve" transform="translate(375, 180) scale(0.7)">
               <!-- Valve body - cylindrical with flanges (matching valve idea graphic) -->
               <!-- Left inlet flange -->
               <rect x="-45" y="-8" width="10" height="16" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
@@ -1006,32 +1009,29 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- Auxiliary Heater Coil (wraps around HP to G2 supply pipe) - rendered on top -->
-            ${auxHeaterState.enabled ? html`
-              <!-- Heating coil visualization - wraps around pipe from x=200 to x=300 -->
-              <g id="aux-heater" opacity="${auxHeaterState.intensity > 0 ? '1' : '0.3'}">
-                <!-- Coil wraps (spiral pattern) -->
-                <path d="M 200 175 Q 205 170, 210 175 Q 215 180, 220 175 Q 225 170, 230 175 Q 235 180, 240 175 Q 245 170, 250 175 Q 255 180, 260 175 Q 265 170, 270 175 Q 275 180, 280 175 Q 285 170, 290 175 Q 295 180, 300 175"
-                      stroke="${auxHeaterState.intensity > 0 ? '#ff4444' : '#95a5a6'}"
-                      stroke-width="${2 + auxHeaterState.intensity * 2}"
-                      fill="none"
-                      opacity="0.7"
-                      filter="drop-shadow(0 0 ${2 + auxHeaterState.intensity * 8}px ${auxHeaterState.intensity > 0 ? '#ff0000' : '#666666'})"/>
-                <!-- Lower coil wrap -->
-                <path d="M 200 185 Q 205 190, 210 185 Q 215 180, 220 185 Q 225 190, 230 185 Q 235 180, 240 185 Q 245 190, 250 185 Q 255 180, 260 185 Q 265 190, 270 185 Q 275 180, 280 185 Q 285 190, 290 185 Q 295 180, 300 185"
-                      stroke="${auxHeaterState.intensity > 0 ? '#ff4444' : '#95a5a6'}"
-                      stroke-width="${2 + auxHeaterState.intensity * 2}"
-                      fill="none"
-                      opacity="0.7"
-                      filter="drop-shadow(0 0 ${2 + auxHeaterState.intensity * 8}px ${auxHeaterState.intensity > 0 ? '#ff0000' : '#666666'})"/>
-                <!-- Power indicator label with custom display name -->
-                ${auxHeaterState.power > 0 ? html`
-                  <text x="250" y="165" text-anchor="middle" fill="#ff4444" font-size="9" font-weight="bold"
-                        filter="drop-shadow(0 0 4px #ff0000)">
-                    ${auxHeaterState.displayName}: ${this.formatValue(auxHeaterState.power / 1000, 1)} kW
-                  </text>
-                ` : ''}
-              </g>
-            ` : ''}
+            <!-- Heating coil visualization - wraps around pipe from x=200 to x=300 -->
+            <g id="aux-heater" opacity="${auxHeaterState.enabled && auxHeaterState.intensity > 0 ? '1' : (auxHeaterState.enabled ? '0.3' : '0')}">
+              <!-- Coil wraps (spiral pattern) -->
+              <path d="M 200 175 Q 205 170, 210 175 Q 215 180, 220 175 Q 225 170, 230 175 Q 235 180, 240 175 Q 245 170, 250 175 Q 255 180, 260 175 Q 265 170, 270 175 Q 275 180, 280 175 Q 285 170, 290 175 Q 295 180, 300 175"
+                    stroke="${auxHeaterState.intensity > 0 ? '#ff4444' : '#95a5a6'}"
+                    stroke-width="${2 + auxHeaterState.intensity * 2}"
+                    fill="none"
+                    opacity="0.7"
+                    filter="drop-shadow(0 0 ${2 + auxHeaterState.intensity * 8}px ${auxHeaterState.intensity > 0 ? '#ff0000' : '#666666'})"/>
+              <!-- Lower coil wrap -->
+              <path d="M 200 185 Q 205 190, 210 185 Q 215 180, 220 185 Q 225 190, 230 185 Q 235 180, 240 185 Q 245 190, 250 185 Q 255 180, 260 185 Q 265 190, 270 185 Q 275 180, 280 185 Q 285 190, 290 185 Q 295 180, 300 185"
+                    stroke="${auxHeaterState.intensity > 0 ? '#ff4444' : '#95a5a6'}"
+                    stroke-width="${2 + auxHeaterState.intensity * 2}"
+                    fill="none"
+                    opacity="0.7"
+                    filter="drop-shadow(0 0 ${2 + auxHeaterState.intensity * 8}px ${auxHeaterState.intensity > 0 ? '#ff0000' : '#666666'})"/>
+              <!-- Power indicator label with custom display name -->
+              <text x="250" y="165" text-anchor="middle" fill="#ff4444" font-size="9" font-weight="bold"
+                    filter="drop-shadow(0 0 4px #ff0000)"
+                    opacity="${auxHeaterState.power > 0 ? '1' : '0'}">
+                ${auxHeaterState.displayName}: ${this.formatValue(auxHeaterState.power / 1000, 1)} kW
+              </text>
+            </g>
 
             <!-- Version display (upper right corner) -->
             <text x="790" y="15" text-anchor="end" fill="#95a5a6" font-size="10" opacity="0.7">
