@@ -175,7 +175,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var s,r=argume
 
             <!-- Pipe: DHW outlet to HP return (BOTTOM) - routed away from buffer tank - BEHIND -->
             <path id="dhw-to-hp-return-path"
-                  d="M 418 495 L 300 495 L 300 220 L 180 220"
+                  d="M 418 483 L 300 483 L 300 220 L 180 220"
                   stroke="${s.isActive?p:this.config.temperature?.neutral_color||"#95a5a6"}"
                   stroke-width="12"
                   fill="none"
@@ -193,7 +193,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var s,r=argume
 
             <!-- DHW coil spiral path (for flow animation) -->
             <path id="dhw-coil-path"
-                  d="M 418 375 Q 438 379, 458 375 Q 438 383, 418 388 Q 438 393, 458 388 Q 438 401, 418 406 Q 438 411, 458 406 Q 438 419, 418 424 Q 438 429, 458 424 Q 438 437, 418 442 Q 438 447, 458 442 Q 438 455, 418 460 Q 438 465, 458 460 Q 438 473, 418 478 Q 438 483, 458 478 Q 438 491, 418 495"
+                  d="M 418 375 Q 438 379, 458 375 Q 438 383, 418 388 Q 438 393, 458 388 Q 438 401, 418 406 Q 438 411, 458 406 Q 438 419, 418 424 Q 438 429, 458 424 Q 438 437, 418 442 Q 438 447, 458 442 Q 438 455, 418 460 Q 438 465, 458 460 Q 438 473, 418 478 Q 438 483, 418 483"
                   stroke="none"
                   stroke-width="0"
                   fill="none"
