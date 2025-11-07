@@ -670,6 +670,49 @@ export class HeatPumpFlowCard extends LitElement {
 
         <div class="card-content">
           <svg viewBox="0 0 800 700" xmlns="http://www.w3.org/2000/svg">
+            <!-- SVG Filter Definitions -->
+            <defs>
+              <!-- Glow filter for aux heater - intensity controlled dynamically -->
+              <filter id="aux-glow-low" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur"/>
+                <feColorMatrix in="blur" type="matrix"
+                  values="1 0 0 0 0
+                          0.5 0 0 0 0
+                          0 0 0 0 0
+                          0 0 0 2 0"/>
+                <feMerge>
+                  <feMergeNode/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+
+              <filter id="aux-glow-medium" x="-100%" y="-100%" width="300%" height="300%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+                <feColorMatrix in="blur" type="matrix"
+                  values="1 0 0 0 0
+                          0.8 0 0 0 0
+                          0 0 0 0 0
+                          0 0 0 3 0"/>
+                <feMerge>
+                  <feMergeNode/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+
+              <filter id="aux-glow-high" x="-150%" y="-150%" width="400%" height="400%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+                <feColorMatrix in="blur" type="matrix"
+                  values="1 0 0 0 0
+                          0.3 0 0 0 0
+                          0 0 0 0 0
+                          0 0 0 4 0"/>
+                <feMerge>
+                  <feMergeNode/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+
             <!-- Flow Pipes (rendered first so they appear behind entities) -->
 
             <!-- Pipes with 10px gaps from entities for clean appearance -->
@@ -1025,26 +1068,89 @@ export class HeatPumpFlowCard extends LitElement {
               </text>
             </g>
 
-            <!-- Auxiliary Heater Coil (wraps around HP to G2 supply pipe) - rendered on top -->
-            <!-- Heating coil visualization - wraps around pipe from x=200 to x=300 -->
+            <!-- Auxiliary Heater - Realistic inline heater element -->
+            <!-- Spans from x=200 to x=310 on the horizontal pipe at y=180 -->
             <g id="aux-heater" opacity="${auxHeaterState.enabled && auxHeaterState.intensity > 0 ? '1' : (auxHeaterState.enabled ? '0.3' : '0')}">
-              <!-- Coil wraps (spiral pattern) -->
-              <path d="M 200 175 Q 205 170, 210 175 Q 215 180, 220 175 Q 225 170, 230 175 Q 235 180, 240 175 Q 245 170, 250 175 Q 255 180, 260 175 Q 265 170, 270 175 Q 275 180, 280 175 Q 285 170, 290 175 Q 295 180, 300 175"
-                    stroke="${auxHeaterState.intensity > 0 ? '#ff4444' : '#95a5a6'}"
-                    stroke-width="${2 + auxHeaterState.intensity * 2}"
-                    fill="none"
-                    opacity="0.7"
-                    filter="drop-shadow(0 0 ${2 + auxHeaterState.intensity * 8}px ${auxHeaterState.intensity > 0 ? '#ff0000' : '#666666'})"/>
-              <!-- Lower coil wrap -->
-              <path d="M 200 185 Q 205 190, 210 185 Q 215 180, 220 185 Q 225 190, 230 185 Q 235 180, 240 185 Q 245 190, 250 185 Q 255 180, 260 185 Q 265 190, 270 185 Q 275 180, 280 185 Q 285 190, 290 185 Q 295 180, 300 185"
-                    stroke="${auxHeaterState.intensity > 0 ? '#ff4444' : '#95a5a6'}"
-                    stroke-width="${2 + auxHeaterState.intensity * 2}"
-                    fill="none"
-                    opacity="0.7"
-                    filter="drop-shadow(0 0 ${2 + auxHeaterState.intensity * 8}px ${auxHeaterState.intensity > 0 ? '#ff0000' : '#666666'})"/>
+              <!-- Metallic cylinder body (dark steel/gray) -->
+              <rect x="200" y="170" width="110" height="20" rx="3" ry="3"
+                    fill="#4a5568"
+                    stroke="#2d3748"
+                    stroke-width="1.5"
+                    opacity="0.9"/>
+
+              <!-- Heating coil wraps - helical pattern around cylinder -->
+              <!-- Dynamic color: orange (low) -> yellow (medium) -> red (high) -->
+              ${(() => {
+                // Calculate dynamic color based on intensity
+                let coilColor = '#95a5a6'; // Gray when off
+                if (auxHeaterState.intensity > 0) {
+                  if (auxHeaterState.intensity < 0.33) {
+                    // Low power: orange
+                    coilColor = '#ff8c42';
+                  } else if (auxHeaterState.intensity < 0.66) {
+                    // Medium power: yellow-orange
+                    coilColor = '#ffd700';
+                  } else {
+                    // High power: red
+                    coilColor = '#ff4444';
+                  }
+                }
+
+                // Select glow filter based on intensity
+                let glowFilter = '';
+                if (auxHeaterState.intensity > 0) {
+                  if (auxHeaterState.intensity < 0.33) {
+                    glowFilter = 'url(#aux-glow-low)';
+                  } else if (auxHeaterState.intensity < 0.66) {
+                    glowFilter = 'url(#aux-glow-medium)';
+                  } else {
+                    glowFilter = 'url(#aux-glow-high)';
+                  }
+                }
+
+                // Create helical coil wraps (11 wraps across the cylinder)
+                const coils = [];
+                for (let i = 0; i < 11; i++) {
+                  const x = 203 + i * 10;
+                  // Alternating top and bottom curves for 3D effect
+                  if (i % 2 === 0) {
+                    // Top curve
+                    coils.push(`
+                      <path d="M ${x} 180 Q ${x + 3} 168, ${x + 6} 180"
+                            stroke="${coilColor}"
+                            stroke-width="2.5"
+                            fill="none"
+                            stroke-linecap="round"
+                            filter="${glowFilter}"/>`);
+                  } else {
+                    // Bottom curve
+                    coils.push(`
+                      <path d="M ${x} 180 Q ${x + 3} 192, ${x + 6} 180"
+                            stroke="${coilColor}"
+                            stroke-width="2.5"
+                            fill="none"
+                            stroke-linecap="round"
+                            filter="${glowFilter}"/>`);
+                  }
+                }
+                return coils.join('');
+              })()}
+
+              <!-- End caps (darker metallic) -->
+              <rect x="198" y="169" width="4" height="22" rx="1" ry="1"
+                    fill="#2d3748"
+                    stroke="#1a202c"
+                    stroke-width="1"/>
+              <rect x="308" y="169" width="4" height="22" rx="1" ry="1"
+                    fill="#2d3748"
+                    stroke="#1a202c"
+                    stroke-width="1"/>
+
               <!-- Power indicator label with custom display name -->
-              <text x="250" y="165" text-anchor="middle" fill="#ff4444" font-size="9" font-weight="bold"
-                    filter="drop-shadow(0 0 4px #ff0000)"
+              <text x="255" y="165" text-anchor="middle"
+                    fill="${auxHeaterState.intensity > 0.66 ? '#ff4444' : (auxHeaterState.intensity > 0.33 ? '#ffd700' : '#ff8c42')}"
+                    font-size="9"
+                    font-weight="bold"
                     opacity="${auxHeaterState.power > 0 ? '1' : '0'}">
                 ${auxHeaterState.displayName}: ${this.formatValue(auxHeaterState.power / 1000, 1)} kW
               </text>
