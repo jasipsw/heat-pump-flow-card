@@ -754,27 +754,27 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- DHW MODE PIPES (shown when G2 valve is ON - DHW mode) -->
             <!-- Z-ORDER: Return pipes first (behind), then supply pipes (on top) -->
 
-            <!-- Pipe: DHW outlet to HP return (BOTTOM) - routed away from buffer tank - BEHIND -->
+            <!-- Pipe: DHW outlet to HP return (BOTTOM) - 10px gap from tank, vertically centered - BEHIND -->
             <path id="dhw-to-hp-return-path"
-                  d="M 418 415 L 300 415 L 300 220 L 180 220"
+                  d="M 390 440 L 300 440 L 300 220 L 180 220"
                   stroke="${g2ValveState.isActive ? hpInletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
 
-            <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) -->
+            <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) - 10px gap from tank, vertically centered -->
             <path id="g2-to-dhw-path"
-                  d="M 308 192 L 308 375 L 418 375"
+                  d="M 308 192 L 308 400 L 390 400"
                   stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
 
-            <!-- DHW coil spiral path (for flow animation) - shortened to 40px vertical span -->
+            <!-- DHW coil spiral path (for flow animation) - 40px vertical span, centered on tank -->
             <path id="dhw-coil-path"
-                  d="M 418 375 Q 438 380, 458 375 Q 438 385, 418 390 Q 438 395, 458 390 Q 438 400, 418 405 Q 438 410, 458 405 Q 438 415, 418 415"
+                  d="M 390 400 L 418 400 Q 438 405, 458 400 Q 438 410, 418 410 Q 438 415, 458 410 Q 438 420, 418 420 Q 438 425, 458 420 Q 438 430, 418 430 Q 438 435, 458 430 Q 438 440, 418 440 L 390 440"
                   stroke="none"
                   stroke-width="0"
                   fill="none"
@@ -1033,16 +1033,16 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Inner cylinder (DHW water - always blue/cold) -->
               <rect x="15" y="25" width="60" height="130" fill="#3498db" opacity="0.3"/>
 
-              <!-- Heating coil inside tank (spiral) - gray when no flow, hot when flowing - 40px vertical span -->
-              <path d="M 28 45 Q 45 50, 62 45 Q 45 55, 28 60 Q 45 65, 62 60 Q 45 70, 28 75 Q 45 80, 62 75 Q 45 85, 28 85"
+              <!-- Heating coil inside tank (spiral) - gray when no flow, hot when flowing - 40px vertical span, centered -->
+              <path d="M 28 70 Q 45 75, 62 70 Q 45 80, 28 80 Q 45 85, 62 80 Q 45 90, 28 90 Q 45 95, 62 90 Q 45 100, 28 100 Q 45 105, 62 100 Q 45 110, 28 110"
                     stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                     stroke-width="4"
                     fill="none"
                     opacity="${g2ValveState.isActive ? '0.9' : '0.3'}"/>
 
-              <!-- Coil inlet/outlet markers -->
-              <circle cx="28" cy="45" r="3" fill="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"/>
-              <circle cx="28" cy="85" r="3" fill="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"/>
+              <!-- Coil inlet/outlet markers - centered on tank -->
+              <circle cx="28" cy="70" r="3" fill="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"/>
+              <circle cx="28" cy="110" r="3" fill="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"/>
 
               <!-- Structural bands -->
               <line x1="10" y1="55" x2="80" y2="55" stroke="#2c3e50" stroke-width="2"/>
@@ -1081,9 +1081,15 @@ export class HeatPumpFlowCard extends LitElement {
                     fill="${auxCylinderColor}"
                     stroke="#2d3748"
                     stroke-width="1.5"
-                    opacity="0.95"
                     filter="${auxIntensity > 0 ? 'url(#aux-heater-glow)' : ''}"
-                    class="${auxIntensity > 0 ? 'aux-heater-pulsing' : ''}"/>
+                    class="${auxIntensity > 0 ? 'aux-heater-pulsing' : ''}">
+                ${auxIntensity > 0 ? html`
+                  <animate attributeName="opacity"
+                           values="0.85;1;0.85"
+                           dur="2s"
+                           repeatCount="indefinite"/>
+                ` : ''}
+              </rect>
             </g>
 
             <!-- Version display (upper right corner) -->
