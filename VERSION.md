@@ -22,7 +22,8 @@ None
 Multiple alignment and flow dot fixes:
 - Fixed G2 valve to DHW pipe alignment (x=320→308 to match valve outlet)
 - Fixed flow dots showing on G2-to-buffer path during DHW mode
-- Fixed HVAC temperature/flow rate positioning (centered at x=555 between buffer and HVAC)
+- Fixed buffer-to-HVAC pipe gap (x=490→470 for consistent 10px gap like HP side)
+- Fixed HVAC temperature/flow rate positioning (recentered at x=545 between buffer and HVAC)
 - Fixed DHW return pipe position (y=495→483 to align with tank outlet)
 
 ## v0.21.0 (2025-11-07)

@@ -770,17 +770,17 @@ export class HeatPumpFlowCard extends LitElement {
                   opacity="0"/>
 
             <!-- Z-ORDER: Return first (behind), supply on top -->
-            <!-- Pipe: HVAC to Buffer (cold return) - 10px gap from HVAC - BEHIND -->
+            <!-- Pipe: HVAC to Buffer (cold return) - 10px gap from buffer - BEHIND -->
             <path id="hvac-to-buffer-path"
-                  d="M 620 220 L 490 220"
+                  d="M 620 220 L 470 220"
                   stroke="${hvacReturnColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"/>
 
-            <!-- Pipe: Buffer to HVAC (hot supply) - 10px gap from HVAC - ON TOP -->
+            <!-- Pipe: Buffer to HVAC (hot supply) - 10px gap from buffer - ON TOP -->
             <path id="buffer-to-hvac-path"
-                  d="M 490 180 L 620 180"
+                  d="M 470 180 L 620 180"
                   stroke="${bufferSupplyColor}"
                   stroke-width="12"
                   fill="none"
@@ -811,7 +811,7 @@ export class HeatPumpFlowCard extends LitElement {
             </text>
 
             <!-- Supply temp (top) - above supply pipe, centered horizontally -->
-            <text x="555" y="170" text-anchor="middle" fill="${bufferSupplyColor}"
+            <text x="545" y="170" text-anchor="middle" fill="${bufferSupplyColor}"
                   font-size="${this.config.text_style?.font_size || 11}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
@@ -819,7 +819,7 @@ export class HeatPumpFlowCard extends LitElement {
             </text>
 
             <!-- Flow rate - centered vertically between pipes, centered horizontally -->
-            <text x="555" y="200" text-anchor="middle" fill="#95a5a6"
+            <text x="545" y="200" text-anchor="middle" fill="#95a5a6"
                   font-size="${(this.config.text_style?.font_size || 11) - 1}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="normal">
@@ -827,7 +827,7 @@ export class HeatPumpFlowCard extends LitElement {
             </text>
 
             <!-- Return temp (bottom) - below return pipe, centered horizontally -->
-            <text x="555" y="240" text-anchor="middle" fill="${hvacReturnColor}"
+            <text x="545" y="240" text-anchor="middle" fill="${hvacReturnColor}"
                   font-size="${this.config.text_style?.font_size || 11}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
