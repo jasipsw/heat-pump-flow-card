@@ -16,6 +16,16 @@ None
 
 ## Version History
 
+## v0.20.9 (2025-11-07)
+**Fixed: Brand logo visibility, G2 valve position and size**
+- Fixed brand logo rendering by removing nested html wrapper (always render with conditional opacity)
+- Moved G2 valve from x=320 to x=345 for better horizontal positioning
+- Scaled G2 valve down from 1.0 to 0.85 for more appropriate size
+- Updated HP to G2 pipe to extend to x=307 (left valve inlet)
+- Updated G2 to DHW pipe to start at x=345 (valve center)
+- Extended auxiliary heater coil from x=200-270 to x=200-300 to cover longer pipe
+- Centered aux heater power label at x=250
+
 ## v0.20.8 (2025-11-07)
 **Fixed: G2 valve alignment and added CX brand icon**
 - Fixed G2 valve position from y=190 to y=180 to align with DHW supply pipe

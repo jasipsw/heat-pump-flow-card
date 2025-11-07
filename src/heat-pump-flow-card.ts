@@ -707,7 +707,7 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Pipe: HP to G2 valve (hot supply from TOP) - leaves room for aux heater - ON TOP -->
             <path id="hp-to-g2-path"
-                  d="M 180 180 L 275 180"
+                  d="M 180 180 L 307 180"
                   stroke="${g2ValveState.isActive ? hpOutletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -716,17 +716,17 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Auxiliary Heater Coil (wraps around HP to G2 supply pipe) -->
             ${auxHeaterState.enabled ? html`
-              <!-- Heating coil visualization - wraps around pipe from x=200 to x=270 -->
+              <!-- Heating coil visualization - wraps around pipe from x=200 to x=300 -->
               <g id="aux-heater" opacity="${auxHeaterState.intensity > 0 ? '1' : '0.3'}">
                 <!-- Coil wraps (spiral pattern) -->
-                <path d="M 200 175 Q 205 170, 210 175 Q 215 180, 220 175 Q 225 170, 230 175 Q 235 180, 240 175 Q 245 170, 250 175 Q 255 180, 260 175 Q 265 170, 270 175"
+                <path d="M 200 175 Q 205 170, 210 175 Q 215 180, 220 175 Q 225 170, 230 175 Q 235 180, 240 175 Q 245 170, 250 175 Q 255 180, 260 175 Q 265 170, 270 175 Q 275 180, 280 175 Q 285 170, 290 175 Q 295 180, 300 175"
                       stroke="${auxHeaterState.intensity > 0 ? '#ff4444' : '#95a5a6'}"
                       stroke-width="${2 + auxHeaterState.intensity * 2}"
                       fill="none"
                       opacity="0.7"
                       filter="drop-shadow(0 0 ${2 + auxHeaterState.intensity * 8}px ${auxHeaterState.intensity > 0 ? '#ff0000' : '#666666'})"/>
                 <!-- Lower coil wrap -->
-                <path d="M 200 185 Q 205 190, 210 185 Q 215 180, 220 185 Q 225 190, 230 185 Q 235 180, 240 185 Q 245 190, 250 185 Q 255 180, 260 185 Q 265 190, 270 185"
+                <path d="M 200 185 Q 205 190, 210 185 Q 215 180, 220 185 Q 225 190, 230 185 Q 235 180, 240 185 Q 245 190, 250 185 Q 255 180, 260 185 Q 265 190, 270 185 Q 275 180, 280 185 Q 285 190, 290 185 Q 295 180, 300 185"
                       stroke="${auxHeaterState.intensity > 0 ? '#ff4444' : '#95a5a6'}"
                       stroke-width="${2 + auxHeaterState.intensity * 2}"
                       fill="none"
@@ -734,7 +734,7 @@ export class HeatPumpFlowCard extends LitElement {
                       filter="drop-shadow(0 0 ${2 + auxHeaterState.intensity * 8}px ${auxHeaterState.intensity > 0 ? '#ff0000' : '#666666'})"/>
                 <!-- Power indicator label with custom display name -->
                 ${auxHeaterState.power > 0 ? html`
-                  <text x="235" y="165" text-anchor="middle" fill="#ff4444" font-size="9" font-weight="bold"
+                  <text x="250" y="165" text-anchor="middle" fill="#ff4444" font-size="9" font-weight="bold"
                         filter="drop-shadow(0 0 4px #ff0000)">
                     ${auxHeaterState.displayName}: ${this.formatValue(auxHeaterState.power / 1000, 1)} kW
                   </text>
@@ -744,7 +744,7 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) -->
             <path id="g2-to-dhw-path"
-                  d="M 320 192 L 320 460 L 420 460"
+                  d="M 345 192 L 345 460 L 420 460"
                   stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -813,25 +813,23 @@ export class HeatPumpFlowCard extends LitElement {
               </g>
 
               <!-- Brand name with logo (rendered after fan so it appears on top) -->
-              ${this.config.heat_pump?.display_name ? html`
-                <!-- Brand logo - simplified CX icon -->
-                <g transform="translate(38, 5)" opacity="0.9">
-                  <!-- Curved C shape -->
-                  <path d="M 3 0 Q 0 0, 0 3 L 0 5 Q 0 8, 3 8"
-                        stroke="${this.getHeatPumpColor(hpState)}"
-                        stroke-width="1.5"
-                        fill="none"
-                        stroke-linecap="round"/>
-                  <!-- X inside -->
-                  <path d="M 2 2 L 5 6 M 5 2 L 2 6"
-                        stroke="${this.getHeatPumpColor(hpState)}"
-                        stroke-width="1.2"
-                        stroke-linecap="round"/>
-                </g>
-                <text x="60" y="10" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
-                  ${this.config.heat_pump.display_name}
-                </text>
-              ` : ''}
+              <!-- Brand logo - simplified CX icon -->
+              <g transform="translate(38, 5)" opacity="${this.config.heat_pump?.display_name ? 0.9 : 0}">
+                <!-- Curved C shape -->
+                <path d="M 3 0 Q 0 0, 0 3 L 0 5 Q 0 8, 3 8"
+                      stroke="${this.getHeatPumpColor(hpState)}"
+                      stroke-width="1.5"
+                      fill="none"
+                      stroke-linecap="round"/>
+                <!-- X inside -->
+                <path d="M 2 2 L 5 6 M 5 2 L 2 6"
+                      stroke="${this.getHeatPumpColor(hpState)}"
+                      stroke-width="1.2"
+                      stroke-linecap="round"/>
+              </g>
+              <text x="60" y="10" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
+                ${this.config.heat_pump?.display_name || ''}
+              </text>
 
               <!-- Heat pump label (moved down 5px) -->
               <text x="60" y="90" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
@@ -886,7 +884,7 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- G2 Diverter Valve (3-way valve between HP and tanks) -->
-            <g id="g2-valve" transform="translate(320, 180) scale(1.0)">
+            <g id="g2-valve" transform="translate(345, 180) scale(0.85)">
               <!-- Valve body - cylindrical with flanges (matching valve idea graphic) -->
               <!-- Left inlet flange -->
               <rect x="-45" y="-8" width="10" height="16" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
