@@ -19,12 +19,13 @@ None
 ## v0.21.1 (2025-11-07)
 **Fixed: Post-release bug fixes for v0.21.0**
 
-Multiple alignment and flow dot fixes:
+Multiple alignment and spacing fixes:
 - Fixed G2 valve to DHW pipe alignment (x=320→308 to match valve outlet)
 - Fixed flow dots showing on G2-to-buffer path during DHW mode
-- Fixed buffer-to-HVAC pipe gap (x=490→470 for consistent 10px gap like HP side)
-- Fixed HVAC temperature/flow rate positioning (recentered at x=545 between buffer and HVAC)
-- Fixed DHW return pipe position (y=495→483 to align with tank outlet)
+- Fixed buffer-to-HVAC pipe spacing (x=480 for consistent 10px gap like HP side)
+- Fixed HVAC temperature/flow rate positioning (centered at x=550 between buffer and HVAC)
+- Fixed DHW coil vertical spacing (108px→40px to match buffer-HVAC consistency)
+- Centered aux heater between HP and G2 valve (x=220)
 
 ## v0.21.0 (2025-11-07)
 **Major: Layout improvements and pipe flow fixes (#94, #102 partial)**
