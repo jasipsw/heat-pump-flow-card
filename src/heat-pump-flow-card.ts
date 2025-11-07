@@ -106,9 +106,6 @@ export class HeatPumpFlowCard extends LitElement {
 
   private lastRenderTime = 0;
   private lastHassState: any = {};
-  private lastG2State: boolean | null = null;
-  private lastHpMode: string | null = null;
-  private initialLogDone = false;
 
   protected shouldUpdate(changedProps: PropertyValues): boolean {
     // Always update on config changes
@@ -663,52 +660,6 @@ export class HeatPumpFlowCard extends LitElement {
     const hpBgColor = this.getHeatPumpColor(hpState);
     const hpTextColor = this.getContrastTextColor(hpBgColor);
     const metricsY = hpState.error ? 115 : 100;
-
-    // DEBUG: Log initial state once on first render
-    if (!this.initialLogDone) {
-      console.log('╔═══════════════════════════════════════╗');
-      console.log('║     INITIAL STATE (First Render)     ║');
-      console.log('╚═══════════════════════════════════════╝');
-      console.log('🔄 G2 Valve:');
-      console.log('   - isActive:', g2ValveState.isActive);
-      console.log('   - Entity:', this.config.g2_valve?.state_entity || '(not configured)');
-      console.log('   - Heating pipes opacity:', g2ValveState.isActive ? '0 (hidden)' : '1 (visible)');
-      console.log('   - DHW pipes opacity:', g2ValveState.isActive ? '1 (visible)' : '0 (hidden)');
-      console.log('⚡ Heat Pump:');
-      console.log('   - Mode:', hpState.mode || '(undefined)');
-      console.log('   - Mode Entity:', this.config.heat_pump?.mode_entity || '(not configured)');
-      console.log('   - Power:', hpState.power, 'W');
-      console.log('   - Flow Rate:', hpState.flowRate, 'L/min');
-      console.log('   - Outlet Temp:', hpState.outletTemp, '°C');
-      console.log('   - Inlet Temp:', hpState.inletTemp, '°C');
-      console.log('🎨 Pipe Colors:');
-      console.log('   - HP Outlet:', hpOutletColor);
-      console.log('   - HP Inlet:', hpInletColor);
-      console.log('   - DHW Coil:', dhwCoilColor);
-      console.log('═══════════════════════════════════════\n');
-      this.initialLogDone = true;
-      this.lastG2State = g2ValveState.isActive;
-      this.lastHpMode = hpState.mode || null;
-    }
-
-    // DEBUG: Only log when G2 state or HP mode changes (not on every render)
-    if (this.lastG2State !== g2ValveState.isActive) {
-      console.log('═══════════════════════════════════════');
-      console.log('🔄 G2 VALVE STATE CHANGED');
-      console.log('G2 isActive:', g2ValveState.isActive);
-      console.log('Will render:', g2ValveState.isActive ? '🔵 DHW pipes' : '🔴 Heating pipes');
-      this.lastG2State = g2ValveState.isActive;
-      console.log('═══════════════════════════════════════');
-    }
-
-    if (this.lastHpMode !== hpState.mode) {
-      console.log('═══════════════════════════════════════');
-      console.log('⚡ HP MODE CHANGED');
-      console.log('HP Mode:', hpState.mode || '(undefined)');
-      console.log('HP Power:', hpState.power, 'W');
-      this.lastHpMode = hpState.mode || null;
-      console.log('═══════════════════════════════════════');
-    }
 
     return html`
       <ha-card>
