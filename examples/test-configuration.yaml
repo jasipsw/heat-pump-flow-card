@@ -17,7 +17,7 @@
 # - input_number.test_hvac_flow_rate (0-50, step 0.5, unit: L/min)
 # - input_number.test_hvac_supply_temp (0-50, step 0.5, unit: °C)
 # - input_number.test_hvac_return_temp (0-50, step 0.5, unit: °C)
-# - input_number.test_v18_power (0-18000, step 500, unit: W)
+# - input_number.test_aux_heater_power (0-18000, step 500, unit: W)
 
 # Input Boolean Helpers:
 # - input_boolean.test_g2_valve_dhw_mode (on = DHW, off = Heating)
@@ -51,11 +51,12 @@ hvac:
 g2_valve:
   state_entity: input_boolean.test_g2_valve_dhw_mode
 
-# V18 Auxiliary Heater Configuration
-v18_heater:
+# Auxiliary Heater Configuration
+aux_heater:
   enabled: true
-  power_entity: input_number.test_v18_power
+  power_entity: input_number.test_aux_heater_power
   max_power: 18000
+  display_name: "V18"  # Can customize: "V18", "V24", "AUX", etc.
 
 # DHW Tank Configuration
 dhw_tank:
@@ -119,7 +120,7 @@ display:
 # - HVAC Flow Rate: 35 L/min
 # - HVAC Supply: 42°C
 # - HVAC Return: 38°C
-# - V18 Power: 0 W (off)
+# - Aux Heater Power: 0 W (off)
 # - G2 Valve: OFF (heating mode)
 
 # DHW Mode (G2 valve ON):
@@ -128,10 +129,10 @@ display:
 # - HP Outlet Temp: 55°C
 # - HP Inlet Temp: 40°C
 # - HP Flow Rate: 18 L/min
-# - V18 Power: 9000 W (50% power - should show medium glow)
+# - Aux Heater Power: 9000 W (50% power - should show medium glow)
 # - G2 Valve: ON (DHW mode)
 
-# V18 Power Test:
+# Aux Heater Power Test:
 # - 0 W = Gray coil, no glow
 # - 4500 W (25%) = Slight red glow
 # - 9000 W (50%) = Medium red glow
