@@ -800,70 +800,53 @@ export class HeatPumpFlowCard extends LitElement {
               ` : ''}
             </g>
 
-            <!-- G2 Diverter Valve (between HP and tanks) -->
-            <g id="g2-valve" transform="translate(240, 200)">
-              <!-- Valve body (rounded rectangle for realistic valve appearance) -->
-              <rect x="-20" y="-12" width="40" height="24" rx="6"
-                    fill="#34495e"
-                    stroke="#2c3e50"
-                    stroke-width="3"/>
+            <!-- G2 Diverter Valve (3-way valve between HP and tanks) -->
+            <g id="g2-valve" transform="translate(240, 190)">
+              <!-- Valve body - cylindrical with flanges (matching valve idea graphic) -->
+              <!-- Left inlet flange -->
+              <rect x="-45" y="-8" width="10" height="16" fill="#95a5a6" stroke="#7f8c8d" stroke-width="2"/>
+              <!-- Main body cylinder -->
+              <rect x="-35" y="-12" width="35" height="24" fill="#bdc3c7" stroke="#7f8c8d" stroke-width="2"/>
+              <!-- Right outlet flange (to buffer/heating) -->
+              <rect x="0" y="-8" width="10" height="16" fill="#95a5a6" stroke="#7f8c8d" stroke-width="2"/>
+              <!-- Bottom outlet flange (to DHW) -->
+              <rect x="-25" y="12" width="16" height="10" fill="#95a5a6" stroke="#7f8c8d" stroke-width="2"/>
 
-              <!-- Valve inlet port (left) -->
-              <rect x="-22" y="-6" width="4" height="12" fill="#2c3e50"/>
-
-              <!-- Valve outlet ports (right and bottom) -->
-              <rect x="18" y="-6" width="4" height="12" fill="#2c3e50"/>
-              <rect x="-6" y="10" width="12" height="4" fill="#2c3e50"/>
-
-              <!-- Rotating handle/actuator on top -->
+              <!-- Internal flow path visualization -->
               ${g2ValveState.isActive ? html`
-                <!-- DHW Mode: Handle vertical (pointing down) -->
-                <g transform="rotate(90 0 0)">
-                  <rect x="-4" y="-28" width="8" height="18" rx="2"
-                        fill="${this.config.heat_pump_visual?.dhw_color || '#e67e22'}"
-                        stroke="#2c3e50"
-                        stroke-width="2"/>
-                  <circle cx="0" cy="-28" r="5"
-                          fill="${this.config.heat_pump_visual?.dhw_color || '#e67e22'}"
-                          stroke="#2c3e50"
-                          stroke-width="2"/>
-                </g>
+                <!-- DHW Mode: Flow DOWN (from left inlet to bottom outlet) -->
+                <!-- Active path in red -->
+                <path d="M -35 0 L -17 0 L -17 12"
+                      stroke="${this.config.heat_pump_visual?.dhw_color || '#e74c3c'}"
+                      stroke-width="6"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <!-- Inactive path (to right) shown as X -->
+                <path d="M -17 -8 L 0 8 M -17 8 L 0 -8"
+                      stroke="#7f8c8d"
+                      stroke-width="2"
+                      opacity="0.4"/>
               ` : html`
-                <!-- Heating Mode: Handle horizontal (pointing right) -->
-                <g>
-                  <rect x="-4" y="-28" width="8" height="18" rx="2"
-                        fill="#16a085"
-                        stroke="#2c3e50"
-                        stroke-width="2"/>
-                  <circle cx="0" cy="-28" r="5"
-                          fill="#16a085"
-                          stroke="#2c3e50"
-                          stroke-width="2"/>
-                </g>
+                <!-- Heating Mode: Flow ACROSS (from left inlet to right outlet) -->
+                <!-- Active path in green -->
+                <path d="M -35 0 L 0 0"
+                      stroke="#16a085"
+                      stroke-width="6"
+                      fill="none"
+                      stroke-linecap="round"/>
+                <!-- Inactive path (to bottom) shown as X -->
+                <path d="M -25 4 L -9 20 M -9 4 L -25 20"
+                      stroke="#7f8c8d"
+                      stroke-width="2"
+                      opacity="0.4"/>
               `}
 
-              <!-- Flow indicator arrow inside valve body -->
-              ${g2ValveState.isActive ? html`
-                <!-- DHW Mode: Arrow pointing DOWN -->
-                <path d="M 0 -6 L 0 6 M -4 2 L 0 6 L 4 2"
-                      stroke="white"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      fill="none"/>
-              ` : html`
-                <!-- Heating Mode: Arrow pointing RIGHT -->
-                <path d="M -8 0 L 8 0 M 4 -4 L 8 0 L 4 4"
-                      stroke="white"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      fill="none"/>
-              `}
-
-              <!-- Valve label above -->
-              <text x="0" y="-40" text-anchor="middle" fill="#2c3e50" font-size="11" font-weight="bold">
+              <!-- Valve label -->
+              <text x="-17" y="-20" text-anchor="middle" fill="#2c3e50" font-size="10" font-weight="bold">
                 G2
               </text>
-              <text x="0" y="-28" text-anchor="end" fill="${g2ValveState.isActive ? (this.config.heat_pump_visual?.dhw_color || '#e67e22') : '#16a085'}" font-size="9" font-weight="bold" transform="translate(-25, 0)">
+              <text x="-17" y="35" text-anchor="middle" fill="${g2ValveState.isActive ? (this.config.heat_pump_visual?.dhw_color || '#e74c3c') : '#16a085'}" font-size="9" font-weight="bold">
                 ${g2ValveState.isActive ? 'DHW' : 'HEAT'}
               </text>
             </g>
