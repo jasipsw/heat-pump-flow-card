@@ -65,6 +65,30 @@ export const cardStyles = css`
     }
   }
 
+  /* G2 Valve animations */
+  .g2-valve-path {
+    transition: stroke 0.5s ease, stroke-width 0.3s ease, opacity 0.5s ease;
+  }
+
+  .g2-valve-active-path {
+    animation: valve-flow-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes valve-flow-pulse {
+    0%, 100% {
+      stroke-width: 6;
+      opacity: 1;
+    }
+    50% {
+      stroke-width: 7;
+      opacity: 0.8;
+    }
+  }
+
+  .g2-valve-label {
+    transition: fill 0.3s ease;
+  }
+
   /* Pipe styling */
   path {
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));

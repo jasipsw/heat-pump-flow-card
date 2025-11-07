@@ -56,6 +56,28 @@ hvac:
   name: "Radiant Floor"
   icon: mdi:floor-plan
 
+# G2 Diverter Valve Configuration (Optional)
+# Uncomment if you have a valve that diverts between heating and DHW
+# g2_valve:
+#   state_entity: binary_sensor.g2_valve_dhw_mode  # on = DHW mode, off = heating mode
+#   name: "G2 Diverter Valve"
+
+# V18 Auxiliary Heater Configuration (Optional)
+# Uncomment if you have an inline electric heater between HP and G2 valve
+# v18_heater:
+#   enabled: true                          # Show the V18 heater visualization
+#   power_entity: sensor.v18_power_watts   # Power consumption sensor
+#   max_power: 18000                       # Maximum power (18kW = 18000W)
+#   name: "V18 Auxiliary Heater"
+
+# DHW Tank Configuration (Optional)
+# Uncomment if you have a domestic hot water tank
+# dhw_tank:
+#   inlet_temp_entity: sensor.dhw_coil_inlet_temp    # DHW coil inlet temperature
+#   outlet_temp_entity: sensor.dhw_coil_outlet_temp  # DHW coil outlet temperature
+#   tank_temp_entity: sensor.dhw_tank_temperature    # DHW tank temperature
+#   name: "DHW Tank"
+
 # Animation Configuration
 animation:
   # Fastest animation: 1 second for dot to travel pipe length
@@ -71,6 +93,11 @@ animation:
 
   # Spacing between dots
   dot_spacing: 30
+
+  # Dot stroke (outline) customization - NEW in v0.20.1
+  dot_stroke_color: white        # Color of dot outline
+  dot_stroke_width: 1.0          # Width of dot outline (reduced from 1.5)
+  dot_stroke_opacity: 0.8        # Opacity of dot outline (0-1)
 
 # Temperature Color Configuration
 temperature:
