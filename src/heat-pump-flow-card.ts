@@ -557,6 +557,38 @@ export class HeatPumpFlowCard extends LitElement {
     return cfg.off_color!;
   }
 
+  private getDisplayMode(hpState: HeatPumpState, g2ValveState: G2ValveState): string {
+    // If mode is explicitly configured, use it
+    if (hpState.mode) {
+      return hpState.mode.toUpperCase();
+    }
+
+    // If mode display is configured, use it
+    if (hpState.modeDisplay) {
+      return hpState.modeDisplay.toUpperCase();
+    }
+
+    // Infer mode from system state
+    if (hpState.defrost) {
+      return 'DEFROST';
+    }
+
+    if (hpState.power <= 0 && hpState.thermal <= 0) {
+      return 'OFF';
+    }
+
+    // If power is on, infer from G2 valve position
+    if (hpState.power > 0) {
+      if (g2ValveState.isActive) {
+        return 'DHW';
+      } else {
+        return 'HEATING';
+      }
+    }
+
+    return 'OFF';
+  }
+
   private getAnimationDuration(flowRate: number): number {
     const cfg = this.config.animation!;
     if (flowRate <= 0) return cfg.min_flow_rate!;  // No flow = slowest (longest duration)
@@ -656,39 +688,39 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Pipe: HP to Buffer (hot supply) - TOP - 10px gap from HP -->
             <path id="hp-to-buffer-path"
                   d="M 180 180 L 350 180"
-                  stroke="${hpOutletColor}"
+                  stroke="${g2ValveState.isActive ? (this.config.temperature?.neutral_color || '#95a5a6') : hpOutletColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive ? '0' : '1'}"/>
+                  opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
 
             <!-- Pipe: Buffer to HP (cold return) - BOTTOM - 10px gap from HP -->
             <path id="buffer-to-hp-path"
                   d="M 350 220 L 180 220"
-                  stroke="${hpInletColor}"
+                  stroke="${g2ValveState.isActive ? (this.config.temperature?.neutral_color || '#95a5a6') : hpInletColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive ? '0' : '1'}"/>
+                  opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
 
             <!-- DHW MODE PIPES (shown when G2 valve is ON - DHW mode) -->
             <!-- Pipe: HP to G2 valve (hot supply from TOP) -->
             <path id="hp-to-g2-path"
                   d="M 180 180 L 240 180 L 240 200"
-                  stroke="${hpOutletColor}"
+                  stroke="${g2ValveState.isActive ? hpOutletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive ? '1' : '0'}"/>
+                  opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
 
             <!-- Pipe: G2 valve down to DHW tank inlet -->
             <path id="g2-to-dhw-path"
                   d="M 240 200 L 240 370 L 350 370 L 350 420 L 380 420"
-                  stroke="${dhwCoilColor}"
+                  stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive ? '1' : '0'}"/>
+                  opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
 
             <!-- DHW coil spiral path (for flow animation) -->
             <path id="dhw-coil-path"
@@ -701,11 +733,11 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Pipe: DHW outlet to HP return (BOTTOM) -->
             <path id="dhw-to-hp-return-path"
                   d="M 380 535 L 350 535 L 350 220 L 180 220"
-                  stroke="${hpInletColor}"
+                  stroke="${g2ValveState.isActive ? hpInletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive ? '1' : '0'}"/>
+                  opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
 
             <!-- Pipe: Buffer to HVAC (hot) - 10px gap from HVAC -->
             <path id="buffer-to-hvac-path"
@@ -761,7 +793,7 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- Heat pump label -->
               <text x="60" y="85" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
-                ${hpState.mode?.toUpperCase() || 'OFF'}
+                ${this.getDisplayMode(hpState, g2ValveState)}
               </text>
 
               <!-- Error indicator -->
@@ -770,10 +802,16 @@ export class HeatPumpFlowCard extends LitElement {
                   ⚠ ${hpState.error}
                 </text>
               ` : ''}
+
+              <!-- Critical metrics inside HP box -->
+              <text x="10" y="105" fill="white" font-size="8">${this.formatValue(hpState.power/1000, 1)} kW in</text>
+              <text x="10" y="118" fill="white" font-size="8">${this.formatValue(hpState.thermal/1000, 1)} kW out</text>
+              <text x="10" y="131" fill="white" font-size="8">COP ${this.formatValue(hpState.cop, 2)}</text>
+              <text x="10" y="144" fill="white" font-size="8">${this.formatValue(hpState.flowRate, 1)} L/min</text>
             </g>
 
-            <!-- Heat Pump Metrics (always visible - Lit conditional rendering doesn't work for SVG text) -->
-            <g id="hp-metrics" transform="translate(50, 265)">
+            <!-- Heat Pump Metrics (legacy - now moved inside HP box, keeping for optional extra data) -->
+            <g id="hp-metrics-external" transform="translate(50, 265)" opacity="0">
               <!-- Metrics display in compact 2-column layout -->
               <!-- Left column -->
               <text x="0" y="0" fill="#95a5a6" font-size="11" font-weight="bold">${this.config.labels!.power_in}:</text>
@@ -801,16 +839,16 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- G2 Diverter Valve (3-way valve between HP and tanks) -->
-            <g id="g2-valve" transform="translate(240, 190)">
+            <g id="g2-valve" transform="translate(240, 190) scale(1.8)">
               <!-- Valve body - cylindrical with flanges (matching valve idea graphic) -->
               <!-- Left inlet flange -->
-              <rect x="-45" y="-8" width="10" height="16" fill="#95a5a6" stroke="#7f8c8d" stroke-width="2"/>
+              <rect x="-45" y="-8" width="10" height="16" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
               <!-- Main body cylinder -->
-              <rect x="-35" y="-12" width="35" height="24" fill="#bdc3c7" stroke="#7f8c8d" stroke-width="2"/>
+              <rect x="-35" y="-12" width="35" height="24" fill="#bdc3c7" stroke="#7f8c8d" stroke-width="1.5"/>
               <!-- Right outlet flange (to buffer/heating) -->
-              <rect x="0" y="-8" width="10" height="16" fill="#95a5a6" stroke="#7f8c8d" stroke-width="2"/>
+              <rect x="0" y="-8" width="10" height="16" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
               <!-- Bottom outlet flange (to DHW) -->
-              <rect x="-25" y="12" width="16" height="10" fill="#95a5a6" stroke="#7f8c8d" stroke-width="2"/>
+              <rect x="-25" y="12" width="16" height="10" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
 
               <!-- Internal flow path visualization -->
               ${g2ValveState.isActive ? html`
