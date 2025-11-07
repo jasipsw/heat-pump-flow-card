@@ -800,7 +800,7 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- Brand name (at top, above fan) -->
               ${this.config.heat_pump?.display_name ? html`
-                <text x="60" y="12" text-anchor="middle" fill="${hpTextColor}" font-size="9" font-weight="bold">
+                <text x="60" y="20" text-anchor="middle" fill="${hpTextColor}" font-size="10" font-weight="bold">
                   ${this.config.heat_pump.display_name}
                 </text>
               ` : ''}
