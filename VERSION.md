@@ -16,6 +16,14 @@ None
 
 ## Version History
 
+## v0.20.14 (2025-11-07)
+**Updated: Brand logo size to favicon standard (16x16px)**
+- Increased logo from 12x12px to 16x16px (favicon standard size)
+- Adjusted logo position from y=3 to y=1 for better centering
+- Moved brand text from x=20 to x=24 to accommodate larger logo
+- Better brand visibility with 33% larger logo area
+- Aligns with web standards for optimal brand recognition at small scale
+
 ## v0.20.13 (2025-11-07)
 **Fixed: Auxiliary heater visibility issue**
 - Moved auxiliary heater rendering from pipes section to after entities
