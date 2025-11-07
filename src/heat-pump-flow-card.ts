@@ -641,6 +641,11 @@ export class HeatPumpFlowCard extends LitElement {
     const hvacReturnColor = hvacPipeColors.coldPipe;
     const dhwCoilColor = dhwPipeColors.hotPipe;
 
+    // Calculate metrics text colors and positioning
+    const hpBgColor = this.getHeatPumpColor(hpState);
+    const hpTextColor = this.getContrastTextColor(hpBgColor);
+    const metricsY = hpState.error ? 115 : 100;
+
     // DEBUG: Log initial state once on first render
     if (!this.initialLogDone) {
       console.log('╔═══════════════════════════════════════╗');
@@ -825,22 +830,15 @@ export class HeatPumpFlowCard extends LitElement {
               ` : ''}
 
               <!-- Critical metrics inside HP box (2-column: Input | Output) -->
-              ${(() => {
-                const bgColor = this.getHeatPumpColor(hpState);
-                const textColor = this.getContrastTextColor(bgColor);
-                const metricsY = hpState.error ? 115 : 100;  // Lower if error shown
-                return html`
-                  <!-- Left column: INPUT parameters -->
-                  <text x="8" y="${metricsY}" fill="${textColor}" font-size="10" font-weight="bold">IN</text>
-                  <text x="8" y="${metricsY + 14}" fill="${textColor}" font-size="10">${this.formatValue(hpState.power/1000, 1)} kW</text>
-                  <text x="8" y="${metricsY + 28}" fill="${textColor}" font-size="9">${this.formatValue(hpState.flowRate, 1)} L/m</text>
+              <!-- Left column: INPUT parameters -->
+              <text x="8" y="${metricsY}" fill="${hpTextColor}" font-size="10" font-weight="bold">IN</text>
+              <text x="8" y="${metricsY + 14}" fill="${hpTextColor}" font-size="10">${this.formatValue(hpState.power/1000, 1)} kW</text>
+              <text x="8" y="${metricsY + 28}" fill="${hpTextColor}" font-size="9">${this.formatValue(hpState.flowRate, 1)} L/m</text>
 
-                  <!-- Right column: OUTPUT parameters -->
-                  <text x="62" y="${metricsY}" fill="${textColor}" font-size="10" font-weight="bold">OUT</text>
-                  <text x="62" y="${metricsY + 14}" fill="${textColor}" font-size="10">${this.formatValue(hpState.thermal/1000, 1)} kW</text>
-                  <text x="62" y="${metricsY + 28}" fill="${textColor}" font-size="9">COP ${this.formatValue(hpState.cop, 2)}</text>
-                `;
-              })()}
+              <!-- Right column: OUTPUT parameters -->
+              <text x="62" y="${metricsY}" fill="${hpTextColor}" font-size="10" font-weight="bold">OUT</text>
+              <text x="62" y="${metricsY + 14}" fill="${hpTextColor}" font-size="10">${this.formatValue(hpState.thermal/1000, 1)} kW</text>
+              <text x="62" y="${metricsY + 28}" fill="${hpTextColor}" font-size="9">COP ${this.formatValue(hpState.cop, 2)}</text>
             </g>
 
             <!-- Heat Pump Metrics (legacy - now moved inside HP box, keeping for optional extra data) -->
@@ -872,7 +870,7 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- G2 Diverter Valve (3-way valve between HP and tanks) -->
-            <g id="g2-valve" transform="translate(280, 190) scale(2.0)">
+            <g id="g2-valve" transform="translate(280, 190) scale(1.4)">
               <!-- Valve body - cylindrical with flanges (matching valve idea graphic) -->
               <!-- Left inlet flange -->
               <rect x="-45" y="-8" width="10" height="16" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
