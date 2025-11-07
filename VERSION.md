@@ -1,5 +1,28 @@
 # Version History
 
+## Open TODO Items
+
+### High Priority
+- [ ] Remove/improve brand icon artifact (currently displays as confusing rectangles)
+- [ ] Consider adding proper brand logo support (SVG or image-based)
+
+### Low Priority
+- [ ] Dark mode text readability - text in heat pump box is not readable when heat pump is off in dark mode
+
+### Future Enhancements
+- [ ] Custom icon configuration support for brand display
+- [ ] Additional brand display customization options
+
+---
+
+## Version History
+
+## v0.20.7 (2025-11-07)
+**Removed: Confusing icon artifact**
+- Removed simple building icon that was displaying as confusing rectangles behind brand text
+- Brand name now displays cleanly without icon
+- Icon support can be added properly in future version with better design
+
 ## v0.20.6 (2025-11-07)
 **Fixed: Fan rotation and brand display rendering**
 - Fixed fan rotation transform-origin from 60px 40px to 60px 45px to match new fan center position
