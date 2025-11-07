@@ -650,31 +650,31 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Flow Pipes (rendered first so they appear behind entities) -->
 
             <!-- Pipes with 10px gaps from entities for clean appearance -->
-            <!-- SWAPPED: Return on top, Supply on bottom for cleaner DHW routing -->
+            <!-- CONVENTIONAL: Supply on top (hot), Return on bottom (cold) -->
 
             <!-- HEATING MODE PIPES (shown when G2 valve is OFF - heating mode) -->
-            <!-- Pipe: Buffer to HP (cold return) - TOP - 10px gap from HP -->
-            <path id="buffer-to-hp-path"
-                  d="M 350 180 L 180 180"
-                  stroke="${hpInletColor}"
-                  stroke-width="12"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive ? '0' : '1'}"/>
-
-            <!-- Pipe: HP to Buffer (hot supply) - BOTTOM - 10px gap from HP -->
+            <!-- Pipe: HP to Buffer (hot supply) - TOP - 10px gap from HP -->
             <path id="hp-to-buffer-path"
-                  d="M 180 220 L 350 220"
+                  d="M 180 180 L 350 180"
                   stroke="${hpOutletColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive ? '0' : '1'}"/>
 
+            <!-- Pipe: Buffer to HP (cold return) - BOTTOM - 10px gap from HP -->
+            <path id="buffer-to-hp-path"
+                  d="M 350 220 L 180 220"
+                  stroke="${hpInletColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${g2ValveState.isActive ? '0' : '1'}"/>
+
             <!-- DHW MODE PIPES (shown when G2 valve is ON - DHW mode) -->
-            <!-- Pipe: HP to G2 valve (hot supply) -->
+            <!-- Pipe: HP to G2 valve (hot supply from TOP) -->
             <path id="hp-to-g2-path"
-                  d="M 180 220 L 240 220 L 240 200"
+                  d="M 180 180 L 240 180 L 240 200"
                   stroke="${hpOutletColor}"
                   stroke-width="12"
                   fill="none"
@@ -698,9 +698,9 @@ export class HeatPumpFlowCard extends LitElement {
                   fill="none"
                   opacity="0"/>
 
-            <!-- Pipe: DHW outlet up to HP return merge -->
+            <!-- Pipe: DHW outlet to HP return (BOTTOM) -->
             <path id="dhw-to-hp-return-path"
-                  d="M 380 535 L 350 535 L 350 180 L 240 180 L 180 180"
+                  d="M 380 535 L 350 535 L 350 220 L 180 220"
                   stroke="${hpInletColor}"
                   stroke-width="12"
                   fill="none"
@@ -723,13 +723,13 @@ export class HeatPumpFlowCard extends LitElement {
                   fill="none"
                   stroke-linecap="butt"/>
 
-            <!-- Temperature labels (swapped to match pipe positions) -->
-            <text x="260" y="170" text-anchor="middle" fill="${hpInletColor}" font-size="11" font-weight="bold">
-              ${this.config.labels!.hp_return}: ${this.formatValue(hpState.inletTemp, 1)}°${this.config.temperature?.unit || 'C'}
+            <!-- Temperature labels (hot supply on top, cold return on bottom) -->
+            <text x="260" y="170" text-anchor="middle" fill="${hpOutletColor}" font-size="11" font-weight="bold">
+              ${this.config.labels!.hp_supply}: ${this.formatValue(hpState.outletTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
-            <text x="260" y="240" text-anchor="middle" fill="${hpOutletColor}" font-size="11" font-weight="bold">
-              ${this.config.labels!.hp_supply}: ${this.formatValue(hpState.outletTemp, 1)}°${this.config.temperature?.unit || 'C'}
+            <text x="260" y="240" text-anchor="middle" fill="${hpInletColor}" font-size="11" font-weight="bold">
+              ${this.config.labels!.hp_return}: ${this.formatValue(hpState.inletTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
             <text x="540" y="170" text-anchor="middle" fill="${bufferSupplyColor}" font-size="11" font-weight="bold">
