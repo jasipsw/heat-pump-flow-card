@@ -692,27 +692,10 @@ export class HeatPumpFlowCard extends LitElement {
           <svg viewBox="0 0 800 700" xmlns="http://www.w3.org/2000/svg">
             <!-- SVG Filter Definitions -->
             <defs>
-              <!-- Dynamic glow filter for aux heater with drop shadow -->
-              <filter id="aux-heater-glow" x="-100%" y="-100%" width="300%" height="300%">
-                <!-- Drop shadow for depth -->
-                <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="shadow-blur"/>
-                <feOffset in="shadow-blur" dx="0" dy="2" result="shadow-offset"/>
-                <feFlood flood-color="#000000" flood-opacity="0.4" result="shadow-color"/>
-                <feComposite in="shadow-color" in2="shadow-offset" operator="in" result="shadow"/>
-
-                <!-- Strong glow effect -->
-                <feGaussianBlur in="SourceGraphic" stdDeviation="${auxGlowBlur}" result="blur"/>
-                <feFlood flood-color="#ff4422" flood-opacity="${auxGlowOpacity}" result="glow-color"/>
-                <feComposite in="glow-color" in2="blur" operator="in" result="glow"/>
-
-                <!-- Combine shadow, multiple glow layers, and original -->
-                <feMerge>
-                  <feMergeNode in="shadow"/>
-                  <feMergeNode in="glow"/>
-                  <feMergeNode in="glow"/>
-                  <feMergeNode in="glow"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
+              <!-- Simplified drop shadow filter for aux heater - always visible -->
+              <filter id="aux-heater-glow" x="-200%" y="-200%" width="500%" height="500%">
+                <!-- Drop shadow -->
+                <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#000000" flood-opacity="0.5"/>
               </filter>
             </defs>
 
@@ -733,9 +716,9 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
 
-            <!-- Pipe: HP to G2 valve (hot supply) - TOP - ON TOP -->
+            <!-- Pipe: HP to G2 valve (hot supply) - TOP - Connects to G2 left inlet flange - ON TOP -->
             <path id="hp-to-g2-heating-path"
-                  d="M 180 180 L 320 180"
+                  d="M 180 180 L 296 180"
                   stroke="${hpOutletColor}"
                   stroke-width="12"
                   fill="none"
@@ -754,27 +737,27 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- DHW MODE PIPES (shown when G2 valve is ON - DHW mode) -->
             <!-- Z-ORDER: Return pipes first (behind), then supply pipes (on top) -->
 
-            <!-- Pipe: DHW outlet to HP return (BOTTOM) - 10px gap from tank, vertically centered - BEHIND -->
+            <!-- Pipe: DHW outlet to HP return (BOTTOM) - Increased vertical spacing - BEHIND -->
             <path id="dhw-to-hp-return-path"
-                  d="M 390 440 L 300 440 L 300 220 L 180 220"
+                  d="M 390 450 L 300 450 L 300 220 L 180 220"
                   stroke="${g2ValveState.isActive ? hpInletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
 
-            <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) - 10px gap from tank, vertically centered -->
+            <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) - Increased vertical spacing -->
             <path id="g2-to-dhw-path"
-                  d="M 308 192 L 308 400 L 390 400"
+                  d="M 308 192 L 308 390 L 390 390"
                   stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
 
-            <!-- DHW coil spiral path (for flow animation) - 40px vertical span, centered on tank -->
+            <!-- DHW coil spiral path (for flow animation) - 60px vertical span for better spacing -->
             <path id="dhw-coil-path"
-                  d="M 390 400 L 418 400 Q 438 405, 458 400 Q 438 410, 418 410 Q 438 415, 458 410 Q 438 420, 418 420 Q 438 425, 458 420 Q 438 430, 418 430 Q 438 435, 458 430 Q 438 440, 418 440 L 390 440"
+                  d="M 390 390 L 418 390 Q 438 395, 458 390 Q 438 402, 418 402 Q 438 410, 458 402 Q 438 418, 418 418 Q 438 426, 458 418 Q 438 434, 418 434 Q 438 442, 458 434 Q 438 450, 418 450 L 390 450"
                   stroke="none"
                   stroke-width="0"
                   fill="none"
@@ -830,7 +813,7 @@ export class HeatPumpFlowCard extends LitElement {
             </text>
 
             <!-- Flow rate - centered vertically between pipes, centered horizontally -->
-            <text x="550" y="200" text-anchor="middle" fill="#95a5a6"
+            <text x="550" y="205" text-anchor="middle" fill="#95a5a6"
                   font-size="${(this.config.text_style?.font_size || 11) - 1}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="normal">
@@ -1033,16 +1016,16 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Inner cylinder (DHW water - always blue/cold) -->
               <rect x="15" y="25" width="60" height="130" fill="#3498db" opacity="0.3"/>
 
-              <!-- Heating coil inside tank (spiral) - gray when no flow, hot when flowing - 40px vertical span, centered -->
-              <path d="M 28 70 Q 45 75, 62 70 Q 45 80, 28 80 Q 45 85, 62 80 Q 45 90, 28 90 Q 45 95, 62 90 Q 45 100, 28 100 Q 45 105, 62 100 Q 45 110, 28 110"
+              <!-- Heating coil inside tank (spiral) - 60px vertical span for better visibility -->
+              <path d="M 28 60 Q 45 65, 62 60 Q 45 72, 28 72 Q 45 80, 62 72 Q 45 88, 28 88 Q 45 96, 62 88 Q 45 104, 28 104 Q 45 112, 62 104 Q 45 120, 28 120"
                     stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                     stroke-width="4"
                     fill="none"
                     opacity="${g2ValveState.isActive ? '0.9' : '0.3'}"/>
 
-              <!-- Coil inlet/outlet markers - centered on tank -->
-              <circle cx="28" cy="70" r="3" fill="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"/>
-              <circle cx="28" cy="110" r="3" fill="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"/>
+              <!-- Coil inlet/outlet markers - 60px vertical span -->
+              <circle cx="28" cy="60" r="3" fill="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"/>
+              <circle cx="28" cy="120" r="3" fill="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"/>
 
               <!-- Structural bands -->
               <line x1="10" y1="55" x2="80" y2="55" stroke="#2c3e50" stroke-width="2"/>
@@ -1074,15 +1057,19 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- Auxiliary Heater - Simplified glowing cylinder -->
-            <!-- Compact inline heater element on horizontal pipe, centered between HP and G2 -->
+            <!-- Compact inline heater element on horizontal pipe, centered between HP outlet and G2 inlet -->
             <g id="aux-heater" opacity="${auxHeaterState.enabled ? '1' : '0'}">
-              <!-- Heated cylinder - color transitions from gray to red-orange, glows with intensity -->
-              <rect x="220" y="172" width="60" height="16" rx="2" ry="2"
+              <!-- Outer glow layer for visibility -->
+              <rect x="208" y="172" width="60" height="16" rx="2" ry="2"
+                    fill="${auxCylinderColor}"
+                    opacity="${auxIntensity * 0.3}"
+                    filter="blur(8px)"/>
+              <!-- Main heated cylinder - color transitions from gray to red-orange, glows with intensity -->
+              <rect x="208" y="172" width="60" height="16" rx="2" ry="2"
                     fill="${auxCylinderColor}"
                     stroke="#2d3748"
                     stroke-width="1.5"
-                    filter="${auxIntensity > 0 ? 'url(#aux-heater-glow)' : ''}"
-                    class="${auxIntensity > 0 ? 'aux-heater-pulsing' : ''}">
+                    filter="${auxIntensity > 0 ? 'url(#aux-heater-glow)' : ''}">
                 ${auxIntensity > 0 ? html`
                   <animate attributeName="opacity"
                            values="0.85;1;0.85"

@@ -16,6 +16,17 @@ None
 
 ## Version History
 
+## v0.21.4 (2025-11-07)
+**Fixed: Comprehensive alignment and visibility fixes**
+
+Major fixes addressing user-reported issues:
+- Fixed HVAC flow rate vertical position (y=200→205 to match HP side)
+- Fixed HP to G2 pipe connection (x=320→296 to connect to G2 inlet flange)
+- Recentered aux heater (x=220→208, properly centered between HP outlet and G2 inlet)
+- Fixed aux heater glow visibility (simplified filter to feDropShadow, added outer glow layer)
+- Increased DHW pipe vertical spacing (40px→60px: y=400/440→390/450 for clearer separation)
+- Updated DHW coil position to match new pipe spacing (cy=70/110→60/120)
+
 ## v0.21.3 (2025-11-07)
 **Fixed: DHW pipe centering and aux heater animation**
 
