@@ -16,6 +16,19 @@ None
 
 ## Version History
 
+## v0.21.0 (2025-11-07)
+**Major: Layout improvements and pipe flow fixes (#94, #102 partial)**
+
+Significant layout and flow improvements:
+- Reduced tank sizes: Buffer and DHW tanks reduced from 160px to 140px height, 80px to 70px width
+- Reduced vertical spacing: DHW tank moved from y=410 to y=330 (80px closer to buffer)
+- Moved G2 valve closer to HP: from x=375 to x=320 for better visual flow
+- Split heating pipe: HP-to-buffer now splits at G2 valve for proper color display
+- Fixed DHW mode display: Pipe from G2 to buffer now shows neutral/gray when DHW active (was red)
+- Fixed flow dots: Removed dots from G2-to-buffer path when in DHW mode
+- Centered temps/flow: HVAC supply/return temps and flow rate now centered at x=530, inline vertically
+- Updated all DHW pipes and coil paths to match new tank position
+
 ## v0.20.24 (2025-11-07)
 **Simplified: Aux heater with smooth color transition and glow**
 
