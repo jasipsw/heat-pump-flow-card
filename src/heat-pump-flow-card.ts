@@ -684,6 +684,22 @@ export class HeatPumpFlowCard extends LitElement {
     // Glow opacity for filter - boosted for visibility
     const auxGlowOpacity = Math.min(auxIntensity * 1.5, 1.0);
 
+    // Debug logging for aux heater
+    if (auxHeaterState.enabled) {
+      console.log('[Heat Pump Card] Aux Heater Debug:', {
+        enabled: auxHeaterState.enabled,
+        power: auxHeaterState.power,
+        maxPower: auxHeaterState.maxPower,
+        intensity: auxIntensity,
+        cylinderColor: auxCylinderColor,
+        glowBlur: auxGlowBlur,
+        glowOpacity: auxGlowOpacity,
+        outerGlowOpacity: auxIntensity * 0.5,
+        middleGlowOpacity: auxIntensity * 0.7,
+        innerGlowOpacity: auxIntensity * 0.9
+      });
+    }
+
     return html`
       <ha-card>
         ${this.config.title ? html`<h1 class="card-header">${this.config.title}</h1>` : ''}
@@ -692,10 +708,20 @@ export class HeatPumpFlowCard extends LitElement {
           <svg viewBox="0 0 800 700" xmlns="http://www.w3.org/2000/svg">
             <!-- SVG Filter Definitions -->
             <defs>
-              <!-- Simplified drop shadow filter for aux heater - always visible -->
+              <!-- Drop shadow filter for aux heater -->
               <filter id="aux-heater-glow" x="-200%" y="-200%" width="500%" height="500%">
-                <!-- Drop shadow -->
                 <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#000000" flood-opacity="0.5"/>
+              </filter>
+
+              <!-- Blur filters for aux heater glow layers -->
+              <filter id="aux-glow-outer">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="12"/>
+              </filter>
+              <filter id="aux-glow-middle">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="8"/>
+              </filter>
+              <filter id="aux-glow-inner">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="4"/>
               </filter>
             </defs>
 
@@ -1016,8 +1042,8 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Inner cylinder (DHW water - always blue/cold) -->
               <rect x="15" y="25" width="60" height="130" fill="#3498db" opacity="0.3"/>
 
-              <!-- Heating coil inside tank (spiral) - 100px vertical span for clear visibility -->
-              <path d="M 28 40 Q 45 48, 62 40 Q 45 60, 28 60 Q 45 76, 62 60 Q 45 92, 28 92 Q 45 108, 62 92 Q 45 124, 28 124 Q 45 140, 62 124"
+              <!-- Heating coil inside tank (spiral) - complete path from inlet to outlet -->
+              <path d="M 28 40 Q 45 48, 62 40 Q 45 60, 28 60 Q 45 76, 62 60 Q 45 92, 28 92 Q 45 108, 62 92 Q 45 124, 28 124 Q 45 132, 62 124 Q 45 140, 28 140"
                     stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                     stroke-width="4"
                     fill="none"
@@ -1059,32 +1085,35 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Auxiliary Heater - Glowing cylinder with animated pulsing glow -->
             <!-- Centered between HP outlet (180) and G2 inlet (328) = 254, width 60, so x=224 -->
             <g id="aux-heater" opacity="${auxHeaterState.enabled ? '1' : '0'}">
-              <!-- Animated outer glow layers - multiple for strong visibility -->
+              <!-- Animated outer glow layers with blur filters -->
               ${auxIntensity > 0 ? html`
                 <!-- Outermost glow - largest blur, slowest pulse -->
                 <rect x="214" y="166" width="76" height="28" rx="8" ry="8"
                       fill="#ff4422"
+                      filter="url(#aux-glow-outer)"
                       opacity="0">
                   <animate attributeName="opacity"
-                           values="0;${auxIntensity * 0.4};0"
+                           values="0;${auxIntensity * 0.5};0"
                            dur="2s"
                            repeatCount="indefinite"/>
                 </rect>
                 <!-- Middle glow - medium blur, medium pulse -->
                 <rect x="218" y="168" width="68" height="24" rx="6" ry="6"
                       fill="#ff6644"
+                      filter="url(#aux-glow-middle)"
                       opacity="0">
                   <animate attributeName="opacity"
-                           values="0;${auxIntensity * 0.6};0"
+                           values="0;${auxIntensity * 0.7};0"
                            dur="1.5s"
                            repeatCount="indefinite"/>
                 </rect>
                 <!-- Inner glow - tight, fast pulse -->
                 <rect x="221" y="170" width="62" height="20" rx="4" ry="4"
                       fill="#ff8855"
+                      filter="url(#aux-glow-inner)"
                       opacity="0">
                   <animate attributeName="opacity"
-                           values="0;${auxIntensity * 0.8};0"
+                           values="0;${auxIntensity * 0.9};0"
                            dur="1s"
                            repeatCount="indefinite"/>
                 </rect>
