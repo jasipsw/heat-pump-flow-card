@@ -791,6 +791,18 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Heat pump body with state-based color -->
               <rect width="120" height="150" rx="10" fill="${this.getHeatPumpColor(hpState)}" fill-opacity="0.2" stroke="${this.getHeatPumpColor(hpState)}" stroke-width="3"/>
 
+              <!-- Brand logo (if configured) -->
+              ${this.config.heat_pump?.logo_url ? html`
+                <image href="${this.config.heat_pump.logo_url}" x="10" y="5" width="100" height="20" preserveAspectRatio="xMidYMid meet"/>
+              ` : ''}
+
+              <!-- Brand name (if configured) -->
+              ${this.config.heat_pump?.display_name ? html`
+                <text x="60" y="${this.config.heat_pump?.logo_url ? '30' : '15'}" text-anchor="middle" fill="${this.getContrastTextColor(this.getHeatPumpColor(hpState))}" font-size="8" font-weight="bold">
+                  ${this.config.heat_pump.display_name}
+                </text>
+              ` : ''}
+
               <!-- Fan housing -->
               <circle cx="60" cy="40" r="30" fill="#34495e" stroke="${this.getHeatPumpColor(hpState)}" stroke-width="2"/>
 
