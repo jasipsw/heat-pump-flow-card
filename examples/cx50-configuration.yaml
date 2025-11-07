@@ -62,13 +62,14 @@ hvac:
 #   state_entity: binary_sensor.g2_valve_dhw_mode  # on = DHW mode, off = heating mode
 #   name: "G2 Diverter Valve"
 
-# V18 Auxiliary Heater Configuration (Optional)
+# Auxiliary Heater Configuration (Optional)
 # Uncomment if you have an inline electric heater between HP and G2 valve
-# v18_heater:
-#   enabled: true                          # Show the V18 heater visualization
-#   power_entity: sensor.v18_power_watts   # Power consumption sensor
-#   max_power: 18000                       # Maximum power (18kW = 18000W)
-#   name: "V18 Auxiliary Heater"
+# aux_heater:
+#   enabled: true                          # Show the auxiliary heater visualization
+#   power_entity: sensor.aux_heater_power  # Power consumption sensor (W)
+#   max_power: 18000                       # Maximum power for normalization (18kW = 18000W)
+#   display_name: "V18"                    # Display name shown on visualization (e.g., "V18", "AUX", "V24")
+#   name: "Auxiliary Heater"               # Internal name
 
 # DHW Tank Configuration (Optional)
 # Uncomment if you have a domestic hot water tank

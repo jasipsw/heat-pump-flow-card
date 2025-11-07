@@ -1,7 +1,7 @@
 import { LitElement, html, css, PropertyValues } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { HomeAssistant, LovelaceCardEditor } from 'custom-card-helpers';
-import { HeatPumpFlowCardConfig, HeatPumpState, BufferTankState, HVACState, DHWTankState, G2ValveState, V18HeaterState, HousePerformanceState } from './types';
+import { HeatPumpFlowCardConfig, HeatPumpState, BufferTankState, HVACState, DHWTankState, G2ValveState, AuxHeaterState, HousePerformanceState } from './types';
 import { CARD_VERSION, BUILD_TIMESTAMP } from './const';
 import { cardStyles } from './styles';
 
@@ -460,16 +460,18 @@ export class HeatPumpFlowCard extends LitElement {
     };
   }
 
-  private getV18HeaterState(): V18HeaterState {
-    const cfg = this.config.v18_heater || {};
+  private getAuxHeaterState(): AuxHeaterState {
+    const cfg = this.config.aux_heater || {};
     const enabled = cfg.enabled || false;
     const power = this.getStateValue(cfg.power_entity) || 0;
     const maxPower = cfg.max_power || 18000; // Default 18kW
     const intensity = Math.min(power / maxPower, 1); // Normalize to 0-1, cap at 1
+    const displayName = cfg.display_name || 'AUX'; // Default to "AUX"
     return {
       enabled,
       power,
       intensity,
+      displayName,
     };
   }
 
@@ -643,7 +645,7 @@ export class HeatPumpFlowCard extends LitElement {
     const hvacState = this.getHVACState();
     const dhwState = this.getDHWTankState();
     const g2ValveState = this.getG2ValveState();
-    const v18State = this.getV18HeaterState();
+    const auxHeaterState = this.getAuxHeaterState();
 
     // Calculate pipe colors based on temperature delta
     const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
@@ -761,29 +763,29 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
 
-            <!-- V18 Auxiliary Heater Coil (wraps around HP to G2 supply pipe) -->
-            ${v18State.enabled ? html`
+            <!-- Auxiliary Heater Coil (wraps around HP to G2 supply pipe) -->
+            ${auxHeaterState.enabled ? html`
               <!-- Heating coil visualization - wraps around pipe from x=200 to x=270 -->
-              <g id="v18-heater" opacity="${v18State.intensity > 0 ? '1' : '0.3'}">
+              <g id="aux-heater" opacity="${auxHeaterState.intensity > 0 ? '1' : '0.3'}">
                 <!-- Coil wraps (spiral pattern) -->
                 <path d="M 200 175 Q 205 170, 210 175 Q 215 180, 220 175 Q 225 170, 230 175 Q 235 180, 240 175 Q 245 170, 250 175 Q 255 180, 260 175 Q 265 170, 270 175"
-                      stroke="${v18State.intensity > 0 ? '#ff4444' : '#95a5a6'}"
-                      stroke-width="${2 + v18State.intensity * 2}"
+                      stroke="${auxHeaterState.intensity > 0 ? '#ff4444' : '#95a5a6'}"
+                      stroke-width="${2 + auxHeaterState.intensity * 2}"
                       fill="none"
                       opacity="0.7"
-                      filter="drop-shadow(0 0 ${2 + v18State.intensity * 8}px ${v18State.intensity > 0 ? '#ff0000' : '#666666'})"/>
+                      filter="drop-shadow(0 0 ${2 + auxHeaterState.intensity * 8}px ${auxHeaterState.intensity > 0 ? '#ff0000' : '#666666'})"/>
                 <!-- Lower coil wrap -->
                 <path d="M 200 185 Q 205 190, 210 185 Q 215 180, 220 185 Q 225 190, 230 185 Q 235 180, 240 185 Q 245 190, 250 185 Q 255 180, 260 185 Q 265 190, 270 185"
-                      stroke="${v18State.intensity > 0 ? '#ff4444' : '#95a5a6'}"
-                      stroke-width="${2 + v18State.intensity * 2}"
+                      stroke="${auxHeaterState.intensity > 0 ? '#ff4444' : '#95a5a6'}"
+                      stroke-width="${2 + auxHeaterState.intensity * 2}"
                       fill="none"
                       opacity="0.7"
-                      filter="drop-shadow(0 0 ${2 + v18State.intensity * 8}px ${v18State.intensity > 0 ? '#ff0000' : '#666666'})"/>
-                <!-- Power indicator label -->
-                ${v18State.power > 0 ? html`
+                      filter="drop-shadow(0 0 ${2 + auxHeaterState.intensity * 8}px ${auxHeaterState.intensity > 0 ? '#ff0000' : '#666666'})"/>
+                <!-- Power indicator label with custom display name -->
+                ${auxHeaterState.power > 0 ? html`
                   <text x="235" y="165" text-anchor="middle" fill="#ff4444" font-size="9" font-weight="bold"
                         filter="drop-shadow(0 0 4px #ff0000)">
-                    V18: ${this.formatValue(v18State.power / 1000, 1)} kW
+                    ${auxHeaterState.displayName}: ${this.formatValue(auxHeaterState.power / 1000, 1)} kW
                   </text>
                 ` : ''}
               </g>

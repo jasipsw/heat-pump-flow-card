@@ -61,12 +61,13 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     name?: string;
   };
 
-  // V18 Auxiliary Heater Configuration (inline heater between HP and G2)
-  v18_heater?: {
-    enabled?: boolean;             // Show V18 heater visualization (default: false)
+  // Auxiliary Heater Configuration (inline heater between HP and G2)
+  aux_heater?: {
+    enabled?: boolean;             // Show auxiliary heater visualization (default: false)
     power_entity?: string;         // Power consumption entity (W)
     max_power?: number;            // Maximum power for normalization (default: 18000W = 18kW)
-    name?: string;
+    display_name?: string;         // Display name shown on visualization (e.g., "V18", "AUX", etc.)
+    name?: string;                 // Internal name (deprecated, use display_name)
   };
 
   // HVAC/Load Configuration
@@ -188,10 +189,11 @@ export interface G2ValveState {
   isActive: boolean;  // true = DHW mode, false = heating mode
 }
 
-export interface V18HeaterState {
-  enabled: boolean;    // Is V18 heater enabled in config
-  power: number;       // Current power consumption (W)
-  intensity: number;   // Normalized intensity 0-1 (power / max_power)
+export interface AuxHeaterState {
+  enabled: boolean;      // Is auxiliary heater enabled in config
+  power: number;         // Current power consumption (W)
+  intensity: number;     // Normalized intensity 0-1 (power / max_power)
+  displayName: string;   // Display name for the heater (e.g., "V18", "AUX")
 }
 
 export interface HousePerformanceState {
