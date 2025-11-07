@@ -51,7 +51,7 @@ export const cardStyles = css`
 
   /* Fan rotation animation */
   .fan-rotating {
-    transform-origin: 60px 45px;
+    transform-origin: 60px 51px;
     animation: fan-spin linear infinite;
     animation-duration: var(--fan-duration, 1s);
   }

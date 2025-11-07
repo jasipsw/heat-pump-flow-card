@@ -25,6 +25,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     display_name?: string;       // Display name (e.g., "Chiltrix CX50-2")
     logo_url?: string;           // URL to logo image (local /local/... or external https://...)
     logo_background_color?: string; // Background color for logo area (default: transparent, e.g., "white", "#ffffff")
+    logo_text_color?: string;    // Text color for brand name (default: dynamic based on HP state, e.g., "white", "#2c3e50")
   };
 
   // Heat Pump Visual Configuration
