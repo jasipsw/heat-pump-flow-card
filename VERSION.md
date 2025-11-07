@@ -16,6 +16,26 @@ None
 
 ## Version History
 
+## v0.21.6 (2025-11-07)
+**Fixed: DHW pipe horizontal separation**
+
+Critical fix for overlapping DHW pipes:
+- Fixed DHW supply pipe: connects to tank at x=418 (actual coil inlet position)
+- Fixed DHW return pipe: exits tank at x=418, routes left to x=370 before going down
+- Horizontal separation between supply (x=348 vertical run) and return (x=370 vertical run)
+- Updated coil animation path to match actual coil inlet/outlet positions
+
+## v0.21.5 (2025-11-07)
+**Fixed: G2 valve positioning, aux heater animation, and pipe spacing**
+
+Complete fixes for all reported issues:
+- Moved G2 valve to the right (x=320→360 for better spacing)
+- Updated all G2 pipe connections to match new position
+- Properly centered aux heater (x=224, midpoint between HP outlet at 180 and G2 inlet at 328)
+- Created visible animated glow: 3 pulsing colored layers at different speeds (#ff4422, #ff6644, #ff8855)
+- Significantly increased DHW pipe spacing (60px→100px: y=390/450→370/470)
+- Updated DHW coil to match (cy=60/120→40/140)
+
 ## v0.21.4 (2025-11-07)
 **Fixed: Comprehensive alignment and visibility fixes**
 
