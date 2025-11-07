@@ -16,6 +16,17 @@ None
 
 ## Version History
 
+## v0.20.24 (2025-11-07)
+**Simplified: Aux heater with smooth color transition and glow**
+
+Completely redesigned aux heater for simplicity and visual appeal:
+- Simplified to single glowing cylinder (removed complex coil SVG paths)
+- Reduced size: 50% shorter (60px vs 110px), slightly narrower (16px vs 20px)
+- Smooth color transition: gray → orange → red-orange based on power intensity
+- Dynamic drop-shadow glow effect that intensifies with power (0-12px blur)
+- Removed unused SVG filter definitions
+- Much cleaner implementation with better reactivity
+
 ## v0.20.23 (2025-11-07)
 **Fixed: Aux heater dynamic color/glow reactivity**
 

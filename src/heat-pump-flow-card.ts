@@ -664,14 +664,25 @@ export class HeatPumpFlowCard extends LitElement {
     const hpTextColor = this.getContrastTextColor(hpBgColor);
     const metricsY = hpState.error ? 126 : 111;
 
-    // Calculate aux heater dynamic colors and glow filter
-    const auxCoilColor = auxHeaterState.intensity > 0
-      ? (auxHeaterState.intensity < 0.33 ? '#ff8c42' : (auxHeaterState.intensity < 0.66 ? '#ffd700' : '#ff4444'))
-      : '#95a5a6';
-    const auxGlowFilter = auxHeaterState.intensity > 0
-      ? (auxHeaterState.intensity < 0.33 ? 'url(#aux-glow-low)' : (auxHeaterState.intensity < 0.66 ? 'url(#aux-glow-medium)' : 'url(#aux-glow-high)'))
+    // Calculate aux heater dynamic colors and glow
+    const auxIntensity = auxHeaterState.intensity;
+    // Color transition: gray -> orange -> red-orange based on intensity
+    let auxCylinderColor = '#4a5568'; // Gray when off
+    if (auxIntensity > 0) {
+      // Interpolate between gray (#4a5568 = rgb(74,85,104)) and red-orange (#ff4422)
+      const grayR = 74, grayG = 85, grayB = 104;
+      const hotR = 255, hotG = 68, hotB = 34;
+      const r = Math.round(grayR + (hotR - grayR) * auxIntensity);
+      const g = Math.round(grayG + (hotG - grayG) * auxIntensity);
+      const b = Math.round(grayB + (hotB - grayB) * auxIntensity);
+      auxCylinderColor = `rgb(${r}, ${g}, ${b})`;
+    }
+    // Glow intensity for drop-shadow (0 to 12px blur)
+    const auxGlowBlur = Math.round(auxIntensity * 12);
+    const auxDropShadow = auxIntensity > 0
+      ? `drop-shadow(0 0 ${auxGlowBlur}px rgba(255, 68, 34, ${0.6 + auxIntensity * 0.4}))`
       : '';
-    const auxLabelColor = auxHeaterState.intensity > 0.66 ? '#ff4444' : (auxHeaterState.intensity > 0.33 ? '#ffd700' : '#ff8c42');
+    const auxLabelColor = auxIntensity > 0 ? '#ff8c42' : '#95a5a6';
 
     return html`
       <ha-card>
@@ -679,49 +690,6 @@ export class HeatPumpFlowCard extends LitElement {
 
         <div class="card-content">
           <svg viewBox="0 0 800 700" xmlns="http://www.w3.org/2000/svg">
-            <!-- SVG Filter Definitions -->
-            <defs>
-              <!-- Glow filter for aux heater - intensity controlled dynamically -->
-              <filter id="aux-glow-low" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur"/>
-                <feColorMatrix in="blur" type="matrix"
-                  values="1 0 0 0 0
-                          0.5 0 0 0 0
-                          0 0 0 0 0
-                          0 0 0 2 0"/>
-                <feMerge>
-                  <feMergeNode/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-
-              <filter id="aux-glow-medium" x="-100%" y="-100%" width="300%" height="300%">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
-                <feColorMatrix in="blur" type="matrix"
-                  values="1 0 0 0 0
-                          0.8 0 0 0 0
-                          0 0 0 0 0
-                          0 0 0 3 0"/>
-                <feMerge>
-                  <feMergeNode/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-
-              <filter id="aux-glow-high" x="-150%" y="-150%" width="400%" height="400%">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
-                <feColorMatrix in="blur" type="matrix"
-                  values="1 0 0 0 0
-                          0.3 0 0 0 0
-                          0 0 0 0 0
-                          0 0 0 4 0"/>
-                <feMerge>
-                  <feMergeNode/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-            </defs>
-
             <!-- Flow Pipes (rendered first so they appear behind entities) -->
 
             <!-- Pipes with 10px gaps from entities for clean appearance -->
@@ -1077,105 +1045,15 @@ export class HeatPumpFlowCard extends LitElement {
               </text>
             </g>
 
-            <!-- Auxiliary Heater - Realistic inline heater element -->
-            <!-- Spans from x=200 to x=310 on the horizontal pipe at y=180 -->
+            <!-- Auxiliary Heater - Simplified glowing cylinder -->
+            <!-- Compact inline heater element on horizontal pipe -->
             <g id="aux-heater" opacity="${auxHeaterState.enabled && auxHeaterState.intensity > 0 ? '1' : (auxHeaterState.enabled ? '0.3' : '0')}">
-              <!-- Metallic cylinder body (dark steel/gray) -->
-              <rect x="200" y="170" width="110" height="20" rx="3" ry="3"
-                    fill="#4a5568"
+              <!-- Heated cylinder - color transitions from gray to red-orange, glows with intensity -->
+              <rect x="225" y="172" width="60" height="16" rx="2" ry="2"
+                    fill="${auxCylinderColor}"
                     stroke="#2d3748"
                     stroke-width="1.5"
-                    opacity="0.9"/>
-
-              <!-- Heating coil wraps - helical pattern around cylinder -->
-              <!-- Dynamic color: orange (low) -> yellow (medium) -> red (high) -->
-              <!-- Coil 0 (top) -->
-              <path d="M 203 180 Q 206 168, 209 180"
-                    stroke="${auxCoilColor}"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    filter="${auxGlowFilter}"/>
-              <!-- Coil 1 (bottom) -->
-              <path d="M 213 180 Q 216 192, 219 180"
-                    stroke="${auxCoilColor}"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    filter="${auxGlowFilter}"/>
-              <!-- Coil 2 (top) -->
-              <path d="M 223 180 Q 226 168, 229 180"
-                    stroke="${auxCoilColor}"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    filter="${auxGlowFilter}"/>
-              <!-- Coil 3 (bottom) -->
-              <path d="M 233 180 Q 236 192, 239 180"
-                    stroke="${auxCoilColor}"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    filter="${auxGlowFilter}"/>
-              <!-- Coil 4 (top) -->
-              <path d="M 243 180 Q 246 168, 249 180"
-                    stroke="${auxCoilColor}"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    filter="${auxGlowFilter}"/>
-              <!-- Coil 5 (bottom) -->
-              <path d="M 253 180 Q 256 192, 259 180"
-                    stroke="${auxCoilColor}"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    filter="${auxGlowFilter}"/>
-              <!-- Coil 6 (top) -->
-              <path d="M 263 180 Q 266 168, 269 180"
-                    stroke="${auxCoilColor}"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    filter="${auxGlowFilter}"/>
-              <!-- Coil 7 (bottom) -->
-              <path d="M 273 180 Q 276 192, 279 180"
-                    stroke="${auxCoilColor}"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    filter="${auxGlowFilter}"/>
-              <!-- Coil 8 (top) -->
-              <path d="M 283 180 Q 286 168, 289 180"
-                    stroke="${auxCoilColor}"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    filter="${auxGlowFilter}"/>
-              <!-- Coil 9 (bottom) -->
-              <path d="M 293 180 Q 296 192, 299 180"
-                    stroke="${auxCoilColor}"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    filter="${auxGlowFilter}"/>
-              <!-- Coil 10 (top) -->
-              <path d="M 303 180 Q 306 168, 309 180"
-                    stroke="${auxCoilColor}"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    filter="${auxGlowFilter}"/>
-
-              <!-- End caps (darker metallic) -->
-              <rect x="198" y="169" width="4" height="22" rx="1" ry="1"
-                    fill="#2d3748"
-                    stroke="#1a202c"
-                    stroke-width="1"/>
-              <rect x="308" y="169" width="4" height="22" rx="1" ry="1"
-                    fill="#2d3748"
-                    stroke="#1a202c"
-                    stroke-width="1"/>
+                    filter="${auxDropShadow}"/>
 
               <!-- Power indicator label with custom display name -->
               <text x="255" y="165" text-anchor="middle"
