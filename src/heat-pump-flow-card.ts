@@ -160,14 +160,15 @@ export class HeatPumpFlowCard extends LitElement {
     // Create dots for ALL paths (heating and DHW mode)
     // They'll be shown/hidden based on active mode
     const pathConfigs = [
-      // Heating mode paths
+      // HP to G2 - always flowing in both modes
       {
         id: 'hp-to-g2-heating-path',
         flowRate: hpState.flowRate,
         supplyTemp: hpState.outletTemp,
         returnTemp: hpState.inletTemp,
-        mode: 'heating'
+        mode: 'both'
       },
+      // G2 to buffer - heating mode only
       {
         id: 'g2-to-buffer-path',
         flowRate: hpState.flowRate,
@@ -196,7 +197,7 @@ export class HeatPumpFlowCard extends LitElement {
         returnTemp: hvacState.returnTemp,
         mode: 'both'  // Always visible
       },
-      // DHW mode paths (hp-to-g2 uses same heating-path, just dimmed)
+      // DHW mode paths
       {
         id: 'g2-to-dhw-path',
         flowRate: hpState.flowRate,
@@ -279,9 +280,18 @@ export class HeatPumpFlowCard extends LitElement {
 
     // Define all path configs with mode flags
     const pathConfigs = [
-      // Heating mode paths (only visible when G2 valve not active)
+      // HP to G2 - always flowing
       {
-        id: 'hp-to-buffer-path',
+        id: 'hp-to-g2-heating-path',
+        flowRate: hpState.flowRate,
+        supplyTemp: hpState.outletTemp,
+        returnTemp: hpState.inletTemp,
+        mode: 'both',
+        visible: true
+      },
+      // G2 to buffer - heating mode only
+      {
+        id: 'g2-to-buffer-path',
         flowRate: hpState.flowRate,
         supplyTemp: hpState.outletTemp,
         returnTemp: hpState.inletTemp,
@@ -314,14 +324,6 @@ export class HeatPumpFlowCard extends LitElement {
         visible: true
       },
       // DHW mode paths (only visible when G2 valve active)
-      {
-        id: 'hp-to-g2-path',
-        flowRate: hpState.flowRate,
-        supplyTemp: hpState.outletTemp,
-        returnTemp: hpState.inletTemp,
-        mode: 'dhw',
-        visible: g2ValveState.isActive
-      },
       {
         id: 'g2-to-dhw-path',
         flowRate: hpState.flowRate,
@@ -743,7 +745,7 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Pipe: DHW outlet to HP return (BOTTOM) - routed away from buffer tank - BEHIND -->
             <path id="dhw-to-hp-return-path"
-                  d="M 418 495 L 300 495 L 300 220 L 180 220"
+                  d="M 418 483 L 300 483 L 300 220 L 180 220"
                   stroke="${g2ValveState.isActive ? hpInletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -752,7 +754,7 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) -->
             <path id="g2-to-dhw-path"
-                  d="M 320 192 L 320 375 L 418 375"
+                  d="M 308 192 L 308 375 L 418 375"
                   stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -761,24 +763,24 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- DHW coil spiral path (for flow animation) -->
             <path id="dhw-coil-path"
-                  d="M 418 375 Q 438 379, 458 375 Q 438 383, 418 388 Q 438 393, 458 388 Q 438 401, 418 406 Q 438 411, 458 406 Q 438 419, 418 424 Q 438 429, 458 424 Q 438 437, 418 442 Q 438 447, 458 442 Q 438 455, 418 460 Q 438 465, 458 460 Q 438 473, 418 478 Q 438 483, 458 478 Q 438 491, 418 495"
+                  d="M 418 375 Q 438 379, 458 375 Q 438 383, 418 388 Q 438 393, 458 388 Q 438 401, 418 406 Q 438 411, 458 406 Q 438 419, 418 424 Q 438 429, 458 424 Q 438 437, 418 442 Q 438 447, 458 442 Q 438 455, 418 460 Q 438 465, 458 460 Q 438 473, 418 478 Q 438 483, 418 483"
                   stroke="none"
                   stroke-width="0"
                   fill="none"
                   opacity="0"/>
 
             <!-- Z-ORDER: Return first (behind), supply on top -->
-            <!-- Pipe: HVAC to Buffer (cold return) - 10px gap from HVAC - BEHIND -->
+            <!-- Pipe: HVAC to Buffer (cold return) - 10px gap from buffer - BEHIND -->
             <path id="hvac-to-buffer-path"
-                  d="M 620 220 L 490 220"
+                  d="M 620 220 L 470 220"
                   stroke="${hvacReturnColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"/>
 
-            <!-- Pipe: Buffer to HVAC (hot supply) - 10px gap from HVAC - ON TOP -->
+            <!-- Pipe: Buffer to HVAC (hot supply) - 10px gap from buffer - ON TOP -->
             <path id="buffer-to-hvac-path"
-                  d="M 490 180 L 620 180"
+                  d="M 470 180 L 620 180"
                   stroke="${bufferSupplyColor}"
                   stroke-width="12"
                   fill="none"
@@ -808,24 +810,24 @@ export class HeatPumpFlowCard extends LitElement {
               ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_return}: ` : ''}${this.formatValue(hpState.inletTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
-            <!-- Supply temp (top) - centered between buffer and HVAC, inline with flow -->
-            <text x="530" y="195" text-anchor="middle" fill="${bufferSupplyColor}"
+            <!-- Supply temp (top) - above supply pipe, centered horizontally -->
+            <text x="545" y="170" text-anchor="middle" fill="${bufferSupplyColor}"
                   font-size="${this.config.text_style?.font_size || 11}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
               ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_supply}: ` : ''}${this.formatValue(bufferState.supplyTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
-            <!-- Flow rate between pipes (Buffer to HVAC) - centered -->
-            <text x="530" y="210" text-anchor="middle" fill="#95a5a6"
+            <!-- Flow rate - centered vertically between pipes, centered horizontally -->
+            <text x="545" y="200" text-anchor="middle" fill="#95a5a6"
                   font-size="${(this.config.text_style?.font_size || 11) - 1}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="normal">
               ${this.formatValue(hvacState.flowRate, 1)} L/m
             </text>
 
-            <!-- Return temp (bottom) - centered between buffer and HVAC, inline with flow -->
-            <text x="530" y="225" text-anchor="middle" fill="${hvacReturnColor}"
+            <!-- Return temp (bottom) - below return pipe, centered horizontally -->
+            <text x="545" y="240" text-anchor="middle" fill="${hvacReturnColor}"
                   font-size="${this.config.text_style?.font_size || 11}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
