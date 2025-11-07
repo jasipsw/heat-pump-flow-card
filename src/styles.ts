@@ -89,20 +89,9 @@ export const cardStyles = css`
     transition: fill 0.3s ease;
   }
 
-  /* Aux heater pulsing animation - more dramatic for visibility */
+  /* Aux heater pulsing - using SVG animate instead of CSS for better compatibility */
   .aux-heater-pulsing {
-    animation: aux-heater-pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes aux-heater-pulse {
-    0%, 100% {
-      opacity: 0.85;
-      filter: brightness(1);
-    }
-    50% {
-      opacity: 1;
-      filter: brightness(1.2);
-    }
+    /* Animation is handled by SVG <animate> element */
   }
 
   /* Pipe styling */
