@@ -16,6 +16,13 @@ None
 
 ## Version History
 
+## v0.20.13 (2025-11-07)
+**Fixed: Auxiliary heater visibility issue**
+- Moved auxiliary heater rendering from pipes section to after entities
+- Aux heater now renders on top of temperature labels and entity boxes
+- Fixes issue where aux heater coil was being covered and invisible
+- Aux heater with full power (18kW) now displays properly with red glow
+
 ## v0.20.12 (2025-11-07)
 **Added: Support for custom brand logo from PNG file**
 - Brand logo now loads from configured `logo_url` (e.g., `/local/chiltrix-logo.png`)
