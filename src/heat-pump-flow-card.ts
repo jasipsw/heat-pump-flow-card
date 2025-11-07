@@ -695,9 +695,14 @@ export class HeatPumpFlowCard extends LitElement {
         cylinderColor: auxCylinderColor,
         glowBlur: auxGlowBlur,
         glowOpacity: auxGlowOpacity,
-        outerGlowOpacity: auxIntensity * 0.5,
-        middleGlowOpacity: auxIntensity * 0.7,
-        innerGlowOpacity: auxIntensity * 0.9
+        // NEW: Base opacities set directly on rectangles (should be visible immediately)
+        outerGlowBaseOpacity: auxIntensity * 0.5,
+        middleGlowBaseOpacity: auxIntensity * 0.7,
+        innerGlowBaseOpacity: auxIntensity * 0.9,
+        // Animation ranges
+        outerGlowAnimRange: `${auxIntensity * 0.4} to ${auxIntensity * 0.6}`,
+        middleGlowAnimRange: `${auxIntensity * 0.6} to ${auxIntensity * 0.8}`,
+        innerGlowAnimRange: `${auxIntensity * 0.8} to ${auxIntensity * 1.0}`
       });
     }
 
@@ -1086,45 +1091,44 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Auxiliary Heater - Glowing cylinder with animated pulsing glow -->
             <!-- Centered between HP outlet (180) and G2 inlet (328) = 254, width 60, so x=224 -->
             <g id="aux-heater" opacity="${auxHeaterState.enabled ? '1' : '0'}">
-              <!-- Animated outer glow layers with blur filters -->
+              <!-- Glow layers - simple solid colors, NO filters, visible by default -->
               ${auxIntensity > 0 ? html`
-                <!-- Outermost glow - largest blur, slowest pulse -->
+                <!-- Outermost glow layer -->
                 <rect x="214" y="166" width="76" height="28" rx="8" ry="8"
                       fill="#ff4422"
-                      filter="url(#aux-glow-outer)"
-                      opacity="0">
+                      opacity="${auxIntensity * 0.5}"
+                      pointer-events="none">
                   <animate attributeName="opacity"
-                           values="0;${auxIntensity * 0.5};0"
+                           values="${auxIntensity * 0.4};${auxIntensity * 0.6};${auxIntensity * 0.4}"
                            dur="2s"
                            repeatCount="indefinite"/>
                 </rect>
-                <!-- Middle glow - medium blur, medium pulse -->
+                <!-- Middle glow layer -->
                 <rect x="218" y="168" width="68" height="24" rx="6" ry="6"
                       fill="#ff6644"
-                      filter="url(#aux-glow-middle)"
-                      opacity="0">
+                      opacity="${auxIntensity * 0.7}"
+                      pointer-events="none">
                   <animate attributeName="opacity"
-                           values="0;${auxIntensity * 0.7};0"
+                           values="${auxIntensity * 0.6};${auxIntensity * 0.8};${auxIntensity * 0.6}"
                            dur="1.5s"
                            repeatCount="indefinite"/>
                 </rect>
-                <!-- Inner glow - tight, fast pulse -->
+                <!-- Inner glow layer -->
                 <rect x="221" y="170" width="62" height="20" rx="4" ry="4"
                       fill="#ff8855"
-                      filter="url(#aux-glow-inner)"
-                      opacity="0">
+                      opacity="${auxIntensity * 0.9}"
+                      pointer-events="none">
                   <animate attributeName="opacity"
-                           values="0;${auxIntensity * 0.9};0"
+                           values="${auxIntensity * 0.8};${auxIntensity * 1.0};${auxIntensity * 0.8}"
                            dur="1s"
                            repeatCount="indefinite"/>
                 </rect>
               ` : ''}
-              <!-- Main heated cylinder with drop shadow -->
+              <!-- Main heated cylinder (no filter to avoid rendering issues) -->
               <rect x="224" y="172" width="60" height="16" rx="2" ry="2"
                     fill="${auxCylinderColor}"
                     stroke="#2d3748"
-                    stroke-width="1.5"
-                    filter="url(#aux-heater-glow)">
+                    stroke-width="1.5">
                 ${auxIntensity > 0 ? html`
                   <animate attributeName="opacity"
                            values="0.9;1;0.9"
