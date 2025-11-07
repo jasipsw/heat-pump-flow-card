@@ -664,6 +664,15 @@ export class HeatPumpFlowCard extends LitElement {
     const hpTextColor = this.getContrastTextColor(hpBgColor);
     const metricsY = hpState.error ? 126 : 111;
 
+    // Calculate aux heater dynamic colors and glow filter
+    const auxCoilColor = auxHeaterState.intensity > 0
+      ? (auxHeaterState.intensity < 0.33 ? '#ff8c42' : (auxHeaterState.intensity < 0.66 ? '#ffd700' : '#ff4444'))
+      : '#95a5a6';
+    const auxGlowFilter = auxHeaterState.intensity > 0
+      ? (auxHeaterState.intensity < 0.33 ? 'url(#aux-glow-low)' : (auxHeaterState.intensity < 0.66 ? 'url(#aux-glow-medium)' : 'url(#aux-glow-high)'))
+      : '';
+    const auxLabelColor = auxHeaterState.intensity > 0.66 ? '#ff4444' : (auxHeaterState.intensity > 0.33 ? '#ffd700' : '#ff8c42');
+
     return html`
       <ha-card>
         ${this.config.title ? html`<h1 class="card-header">${this.config.title}</h1>` : ''}
@@ -1080,61 +1089,19 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- Heating coil wraps - helical pattern around cylinder -->
               <!-- Dynamic color: orange (low) -> yellow (medium) -> red (high) -->
-              ${(() => {
-                // Calculate dynamic color based on intensity
-                let coilColor = '#95a5a6'; // Gray when off
-                if (auxHeaterState.intensity > 0) {
-                  if (auxHeaterState.intensity < 0.33) {
-                    // Low power: orange
-                    coilColor = '#ff8c42';
-                  } else if (auxHeaterState.intensity < 0.66) {
-                    // Medium power: yellow-orange
-                    coilColor = '#ffd700';
-                  } else {
-                    // High power: red
-                    coilColor = '#ff4444';
-                  }
-                }
-
-                // Select glow filter based on intensity
-                let glowFilter = '';
-                if (auxHeaterState.intensity > 0) {
-                  if (auxHeaterState.intensity < 0.33) {
-                    glowFilter = 'url(#aux-glow-low)';
-                  } else if (auxHeaterState.intensity < 0.66) {
-                    glowFilter = 'url(#aux-glow-medium)';
-                  } else {
-                    glowFilter = 'url(#aux-glow-high)';
-                  }
-                }
-
-                // Create helical coil wraps (11 wraps across the cylinder)
-                const coils = [];
-                for (let i = 0; i < 11; i++) {
-                  const x = 203 + i * 10;
-                  // Alternating top and bottom curves for 3D effect
-                  if (i % 2 === 0) {
-                    // Top curve
-                    coils.push(`
-                      <path d="M ${x} 180 Q ${x + 3} 168, ${x + 6} 180"
-                            stroke="${coilColor}"
-                            stroke-width="2.5"
-                            fill="none"
-                            stroke-linecap="round"
-                            filter="${glowFilter}"/>`);
-                  } else {
-                    // Bottom curve
-                    coils.push(`
-                      <path d="M ${x} 180 Q ${x + 3} 192, ${x + 6} 180"
-                            stroke="${coilColor}"
-                            stroke-width="2.5"
-                            fill="none"
-                            stroke-linecap="round"
-                            filter="${glowFilter}"/>`);
-                  }
-                }
-                return coils.join('');
-              })()}
+              ${[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => {
+                const x = 203 + i * 10;
+                const isEven = i % 2 === 0;
+                const yControl = isEven ? 168 : 192; // Top curve if even, bottom if odd
+                return html`
+                  <path d="M ${x} 180 Q ${x + 3} ${yControl}, ${x + 6} 180"
+                        stroke="${auxCoilColor}"
+                        stroke-width="2.5"
+                        fill="none"
+                        stroke-linecap="round"
+                        filter="${auxGlowFilter}"/>
+                `;
+              })}
 
               <!-- End caps (darker metallic) -->
               <rect x="198" y="169" width="4" height="22" rx="1" ry="1"
@@ -1148,7 +1115,7 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- Power indicator label with custom display name -->
               <text x="255" y="165" text-anchor="middle"
-                    fill="${auxHeaterState.intensity > 0.66 ? '#ff4444' : (auxHeaterState.intensity > 0.33 ? '#ffd700' : '#ff8c42')}"
+                    fill="${auxLabelColor}"
                     font-size="9"
                     font-weight="bold"
                     opacity="${auxHeaterState.power > 0 ? '1' : '0'}">

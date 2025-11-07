@@ -16,6 +16,15 @@ None
 
 ## Version History
 
+## v0.20.23 (2025-11-07)
+**Fixed: Aux heater dynamic color/glow reactivity**
+
+Fixed aux heater not responding to power changes:
+- Moved color and glow filter calculations outside IIFE to be reactive
+- Refactored coil rendering to use lit-html's `.map()` with proper html templates
+- Colors and glow now update in real-time when power sensor changes
+- Fixed issue where IIFE returned static string that lit-html couldn't track
+
 ## v0.20.22 (2025-11-07)
 **Enhanced: Realistic aux heater with dynamic SVG glow**
 
