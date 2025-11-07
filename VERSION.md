@@ -16,6 +16,13 @@ None
 
 ## Version History
 
+## v0.20.12 (2025-11-07)
+**Added: Support for custom brand logo from PNG file**
+- Brand logo now loads from configured `logo_url` (e.g., `/local/chiltrix-logo.png`)
+- Logo displayed as 12x12px image in upper left corner
+- Replaced SVG icon with actual PNG logo from config
+- Text positioned at x=20 to accommodate logo
+
 ## v0.20.11 (2025-11-07)
 **Fixed: Brand icon and text repositioned to upper left**
 - Moved brand icon from center to upper left corner (translate 38,5 → 5,5)

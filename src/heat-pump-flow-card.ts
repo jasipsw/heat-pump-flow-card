@@ -813,21 +813,10 @@ export class HeatPumpFlowCard extends LitElement {
               </g>
 
               <!-- Brand name with logo (upper left corner) -->
-              <!-- Brand logo - simplified CX icon -->
-              <g transform="translate(5, 5)" opacity="${this.config.heat_pump?.display_name ? 0.9 : 0}">
-                <!-- Curved C shape -->
-                <path d="M 3 0 Q 0 0, 0 3 L 0 5 Q 0 8, 3 8"
-                      stroke="${this.getHeatPumpColor(hpState)}"
-                      stroke-width="1.5"
-                      fill="none"
-                      stroke-linecap="round"/>
-                <!-- X inside -->
-                <path d="M 2 2 L 5 6 M 5 2 L 2 6"
-                      stroke="${this.getHeatPumpColor(hpState)}"
-                      stroke-width="1.2"
-                      stroke-linecap="round"/>
-              </g>
-              <text x="18" y="10" text-anchor="start" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
+              ${this.config.heat_pump?.logo_url ? html`
+                <image x="5" y="3" width="12" height="12" href="${this.config.heat_pump.logo_url}" opacity="0.9"/>
+              ` : ''}
+              <text x="20" y="10" text-anchor="start" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
                 ${this.config.heat_pump?.display_name || ''}
               </text>
 
