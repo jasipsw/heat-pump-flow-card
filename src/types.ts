@@ -202,6 +202,7 @@ export interface G2ValveState {
 export interface AuxHeaterState {
   enabled: boolean;      // Is auxiliary heater enabled in config
   power: number;         // Current power consumption (W)
+  maxPower: number;      // Maximum power for normalization
   intensity: number;     // Normalized intensity 0-1 (power / max_power)
   displayName: string;   // Display name for the heater (e.g., "V18", "AUX")
 }
