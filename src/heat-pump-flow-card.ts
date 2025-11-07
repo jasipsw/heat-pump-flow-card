@@ -810,24 +810,24 @@ export class HeatPumpFlowCard extends LitElement {
               ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_return}: ` : ''}${this.formatValue(hpState.inletTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
-            <!-- Supply temp (top) - centered between buffer and HVAC, inline with flow -->
-            <text x="530" y="195" text-anchor="middle" fill="${bufferSupplyColor}"
+            <!-- Supply temp (top) - above supply pipe, centered horizontally -->
+            <text x="555" y="170" text-anchor="middle" fill="${bufferSupplyColor}"
                   font-size="${this.config.text_style?.font_size || 11}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
               ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_supply}: ` : ''}${this.formatValue(bufferState.supplyTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
-            <!-- Flow rate between pipes (Buffer to HVAC) - centered -->
-            <text x="530" y="210" text-anchor="middle" fill="#95a5a6"
+            <!-- Flow rate - centered vertically between pipes, centered horizontally -->
+            <text x="555" y="200" text-anchor="middle" fill="#95a5a6"
                   font-size="${(this.config.text_style?.font_size || 11) - 1}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="normal">
               ${this.formatValue(hvacState.flowRate, 1)} L/m
             </text>
 
-            <!-- Return temp (bottom) - centered between buffer and HVAC, inline with flow -->
-            <text x="530" y="225" text-anchor="middle" fill="${hvacReturnColor}"
+            <!-- Return temp (bottom) - below return pipe, centered horizontally -->
+            <text x="555" y="240" text-anchor="middle" fill="${hvacReturnColor}"
                   font-size="${this.config.text_style?.font_size || 11}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
