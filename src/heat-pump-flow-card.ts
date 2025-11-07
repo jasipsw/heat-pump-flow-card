@@ -465,10 +465,11 @@ export class HeatPumpFlowCard extends LitElement {
     const power = this.getStateValue(cfg.power_entity) || 0;
     const maxPower = cfg.max_power || 18000; // Default 18kW
     const intensity = Math.min(power / maxPower, 1); // Normalize to 0-1, cap at 1
-    const displayName = cfg.display_name || 'AUX'; // Default to "AUX"
+    const displayName = cfg.display_name || cfg.name || 'AUX'; // Fallback to deprecated name field, then "AUX"
     return {
       enabled,
       power,
+      maxPower,
       intensity,
       displayName,
     };
