@@ -20,8 +20,10 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     energy_entity?: string;      // Total energy consumed (kWh)
     cost_entity?: string;        // Energy cost
     runtime_entity?: string;     // Runtime sensor (optional)
-    name?: string;
-    icon?: string;
+    name?: string;               // Generic name (deprecated, use display_name)
+    icon?: string;               // Generic icon (deprecated, use logo_url)
+    display_name?: string;       // Display name (e.g., "Chiltrix CX50-2")
+    logo_url?: string;           // URL to logo image (local /local/... or external https://...)
   };
 
   // Heat Pump Visual Configuration
