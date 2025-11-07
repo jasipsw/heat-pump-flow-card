@@ -1,0 +1,139 @@
+# Test Configuration with Input Helpers
+# This configuration uses input_number and input_boolean helpers
+# for testing the heat pump flow card without real sensors
+
+# First, create these input helpers in Home Assistant:
+# Settings → Devices & Services → Helpers → Create Helper
+
+# Input Number Helpers (create these first):
+# - input_number.test_hp_power (0-10000, step 100, unit: W)
+# - input_number.test_hp_thermal (0-15000, step 100, unit: W)
+# - input_number.test_hp_outlet_temp (0-50, step 0.5, unit: °C)
+# - input_number.test_hp_inlet_temp (0-50, step 0.5, unit: °C)
+# - input_number.test_hp_flow_rate (0-50, step 0.5, unit: L/min)
+# - input_number.test_buffer_supply_temp (0-50, step 0.5, unit: °C)
+# - input_number.test_buffer_return_temp (0-50, step 0.5, unit: °C)
+# - input_number.test_hvac_thermal (0-10000, step 100, unit: W)
+# - input_number.test_hvac_flow_rate (0-50, step 0.5, unit: L/min)
+# - input_number.test_hvac_supply_temp (0-50, step 0.5, unit: °C)
+# - input_number.test_hvac_return_temp (0-50, step 0.5, unit: °C)
+# - input_number.test_v18_power (0-18000, step 500, unit: W)
+
+# Input Boolean Helpers:
+# - input_boolean.test_g2_valve_dhw_mode (on = DHW, off = Heating)
+
+type: custom:heat-pump-flow-card
+title: TEST - Heat Pump Flow Card
+
+# Heat Pump Configuration
+heat_pump:
+  power_entity: input_number.test_hp_power
+  thermal_entity: input_number.test_hp_thermal
+  cop_entity: sensor.test_hp_cop  # Template sensor: {{ states('input_number.test_hp_thermal')|float / states('input_number.test_hp_power')|float }}
+  outlet_temp_entity: input_number.test_hp_outlet_temp
+  inlet_temp_entity: input_number.test_hp_inlet_temp
+  flow_rate_entity: input_number.test_hp_flow_rate
+  display_name: "TEST CX50"
+
+# Buffer Tank Configuration
+buffer_tank:
+  supply_temp_entity: input_number.test_buffer_supply_temp
+  return_temp_entity: input_number.test_buffer_return_temp
+
+# HVAC Configuration
+hvac:
+  thermal_entity: input_number.test_hvac_thermal
+  flow_rate_entity: input_number.test_hvac_flow_rate
+  supply_temp_entity: input_number.test_hvac_supply_temp
+  return_temp_entity: input_number.test_hvac_return_temp
+
+# G2 Valve Configuration
+g2_valve:
+  state_entity: input_boolean.test_g2_valve_dhw_mode
+
+# V18 Auxiliary Heater Configuration
+v18_heater:
+  enabled: true
+  power_entity: input_number.test_v18_power
+  max_power: 18000
+
+# DHW Tank Configuration
+dhw_tank:
+  inlet_temp_entity: input_number.test_hp_outlet_temp  # Reuse HP outlet for testing
+  outlet_temp_entity: input_number.test_hp_inlet_temp  # Reuse HP inlet for testing
+  tank_temp_entity: input_number.test_buffer_supply_temp  # Reuse buffer supply for testing
+
+# Animation Configuration
+animation:
+  enabled: true
+  min_flow_rate: 1
+  max_flow_rate: 5
+  dot_size: 8
+  dot_spacing: 30
+  use_temp_color: true
+  dot_stroke_width: 1.0
+  dot_stroke_opacity: 0.8
+
+# Temperature Configuration
+temperature:
+  delta_threshold: 5
+  hot_color: "#e74c3c"
+  cold_color: "#3498db"
+  neutral_color: "#95a5a6"
+  unit: "C"
+
+# Display Configuration
+display:
+  show_values: true
+  show_labels: true
+  compact: false
+  decimal_places: 1
+
+---
+
+# Template Sensor for COP (add to configuration.yaml)
+
+# template:
+#   - sensor:
+#       - name: "Test HP COP"
+#         unique_id: test_hp_cop
+#         state: >
+#           {% set thermal = states('input_number.test_hp_thermal')|float(0) %}
+#           {% set power = states('input_number.test_hp_power')|float(1) %}
+#           {{ (thermal / power)|round(2) if power > 0 else 0 }}
+#         unit_of_measurement: "COP"
+
+---
+
+# Suggested Test Values:
+
+# Heating Mode (G2 valve OFF):
+# - HP Power: 3000 W
+# - HP Thermal: 12000 W (COP = 4.0)
+# - HP Outlet Temp: 45°C
+# - HP Inlet Temp: 35°C
+# - HP Flow Rate: 15 L/min
+# - Buffer Supply: 43°C
+# - Buffer Return: 37°C
+# - HVAC Thermal: 10000 W
+# - HVAC Flow Rate: 35 L/min
+# - HVAC Supply: 42°C
+# - HVAC Return: 38°C
+# - V18 Power: 0 W (off)
+# - G2 Valve: OFF (heating mode)
+
+# DHW Mode (G2 valve ON):
+# - HP Power: 4000 W
+# - HP Thermal: 14000 W (COP = 3.5)
+# - HP Outlet Temp: 55°C
+# - HP Inlet Temp: 40°C
+# - HP Flow Rate: 18 L/min
+# - V18 Power: 9000 W (50% power - should show medium glow)
+# - G2 Valve: ON (DHW mode)
+
+# V18 Power Test:
+# - 0 W = Gray coil, no glow
+# - 4500 W (25%) = Slight red glow
+# - 9000 W (50%) = Medium red glow
+# - 13500 W (75%) = Strong red glow
+# - 18000 W (100%) = Maximum red glow

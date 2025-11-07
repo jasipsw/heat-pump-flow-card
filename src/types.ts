@@ -61,6 +61,15 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     name?: string;
   };
 
+  // Auxiliary Heater Configuration (inline heater between HP and G2)
+  aux_heater?: {
+    enabled?: boolean;             // Show auxiliary heater visualization (default: false)
+    power_entity?: string;         // Power consumption entity (W)
+    max_power?: number;            // Maximum power for normalization (default: 18000W = 18kW)
+    display_name?: string;         // Display name shown on visualization (e.g., "V18", "AUX", etc.)
+    name?: string;                 // Internal name (deprecated, use display_name)
+  };
+
   // HVAC/Load Configuration
   hvac?: {
     thermal_entity?: string;      // Thermal power consumed (W)
@@ -99,7 +108,8 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     use_temp_color?: boolean;   // Use temperature-based coloring (default: true)
     dot_color?: string;         // Fixed dot color (overrides temp color if use_temp_color is false)
     dot_stroke_color?: string;  // Dot border color (default: 'white')
-    dot_stroke_width?: number;  // Dot border width (default: 1.5)
+    dot_stroke_width?: number;  // Dot border width (default: 1.0)
+    dot_stroke_opacity?: number; // Dot stroke opacity 0-1 (default: 0.8)
     dot_opacity?: number;       // Dot opacity 0-1 (default: 1)
     dot_shadow?: boolean;       // Show dot shadow for depth (default: true)
   };
@@ -177,6 +187,13 @@ export interface DHWTankState {
 
 export interface G2ValveState {
   isActive: boolean;  // true = DHW mode, false = heating mode
+}
+
+export interface AuxHeaterState {
+  enabled: boolean;      // Is auxiliary heater enabled in config
+  power: number;         // Current power consumption (W)
+  intensity: number;     // Normalized intensity 0-1 (power / max_power)
+  displayName: string;   // Display name for the heater (e.g., "V18", "AUX")
 }
 
 export interface HousePerformanceState {

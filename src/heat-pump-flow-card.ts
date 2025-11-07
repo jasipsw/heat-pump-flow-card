@@ -1,7 +1,7 @@
 import { LitElement, html, css, PropertyValues } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { HomeAssistant, LovelaceCardEditor } from 'custom-card-helpers';
-import { HeatPumpFlowCardConfig, HeatPumpState, BufferTankState, HVACState, DHWTankState, G2ValveState, HousePerformanceState } from './types';
+import { HeatPumpFlowCardConfig, HeatPumpState, BufferTankState, HVACState, DHWTankState, G2ValveState, AuxHeaterState, HousePerformanceState } from './types';
 import { CARD_VERSION, BUILD_TIMESTAMP } from './const';
 import { cardStyles } from './styles';
 
@@ -54,7 +54,8 @@ export class HeatPumpFlowCard extends LitElement {
         use_temp_color: true,
         dot_color: '#3498db',
         dot_stroke_color: 'white',
-        dot_stroke_width: 1.5,
+        dot_stroke_width: 1.0,  // Reduced from 1.5 for less prominent stroke
+        dot_stroke_opacity: 0.8,  // New: control stroke opacity separately
         dot_opacity: 1,
         dot_shadow: true,
         ...animation,
@@ -255,6 +256,7 @@ export class HeatPumpFlowCard extends LitElement {
         circle.setAttribute('fill', dotColor!);
         circle.setAttribute('stroke', this.config.animation.dot_stroke_color!);
         circle.setAttribute('stroke-width', this.config.animation.dot_stroke_width!.toString());
+        circle.setAttribute('stroke-opacity', this.config.animation.dot_stroke_opacity!.toString());
 
         // Set CSS variables for animation control
         const delay = (i / 3) * duration; // Space dots evenly
@@ -458,6 +460,21 @@ export class HeatPumpFlowCard extends LitElement {
     };
   }
 
+  private getAuxHeaterState(): AuxHeaterState {
+    const cfg = this.config.aux_heater || {};
+    const enabled = cfg.enabled || false;
+    const power = this.getStateValue(cfg.power_entity) || 0;
+    const maxPower = cfg.max_power || 18000; // Default 18kW
+    const intensity = Math.min(power / maxPower, 1); // Normalize to 0-1, cap at 1
+    const displayName = cfg.display_name || 'AUX'; // Default to "AUX"
+    return {
+      enabled,
+      power,
+      intensity,
+      displayName,
+    };
+  }
+
   private getStateValue(entityId: string | undefined): number | undefined {
     if (!entityId || !this.hass) return undefined;
     const state = this.hass.states[entityId];
@@ -628,6 +645,7 @@ export class HeatPumpFlowCard extends LitElement {
     const hvacState = this.getHVACState();
     const dhwState = this.getDHWTankState();
     const g2ValveState = this.getG2ValveState();
+    const auxHeaterState = this.getAuxHeaterState();
 
     // Calculate pipe colors based on temperature delta
     const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
@@ -738,16 +756,44 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Pipe: HP to G2 valve (hot supply from TOP) - leaves room for aux heater - ON TOP -->
             <path id="hp-to-g2-path"
-                  d="M 180 180 L 320 180 L 320 200"
+                  d="M 180 180 L 280 180 L 280 190 L 275 190"
                   stroke="${g2ValveState.isActive ? hpOutletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
 
-            <!-- Pipe: G2 valve down to DHW tank inlet -->
+            <!-- Auxiliary Heater Coil (wraps around HP to G2 supply pipe) -->
+            ${auxHeaterState.enabled ? html`
+              <!-- Heating coil visualization - wraps around pipe from x=200 to x=270 -->
+              <g id="aux-heater" opacity="${auxHeaterState.intensity > 0 ? '1' : '0.3'}">
+                <!-- Coil wraps (spiral pattern) -->
+                <path d="M 200 175 Q 205 170, 210 175 Q 215 180, 220 175 Q 225 170, 230 175 Q 235 180, 240 175 Q 245 170, 250 175 Q 255 180, 260 175 Q 265 170, 270 175"
+                      stroke="${auxHeaterState.intensity > 0 ? '#ff4444' : '#95a5a6'}"
+                      stroke-width="${2 + auxHeaterState.intensity * 2}"
+                      fill="none"
+                      opacity="0.7"
+                      filter="drop-shadow(0 0 ${2 + auxHeaterState.intensity * 8}px ${auxHeaterState.intensity > 0 ? '#ff0000' : '#666666'})"/>
+                <!-- Lower coil wrap -->
+                <path d="M 200 185 Q 205 190, 210 185 Q 215 180, 220 185 Q 225 190, 230 185 Q 235 180, 240 185 Q 245 190, 250 185 Q 255 180, 260 185 Q 265 190, 270 185"
+                      stroke="${auxHeaterState.intensity > 0 ? '#ff4444' : '#95a5a6'}"
+                      stroke-width="${2 + auxHeaterState.intensity * 2}"
+                      fill="none"
+                      opacity="0.7"
+                      filter="drop-shadow(0 0 ${2 + auxHeaterState.intensity * 8}px ${auxHeaterState.intensity > 0 ? '#ff0000' : '#666666'})"/>
+                <!-- Power indicator label with custom display name -->
+                ${auxHeaterState.power > 0 ? html`
+                  <text x="235" y="165" text-anchor="middle" fill="#ff4444" font-size="9" font-weight="bold"
+                        filter="drop-shadow(0 0 4px #ff0000)">
+                    ${auxHeaterState.displayName}: ${this.formatValue(auxHeaterState.power / 1000, 1)} kW
+                  </text>
+                ` : ''}
+              </g>
+            ` : ''}
+
+            <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) -->
             <path id="g2-to-dhw-path"
-                  d="M 320 200 L 320 410 L 390 410 L 390 460 L 420 460"
+                  d="M 320 202 L 320 460 L 420 460"
                   stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -875,7 +921,7 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- G2 Diverter Valve (3-way valve between HP and tanks) -->
-            <g id="g2-valve" transform="translate(320, 180) scale(1.4)">
+            <g id="g2-valve" transform="translate(320, 190) scale(1.0)">
               <!-- Valve body - cylindrical with flanges (matching valve idea graphic) -->
               <!-- Left inlet flange -->
               <rect x="-45" y="-8" width="10" height="16" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
@@ -883,44 +929,53 @@ export class HeatPumpFlowCard extends LitElement {
               <rect x="-35" y="-12" width="35" height="24" fill="#bdc3c7" stroke="#7f8c8d" stroke-width="1.5"/>
               <!-- Right outlet flange (to buffer/heating) -->
               <rect x="0" y="-8" width="10" height="16" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
-              <!-- Bottom outlet flange (to DHW) -->
+              <!-- Bottom outlet flange (to DHW) - adjusted for better alignment -->
               <rect x="-25" y="12" width="16" height="10" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
 
-              <!-- Internal flow path visualization -->
+              <!-- Internal flow path visualization with animations -->
               ${g2ValveState.isActive ? html`
                 <!-- DHW Mode: Flow DOWN (from left inlet to bottom outlet) -->
-                <!-- Active path in red -->
-                <path d="M -35 0 L -17 0 L -17 12"
+                <!-- Active path in red with pulsing animation -->
+                <path class="g2-valve-path g2-valve-active-path"
+                      d="M -35 0 L -17 0 L -17 12"
                       stroke="${this.config.heat_pump_visual?.dhw_color || '#e74c3c'}"
                       stroke-width="6"
                       fill="none"
                       stroke-linecap="round"
                       stroke-linejoin="round"/>
-                <!-- Inactive path (to right) shown as X -->
-                <path d="M -17 -8 L 0 8 M -17 8 L 0 -8"
+                <!-- Inactive path (to right) shown as X with transition -->
+                <path class="g2-valve-path"
+                      d="M -17 -8 L 0 8 M -17 8 L 0 -8"
                       stroke="#7f8c8d"
                       stroke-width="2"
                       opacity="0.4"/>
               ` : html`
                 <!-- Heating Mode: Flow ACROSS (from left inlet to right outlet) -->
-                <!-- Active path in green -->
-                <path d="M -35 0 L 0 0"
+                <!-- Active path in green with pulsing animation -->
+                <path class="g2-valve-path g2-valve-active-path"
+                      d="M -35 0 L 0 0"
                       stroke="#16a085"
                       stroke-width="6"
                       fill="none"
                       stroke-linecap="round"/>
-                <!-- Inactive path (to bottom) shown as X -->
-                <path d="M -25 4 L -9 20 M -9 4 L -25 20"
+                <!-- Inactive path (to bottom) shown as X with transition -->
+                <path class="g2-valve-path"
+                      d="M -25 4 L -9 20 M -9 4 L -25 20"
                       stroke="#7f8c8d"
                       stroke-width="2"
                       opacity="0.4"/>
               `}
 
-              <!-- Valve label -->
+              <!-- Valve label with smooth color transition -->
               <text x="-17" y="-20" text-anchor="middle" fill="#2c3e50" font-size="10" font-weight="bold">
                 G2
               </text>
-              <text x="-17" y="35" text-anchor="middle" fill="${g2ValveState.isActive ? (this.config.heat_pump_visual?.dhw_color || '#e74c3c') : '#16a085'}" font-size="9" font-weight="bold">
+              <text class="g2-valve-label"
+                    x="-17" y="35"
+                    text-anchor="middle"
+                    fill="${g2ValveState.isActive ? (this.config.heat_pump_visual?.dhw_color || '#e74c3c') : '#16a085'}"
+                    font-size="9"
+                    font-weight="bold">
                 ${g2ValveState.isActive ? 'DHW' : 'HEAT'}
               </text>
             </g>
@@ -974,16 +1029,16 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Inner cylinder (DHW water - always blue/cold) -->
               <rect x="15" y="25" width="70" height="150" fill="#3498db" opacity="0.3"/>
 
-              <!-- Heating coil inside tank (spiral) -->
+              <!-- Heating coil inside tank (spiral) - gray when no flow, hot when flowing -->
               <path d="M 30 50 Q 50 55, 70 50 Q 50 58, 30 65 Q 50 70, 70 65 Q 50 78, 30 85 Q 50 90, 70 85 Q 50 98, 30 105 Q 50 110, 70 105 Q 50 118, 30 125 Q 50 130, 70 125 Q 50 138, 30 145 Q 50 150, 70 145 Q 50 158, 30 165"
-                    stroke="${dhwCoilColor}"
+                    stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                     stroke-width="4"
                     fill="none"
-                    opacity="0.9"/>
+                    opacity="${g2ValveState.isActive ? '0.9' : '0.3'}"/>
 
               <!-- Coil inlet/outlet markers -->
-              <circle cx="30" cy="50" r="3" fill="${dhwCoilColor}"/>
-              <circle cx="30" cy="165" r="3" fill="${dhwCoilColor}"/>
+              <circle cx="30" cy="50" r="3" fill="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"/>
+              <circle cx="30" cy="165" r="3" fill="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"/>
 
               <!-- Structural bands -->
               <line x1="10" y1="60" x2="90" y2="60" stroke="#2c3e50" stroke-width="2"/>
