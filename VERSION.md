@@ -16,6 +16,22 @@ None
 
 ## Version History
 
+## v0.20.22 (2025-11-07)
+**Enhanced: Realistic aux heater with dynamic SVG glow**
+
+Auxiliary heater visualization completely redesigned:
+- Replaced simple wavy coil pattern with realistic inline heater element
+- Added metallic cylinder body with end caps for industrial appearance
+- Implemented helical heating coil wraps (11 coils with alternating curves for 3D effect)
+- Added dynamic SVG glow filters (low/medium/high intensity)
+- Dynamic color shifting based on power level:
+  - 0-33% intensity: Orange glow (#ff8c42)
+  - 33-66% intensity: Yellow glow (#ffd700)
+  - 66-100% intensity: Red glow (#ff4444)
+- Real-time glow intensity responds to aux heater power consumption
+- Power label color matches coil color for visual consistency
+- Pure SVG implementation (no external images needed)
+
 ## v0.20.21 (2025-11-07)
 **Fixed: Flow rate positioning and pipe alignment issues**
 
