@@ -160,14 +160,15 @@ export class HeatPumpFlowCard extends LitElement {
     // Create dots for ALL paths (heating and DHW mode)
     // They'll be shown/hidden based on active mode
     const pathConfigs = [
-      // Heating mode paths
+      // HP to G2 - always flowing in both modes
       {
         id: 'hp-to-g2-heating-path',
         flowRate: hpState.flowRate,
         supplyTemp: hpState.outletTemp,
         returnTemp: hpState.inletTemp,
-        mode: 'heating'
+        mode: 'both'
       },
+      // G2 to buffer - heating mode only
       {
         id: 'g2-to-buffer-path',
         flowRate: hpState.flowRate,
@@ -196,7 +197,7 @@ export class HeatPumpFlowCard extends LitElement {
         returnTemp: hvacState.returnTemp,
         mode: 'both'  // Always visible
       },
-      // DHW mode paths (hp-to-g2 uses same heating-path, just dimmed)
+      // DHW mode paths
       {
         id: 'g2-to-dhw-path',
         flowRate: hpState.flowRate,
@@ -279,9 +280,18 @@ export class HeatPumpFlowCard extends LitElement {
 
     // Define all path configs with mode flags
     const pathConfigs = [
-      // Heating mode paths (only visible when G2 valve not active)
+      // HP to G2 - always flowing
       {
-        id: 'hp-to-buffer-path',
+        id: 'hp-to-g2-heating-path',
+        flowRate: hpState.flowRate,
+        supplyTemp: hpState.outletTemp,
+        returnTemp: hpState.inletTemp,
+        mode: 'both',
+        visible: true
+      },
+      // G2 to buffer - heating mode only
+      {
+        id: 'g2-to-buffer-path',
         flowRate: hpState.flowRate,
         supplyTemp: hpState.outletTemp,
         returnTemp: hpState.inletTemp,
@@ -314,14 +324,6 @@ export class HeatPumpFlowCard extends LitElement {
         visible: true
       },
       // DHW mode paths (only visible when G2 valve active)
-      {
-        id: 'hp-to-g2-path',
-        flowRate: hpState.flowRate,
-        supplyTemp: hpState.outletTemp,
-        returnTemp: hpState.inletTemp,
-        mode: 'dhw',
-        visible: g2ValveState.isActive
-      },
       {
         id: 'g2-to-dhw-path',
         flowRate: hpState.flowRate,
