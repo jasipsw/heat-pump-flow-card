@@ -184,7 +184,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var s,r=argume
 
             <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) -->
             <path id="g2-to-dhw-path"
-                  d="M 320 192 L 320 375 L 418 375"
+                  d="M 308 192 L 308 375 L 418 375"
                   stroke="${s.isActive?f:this.config.temperature?.neutral_color||"#95a5a6"}"
                   stroke-width="12"
                   fill="none"
