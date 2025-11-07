@@ -16,6 +16,31 @@ None
 
 ## Version History
 
+## v0.20.20 (2025-11-07)
+**Fixed: Temperature/flow rate display and G2 valve label (#93, #99)**
+
+Issue #99 - Removed DHW/HEAT label from G2 valve:
+- Removed small, hard-to-read DHW/HEAT mode text below G2 valve
+- Mode is now intuitively obvious from flow pattern and pipe colors
+- Cleaner valve appearance
+
+Issue #93 - Improved temperature and flow rate display:
+- Added `text_style` configuration section for customizable styling
+- Default font: 'Courier New, monospace' for computer-like appearance
+- Flow rates now displayed between pipes (at y=200) near temperatures
+- Removed descriptive labels by default (no more "HP Supply:", "HVAC Return:", etc.)
+- Just temperature values shown unless `show_labels: true` is set
+- Configurable font family, size, and weight
+
+New configuration options:
+```yaml
+text_style:
+  font_family: 'Courier New, monospace'  # Default computer-like font
+  font_size: 11                          # Font size in px
+  font_weight: bold                      # Font weight
+  show_labels: false                     # Show descriptive labels (default: false)
+```
+
 ## v0.20.19 (2025-11-07)
 **Fixed: Three critical issues (#98, #100, #105)**
 

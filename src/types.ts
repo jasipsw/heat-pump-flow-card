@@ -125,6 +125,14 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     unit?: 'C' | 'F';          // Temperature unit
   };
 
+  // Text Style Configuration (for temperatures and flow rates)
+  text_style?: {
+    font_family?: string;      // Font family (default: 'Courier New, monospace' for computer-like look)
+    font_size?: number;        // Font size in px (default: 11)
+    font_weight?: string;      // Font weight (default: 'bold')
+    show_labels?: boolean;     // Show descriptive labels like "HP Supply:" (default: false)
+  };
+
   // Display Configuration
   display?: {
     show_values?: boolean;    // Show numeric values

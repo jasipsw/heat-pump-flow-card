@@ -751,21 +751,50 @@ export class HeatPumpFlowCard extends LitElement {
                   fill="none"
                   stroke-linecap="butt"/>
 
-            <!-- Temperature labels (hot supply on top, cold return on bottom) -->
-            <text x="260" y="170" text-anchor="middle" fill="${hpOutletColor}" font-size="11" font-weight="bold">
-              ${this.config.labels!.hp_supply}: ${this.formatValue(hpState.outletTemp, 1)}°${this.config.temperature?.unit || 'C'}
+            <!-- Temperature and flow rate labels (configurable styling) -->
+            <!-- Top row: supply temperatures and flow rate -->
+            <text x="260" y="170" text-anchor="middle" fill="${hpOutletColor}"
+                  font-size="${this.config.text_style?.font_size || 11}"
+                  font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
+                  font-weight="${this.config.text_style?.font_weight || 'bold'}">
+              ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_supply}: ` : ''}${this.formatValue(hpState.outletTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
-            <text x="260" y="240" text-anchor="middle" fill="${hpInletColor}" font-size="11" font-weight="bold">
-              ${this.config.labels!.hp_return}: ${this.formatValue(hpState.inletTemp, 1)}°${this.config.temperature?.unit || 'C'}
+            <!-- Flow rate between pipes (HP side) -->
+            <text x="260" y="200" text-anchor="middle" fill="#95a5a6"
+                  font-size="${(this.config.text_style?.font_size || 11) - 1}"
+                  font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
+                  font-weight="normal">
+              ${this.formatValue(hpState.flowRate, 1)} L/m
             </text>
 
-            <text x="540" y="170" text-anchor="middle" fill="${bufferSupplyColor}" font-size="11" font-weight="bold">
-              ${this.config.labels!.hvac_supply}: ${this.formatValue(bufferState.supplyTemp, 1)}°${this.config.temperature?.unit || 'C'}
+            <text x="260" y="240" text-anchor="middle" fill="${hpInletColor}"
+                  font-size="${this.config.text_style?.font_size || 11}"
+                  font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
+                  font-weight="${this.config.text_style?.font_weight || 'bold'}">
+              ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_return}: ` : ''}${this.formatValue(hpState.inletTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
-            <text x="540" y="240" text-anchor="middle" fill="${hvacReturnColor}" font-size="11" font-weight="bold">
-              ${this.config.labels!.hvac_return}: ${this.formatValue(hvacState.returnTemp, 1)}°${this.config.temperature?.unit || 'C'}
+            <text x="540" y="170" text-anchor="middle" fill="${bufferSupplyColor}"
+                  font-size="${this.config.text_style?.font_size || 11}"
+                  font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
+                  font-weight="${this.config.text_style?.font_weight || 'bold'}">
+              ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_supply}: ` : ''}${this.formatValue(bufferState.supplyTemp, 1)}°${this.config.temperature?.unit || 'C'}
+            </text>
+
+            <!-- Flow rate between pipes (HVAC side) -->
+            <text x="540" y="200" text-anchor="middle" fill="#95a5a6"
+                  font-size="${(this.config.text_style?.font_size || 11) - 1}"
+                  font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
+                  font-weight="normal">
+              ${this.formatValue(hvacState.flowRate, 1)} L/m
+            </text>
+
+            <text x="540" y="240" text-anchor="middle" fill="${hvacReturnColor}"
+                  font-size="${this.config.text_style?.font_size || 11}"
+                  font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
+                  font-weight="${this.config.text_style?.font_weight || 'bold'}">
+              ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_return}: ` : ''}${this.formatValue(hvacState.returnTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
             <!-- Heat Pump (left side) -->
@@ -902,17 +931,9 @@ export class HeatPumpFlowCard extends LitElement {
                       opacity="0.4"/>
               `}
 
-              <!-- Valve label with smooth color transition -->
+              <!-- Valve label -->
               <text x="-17" y="-20" text-anchor="middle" fill="#2c3e50" font-size="10" font-weight="bold">
                 G2
-              </text>
-              <text class="g2-valve-label"
-                    x="-17" y="35"
-                    text-anchor="middle"
-                    fill="${g2ValveState.isActive ? (this.config.heat_pump_visual?.dhw_color || '#e74c3c') : '#16a085'}"
-                    font-size="9"
-                    font-weight="bold">
-                ${g2ValveState.isActive ? 'DHW' : 'HEAT'}
               </text>
             </g>
 
