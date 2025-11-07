@@ -659,7 +659,7 @@ export class HeatPumpFlowCard extends LitElement {
     // Calculate metrics text colors and positioning
     const hpBgColor = this.getHeatPumpColor(hpState);
     const hpTextColor = this.getContrastTextColor(hpBgColor);
-    const metricsY = hpState.error ? 120 : 105;
+    const metricsY = hpState.error ? 123 : 108;
 
     return html`
       <ha-card>
@@ -770,18 +770,18 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Heat pump body with state-based color -->
               <rect width="120" height="150" rx="10" fill="${this.getHeatPumpColor(hpState)}" fill-opacity="0.2" stroke="${this.getHeatPumpColor(hpState)}" stroke-width="3"/>
 
-              <!-- Fan housing (moved down 5px to make room for brand name) -->
-              <circle cx="60" cy="45" r="30" fill="#34495e" stroke="${this.getHeatPumpColor(hpState)}" stroke-width="2"/>
+              <!-- Fan housing (moved down to make room for brand name) -->
+              <circle cx="60" cy="48" r="30" fill="#34495e" stroke="${this.getHeatPumpColor(hpState)}" stroke-width="2"/>
 
-              <!-- Fan blades (will be animated, moved down 5px) -->
+              <!-- Fan blades (will be animated) -->
               <g id="fan-blades">
                 <!-- 4 fan blades -->
-                <path d="M 60 15 Q 70 35, 60 45 Q 50 35, 60 15" fill="#7f8c8d" opacity="0.8"/>
-                <path d="M 90 45 Q 70 55, 60 45 Q 70 35, 90 45" fill="#7f8c8d" opacity="0.8"/>
-                <path d="M 60 75 Q 50 55, 60 45 Q 70 55, 60 75" fill="#7f8c8d" opacity="0.8"/>
-                <path d="M 30 45 Q 50 35, 60 45 Q 50 55, 30 45" fill="#7f8c8d" opacity="0.8"/>
+                <path d="M 60 18 Q 70 38, 60 48 Q 50 38, 60 18" fill="#7f8c8d" opacity="0.8"/>
+                <path d="M 90 48 Q 70 58, 60 48 Q 70 38, 90 48" fill="#7f8c8d" opacity="0.8"/>
+                <path d="M 60 78 Q 50 58, 60 48 Q 70 58, 60 78" fill="#7f8c8d" opacity="0.8"/>
+                <path d="M 30 48 Q 50 38, 60 48 Q 50 58, 30 48" fill="#7f8c8d" opacity="0.8"/>
                 <!-- Center cap -->
-                <circle cx="60" cy="45" r="8" fill="#2c3e50"/>
+                <circle cx="60" cy="48" r="8" fill="#2c3e50"/>
               </g>
 
               <!-- Brand name with logo (upper left corner) -->
@@ -801,14 +801,14 @@ export class HeatPumpFlowCard extends LitElement {
                 ${this.config.heat_pump?.display_name || ''}
               </text>
 
-              <!-- Heat pump label (moved down 5px) -->
-              <text x="60" y="90" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
+              <!-- Heat pump label -->
+              <text x="60" y="93" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
                 ${this.getDisplayMode(hpState, g2ValveState)}
               </text>
 
-              <!-- Error indicator (moved down 5px) -->
+              <!-- Error indicator -->
               ${hpState.error ? html`
-                <text x="60" y="105" text-anchor="middle" fill="#e74c3c" font-size="10" font-weight="bold">
+                <text x="60" y="108" text-anchor="middle" fill="#e74c3c" font-size="10" font-weight="bold">
                   ⚠ ${hpState.error}
                 </text>
               ` : ''}
