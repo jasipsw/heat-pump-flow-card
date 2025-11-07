@@ -253,7 +253,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var s,r=argume
 
               <!-- Brand name (rendered after fan so it appears on top) -->
               ${this.config.heat_pump?.display_name?Q`
-                <text x="60" y="20" text-anchor="middle" fill="${m}" font-size="10" font-weight="bold">
+                <text x="60" y="10" text-anchor="middle" fill="${m}" font-size="10" font-weight="bold">
                   ${this.config.heat_pump.display_name}
                 </text>
               `:""}
