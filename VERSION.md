@@ -16,18 +16,23 @@ None
 
 ## Version History
 
+## v0.21.3 (2025-11-07)
+**Fixed: DHW pipe centering and aux heater animation**
+
+Additional spacing and animation fixes:
+- Fixed DHW pipe vertical centering (y=400/440, centered on tank at y=420)
+- Added 10px gap between DHW pipes and tank (pipes at x=390, tank at x=400)
+- Fixed DHW coil vertical position to match pipe centering (cy=70 to cy=110)
+- Fixed aux heater pulsing animation (using SVG animate for proper opacity pulsing)
+
 ## v0.21.2 (2025-11-07)
-**Fixed: Pipe spacing and aux heater animation enhancements**
+**Fixed: Pipe spacing and aux heater glow enhancements**
 
 Spacing and visual improvements:
 - Fixed buffer-to-HVAC pipe spacing (x=480 for consistent 10px gap like HP side)
 - Fixed HVAC temperature/flow rate positioning (centered at x=550 between buffer and HVAC)
-- Fixed DHW pipe vertical centering (y=400/440, centered on tank at y=420)
-- Added 10px gap between DHW pipes and tank (pipes at x=390, tank at x=400)
-- Fixed DHW coil vertical position to match pipe centering (cy=70 to cy=110)
 - Centered aux heater between HP and G2 valve (x=220)
 - Enhanced aux heater glow visibility (3x stronger blur, drop shadow, 3 glow layers)
-- Fixed aux heater pulsing animation (using SVG animate for proper opacity pulsing)
 
 ## v0.21.1 (2025-11-07)
 **Fixed: Post-release bug fixes for v0.21.0**
