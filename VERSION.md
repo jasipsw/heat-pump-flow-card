@@ -16,6 +16,15 @@ None
 
 ## Version History
 
+## v0.20.17 (2025-11-07)
+**Fixed: Spacing adjustment for brand text area**
+- Moved fan housing and blades down 3px (cy: 45 → 48)
+- Moved heat pump label down 3px (y: 90 → 93)
+- Moved error indicator down 3px (y: 105 → 108)
+- Moved metrics down 3px (metricsY: 105/120 → 108/123)
+- Provides better spacing below brand logo/text area (~1/4 of 12px text height)
+- Prevents crowding between brand area and internal elements
+
 ## v0.20.16 (2025-11-07)
 **Improved: Brand logo and text layout**
 - Increased brand text from 10px to 12px for better readability
