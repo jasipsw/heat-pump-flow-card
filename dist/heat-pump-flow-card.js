@@ -49,7 +49,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var s,r=argume
 
   /* Fan rotation animation */
   .fan-rotating {
-    transform-origin: 60px 40px;
+    transform-origin: 60px 45px;
     animation: fan-spin linear infinite;
     animation-duration: var(--fan-duration, 1s);
   }
@@ -252,17 +252,15 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var s,r=argume
               </g>
 
               <!-- Brand name with icon (rendered after fan so it appears on top) -->
-              ${this.config.heat_pump?.display_name?Q`
-                <!-- Brand icon (simple building/factory) -->
-                <g transform="translate(35, 4)">
-                  <rect x="0" y="3" width="5" height="6" fill="${this.getHeatPumpColor(t)}" opacity="0.8"/>
-                  <rect x="6" y="1" width="5" height="8" fill="${this.getHeatPumpColor(t)}" opacity="0.8"/>
-                  <rect x="12" y="3" width="5" height="6" fill="${this.getHeatPumpColor(t)}" opacity="0.8"/>
-                </g>
-                <text x="60" y="10" text-anchor="middle" fill="${this.getHeatPumpColor(t)}" font-size="10" font-weight="bold">
-                  ${this.config.heat_pump.display_name}
-                </text>
-              `:""}
+              <!-- Brand icon (simple building/factory) -->
+              <g transform="translate(35, 4)" opacity="${this.config.heat_pump?.display_name?.8:0}">
+                <rect x="0" y="3" width="5" height="6" fill="${this.getHeatPumpColor(t)}"/>
+                <rect x="6" y="1" width="5" height="8" fill="${this.getHeatPumpColor(t)}"/>
+                <rect x="12" y="3" width="5" height="6" fill="${this.getHeatPumpColor(t)}"/>
+              </g>
+              <text x="60" y="10" text-anchor="middle" fill="${this.getHeatPumpColor(t)}" font-size="10" font-weight="bold">
+                ${this.config.heat_pump?.display_name||""}
+              </text>
 
               <!-- Heat pump label (moved down 5px) -->
               <text x="60" y="90" text-anchor="middle" fill="${this.getHeatPumpColor(t)}" font-size="10" font-weight="bold">
