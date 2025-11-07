@@ -589,6 +589,20 @@ export class HeatPumpFlowCard extends LitElement {
     return 'OFF';
   }
 
+  private getContrastTextColor(bgColor: string): string {
+    // Convert hex color to RGB
+    const hex = bgColor.replace('#', '');
+    const r = parseInt(hex.substr(0, 2), 16);
+    const g = parseInt(hex.substr(2, 2), 16);
+    const b = parseInt(hex.substr(4, 2), 16);
+
+    // Calculate relative luminance using WCAG formula
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+    // Return black for light backgrounds, white for dark backgrounds
+    return luminance > 0.5 ? '#2c3e50' : '#ffffff';
+  }
+
   private getAnimationDuration(flowRate: number): number {
     const cfg = this.config.animation!;
     if (flowRate <= 0) return cfg.min_flow_rate!;  // No flow = slowest (longest duration)
@@ -704,9 +718,9 @@ export class HeatPumpFlowCard extends LitElement {
                   opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
 
             <!-- DHW MODE PIPES (shown when G2 valve is ON - DHW mode) -->
-            <!-- Pipe: HP to G2 valve (hot supply from TOP) -->
+            <!-- Pipe: HP to G2 valve (hot supply from TOP) - leaves room for aux heater -->
             <path id="hp-to-g2-path"
-                  d="M 180 180 L 240 180 L 240 200"
+                  d="M 180 180 L 280 180 L 280 200"
                   stroke="${g2ValveState.isActive ? hpOutletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -715,7 +729,7 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Pipe: G2 valve down to DHW tank inlet -->
             <path id="g2-to-dhw-path"
-                  d="M 240 200 L 240 370 L 350 370 L 350 420 L 380 420"
+                  d="M 280 200 L 280 370 L 350 370 L 350 420 L 380 420"
                   stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -730,9 +744,9 @@ export class HeatPumpFlowCard extends LitElement {
                   fill="none"
                   opacity="0"/>
 
-            <!-- Pipe: DHW outlet to HP return (BOTTOM) -->
+            <!-- Pipe: DHW outlet to HP return (BOTTOM) - routed away from buffer tank -->
             <path id="dhw-to-hp-return-path"
-                  d="M 380 535 L 350 535 L 350 220 L 180 220"
+                  d="M 380 535 L 300 535 L 300 220 L 180 220"
                   stroke="${g2ValveState.isActive ? hpInletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -803,11 +817,21 @@ export class HeatPumpFlowCard extends LitElement {
                 </text>
               ` : ''}
 
-              <!-- Critical metrics inside HP box -->
-              <text x="10" y="105" fill="white" font-size="8">${this.formatValue(hpState.power/1000, 1)} kW in</text>
-              <text x="10" y="118" fill="white" font-size="8">${this.formatValue(hpState.thermal/1000, 1)} kW out</text>
-              <text x="10" y="131" fill="white" font-size="8">COP ${this.formatValue(hpState.cop, 2)}</text>
-              <text x="10" y="144" fill="white" font-size="8">${this.formatValue(hpState.flowRate, 1)} L/min</text>
+              <!-- Critical metrics inside HP box (2-column: Input | Output) -->
+              ${(() => {
+                const textColor = this.getContrastTextColor(this.getHeatPumpColor(hpState));
+                return html`
+                  <!-- Left column: INPUT parameters -->
+                  <text x="8" y="105" fill="${textColor}" font-size="10" font-weight="bold">IN</text>
+                  <text x="8" y="119" fill="${textColor}" font-size="10">${this.formatValue(hpState.power/1000, 1)} kW</text>
+                  <text x="8" y="133" fill="${textColor}" font-size="10">${this.formatValue(hpState.flowRate, 1)} L/m</text>
+
+                  <!-- Right column: OUTPUT parameters -->
+                  <text x="62" y="105" fill="${textColor}" font-size="10" font-weight="bold">OUT</text>
+                  <text x="62" y="119" fill="${textColor}" font-size="10">${this.formatValue(hpState.thermal/1000, 1)} kW</text>
+                  <text x="62" y="133" fill="${textColor}" font-size="10">COP ${this.formatValue(hpState.cop, 2)}</text>
+                `;
+              })()}
             </g>
 
             <!-- Heat Pump Metrics (legacy - now moved inside HP box, keeping for optional extra data) -->
@@ -839,7 +863,7 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- G2 Diverter Valve (3-way valve between HP and tanks) -->
-            <g id="g2-valve" transform="translate(240, 190) scale(1.8)">
+            <g id="g2-valve" transform="translate(280, 190) scale(2.0)">
               <!-- Valve body - cylindrical with flanges (matching valve idea graphic) -->
               <!-- Left inlet flange -->
               <rect x="-45" y="-8" width="10" height="16" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
