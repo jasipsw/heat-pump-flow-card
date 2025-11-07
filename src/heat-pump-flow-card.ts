@@ -659,7 +659,7 @@ export class HeatPumpFlowCard extends LitElement {
     // Calculate metrics text colors and positioning
     const hpBgColor = this.getHeatPumpColor(hpState);
     const hpTextColor = this.getContrastTextColor(hpBgColor);
-    const metricsY = hpState.error ? 115 : 100;
+    const metricsY = hpState.error ? 120 : 105;
 
     return html`
       <ha-card>
@@ -798,33 +798,41 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Heat pump body with state-based color -->
               <rect width="120" height="150" rx="10" fill="${this.getHeatPumpColor(hpState)}" fill-opacity="0.2" stroke="${this.getHeatPumpColor(hpState)}" stroke-width="3"/>
 
-              <!-- Fan housing -->
-              <circle cx="60" cy="40" r="30" fill="#34495e" stroke="${this.getHeatPumpColor(hpState)}" stroke-width="2"/>
+              <!-- Fan housing (moved down 5px to make room for brand name) -->
+              <circle cx="60" cy="45" r="30" fill="#34495e" stroke="${this.getHeatPumpColor(hpState)}" stroke-width="2"/>
 
-              <!-- Fan blades (will be animated) -->
+              <!-- Fan blades (will be animated, moved down 5px) -->
               <g id="fan-blades">
                 <!-- 4 fan blades -->
-                <path d="M 60 10 Q 70 30, 60 40 Q 50 30, 60 10" fill="#7f8c8d" opacity="0.8"/>
-                <path d="M 90 40 Q 70 50, 60 40 Q 70 30, 90 40" fill="#7f8c8d" opacity="0.8"/>
-                <path d="M 60 70 Q 50 50, 60 40 Q 70 50, 60 70" fill="#7f8c8d" opacity="0.8"/>
-                <path d="M 30 40 Q 50 30, 60 40 Q 50 50, 30 40" fill="#7f8c8d" opacity="0.8"/>
+                <path d="M 60 15 Q 70 35, 60 45 Q 50 35, 60 15" fill="#7f8c8d" opacity="0.8"/>
+                <path d="M 90 45 Q 70 55, 60 45 Q 70 35, 90 45" fill="#7f8c8d" opacity="0.8"/>
+                <path d="M 60 75 Q 50 55, 60 45 Q 70 55, 60 75" fill="#7f8c8d" opacity="0.8"/>
+                <path d="M 30 45 Q 50 35, 60 45 Q 50 55, 30 45" fill="#7f8c8d" opacity="0.8"/>
                 <!-- Center cap -->
-                <circle cx="60" cy="40" r="8" fill="#2c3e50"/>
+                <circle cx="60" cy="45" r="8" fill="#2c3e50"/>
               </g>
 
-              <!-- Brand name (rendered after fan so it appears on top) -->
-              <text x="60" y="10" text-anchor="middle" fill="${hpTextColor}" font-size="10" font-weight="bold">
-                ${this.config.heat_pump?.display_name || ''}
-              </text>
+              <!-- Brand name with icon (rendered after fan so it appears on top) -->
+              ${this.config.heat_pump?.display_name ? html`
+                <!-- Brand icon (simple building/factory) -->
+                <g transform="translate(35, 4)">
+                  <rect x="0" y="3" width="5" height="6" fill="${this.getHeatPumpColor(hpState)}" opacity="0.8"/>
+                  <rect x="6" y="1" width="5" height="8" fill="${this.getHeatPumpColor(hpState)}" opacity="0.8"/>
+                  <rect x="12" y="3" width="5" height="6" fill="${this.getHeatPumpColor(hpState)}" opacity="0.8"/>
+                </g>
+                <text x="60" y="10" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
+                  ${this.config.heat_pump.display_name}
+                </text>
+              ` : ''}
 
-              <!-- Heat pump label -->
-              <text x="60" y="85" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
+              <!-- Heat pump label (moved down 5px) -->
+              <text x="60" y="90" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
                 ${this.getDisplayMode(hpState, g2ValveState)}
               </text>
 
-              <!-- Error indicator -->
+              <!-- Error indicator (moved down 5px) -->
               ${hpState.error ? html`
-                <text x="60" y="100" text-anchor="middle" fill="#e74c3c" font-size="10" font-weight="bold">
+                <text x="60" y="105" text-anchor="middle" fill="#e74c3c" font-size="10" font-weight="bold">
                   ⚠ ${hpState.error}
                 </text>
               ` : ''}
