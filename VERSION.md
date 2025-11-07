@@ -16,6 +16,22 @@ None
 
 ## Version History
 
+## v0.20.18 (2025-11-07)
+**Added: Configurable brand text color and additional spacing adjustments**
+- Added `logo_text_color` configuration option in heat_pump config
+- Allows custom text color for brand name (default: dynamic based on HP state)
+- Fixed fan spinning off-center by updating transform-origin (60px 48px → 60px 51px)
+- Moved all internal elements down another 3px for better spacing:
+  - Fan housing and blades: cy 48 → 51, all blade coordinates +3px
+  - Heat pump label: y 93 → 96
+  - Error indicator: y 108 → 111
+  - Metrics: metricsY 108/123 → 111/126
+- Provides additional spacing below brand area for cleaner layout
+
+Config example:
+  heat_pump:
+    logo_text_color: white  # or '#2c3e50', or omit for dynamic color
+
 ## v0.20.17 (2025-11-07)
 **Fixed: Spacing adjustment for brand text area**
 - Moved fan housing and blades down 3px (cy: 45 → 48)
