@@ -24,6 +24,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     icon?: string;               // Generic icon (deprecated, use logo_url)
     display_name?: string;       // Display name (e.g., "Chiltrix CX50-2")
     logo_url?: string;           // URL to logo image (local /local/... or external https://...)
+    logo_background_color?: string; // Background color for logo area (default: transparent, e.g., "white", "#ffffff")
   };
 
   // Heat Pump Visual Configuration

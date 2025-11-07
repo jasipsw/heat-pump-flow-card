@@ -16,6 +16,17 @@ None
 
 ## Version History
 
+## v0.20.16 (2025-11-07)
+**Improved: Brand logo and text layout**
+- Increased brand text from 10px to 12px for better readability
+- Center-aligned text vertically with logo for better visual balance
+- Moved logo down from y=1 to y=4 to avoid border collision
+- Moved text from y=10 to y=14 and x=24 to x=25 for optical centering
+- Added configurable `logo_background_color` option in heat_pump config
+- Background rect behind logo/text area (default: transparent)
+- Useful for logos with fixed backgrounds (e.g., white logo backgrounds)
+- Background rect: x=3, y=3, width=114, height=20, rx=4 (rounded corners)
+
 ## v0.20.15 (2025-11-07)
 **Fixed: Brand logo not rendering due to nested html template**
 - Changed from nested `html` template to opacity-based conditional rendering
