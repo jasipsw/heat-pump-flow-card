@@ -1054,6 +1054,22 @@ export class HeatPumpFlowCard extends LitElement {
   documentationURL: 'https://github.com/YOUR_USERNAME/heat-pump-flow-card',
 });
 
+// Debug helper: Add findHeatPumpCard to window for console debugging
+(window as any).findHeatPumpCard = function(root: Document | ShadowRoot = document): HeatPumpFlowCard | null {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
+  let node: Node | null;
+  while (node = walker.nextNode()) {
+    if ((node as Element).tagName === 'HEAT-PUMP-FLOW-CARD') {
+      return node as HeatPumpFlowCard;
+    }
+    if ((node as Element).shadowRoot) {
+      const found = (window as any).findHeatPumpCard((node as Element).shadowRoot);
+      if (found) return found;
+    }
+  }
+  return null;
+};
+
 declare global {
   interface HTMLElementTagNameMap {
     'heat-pump-flow-card': HeatPumpFlowCard;
