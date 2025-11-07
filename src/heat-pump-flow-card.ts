@@ -704,28 +704,41 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- CONVENTIONAL: Supply on top (hot), Return on bottom (cold) -->
 
             <!-- HEATING MODE PIPES (shown when G2 valve is OFF - heating mode) -->
-            <!-- Pipe: HP to Buffer (hot supply) - TOP - 10px gap from HP -->
-            <path id="hp-to-buffer-path"
-                  d="M 180 180 L 350 180"
-                  stroke="${g2ValveState.isActive ? (this.config.temperature?.neutral_color || '#95a5a6') : hpOutletColor}"
-                  stroke-width="12"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
+            <!-- Z-ORDER: Return pipes first (behind), then supply pipes (on top) -->
 
-            <!-- Pipe: Buffer to HP (cold return) - BOTTOM - 10px gap from HP -->
+            <!-- Pipe: Buffer to HP (cold return) - BOTTOM - 10px gap from HP - BEHIND -->
             <path id="buffer-to-hp-path"
-                  d="M 350 220 L 180 220"
+                  d="M 390 220 L 180 220"
                   stroke="${g2ValveState.isActive ? (this.config.temperature?.neutral_color || '#95a5a6') : hpInletColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
 
+            <!-- Pipe: HP to Buffer (hot supply) - TOP - 10px gap from HP - ON TOP -->
+            <path id="hp-to-buffer-path"
+                  d="M 180 180 L 390 180"
+                  stroke="${g2ValveState.isActive ? (this.config.temperature?.neutral_color || '#95a5a6') : hpOutletColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
+
             <!-- DHW MODE PIPES (shown when G2 valve is ON - DHW mode) -->
-            <!-- Pipe: HP to G2 valve (hot supply from TOP) - leaves room for aux heater -->
+            <!-- Z-ORDER: Return pipes first (behind), then supply pipes (on top) -->
+
+            <!-- Pipe: DHW outlet to HP return (BOTTOM) - routed away from buffer tank - BEHIND -->
+            <path id="dhw-to-hp-return-path"
+                  d="M 420 575 L 300 575 L 300 220 L 180 220"
+                  stroke="${g2ValveState.isActive ? hpInletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
+
+            <!-- Pipe: HP to G2 valve (hot supply from TOP) - leaves room for aux heater - ON TOP -->
             <path id="hp-to-g2-path"
-                  d="M 180 180 L 280 180 L 280 200"
+                  d="M 180 180 L 320 180 L 320 200"
                   stroke="${g2ValveState.isActive ? hpOutletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -734,7 +747,7 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Pipe: G2 valve down to DHW tank inlet -->
             <path id="g2-to-dhw-path"
-                  d="M 280 200 L 280 370 L 350 370 L 350 420 L 380 420"
+                  d="M 320 200 L 320 410 L 390 410 L 390 460 L 420 460"
                   stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -743,33 +756,25 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- DHW coil spiral path (for flow animation) -->
             <path id="dhw-coil-path"
-                  d="M 380 420 Q 400 425, 420 420 Q 400 428, 380 435 Q 400 440, 420 435 Q 400 448, 380 455 Q 400 460, 420 455 Q 400 468, 380 475 Q 400 480, 420 475 Q 400 488, 380 495 Q 400 500, 420 495 Q 400 508, 380 515 Q 400 520, 420 515 Q 400 528, 380 535"
+                  d="M 420 460 Q 440 465, 460 460 Q 440 468, 420 475 Q 440 480, 460 475 Q 440 488, 420 495 Q 440 500, 460 495 Q 440 508, 420 515 Q 440 520, 460 515 Q 440 528, 420 535 Q 440 540, 460 535 Q 440 548, 420 555 Q 440 560, 460 555 Q 440 568, 420 575"
                   stroke="none"
                   stroke-width="0"
                   fill="none"
                   opacity="0"/>
 
-            <!-- Pipe: DHW outlet to HP return (BOTTOM) - routed away from buffer tank -->
-            <path id="dhw-to-hp-return-path"
-                  d="M 380 535 L 300 535 L 300 220 L 180 220"
-                  stroke="${g2ValveState.isActive ? hpInletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
-                  stroke-width="12"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
-
-            <!-- Pipe: Buffer to HVAC (hot) - 10px gap from HVAC -->
-            <path id="buffer-to-hvac-path"
-                  d="M 450 180 L 620 180"
-                  stroke="${bufferSupplyColor}"
+            <!-- Z-ORDER: Return first (behind), supply on top -->
+            <!-- Pipe: HVAC to Buffer (cold return) - 10px gap from HVAC - BEHIND -->
+            <path id="hvac-to-buffer-path"
+                  d="M 620 220 L 490 220"
+                  stroke="${hvacReturnColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"/>
 
-            <!-- Pipe: HVAC to Buffer (cold return) - 10px gap from HVAC -->
-            <path id="hvac-to-buffer-path"
-                  d="M 620 220 L 450 220"
-                  stroke="${hvacReturnColor}"
+            <!-- Pipe: Buffer to HVAC (hot supply) - 10px gap from HVAC - ON TOP -->
+            <path id="buffer-to-hvac-path"
+                  d="M 490 180 L 620 180"
+                  stroke="${bufferSupplyColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"/>
@@ -798,7 +803,7 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- Brand name (at top, above fan) -->
               ${this.config.heat_pump?.display_name ? html`
-                <text x="60" y="12" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="9" font-weight="bold">
+                <text x="60" y="12" text-anchor="middle" fill="${hpTextColor}" font-size="9" font-weight="bold">
                   ${this.config.heat_pump.display_name}
                 </text>
               ` : ''}
@@ -870,7 +875,7 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- G2 Diverter Valve (3-way valve between HP and tanks) -->
-            <g id="g2-valve" transform="translate(280, 190) scale(1.4)">
+            <g id="g2-valve" transform="translate(320, 180) scale(1.4)">
               <!-- Valve body - cylindrical with flanges (matching valve idea graphic) -->
               <!-- Left inlet flange -->
               <rect x="-45" y="-8" width="10" height="16" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
@@ -921,7 +926,7 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- Improved Buffer Tank (center) -->
-            <g id="buffer-tank" transform="translate(350, 100)">
+            <g id="buffer-tank" transform="translate(390, 100)">
               <!-- Tank cylinder body -->
               <rect x="10" y="20" width="80" height="160" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
 
@@ -956,7 +961,7 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- DHW (Domestic Hot Water) Tank with Coil (center-bottom) -->
-            <g id="dhw-tank" transform="translate(350, 370)">
+            <g id="dhw-tank" transform="translate(390, 410)">
               <!-- Tank cylinder body -->
               <rect x="10" y="20" width="80" height="160" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
 
