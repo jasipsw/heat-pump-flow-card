@@ -677,12 +677,10 @@ export class HeatPumpFlowCard extends LitElement {
       const b = Math.round(grayB + (hotB - grayB) * auxIntensity);
       auxCylinderColor = `rgb(${r}, ${g}, ${b})`;
     }
-    // Glow intensity for drop-shadow (0 to 12px blur)
-    const auxGlowBlur = Math.round(auxIntensity * 12);
-    const auxDropShadow = auxIntensity > 0
-      ? `drop-shadow(0 0 ${auxGlowBlur}px rgba(255, 68, 34, ${0.6 + auxIntensity * 0.4}))`
-      : '';
-    const auxLabelColor = auxIntensity > 0 ? '#ff8c42' : '#95a5a6';
+    // Glow intensity - blur radius from 0 to 8 for SVG filter
+    const auxGlowBlur = auxIntensity * 8;
+    // Glow opacity for filter
+    const auxGlowOpacity = auxIntensity;
 
     return html`
       <ha-card>
@@ -690,6 +688,21 @@ export class HeatPumpFlowCard extends LitElement {
 
         <div class="card-content">
           <svg viewBox="0 0 800 700" xmlns="http://www.w3.org/2000/svg">
+            <!-- SVG Filter Definitions -->
+            <defs>
+              <!-- Dynamic glow filter for aux heater -->
+              <filter id="aux-heater-glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="${auxGlowBlur}" result="blur"/>
+                <feFlood flood-color="#ff4422" flood-opacity="${auxGlowOpacity}" result="color"/>
+                <feComposite in="color" in2="blur" operator="in" result="glow"/>
+                <feMerge>
+                  <feMergeNode in="glow"/>
+                  <feMergeNode in="glow"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+
             <!-- Flow Pipes (rendered first so they appear behind entities) -->
 
             <!-- Pipes with 10px gaps from entities for clean appearance -->
@@ -1047,22 +1060,15 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Auxiliary Heater - Simplified glowing cylinder -->
             <!-- Compact inline heater element on horizontal pipe -->
-            <g id="aux-heater" opacity="${auxHeaterState.enabled && auxHeaterState.intensity > 0 ? '1' : (auxHeaterState.enabled ? '0.3' : '0')}">
+            <g id="aux-heater" opacity="${auxHeaterState.enabled ? '1' : '0'}">
               <!-- Heated cylinder - color transitions from gray to red-orange, glows with intensity -->
               <rect x="225" y="172" width="60" height="16" rx="2" ry="2"
                     fill="${auxCylinderColor}"
                     stroke="#2d3748"
                     stroke-width="1.5"
-                    filter="${auxDropShadow}"/>
-
-              <!-- Power indicator label with custom display name -->
-              <text x="255" y="165" text-anchor="middle"
-                    fill="${auxLabelColor}"
-                    font-size="9"
-                    font-weight="bold"
-                    opacity="${auxHeaterState.power > 0 ? '1' : '0'}">
-                ${auxHeaterState.displayName}: ${this.formatValue(auxHeaterState.power / 1000, 1)} kW
-              </text>
+                    opacity="0.95"
+                    filter="${auxIntensity > 0 ? 'url(#aux-heater-glow)' : ''}"
+                    class="${auxIntensity > 0 ? 'aux-heater-pulsing' : ''}"/>
             </g>
 
             <!-- Version display (upper right corner) -->
