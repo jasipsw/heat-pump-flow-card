@@ -3,19 +3,26 @@
 ## Open TODO Items
 
 ### High Priority
-- [ ] Remove/improve brand icon artifact (currently displays as confusing rectangles)
-- [ ] Consider adding proper brand logo support (SVG or image-based)
+None
 
 ### Low Priority
 - [ ] Dark mode text readability - text in heat pump box is not readable when heat pump is off in dark mode
 
 ### Future Enhancements
-- [ ] Custom icon configuration support for brand display
+- [ ] Custom icon configuration support for brand display (allow users to specify custom SVG/image)
 - [ ] Additional brand display customization options
 
 ---
 
 ## Version History
+
+## v0.20.8 (2025-11-07)
+**Fixed: G2 valve alignment and added CX brand icon**
+- Fixed G2 valve position from y=190 to y=180 to align with DHW supply pipe
+- Updated HP to G2 pipe path to stay horizontal at y=180
+- Updated G2 to DHW pipe path to start at correct position (y=192)
+- Added simplified CX logo icon next to brand name (curved C with X inside)
+- Brand icon dynamically matches heat pump state color
 
 ## v0.20.7 (2025-11-07)
 **Removed: Confusing icon artifact**

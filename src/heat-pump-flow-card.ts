@@ -707,7 +707,7 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Pipe: HP to G2 valve (hot supply from TOP) - leaves room for aux heater - ON TOP -->
             <path id="hp-to-g2-path"
-                  d="M 180 180 L 280 180 L 280 190 L 275 190"
+                  d="M 180 180 L 275 180"
                   stroke="${g2ValveState.isActive ? hpOutletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -744,7 +744,7 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) -->
             <path id="g2-to-dhw-path"
-                  d="M 320 202 L 320 460 L 420 460"
+                  d="M 320 192 L 320 460 L 420 460"
                   stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -812,10 +812,26 @@ export class HeatPumpFlowCard extends LitElement {
                 <circle cx="60" cy="45" r="8" fill="#2c3e50"/>
               </g>
 
-              <!-- Brand name (rendered after fan so it appears on top) -->
-              <text x="60" y="10" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
-                ${this.config.heat_pump?.display_name || ''}
-              </text>
+              <!-- Brand name with logo (rendered after fan so it appears on top) -->
+              ${this.config.heat_pump?.display_name ? html`
+                <!-- Brand logo - simplified CX icon -->
+                <g transform="translate(38, 5)" opacity="0.9">
+                  <!-- Curved C shape -->
+                  <path d="M 3 0 Q 0 0, 0 3 L 0 5 Q 0 8, 3 8"
+                        stroke="${this.getHeatPumpColor(hpState)}"
+                        stroke-width="1.5"
+                        fill="none"
+                        stroke-linecap="round"/>
+                  <!-- X inside -->
+                  <path d="M 2 2 L 5 6 M 5 2 L 2 6"
+                        stroke="${this.getHeatPumpColor(hpState)}"
+                        stroke-width="1.2"
+                        stroke-linecap="round"/>
+                </g>
+                <text x="60" y="10" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
+                  ${this.config.heat_pump.display_name}
+                </text>
+              ` : ''}
 
               <!-- Heat pump label (moved down 5px) -->
               <text x="60" y="90" text-anchor="middle" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
@@ -870,7 +886,7 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- G2 Diverter Valve (3-way valve between HP and tanks) -->
-            <g id="g2-valve" transform="translate(320, 190) scale(1.0)">
+            <g id="g2-valve" transform="translate(320, 180) scale(1.0)">
               <!-- Valve body - cylindrical with flanges (matching valve idea graphic) -->
               <!-- Left inlet flange -->
               <rect x="-45" y="-8" width="10" height="16" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
