@@ -785,8 +785,19 @@ export class HeatPumpFlowCard extends LitElement {
               </g>
 
               <!-- Brand name with logo (upper left corner) -->
-              <image x="5" y="1" width="16" height="16" href="${this.config.heat_pump?.logo_url || ''}" opacity="${this.config.heat_pump?.logo_url ? '0.9' : '0'}"/>
-              <text x="24" y="10" text-anchor="start" fill="${this.getHeatPumpColor(hpState)}" font-size="10" font-weight="bold">
+              <!-- Background for logo/text (configurable to match logo background) -->
+              <rect x="3" y="3" width="114" height="20" rx="4"
+                    fill="${this.config.heat_pump?.logo_background_color || 'transparent'}"
+                    opacity="${this.config.heat_pump?.logo_background_color ? '1' : '0'}"/>
+              <!-- Logo (16x16px favicon size) -->
+              <image x="5" y="4" width="16" height="16"
+                     href="${this.config.heat_pump?.logo_url || ''}"
+                     opacity="${this.config.heat_pump?.logo_url ? '0.9' : '0'}"/>
+              <!-- Brand text (center-aligned vertically with logo) -->
+              <text x="25" y="14" text-anchor="start"
+                    fill="${this.getHeatPumpColor(hpState)}"
+                    font-size="12"
+                    font-weight="bold">
                 ${this.config.heat_pump?.display_name || ''}
               </text>
 
