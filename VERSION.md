@@ -16,6 +16,12 @@ None
 
 ## Version History
 
+## v0.20.11 (2025-11-07)
+**Fixed: Brand icon and text repositioned to upper left**
+- Moved brand icon from center to upper left corner (translate 38,5 → 5,5)
+- Moved brand text to right of icon (x=60 → x=18, text-anchor middle → start)
+- Icon and text now positioned in upper left corner of heat pump box
+
 ## v0.20.10 (2025-11-07)
 **Adjusted: G2 valve size further reduced**
 - Scaled G2 valve down from 0.85 to 0.7 for better proportions
