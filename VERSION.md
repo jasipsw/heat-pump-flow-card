@@ -16,6 +16,26 @@ None
 
 ## Version History
 
+## v0.20.13 (2025-11-07)
+**Fixed: Auxiliary heater visibility issue**
+- Moved auxiliary heater rendering from pipes section to after entities
+- Aux heater now renders on top of temperature labels and entity boxes
+- Fixes issue where aux heater coil was being covered and invisible
+- Aux heater with full power (18kW) now displays properly with red glow
+
+## v0.20.12 (2025-11-07)
+**Added: Support for custom brand logo from PNG file**
+- Brand logo now loads from configured `logo_url` (e.g., `/local/chiltrix-logo.png`)
+- Logo displayed as 12x12px image in upper left corner
+- Replaced SVG icon with actual PNG logo from config
+- Text positioned at x=20 to accommodate logo
+
+## v0.20.11 (2025-11-07)
+**Fixed: Brand icon and text repositioned to upper left**
+- Moved brand icon from center to upper left corner (translate 38,5 → 5,5)
+- Moved brand text to right of icon (x=60 → x=18, text-anchor middle → start)
+- Icon and text now positioned in upper left corner of heat pump box
+
 ## v0.20.10 (2025-11-07)
 **Adjusted: G2 valve size further reduced**
 - Scaled G2 valve down from 0.85 to 0.7 for better proportions
