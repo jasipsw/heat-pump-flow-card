@@ -1,4 +1,4 @@
-var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=arguments.length,s=r<3?e:null===o?o=Object.getOwnPropertyDescriptor(e,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)s=Reflect.decorate(t,e,i,o);else for(var n=t.length-1;n>=0;n--)(a=t[n])&&(s=(r<3?a(s):r>3?a(e,i,s):a(e,i))||s);return r>3&&s&&Object.defineProperty(e,i,s),s}"function"==typeof SuppressedError&&SuppressedError;const i=globalThis,o=i.ShadowRoot&&(void 0===i.ShadyCSS||i.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,a=Symbol(),r=new WeakMap;let s=class{constructor(t,e,i){if(this._$cssResult$=!0,i!==a)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o;const e=this.t;if(o&&void 0===t){const i=void 0!==e&&1===e.length;i&&(t=r.get(e)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),i&&r.set(e,t))}return t}toString(){return this.cssText}};const n=o?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const i of t.cssRules)e+=i.cssText;return(t=>new s("string"==typeof t?t:t+"",void 0,a))(e)})(t):t,{is:l,defineProperty:h,getOwnPropertyDescriptor:d,getOwnPropertyNames:p,getOwnPropertySymbols:c,getPrototypeOf:f}=Object,u=globalThis,g=u.trustedTypes,m=g?g.emptyScript:"",y=u.reactiveElementPolyfillSupport,w=(t,e)=>t,b={toAttribute(t,e){switch(e){case Boolean:t=t?m:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let i=t;switch(e){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t)}catch(t){i=null}}return i}},x=(t,e)=>!l(t,e),_={attribute:!0,type:String,converter:b,reflect:!1,useDefault:!1,hasChanged:x};Symbol.metadata??=Symbol("metadata"),u.litPropertyMetadata??=new WeakMap;let $=class extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=_){if(e.state&&(e.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(t)&&((e=Object.create(e)).wrapped=!0),this.elementProperties.set(t,e),!e.noAccessor){const i=Symbol(),o=this.getPropertyDescriptor(t,i,e);void 0!==o&&h(this.prototype,t,o)}}static getPropertyDescriptor(t,e,i){const{get:o,set:a}=d(this.prototype,t)??{get(){return this[e]},set(t){this[e]=t}};return{get:o,set(e){const r=o?.call(this);a?.call(this,e),this.requestUpdate(t,r,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??_}static _$Ei(){if(this.hasOwnProperty(w("elementProperties")))return;const t=f(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(w("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(w("properties"))){const t=this.properties,e=[...p(t),...c(t)];for(const i of e)this.createProperty(i,t[i])}const t=this[Symbol.metadata];if(null!==t){const e=litPropertyMetadata.get(t);if(void 0!==e)for(const[t,i]of e)this.elementProperties.set(t,i)}this._$Eh=new Map;for(const[t,e]of this.elementProperties){const i=this._$Eu(t,e);void 0!==i&&this._$Eh.set(i,t)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const i=new Set(t.flat(1/0).reverse());for(const t of i)e.unshift(n(t))}else void 0!==t&&e.push(n(t));return e}static _$Eu(t,e){const i=e.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this._$EO??=new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){const t=new Map,e=this.constructor.elementProperties;for(const i of e.keys())this.hasOwnProperty(i)&&(t.set(i,this[i]),delete this[i]);t.size>0&&(this._$Ep=t)}createRenderRoot(){const t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return((t,e)=>{if(o)t.adoptedStyleSheets=e.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const o of e){const e=document.createElement("style"),a=i.litNonce;void 0!==a&&e.setAttribute("nonce",a),e.textContent=o.cssText,t.appendChild(e)}})(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,i){this._$AK(t,i)}_$ET(t,e){const i=this.constructor.elementProperties.get(t),o=this.constructor._$Eu(t,i);if(void 0!==o&&!0===i.reflect){const a=(void 0!==i.converter?.toAttribute?i.converter:b).toAttribute(e,i.type);this._$Em=t,null==a?this.removeAttribute(o):this.setAttribute(o,a),this._$Em=null}}_$AK(t,e){const i=this.constructor,o=i._$Eh.get(t);if(void 0!==o&&this._$Em!==o){const t=i.getPropertyOptions(o),a="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:b;this._$Em=o;const r=a.fromAttribute(e,t.type);this[o]=r??this._$Ej?.get(o)??r,this._$Em=null}}requestUpdate(t,e,i){if(void 0!==t){const o=this.constructor,a=this[t];if(i??=o.getPropertyOptions(t),!((i.hasChanged??x)(a,e)||i.useDefault&&i.reflect&&a===this._$Ej?.get(t)&&!this.hasAttribute(o._$Eu(t,i))))return;this.C(t,e,i)}!1===this.isUpdatePending&&(this._$ES=this._$EP())}C(t,e,{useDefault:i,reflect:o,wrapped:a},r){i&&!(this._$Ej??=new Map).has(t)&&(this._$Ej.set(t,r??e??this[t]),!0!==a||void 0!==r)||(this._$AL.has(t)||(this.hasUpdated||i||(e=void 0),this._$AL.set(t,e)),!0===o&&this._$Em!==t&&(this._$Eq??=new Set).add(t))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(t){Promise.reject(t)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,e]of this._$Ep)this[t]=e;this._$Ep=void 0}const t=this.constructor.elementProperties;if(t.size>0)for(const[e,i]of t){const{wrapped:t}=i,o=this[e];!0!==t||this._$AL.has(e)||void 0===o||this.C(e,void 0,i,o)}}let t=!1;const e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach(t=>t.hostUpdate?.()),this.update(e)):this._$EM()}catch(e){throw t=!1,this._$EM(),e}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach(t=>t.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EM(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Eq&&=this._$Eq.forEach(t=>this._$ET(t,this[t])),this._$EM()}updated(t){}firstUpdated(t){}};$.elementStyles=[],$.shadowRootOptions={mode:"open"},$[w("elementProperties")]=new Map,$[w("finalized")]=new Map,y?.({ReactiveElement:$}),(u.reactiveElementVersions??=[]).push("2.1.1");const v=globalThis,A=v.trustedTypes,k=A?A.createPolicy("lit-html",{createHTML:t=>t}):void 0,S="$lit$",C=`lit$${Math.random().toFixed(9).slice(2)}$`,P="?"+C,T=`<${P}>`,H=document,E=()=>H.createComment(""),R=t=>null===t||"object"!=typeof t&&"function"!=typeof t,M=Array.isArray,N="[ \t\n\f\r]",O=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,z=/-->/g,D=/>/g,L=RegExp(`>|${N}(?:([^\\s"'>=/]+)(${N}*=${N}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),V=/'/g,F=/"/g,U=/^(?:script|style|textarea|title)$/i,W=(t=>(e,...i)=>({_$litType$:t,strings:e,values:i}))(1),G=Symbol.for("lit-noChange"),Q=Symbol.for("lit-nothing"),B=new WeakMap,I=H.createTreeWalker(H,129);function j(t,e){if(!M(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==k?k.createHTML(e):e}const q=(t,e)=>{const i=t.length-1,o=[];let a,r=2===e?"<svg>":3===e?"<math>":"",s=O;for(let e=0;e<i;e++){const i=t[e];let n,l,h=-1,d=0;for(;d<i.length&&(s.lastIndex=d,l=s.exec(i),null!==l);)d=s.lastIndex,s===O?"!--"===l[1]?s=z:void 0!==l[1]?s=D:void 0!==l[2]?(U.test(l[2])&&(a=RegExp("</"+l[2],"g")),s=L):void 0!==l[3]&&(s=L):s===L?">"===l[0]?(s=a??O,h=-1):void 0===l[1]?h=-2:(h=s.lastIndex-l[2].length,n=l[1],s=void 0===l[3]?L:'"'===l[3]?F:V):s===F||s===V?s=L:s===z||s===D?s=O:(s=L,a=void 0);const p=s===L&&t[e+1].startsWith("/>")?" ":"";r+=s===O?i+T:h>=0?(o.push(n),i.slice(0,h)+S+i.slice(h)+C+p):i+C+(-2===h?e:p)}return[j(t,r+(t[i]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),o]};class Z{constructor({strings:t,_$litType$:e},i){let o;this.parts=[];let a=0,r=0;const s=t.length-1,n=this.parts,[l,h]=q(t,e);if(this.el=Z.createElement(l,i),I.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(o=I.nextNode())&&n.length<s;){if(1===o.nodeType){if(o.hasAttributes())for(const t of o.getAttributeNames())if(t.endsWith(S)){const e=h[r++],i=o.getAttribute(t).split(C),s=/([.?@])?(.*)/.exec(e);n.push({type:1,index:a,name:s[2],strings:i,ctor:"."===s[1]?tt:"?"===s[1]?et:"@"===s[1]?it:Y}),o.removeAttribute(t)}else t.startsWith(C)&&(n.push({type:6,index:a}),o.removeAttribute(t));if(U.test(o.tagName)){const t=o.textContent.split(C),e=t.length-1;if(e>0){o.textContent=A?A.emptyScript:"";for(let i=0;i<e;i++)o.append(t[i],E()),I.nextNode(),n.push({type:2,index:++a});o.append(t[e],E())}}}else if(8===o.nodeType)if(o.data===P)n.push({type:2,index:a});else{let t=-1;for(;-1!==(t=o.data.indexOf(C,t+1));)n.push({type:7,index:a}),t+=C.length-1}a++}}static createElement(t,e){const i=H.createElement("template");return i.innerHTML=t,i}}function X(t,e,i=t,o){if(e===G)return e;let a=void 0!==o?i._$Co?.[o]:i._$Cl;const r=R(e)?void 0:e._$litDirective$;return a?.constructor!==r&&(a?._$AO?.(!1),void 0===r?a=void 0:(a=new r(t),a._$AT(t,i,o)),void 0!==o?(i._$Co??=[])[o]=a:i._$Cl=a),void 0!==a&&(e=X(t,a._$AS(t,e.values),a,o)),e}class J{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:i}=this._$AD,o=(t?.creationScope??H).importNode(e,!0);I.currentNode=o;let a=I.nextNode(),r=0,s=0,n=i[0];for(;void 0!==n;){if(r===n.index){let e;2===n.type?e=new K(a,a.nextSibling,this,t):1===n.type?e=new n.ctor(a,n.name,n.strings,this,t):6===n.type&&(e=new ot(a,this,t)),this._$AV.push(e),n=i[++s]}r!==n?.index&&(a=I.nextNode(),r++)}return I.currentNode=H,o}p(t){let e=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class K{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,i,o){this.type=2,this._$AH=Q,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=o,this._$Cv=o?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=X(this,t,e),R(t)?t===Q||null==t||""===t?(this._$AH!==Q&&this._$AR(),this._$AH=Q):t!==this._$AH&&t!==G&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):(t=>M(t)||"function"==typeof t?.[Symbol.iterator])(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==Q&&R(this._$AH)?this._$AA.nextSibling.data=t:this.T(H.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:i}=t,o="number"==typeof i?this._$AC(t):(void 0===i.el&&(i.el=Z.createElement(j(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===o)this._$AH.p(e);else{const t=new J(o,this),i=t.u(this.options);t.p(e),this.T(i),this._$AH=t}}_$AC(t){let e=B.get(t.strings);return void 0===e&&B.set(t.strings,e=new Z(t)),e}k(t){M(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,o=0;for(const a of t)o===e.length?e.push(i=new K(this.O(E()),this.O(E()),this,this.options)):i=e[o],i._$AI(a),o++;o<e.length&&(this._$AR(i&&i._$AB.nextSibling,o),e.length=o)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){const e=t.nextSibling;t.remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class Y{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,i,o,a){this.type=1,this._$AH=Q,this._$AN=void 0,this.element=t,this.name=e,this._$AM=o,this.options=a,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=Q}_$AI(t,e=this,i,o){const a=this.strings;let r=!1;if(void 0===a)t=X(this,t,e,0),r=!R(t)||t!==this._$AH&&t!==G,r&&(this._$AH=t);else{const o=t;let s,n;for(t=a[0],s=0;s<a.length-1;s++)n=X(this,o[i+s],e,s),n===G&&(n=this._$AH[s]),r||=!R(n)||n!==this._$AH[s],n===Q?t=Q:t!==Q&&(t+=(n??"")+a[s+1]),this._$AH[s]=n}r&&!o&&this.j(t)}j(t){t===Q?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class tt extends Y{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===Q?void 0:t}}class et extends Y{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==Q)}}class it extends Y{constructor(t,e,i,o,a){super(t,e,i,o,a),this.type=5}_$AI(t,e=this){if((t=X(this,t,e,0)??Q)===G)return;const i=this._$AH,o=t===Q&&i!==Q||t.capture!==i.capture||t.once!==i.once||t.passive!==i.passive,a=t!==Q&&(i===Q||o);o&&this.element.removeEventListener(this.name,this,i),a&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class ot{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){X(this,t)}}const at=v.litHtmlPolyfillSupport;at?.(Z,K),(v.litHtmlVersions??=[]).push("3.3.1");const rt=globalThis;class st extends ${constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=((t,e,i)=>{const o=i?.renderBefore??e;let a=o._$litPart$;if(void 0===a){const t=i?.renderBefore??null;o._$litPart$=a=new K(e.insertBefore(E(),t),t,void 0,i??{})}return a._$AI(t),a})(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return G}}st._$litElement$=!0,st.finalized=!0,rt.litElementHydrateSupport?.({LitElement:st});const nt=rt.litElementPolyfillSupport;nt?.({LitElement:st}),(rt.litElementVersions??=[]).push("4.2.1");const lt={attribute:!0,type:String,converter:b,reflect:!1,hasChanged:x},ht=(t=lt,e,i)=>{const{kind:o,metadata:a}=i;let r=globalThis.litPropertyMetadata.get(a);if(void 0===r&&globalThis.litPropertyMetadata.set(a,r=new Map),"setter"===o&&((t=Object.create(t)).wrapped=!0),r.set(i.name,t),"accessor"===o){const{name:o}=i;return{set(i){const a=e.get.call(this);e.set.call(this,i),this.requestUpdate(o,a,t)},init(e){return void 0!==e&&this.C(o,void 0,t,e),e}}}if("setter"===o){const{name:o}=i;return function(i){const a=this[o];e.call(this,i),this.requestUpdate(o,a,t)}}throw Error("Unsupported decorator location: "+o)};function dt(t){return(e,i)=>"object"==typeof i?ht(t,e,i):((t,e,i)=>{const o=e.hasOwnProperty(i);return e.constructor.createProperty(i,t),o?Object.getOwnPropertyDescriptor(e,i):void 0})(t,e,i)}function pt(t,e){return(e,i,o)=>((t,e,i)=>(i.configurable=!0,i.enumerable=!0,Reflect.decorate&&"object"!=typeof e&&Object.defineProperty(t,e,i),i))(e,i,{get(){return(e=>e.renderRoot?.querySelector(t)??null)(this)}})}const ct="0.25.1",ft=(new Date).toISOString(),ut=((t,...e)=>{const i=1===t.length?t[0]:e.reduce((e,i,o)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+t[o+1],t[0]);return new s(i,t,a)})`
+var HeatPumpFlowCard=function(t){"use strict";function e(t,e,o,i){var s,r=arguments.length,a=r<3?e:null===i?i=Object.getOwnPropertyDescriptor(e,o):i;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(t,e,o,i);else for(var n=t.length-1;n>=0;n--)(s=t[n])&&(a=(r<3?s(a):r>3?s(e,o,a):s(e,o))||a);return r>3&&a&&Object.defineProperty(e,o,a),a}"function"==typeof SuppressedError&&SuppressedError;const o=globalThis,i=o.ShadowRoot&&(void 0===o.ShadyCSS||o.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,s=Symbol(),r=new WeakMap;let a=class{constructor(t,e,o){if(this._$cssResult$=!0,o!==s)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o;const e=this.t;if(i&&void 0===t){const o=void 0!==e&&1===e.length;o&&(t=r.get(e)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),o&&r.set(e,t))}return t}toString(){return this.cssText}};const n=i?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const o of t.cssRules)e+=o.cssText;return(t=>new a("string"==typeof t?t:t+"",void 0,s))(e)})(t):t,{is:l,defineProperty:h,getOwnPropertyDescriptor:p,getOwnPropertyNames:c,getOwnPropertySymbols:d,getPrototypeOf:f}=Object,u=globalThis,g=u.trustedTypes,m=g?g.emptyScript:"",y=u.reactiveElementPolyfillSupport,w=(t,e)=>t,b={toAttribute(t,e){switch(e){case Boolean:t=t?m:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let o=t;switch(e){case Boolean:o=null!==t;break;case Number:o=null===t?null:Number(t);break;case Object:case Array:try{o=JSON.parse(t)}catch(t){o=null}}return o}},x=(t,e)=>!l(t,e),_={attribute:!0,type:String,converter:b,reflect:!1,useDefault:!1,hasChanged:x};Symbol.metadata??=Symbol("metadata"),u.litPropertyMetadata??=new WeakMap;let $=class extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=_){if(e.state&&(e.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(t)&&((e=Object.create(e)).wrapped=!0),this.elementProperties.set(t,e),!e.noAccessor){const o=Symbol(),i=this.getPropertyDescriptor(t,o,e);void 0!==i&&h(this.prototype,t,i)}}static getPropertyDescriptor(t,e,o){const{get:i,set:s}=p(this.prototype,t)??{get(){return this[e]},set(t){this[e]=t}};return{get:i,set(e){const r=i?.call(this);s?.call(this,e),this.requestUpdate(t,r,o)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??_}static _$Ei(){if(this.hasOwnProperty(w("elementProperties")))return;const t=f(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(w("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(w("properties"))){const t=this.properties,e=[...c(t),...d(t)];for(const o of e)this.createProperty(o,t[o])}const t=this[Symbol.metadata];if(null!==t){const e=litPropertyMetadata.get(t);if(void 0!==e)for(const[t,o]of e)this.elementProperties.set(t,o)}this._$Eh=new Map;for(const[t,e]of this.elementProperties){const o=this._$Eu(t,e);void 0!==o&&this._$Eh.set(o,t)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const o=new Set(t.flat(1/0).reverse());for(const t of o)e.unshift(n(t))}else void 0!==t&&e.push(n(t));return e}static _$Eu(t,e){const o=e.attribute;return!1===o?void 0:"string"==typeof o?o:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this._$EO??=new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){const t=new Map,e=this.constructor.elementProperties;for(const o of e.keys())this.hasOwnProperty(o)&&(t.set(o,this[o]),delete this[o]);t.size>0&&(this._$Ep=t)}createRenderRoot(){const t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return((t,e)=>{if(i)t.adoptedStyleSheets=e.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const i of e){const e=document.createElement("style"),s=o.litNonce;void 0!==s&&e.setAttribute("nonce",s),e.textContent=i.cssText,t.appendChild(e)}})(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,o){this._$AK(t,o)}_$ET(t,e){const o=this.constructor.elementProperties.get(t),i=this.constructor._$Eu(t,o);if(void 0!==i&&!0===o.reflect){const s=(void 0!==o.converter?.toAttribute?o.converter:b).toAttribute(e,o.type);this._$Em=t,null==s?this.removeAttribute(i):this.setAttribute(i,s),this._$Em=null}}_$AK(t,e){const o=this.constructor,i=o._$Eh.get(t);if(void 0!==i&&this._$Em!==i){const t=o.getPropertyOptions(i),s="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:b;this._$Em=i;const r=s.fromAttribute(e,t.type);this[i]=r??this._$Ej?.get(i)??r,this._$Em=null}}requestUpdate(t,e,o){if(void 0!==t){const i=this.constructor,s=this[t];if(o??=i.getPropertyOptions(t),!((o.hasChanged??x)(s,e)||o.useDefault&&o.reflect&&s===this._$Ej?.get(t)&&!this.hasAttribute(i._$Eu(t,o))))return;this.C(t,e,o)}!1===this.isUpdatePending&&(this._$ES=this._$EP())}C(t,e,{useDefault:o,reflect:i,wrapped:s},r){o&&!(this._$Ej??=new Map).has(t)&&(this._$Ej.set(t,r??e??this[t]),!0!==s||void 0!==r)||(this._$AL.has(t)||(this.hasUpdated||o||(e=void 0),this._$AL.set(t,e)),!0===i&&this._$Em!==t&&(this._$Eq??=new Set).add(t))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(t){Promise.reject(t)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,e]of this._$Ep)this[t]=e;this._$Ep=void 0}const t=this.constructor.elementProperties;if(t.size>0)for(const[e,o]of t){const{wrapped:t}=o,i=this[e];!0!==t||this._$AL.has(e)||void 0===i||this.C(e,void 0,o,i)}}let t=!1;const e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach(t=>t.hostUpdate?.()),this.update(e)):this._$EM()}catch(e){throw t=!1,this._$EM(),e}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach(t=>t.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EM(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Eq&&=this._$Eq.forEach(t=>this._$ET(t,this[t])),this._$EM()}updated(t){}firstUpdated(t){}};$.elementStyles=[],$.shadowRootOptions={mode:"open"},$[w("elementProperties")]=new Map,$[w("finalized")]=new Map,y?.({ReactiveElement:$}),(u.reactiveElementVersions??=[]).push("2.1.1");const v=globalThis,A=v.trustedTypes,k=A?A.createPolicy("lit-html",{createHTML:t=>t}):void 0,S="$lit$",C=`lit$${Math.random().toFixed(9).slice(2)}$`,P="?"+C,T=`<${P}>`,H=document,E=()=>H.createComment(""),R=t=>null===t||"object"!=typeof t&&"function"!=typeof t,M=Array.isArray,N="[ \t\n\f\r]",O=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,z=/-->/g,D=/>/g,L=RegExp(`>|${N}(?:([^\\s"'>=/]+)(${N}*=${N}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),V=/'/g,F=/"/g,U=/^(?:script|style|textarea|title)$/i,W=(t=>(e,...o)=>({_$litType$:t,strings:e,values:o}))(1),G=Symbol.for("lit-noChange"),Q=Symbol.for("lit-nothing"),B=new WeakMap,I=H.createTreeWalker(H,129);function j(t,e){if(!M(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==k?k.createHTML(e):e}const q=(t,e)=>{const o=t.length-1,i=[];let s,r=2===e?"<svg>":3===e?"<math>":"",a=O;for(let e=0;e<o;e++){const o=t[e];let n,l,h=-1,p=0;for(;p<o.length&&(a.lastIndex=p,l=a.exec(o),null!==l);)p=a.lastIndex,a===O?"!--"===l[1]?a=z:void 0!==l[1]?a=D:void 0!==l[2]?(U.test(l[2])&&(s=RegExp("</"+l[2],"g")),a=L):void 0!==l[3]&&(a=L):a===L?">"===l[0]?(a=s??O,h=-1):void 0===l[1]?h=-2:(h=a.lastIndex-l[2].length,n=l[1],a=void 0===l[3]?L:'"'===l[3]?F:V):a===F||a===V?a=L:a===z||a===D?a=O:(a=L,s=void 0);const c=a===L&&t[e+1].startsWith("/>")?" ":"";r+=a===O?o+T:h>=0?(i.push(n),o.slice(0,h)+S+o.slice(h)+C+c):o+C+(-2===h?e:c)}return[j(t,r+(t[o]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),i]};class Z{constructor({strings:t,_$litType$:e},o){let i;this.parts=[];let s=0,r=0;const a=t.length-1,n=this.parts,[l,h]=q(t,e);if(this.el=Z.createElement(l,o),I.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(i=I.nextNode())&&n.length<a;){if(1===i.nodeType){if(i.hasAttributes())for(const t of i.getAttributeNames())if(t.endsWith(S)){const e=h[r++],o=i.getAttribute(t).split(C),a=/([.?@])?(.*)/.exec(e);n.push({type:1,index:s,name:a[2],strings:o,ctor:"."===a[1]?tt:"?"===a[1]?et:"@"===a[1]?ot:Y}),i.removeAttribute(t)}else t.startsWith(C)&&(n.push({type:6,index:s}),i.removeAttribute(t));if(U.test(i.tagName)){const t=i.textContent.split(C),e=t.length-1;if(e>0){i.textContent=A?A.emptyScript:"";for(let o=0;o<e;o++)i.append(t[o],E()),I.nextNode(),n.push({type:2,index:++s});i.append(t[e],E())}}}else if(8===i.nodeType)if(i.data===P)n.push({type:2,index:s});else{let t=-1;for(;-1!==(t=i.data.indexOf(C,t+1));)n.push({type:7,index:s}),t+=C.length-1}s++}}static createElement(t,e){const o=H.createElement("template");return o.innerHTML=t,o}}function X(t,e,o=t,i){if(e===G)return e;let s=void 0!==i?o._$Co?.[i]:o._$Cl;const r=R(e)?void 0:e._$litDirective$;return s?.constructor!==r&&(s?._$AO?.(!1),void 0===r?s=void 0:(s=new r(t),s._$AT(t,o,i)),void 0!==i?(o._$Co??=[])[i]=s:o._$Cl=s),void 0!==s&&(e=X(t,s._$AS(t,e.values),s,i)),e}class J{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:o}=this._$AD,i=(t?.creationScope??H).importNode(e,!0);I.currentNode=i;let s=I.nextNode(),r=0,a=0,n=o[0];for(;void 0!==n;){if(r===n.index){let e;2===n.type?e=new K(s,s.nextSibling,this,t):1===n.type?e=new n.ctor(s,n.name,n.strings,this,t):6===n.type&&(e=new it(s,this,t)),this._$AV.push(e),n=o[++a]}r!==n?.index&&(s=I.nextNode(),r++)}return I.currentNode=H,i}p(t){let e=0;for(const o of this._$AV)void 0!==o&&(void 0!==o.strings?(o._$AI(t,o,e),e+=o.strings.length-2):o._$AI(t[e])),e++}}class K{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,o,i){this.type=2,this._$AH=Q,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=o,this.options=i,this._$Cv=i?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=X(this,t,e),R(t)?t===Q||null==t||""===t?(this._$AH!==Q&&this._$AR(),this._$AH=Q):t!==this._$AH&&t!==G&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):(t=>M(t)||"function"==typeof t?.[Symbol.iterator])(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==Q&&R(this._$AH)?this._$AA.nextSibling.data=t:this.T(H.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:o}=t,i="number"==typeof o?this._$AC(t):(void 0===o.el&&(o.el=Z.createElement(j(o.h,o.h[0]),this.options)),o);if(this._$AH?._$AD===i)this._$AH.p(e);else{const t=new J(i,this),o=t.u(this.options);t.p(e),this.T(o),this._$AH=t}}_$AC(t){let e=B.get(t.strings);return void 0===e&&B.set(t.strings,e=new Z(t)),e}k(t){M(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let o,i=0;for(const s of t)i===e.length?e.push(o=new K(this.O(E()),this.O(E()),this,this.options)):o=e[i],o._$AI(s),i++;i<e.length&&(this._$AR(o&&o._$AB.nextSibling,i),e.length=i)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){const e=t.nextSibling;t.remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class Y{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,o,i,s){this.type=1,this._$AH=Q,this._$AN=void 0,this.element=t,this.name=e,this._$AM=i,this.options=s,o.length>2||""!==o[0]||""!==o[1]?(this._$AH=Array(o.length-1).fill(new String),this.strings=o):this._$AH=Q}_$AI(t,e=this,o,i){const s=this.strings;let r=!1;if(void 0===s)t=X(this,t,e,0),r=!R(t)||t!==this._$AH&&t!==G,r&&(this._$AH=t);else{const i=t;let a,n;for(t=s[0],a=0;a<s.length-1;a++)n=X(this,i[o+a],e,a),n===G&&(n=this._$AH[a]),r||=!R(n)||n!==this._$AH[a],n===Q?t=Q:t!==Q&&(t+=(n??"")+s[a+1]),this._$AH[a]=n}r&&!i&&this.j(t)}j(t){t===Q?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class tt extends Y{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===Q?void 0:t}}class et extends Y{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==Q)}}class ot extends Y{constructor(t,e,o,i,s){super(t,e,o,i,s),this.type=5}_$AI(t,e=this){if((t=X(this,t,e,0)??Q)===G)return;const o=this._$AH,i=t===Q&&o!==Q||t.capture!==o.capture||t.once!==o.once||t.passive!==o.passive,s=t!==Q&&(o===Q||i);i&&this.element.removeEventListener(this.name,this,o),s&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class it{constructor(t,e,o){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=o}get _$AU(){return this._$AM._$AU}_$AI(t){X(this,t)}}const st=v.litHtmlPolyfillSupport;st?.(Z,K),(v.litHtmlVersions??=[]).push("3.3.1");const rt=globalThis;class at extends ${constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=((t,e,o)=>{const i=o?.renderBefore??e;let s=i._$litPart$;if(void 0===s){const t=o?.renderBefore??null;i._$litPart$=s=new K(e.insertBefore(E(),t),t,void 0,o??{})}return s._$AI(t),s})(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return G}}at._$litElement$=!0,at.finalized=!0,rt.litElementHydrateSupport?.({LitElement:at});const nt=rt.litElementPolyfillSupport;nt?.({LitElement:at}),(rt.litElementVersions??=[]).push("4.2.1");const lt={attribute:!0,type:String,converter:b,reflect:!1,hasChanged:x},ht=(t=lt,e,o)=>{const{kind:i,metadata:s}=o;let r=globalThis.litPropertyMetadata.get(s);if(void 0===r&&globalThis.litPropertyMetadata.set(s,r=new Map),"setter"===i&&((t=Object.create(t)).wrapped=!0),r.set(o.name,t),"accessor"===i){const{name:i}=o;return{set(o){const s=e.get.call(this);e.set.call(this,o),this.requestUpdate(i,s,t)},init(e){return void 0!==e&&this.C(i,void 0,t,e),e}}}if("setter"===i){const{name:i}=o;return function(o){const s=this[i];e.call(this,o),this.requestUpdate(i,s,t)}}throw Error("Unsupported decorator location: "+i)};function pt(t){return(e,o)=>"object"==typeof o?ht(t,e,o):((t,e,o)=>{const i=e.hasOwnProperty(o);return e.constructor.createProperty(o,t),i?Object.getOwnPropertyDescriptor(e,o):void 0})(t,e,o)}function ct(t,e){return(e,o,i)=>((t,e,o)=>(o.configurable=!0,o.enumerable=!0,Reflect.decorate&&"object"!=typeof e&&Object.defineProperty(t,e,o),o))(e,o,{get(){return(e=>e.renderRoot?.querySelector(t)??null)(this)}})}const dt="0.25.3",ft=(new Date).toISOString(),ut=((t,...e)=>{const o=1===t.length?t[0]:e.reduce((e,o,i)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(o)+t[i+1],t[0]);return new a(o,t,s)})`
   ha-card {
     padding: 16px;
     background: var(--ha-card-background, var(--card-background-color, white));
@@ -205,7 +205,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
   ellipse {
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
   }
-`;return console.info(`%c  HEAT-PUMP-FLOW-CARD  \n%c  Version ${ct}  \n%c  Built: ${ft}  `,"color: orange; font-weight: bold; background: black","color: white; font-weight: bold; background: dimgray","color: #95a5a6; font-weight: normal; background: dimgray"),t.HeatPumpFlowCard=class extends st{constructor(){super(...arguments),this.lastRenderTime=0,this.lastHassState={}}static getConfigElement(){}static getStubConfig(){return{type:"custom:heat-pump-flow-card",title:"Heat Pump Flow"}}setConfig(t){if(!t)throw new Error("Invalid configuration");const{animation:e,temperature:i,display:o,heat_pump_visual:a,labels:r,...s}=t;this.config={...s,animation:{enabled:!0,min_flow_rate:5,max_flow_rate:1,max_flow_rate_value:50,idle_threshold:0,dot_size:1.5,dot_spacing:30,use_temp_color:!1,dot_color:"rgba(255, 255, 255, 0.75)",dot_opacity:1,...e},temperature:{delta_threshold:10,hot_color:"#e74c3c",cold_color:"#3498db",neutral_color:"#95a5a6",unit:"C",...i},display:{show_values:!0,show_labels:!0,show_icons:!0,compact:!1,decimal_places:1,...o},heat_pump_visual:{off_color:"#95a5a6",heating_color:"#e74c3c",cooling_color:"#3498db",dhw_color:"#e67e22",defrost_color:"#f1c40f",show_metrics:!0,animate_fan:!0,...a},labels:{hp_supply:"HP Supply",hp_return:"HP Return",hvac_supply:"HVAC Supply",hvac_return:"HVAC Return",buffer_tank:"BUFFER",dhw_tank:"DHW",power_in:"Power In",thermal_out:"Thermal Out",cop:"COP",flow:"Flow",energy:"Energy",cost:"Cost",...r}}}shouldUpdate(t){if(t.has("config"))return!0;if(t.has("hass")){const t=Date.now();if(t-this.lastRenderTime<1e3)return this.updateAnimationVariables(),!1;this.lastRenderTime=t}return super.shouldUpdate(t)}updated(t){super.updated(t),t.has("hass")&&this.hass&&this.updateAnimationVariables()}firstUpdated(){this.config.animation.enabled&&setTimeout(()=>{this.updateAnimationVariables()},100)}updateAnimationVariables(){if(!this.config.animation.enabled)return;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getG2ValveState();[{id:"hp-to-aux-heating-path",flowRate:t.flowRate,supplyTemp:t.outletTemp,returnTemp:t.inletTemp,mode:"both",visible:!0},{id:"aux-to-g2-heating-path",flowRate:t.flowRate,supplyTemp:t.outletTemp,returnTemp:t.inletTemp,mode:"both",visible:!0},{id:"g2-to-buffer-path",flowRate:t.flowRate,supplyTemp:t.outletTemp,returnTemp:t.inletTemp,mode:"heating",visible:!a.isActive},{id:"buffer-to-hp-path",flowRate:t.flowRate,supplyTemp:t.outletTemp,returnTemp:t.inletTemp,mode:"heating",visible:!a.isActive},{id:"buffer-to-hvac-path",flowRate:i.flowRate,supplyTemp:e.supplyTemp,returnTemp:i.returnTemp,mode:"both",visible:!0},{id:"hvac-to-buffer-path",flowRate:i.flowRate,supplyTemp:e.supplyTemp,returnTemp:i.returnTemp,mode:"both",visible:!0},{id:"g2-to-dhw-path",flowRate:t.flowRate,supplyTemp:o.inletTemp,returnTemp:o.outletTemp,mode:"dhw",visible:a.isActive},{id:"dhw-coil-path",flowRate:t.flowRate,supplyTemp:o.inletTemp,returnTemp:o.outletTemp,mode:"dhw",visible:a.isActive},{id:"dhw-to-hp-return-path",flowRate:t.flowRate,supplyTemp:t.outletTemp,returnTemp:t.inletTemp,mode:"dhw",visible:a.isActive}].forEach((t,e)=>{const i=this.shadowRoot?.querySelectorAll(`.flow-dot[data-path-id="${t.id}"]`);if(!i)return;const o=this.getPipeColors(t.supplyTemp,t.returnTemp,t.flowRate),a=t.id.includes("-to-hp-")||t.id.includes("hvac-to-buffer")||t.id.includes("dhw-to-hp"),r=this.config.animation.use_temp_color?a?o.coldPipe:o.hotPipe:this.config.animation.dot_color,s=this.getAnimationDuration(t.flowRate),n=t.flowRate>0,l=t.visible&&n,h=i.length;i.forEach((t,e)=>{const i=e/h*s;t.setAttribute("fill",r),t.style.setProperty("--dot-duration",`${s}s`),t.style.setProperty("--dot-delay",`${i}s`),t.style.setProperty("--dot-opacity",l?this.config.animation.dot_opacity.toString():"0")})}),this.updateFanAnimation()}updateFanAnimation(){const t=this.shadowRoot?.querySelector("#fan-blades");if(!t||!this.config.heat_pump_visual?.animate_fan)return;const e=this.getHeatPumpState().fanSpeed||0;if(e>0){t.classList.add("fan-rotating");const i=e>0?100/e:999;t.style.setProperty("--fan-duration",`${i}s`)}else t.classList.remove("fan-rotating")}getHeatPumpState(){const t=this.config.heat_pump||{};return{power:this.getStateValue(t.power_entity)||0,thermal:this.getStateValue(t.thermal_entity)||0,cop:this.getStateValue(t.cop_entity)||0,outletTemp:this.getStateValue(t.outlet_temp_entity)||0,inletTemp:this.getStateValue(t.inlet_temp_entity)||0,flowRate:this.getStateValue(t.flow_rate_entity)||0,fanSpeed:this.getStateValue(t.fan_speed_entity),mode:this.getStateString(t.mode_entity),modeDisplay:this.getStateString(t.mode_display_entity),defrost:"on"===this.getStateString(t.defrost_entity),error:this.getStateString(t.error_entity),energy:this.getStateValue(t.energy_entity),cost:this.getStateValue(t.cost_entity),runtime:this.getStateValue(t.runtime_entity)}}getStateString(t){if(!t||!this.hass)return;const e=this.hass.states[t];return e?.state}getBufferTankState(){const t=this.config.buffer_tank||{};return{supplyTemp:this.getStateValue(t.supply_temp_entity)||0,returnTemp:this.getStateValue(t.return_temp_entity)||0,level:this.getStateValue(t.level_entity)}}getHVACState(){const t=this.config.hvac||{};return{thermal:this.getStateValue(t.thermal_entity)||0,flowRate:this.getStateValue(t.flow_rate_entity)||0,supplyTemp:this.getStateValue(t.supply_temp_entity)||0,returnTemp:this.getStateValue(t.return_temp_entity)||0}}getDHWTankState(){const t=this.config.dhw_tank||{};return{inletTemp:this.getStateValue(t.inlet_temp_entity)||0,outletTemp:this.getStateValue(t.outlet_temp_entity)||0,tankTemp:this.getStateValue(t.tank_temp_entity)}}getG2ValveState(){const t=this.config.g2_valve||{},e=this.getStateString(t.state_entity);return{isActive:"on"===e||"true"===e||"1"===e}}getAuxHeaterState(){const t=this.config.aux_heater||{},e=t.enabled||!1,i=this.getStateValue(t.power_entity)||0,o=t.max_power||18e3;return{enabled:e,power:i,maxPower:o,intensity:Math.min(i/o,1),displayName:t.display_name||t.name||"AUX"}}getStateValue(t){if(!t||!this.hass)return;const e=this.hass.states[t];if(!e)return;const i=parseFloat(e.state);return isNaN(i)?void 0:i}getStateUnit(t){if(!t||!this.hass)return"";const e=this.hass.states[t];return e?.attributes?.unit_of_measurement||""}formatValue(t,e=1){return void 0===t?"N/A":t.toFixed(e)}getPipeColors(t,e,i){const o=this.config.temperature,a=Math.abs(t-e);return i<=this.config.animation.idle_threshold||a<o.delta_threshold?{hotPipe:o.neutral_color,coldPipe:o.neutral_color}:t>e?{hotPipe:o.hot_color,coldPipe:o.cold_color}:{hotPipe:o.cold_color,coldPipe:o.hot_color}}hexToRgb(t){const e={black:"#000000",white:"#FFFFFF",red:"#FF0000",green:"#008000",blue:"#0000FF",yellow:"#FFFF00",cyan:"#00FFFF",magenta:"#FF00FF",orange:"#FFA500",purple:"#800080",pink:"#FFC0CB",brown:"#A52A2A",gray:"#808080",grey:"#808080"}[t.toLowerCase()]||t,i=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(e);return i?{r:parseInt(i[1],16),g:parseInt(i[2],16),b:parseInt(i[3],16)}:{r:0,g:0,b:0}}getHeatPumpColor(t){const e=this.config.heat_pump_visual;if(t.defrost)return e.defrost_color;if(t.power<=0)return e.off_color;const i=(t.mode||t.modeDisplay)?.toLowerCase();return i?.includes("heat")?e.heating_color:i?.includes("cool")?e.cooling_color:i?.includes("dhw")||i?.includes("hot water")?e.dhw_color:e.off_color}getDisplayMode(t,e){return t.mode?t.mode.toUpperCase():t.modeDisplay?t.modeDisplay.toUpperCase():t.defrost?"DEFROST":t.power<=0&&t.thermal<=0?"OFF":t.power>0?e.isActive?"DHW":"HEATING":"OFF"}getContrastTextColor(t){const e=t.replace("#","");return(.299*parseInt(e.substr(0,2),16)+.587*parseInt(e.substr(2,2),16)+.114*parseInt(e.substr(4,2),16))/255>.35?"#2c3e50":"#ffffff"}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return W``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getG2ValveState(),r=this.getAuxHeaterState(),s=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),n=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),l=this.getPipeColors(o.inletTemp,o.outletTemp,t.flowRate),h=s.hotPipe,d=s.coldPipe,p=n.hotPipe,c=n.coldPipe,f=l.hotPipe,u=this.getHeatPumpColor(t),g=this.getContrastTextColor(u),m=t.error?126:111,y=r.intensity;let w="#bdc3c7";if(y>0){const t=189,e=195,i=199,o=255,a=68,r=34;w=`rgb(${Math.round(t+(o-t)*y)}, ${Math.round(e+(a-e)*y)}, ${Math.round(i+(r-i)*y)})`}const b=this.config.aux_heater?.glow_size??8,x=224,_=172,$=x,v=_-b,A=60,k=16+2*b,S=2,C=2,P=x,T=_-.75*b,H=60,E=16+2*b*.75,R=2,M=2,N=x,O=_-.5*b,z=60,D=16+2*b*.5,L=2,V=2,F=y>0?2-1.4*y:2,U=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),G=this.config.aux_heater?.shadow_blur??1,Q=y>0?"aux-glow-outer":"aux-heater-layer",B=y>0?"aux-glow-middle":"aux-heater-layer",I=y>0?"aux-glow-inner":"aux-heater-layer",j=y>0?"aux-cylinder-pulse":"";return W`
+`;return console.info(`%c  HEAT-PUMP-FLOW-CARD  \n%c  Version ${dt}  \n%c  Built: ${ft}  `,"color: orange; font-weight: bold; background: black","color: white; font-weight: bold; background: dimgray","color: #95a5a6; font-weight: normal; background: dimgray"),t.HeatPumpFlowCard=class extends at{constructor(){super(...arguments),this.lastRenderTime=0,this.lastHassState={}}static getConfigElement(){}static getStubConfig(){return{type:"custom:heat-pump-flow-card",title:"Heat Pump Flow"}}setConfig(t){if(!t)throw new Error("Invalid configuration");const{animation:e,temperature:o,display:i,heat_pump_visual:s,labels:r,...a}=t;this.config={...a,animation:{enabled:!0,min_flow_rate:5,max_flow_rate:1,max_flow_rate_value:50,idle_threshold:0,dot_size:1.5,dot_spacing:30,use_temp_color:!1,dot_color:"rgba(255, 255, 255, 0.75)",dot_opacity:1,...e},temperature:{delta_threshold:10,hot_color:"#e74c3c",cold_color:"#3498db",neutral_color:"#95a5a6",unit:"C",...o},display:{show_values:!0,show_labels:!0,show_icons:!0,compact:!1,decimal_places:1,...i},heat_pump_visual:{off_color:"#95a5a6",heating_color:"#e74c3c",cooling_color:"#3498db",dhw_color:"#e67e22",defrost_color:"#f1c40f",show_metrics:!0,animate_fan:!0,...s},labels:{hp_supply:"HP Supply",hp_return:"HP Return",hvac_supply:"HVAC Supply",hvac_return:"HVAC Return",buffer_tank:"BUFFER",dhw_tank:"DHW",power_in:"Power In",thermal_out:"Thermal Out",cop:"COP",flow:"Flow",energy:"Energy",cost:"Cost",...r}}}shouldUpdate(t){if(t.has("config"))return!0;if(t.has("hass")){const t=Date.now();if(t-this.lastRenderTime<1e3)return this.updateAnimationVariables(),!1;this.lastRenderTime=t}return super.shouldUpdate(t)}updated(t){super.updated(t),t.has("hass")&&this.hass&&this.updateAnimationVariables()}firstUpdated(){this.config.animation.enabled&&setTimeout(()=>{this.updateAnimationVariables()},100)}updateAnimationVariables(){if(!this.config.animation.enabled)return;const t=this.getHeatPumpState(),e=this.getBufferTankState(),o=this.getHVACState(),i=this.getDHWTankState(),s=this.getG2ValveState();[{id:"hp-to-aux-heating-path",flowRate:t.flowRate,supplyTemp:t.outletTemp,returnTemp:t.inletTemp,mode:"both",visible:!0},{id:"aux-to-g2-heating-path",flowRate:t.flowRate,supplyTemp:t.outletTemp,returnTemp:t.inletTemp,mode:"both",visible:!0},{id:"g2-to-buffer-path",flowRate:t.flowRate,supplyTemp:t.outletTemp,returnTemp:t.inletTemp,mode:"heating",visible:!s.isActive},{id:"buffer-to-hp-path",flowRate:t.flowRate,supplyTemp:t.outletTemp,returnTemp:t.inletTemp,mode:"heating",visible:!s.isActive},{id:"buffer-to-hvac-path",flowRate:o.flowRate,supplyTemp:e.supplyTemp,returnTemp:o.returnTemp,mode:"both",visible:!0},{id:"hvac-to-buffer-path",flowRate:o.flowRate,supplyTemp:e.supplyTemp,returnTemp:o.returnTemp,mode:"both",visible:!0},{id:"g2-to-dhw-path",flowRate:t.flowRate,supplyTemp:i.inletTemp,returnTemp:i.outletTemp,mode:"dhw",visible:s.isActive},{id:"dhw-coil-path",flowRate:t.flowRate,supplyTemp:i.inletTemp,returnTemp:i.outletTemp,mode:"dhw",visible:s.isActive},{id:"dhw-to-hp-return-path",flowRate:t.flowRate,supplyTemp:t.outletTemp,returnTemp:t.inletTemp,mode:"dhw",visible:s.isActive}].forEach((t,e)=>{const o=this.shadowRoot?.querySelectorAll(`.flow-dot[data-path-id="${t.id}"]`);if(!o)return;const i=this.getPipeColors(t.supplyTemp,t.returnTemp,t.flowRate),s=t.id.includes("-to-hp-")||t.id.includes("hvac-to-buffer")||t.id.includes("dhw-to-hp"),r=this.config.animation.use_temp_color?s?i.coldPipe:i.hotPipe:this.config.animation.dot_color,a=this.getAnimationDuration(t.flowRate),n=t.flowRate>0,l=t.visible&&n,h=o.length;o.forEach((t,e)=>{const o=e/h*a;t.setAttribute("fill",r),t.style.setProperty("--dot-duration",`${a}s`),t.style.setProperty("--dot-delay",`${o}s`),t.style.setProperty("--dot-opacity",l?this.config.animation.dot_opacity.toString():"0")})}),this.updateFanAnimation()}updateFanAnimation(){const t=this.shadowRoot?.querySelector("#fan-blades");if(!t||!this.config.heat_pump_visual?.animate_fan)return;const e=this.getHeatPumpState().fanSpeed||0;if(e>0){t.classList.add("fan-rotating");const o=e>0?100/e:999;t.style.setProperty("--fan-duration",`${o}s`)}else t.classList.remove("fan-rotating")}getHeatPumpState(){const t=this.config.heat_pump||{};return{power:this.getStateValue(t.power_entity)||0,thermal:this.getStateValue(t.thermal_entity)||0,cop:this.getStateValue(t.cop_entity)||0,outletTemp:this.getStateValue(t.outlet_temp_entity)||0,inletTemp:this.getStateValue(t.inlet_temp_entity)||0,flowRate:this.getStateValue(t.flow_rate_entity)||0,fanSpeed:this.getStateValue(t.fan_speed_entity),mode:this.getStateString(t.mode_entity),modeDisplay:this.getStateString(t.mode_display_entity),defrost:"on"===this.getStateString(t.defrost_entity),error:this.getStateString(t.error_entity),energy:this.getStateValue(t.energy_entity),cost:this.getStateValue(t.cost_entity),runtime:this.getStateValue(t.runtime_entity)}}getStateString(t){if(!t||!this.hass)return;const e=this.hass.states[t];return e?.state}getBufferTankState(){const t=this.config.buffer_tank||{};return{supplyTemp:this.getStateValue(t.supply_temp_entity)||0,returnTemp:this.getStateValue(t.return_temp_entity)||0,level:this.getStateValue(t.level_entity)}}getHVACState(){const t=this.config.hvac||{};return{thermal:this.getStateValue(t.thermal_entity)||0,flowRate:this.getStateValue(t.flow_rate_entity)||0,supplyTemp:this.getStateValue(t.supply_temp_entity)||0,returnTemp:this.getStateValue(t.return_temp_entity)||0}}getDHWTankState(){const t=this.config.dhw_tank||{};return{inletTemp:this.getStateValue(t.inlet_temp_entity)||0,outletTemp:this.getStateValue(t.outlet_temp_entity)||0,tankTemp:this.getStateValue(t.tank_temp_entity)}}getG2ValveState(){const t=this.config.g2_valve||{},e=this.getStateString(t.state_entity);return{isActive:"on"===e||"true"===e||"1"===e}}getAuxHeaterState(){const t=this.config.aux_heater||{},e=t.enabled||!1,o=this.getStateValue(t.power_entity)||0,i=t.max_power||18e3;return{enabled:e,power:o,maxPower:i,intensity:Math.min(o/i,1),displayName:t.display_name||t.name||"AUX"}}getStateValue(t){if(!t||!this.hass)return;const e=this.hass.states[t];if(!e)return;const o=parseFloat(e.state);return isNaN(o)?void 0:o}getStateUnit(t){if(!t||!this.hass)return"";const e=this.hass.states[t];return e?.attributes?.unit_of_measurement||""}formatValue(t,e=1){return void 0===t?"N/A":t.toFixed(e)}getPipeColors(t,e,o){const i=this.config.temperature,s=Math.abs(t-e);return o<=this.config.animation.idle_threshold||s<i.delta_threshold?{hotPipe:i.neutral_color,coldPipe:i.neutral_color}:t>e?{hotPipe:i.hot_color,coldPipe:i.cold_color}:{hotPipe:i.cold_color,coldPipe:i.hot_color}}hexToRgb(t){const e={black:"#000000",white:"#FFFFFF",red:"#FF0000",green:"#008000",blue:"#0000FF",yellow:"#FFFF00",cyan:"#00FFFF",magenta:"#FF00FF",orange:"#FFA500",purple:"#800080",pink:"#FFC0CB",brown:"#A52A2A",gray:"#808080",grey:"#808080"}[t.toLowerCase()]||t,o=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(e);return o?{r:parseInt(o[1],16),g:parseInt(o[2],16),b:parseInt(o[3],16)}:{r:0,g:0,b:0}}getHeatPumpColor(t){const e=this.config.heat_pump_visual;if(t.defrost)return e.defrost_color;if(t.power<=0)return e.off_color;const o=(t.mode||t.modeDisplay)?.toLowerCase();return o?.includes("heat")?e.heating_color:o?.includes("cool")?e.cooling_color:o?.includes("dhw")||o?.includes("hot water")?e.dhw_color:e.off_color}getDisplayMode(t,e){return t.mode?t.mode.toUpperCase():t.modeDisplay?t.modeDisplay.toUpperCase():t.defrost?"DEFROST":t.power<=0&&t.thermal<=0?"OFF":t.power>0?e.isActive?"DHW":"HEATING":"OFF"}getContrastTextColor(t){const e=t.replace("#","");return(.299*parseInt(e.substr(0,2),16)+.587*parseInt(e.substr(2,2),16)+.114*parseInt(e.substr(4,2),16))/255>.35?"#2c3e50":"#ffffff"}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const o=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-o*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return W``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),o=this.getHVACState(),i=this.getDHWTankState(),s=this.getG2ValveState(),r=this.getAuxHeaterState(),a=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),n=this.getPipeColors(e.supplyTemp,o.returnTemp,o.flowRate),l=this.getPipeColors(i.inletTemp,i.outletTemp,t.flowRate),h=a.hotPipe,p=a.coldPipe,c=n.hotPipe,d=n.coldPipe,f=l.hotPipe,u=this.getHeatPumpColor(t),g=this.getContrastTextColor(u),m=t.error?126:111,y=r.intensity;let w="#bdc3c7";if(y>0){const t=189,e=195,o=199,i=255,s=68,r=34;w=`rgb(${Math.round(t+(i-t)*y)}, ${Math.round(e+(s-e)*y)}, ${Math.round(o+(r-o)*y)})`}const b=this.config.aux_heater?.glow_size??8,x=224,_=172,$=x,v=_-b,A=60,k=16+2*b,S=2,C=2,P=x,T=_-.75*b,H=60,E=16+2*b*.75,R=2,M=2,N=x,O=_-.5*b,z=60,D=16+2*b*.5,L=2,V=2,F=y>0?2-1.4*y:2,U=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),G=this.config.aux_heater?.shadow_blur??1,Q=y>0?"aux-glow-outer":"aux-heater-layer",B=y>0?"aux-glow-middle":"aux-heater-layer",I=y>0?"aux-glow-inner":"aux-heater-layer",j=y>0?"aux-cylinder-pulse":"";return W`
       <ha-card>
         ${this.config.title?W`<h1 class="card-header">${this.config.title}</h1>`:""}
 
@@ -248,11 +248,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Pipe: Buffer to HP (cold return) - BOTTOM - 10px gap from HP - BEHIND -->
             <path id="buffer-to-hp-path"
                   d="M 390 220 L 180 220"
-                  stroke="${a.isActive?this.config.temperature?.neutral_color||"#95a5a6":d}"
+                  stroke="${s.isActive?this.config.temperature?.neutral_color||"#95a5a6":p}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${a.isActive?"0.3":"1"}"/>
+                  opacity="${s.isActive?"0.3":"1"}"/>
 
             <!-- Pipe: HP to aux heater (first segment) -->
             <!-- Shows water at HP outlet temperature before aux heater boost -->
@@ -277,11 +277,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Pipe: G2 to Buffer (continuation) - only active in heating mode -->
             <path id="g2-to-buffer-path"
                   d="M 367 180 L 390 180"
-                  stroke="${a.isActive?this.config.temperature?.neutral_color||"#95a5a6":h}"
+                  stroke="${s.isActive?this.config.temperature?.neutral_color||"#95a5a6":h}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${a.isActive?"0.3":"1"}"/>
+                  opacity="${s.isActive?"0.3":"1"}"/>
 
             <!-- DHW MODE PIPES (shown when G2 valve is ON - DHW mode) -->
             <!-- Z-ORDER: Return pipes first (behind), then supply pipes (on top) -->
@@ -289,20 +289,20 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Pipe: DHW outlet to HP return (BOTTOM) - Separated horizontally at x=370 - BEHIND -->
             <path id="dhw-to-hp-return-path"
                   d="M 418 470 L 370 470 L 370 220 L 180 220"
-                  stroke="${a.isActive?d:this.config.temperature?.neutral_color||"#95a5a6"}"
+                  stroke="${s.isActive?p:this.config.temperature?.neutral_color||"#95a5a6"}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${a.isActive?"1":"0.3"}"/>
+                  opacity="${s.isActive?"1":"0.3"}"/>
 
             <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) - At x=348, horizontally separated from return -->
             <path id="g2-to-dhw-path"
                   d="M 348 195 L 348 370 L 418 370"
-                  stroke="${a.isActive?f:this.config.temperature?.neutral_color||"#95a5a6"}"
+                  stroke="${s.isActive?f:this.config.temperature?.neutral_color||"#95a5a6"}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${a.isActive?"1":"0.3"}"/>
+                  opacity="${s.isActive?"1":"0.3"}"/>
 
             <!-- DHW coil spiral path (for flow animation) - Matches actual tank coil position -->
             <path id="dhw-coil-path"
@@ -316,7 +316,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Pipe: HVAC to Buffer (cold return) - 10px gap from buffer - BEHIND -->
             <path id="hvac-to-buffer-path"
                   d="M 620 220 L 480 220"
-                  stroke="${c}"
+                  stroke="${d}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"/>
@@ -324,7 +324,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Pipe: Buffer to HVAC (hot supply) - 10px gap from buffer - ON TOP -->
             <path id="buffer-to-hvac-path"
                   d="M 480 180 L 620 180"
-                  stroke="${p}"
+                  stroke="${c}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"/>
@@ -332,191 +332,254 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Animated Flow Overlays (shimmer effect on pipes) -->
             <!-- Note: Adding tiny kinks to straight paths for gradient rendering -->
             <!-- Note: Animations use smooth constant flow gradients with staggered timing -->
-            <!-- Note: Hidden when flow rate < 0.5 L/min or path is inactive -->
+            <!-- Note: Only rendered when flow rate > idle threshold and path is active -->
 
             <!-- HP to aux heater (horizontal hot) -->
-            <defs>
-              <linearGradient id="flow-grad-1" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
-                <stop offset="30%" stop-color="rgba(230, 90, 60, 0.4)" />
-                <stop offset="50%" stop-color="rgba(255, 130, 90, 0.7)" />
-                <stop offset="70%" stop-color="rgba(230, 90, 60, 0.4)" />
-                <stop offset="100%" stop-color="rgba(200, 60, 40, 0)" />
-                <animate attributeName="x1" values="0%;200%" dur="${U}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="100%;300%" dur="${U}s" begin="0s" repeatCount="indefinite" />
-              </linearGradient>
-            </defs>
-            <path class="flow-gradient"
-                  d="M 180 180 L 217 180 L 217 180.01 L 254 180"
-                  stroke="url(#flow-grad-1)"
-                  stroke-width="14"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+            ${t.flowRate>this.config.animation.idle_threshold?W`
+              <defs>
+                <linearGradient id="flow-grad-1" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="10%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="20%" stop-color="rgba(255, 130, 90, 0.8)" />
+                  <stop offset="30%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="40%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="50%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="60%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="70%" stop-color="rgba(255, 130, 90, 0.8)" />
+                  <stop offset="80%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="90%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="100%" stop-color="rgba(200, 60, 40, 0)" />
+                  <animate attributeName="x1" values="0%;100%" dur="${U}s" begin="0s" repeatCount="indefinite" />
+                  <animate attributeName="x2" values="100%;200%" dur="${U}s" begin="0s" repeatCount="indefinite" />
+                </linearGradient>
+              </defs>
+              <path class="flow-gradient"
+                    d="M 180 180 L 217 180 L 217 180.01 L 254 180"
+                    stroke="url(#flow-grad-1)"
+                    stroke-width="14"
+                    fill="none"
+                    stroke-linecap="butt"></path>
+            `:""}
 
             <!-- Aux to G2 (horizontal hot) - heating mode only -->
-            <defs>
-              <linearGradient id="flow-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
-                <stop offset="30%" stop-color="rgba(230, 90, 60, 0.4)" />
-                <stop offset="50%" stop-color="rgba(255, 130, 90, 0.7)" />
-                <stop offset="70%" stop-color="rgba(230, 90, 60, 0.4)" />
-                <stop offset="100%" stop-color="rgba(200, 60, 40, 0)" />
-                <animate attributeName="x1" values="0%;200%" dur="${U}s" begin="0.3s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="100%;300%" dur="${U}s" begin="0.3s" repeatCount="indefinite" />
-              </linearGradient>
-            </defs>
-            <path class="flow-gradient"
-                  d="M 254 180 L 291 180 L 291 180.01 L 328 180"
-                  stroke="url(#flow-grad-2)"
-                  stroke-width="14"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${!a.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+            ${!s.isActive&&t.flowRate>this.config.animation.idle_threshold?W`
+              <defs>
+                <linearGradient id="flow-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="10%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="20%" stop-color="rgba(255, 130, 90, 0.8)" />
+                  <stop offset="30%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="40%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="50%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="60%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="70%" stop-color="rgba(255, 130, 90, 0.8)" />
+                  <stop offset="80%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="90%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="100%" stop-color="rgba(200, 60, 40, 0)" />
+                  <animate attributeName="x1" values="0%;100%" dur="${U}s" begin="0.3s" repeatCount="indefinite" />
+                  <animate attributeName="x2" values="100%;200%" dur="${U}s" begin="0.3s" repeatCount="indefinite" />
+                </linearGradient>
+              </defs>
+              <path class="flow-gradient"
+                    d="M 254 180 L 291 180 L 291 180.01 L 328 180"
+                    stroke="url(#flow-grad-2)"
+                    stroke-width="14"
+                    fill="none"
+                    stroke-linecap="butt"></path>
+            `:""}
 
             <!-- G2 to buffer (horizontal hot) - heating mode only -->
-            <defs>
-              <linearGradient id="flow-grad-3" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
-                <stop offset="30%" stop-color="rgba(230, 90, 60, 0.4)" />
-                <stop offset="50%" stop-color="rgba(255, 130, 90, 0.7)" />
-                <stop offset="70%" stop-color="rgba(230, 90, 60, 0.4)" />
-                <stop offset="100%" stop-color="rgba(200, 60, 40, 0)" />
-                <animate attributeName="x1" values="0%;200%" dur="${U}s" begin="0.6s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="100%;300%" dur="${U}s" begin="0.6s" repeatCount="indefinite" />
-              </linearGradient>
-            </defs>
-            <path class="flow-gradient"
-                  d="M 367 180 L 378.5 180 L 378.5 180.01 L 390 180"
-                  stroke="url(#flow-grad-3)"
-                  stroke-width="14"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${!a.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+            ${!s.isActive&&t.flowRate>this.config.animation.idle_threshold?W`
+              <defs>
+                <linearGradient id="flow-grad-3" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="10%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="20%" stop-color="rgba(255, 130, 90, 0.8)" />
+                  <stop offset="30%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="40%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="50%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="60%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="70%" stop-color="rgba(255, 130, 90, 0.8)" />
+                  <stop offset="80%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="90%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="100%" stop-color="rgba(200, 60, 40, 0)" />
+                  <animate attributeName="x1" values="0%;100%" dur="${U}s" begin="0.6s" repeatCount="indefinite" />
+                  <animate attributeName="x2" values="100%;200%" dur="${U}s" begin="0.6s" repeatCount="indefinite" />
+                </linearGradient>
+              </defs>
+              <path class="flow-gradient"
+                    d="M 367 180 L 378.5 180 L 378.5 180.01 L 390 180"
+                    stroke="url(#flow-grad-3)"
+                    stroke-width="14"
+                    fill="none"
+                    stroke-linecap="butt"></path>
+            `:""}
 
             <!-- Buffer to HVAC (horizontal hot) -->
-            <defs>
-              <linearGradient id="flow-grad-4" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
-                <stop offset="30%" stop-color="rgba(230, 90, 60, 0.4)" />
-                <stop offset="50%" stop-color="rgba(255, 130, 90, 0.7)" />
-                <stop offset="70%" stop-color="rgba(230, 90, 60, 0.4)" />
-                <stop offset="100%" stop-color="rgba(200, 60, 40, 0)" />
-                <animate attributeName="x1" values="0%;200%" dur="${U}s" begin="0.9s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="100%;300%" dur="${U}s" begin="0.9s" repeatCount="indefinite" />
-              </linearGradient>
-            </defs>
-            <path class="flow-gradient"
-                  d="M 480 180 L 550 180 L 550 180.01 L 620 180"
-                  stroke="url(#flow-grad-4)"
-                  stroke-width="14"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${i.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+            ${o.flowRate>this.config.animation.idle_threshold?W`
+              <defs>
+                <linearGradient id="flow-grad-4" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="10%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="20%" stop-color="rgba(255, 130, 90, 0.8)" />
+                  <stop offset="30%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="40%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="50%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="60%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="70%" stop-color="rgba(255, 130, 90, 0.8)" />
+                  <stop offset="80%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="90%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="100%" stop-color="rgba(200, 60, 40, 0)" />
+                  <animate attributeName="x1" values="0%;100%" dur="${U}s" begin="0.9s" repeatCount="indefinite" />
+                  <animate attributeName="x2" values="100%;200%" dur="${U}s" begin="0.9s" repeatCount="indefinite" />
+                </linearGradient>
+              </defs>
+              <path class="flow-gradient"
+                    d="M 480 180 L 550 180 L 550 180.01 L 620 180"
+                    stroke="url(#flow-grad-4)"
+                    stroke-width="14"
+                    fill="none"
+                    stroke-linecap="butt"></path>
+            `:""}
 
             <!-- Buffer to HP return (horizontal cold) - heating mode only -->
-            <defs>
-              <linearGradient id="flow-grad-5" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(50, 100, 180, 0)" />
-                <stop offset="30%" stop-color="rgba(80, 135, 220, 0.4)" />
-                <stop offset="50%" stop-color="rgba(110, 170, 255, 0.7)" />
-                <stop offset="70%" stop-color="rgba(80, 135, 220, 0.4)" />
-                <stop offset="100%" stop-color="rgba(50, 100, 180, 0)" />
-                <animate attributeName="x1" values="200%;0%" dur="${U}s" begin="1.2s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="300%;100%" dur="${U}s" begin="1.2s" repeatCount="indefinite" />
-              </linearGradient>
-            </defs>
-            <path class="flow-gradient"
-                  d="M 390 220 L 285 220 L 285 220.01 L 180 220"
-                  stroke="url(#flow-grad-5)"
-                  stroke-width="14"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${!a.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+            ${!s.isActive&&t.flowRate>this.config.animation.idle_threshold?W`
+              <defs>
+                <linearGradient id="flow-grad-5" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="rgba(50, 100, 180, 0)" />
+                  <stop offset="10%" stop-color="rgba(80, 135, 220, 0.5)" />
+                  <stop offset="20%" stop-color="rgba(110, 170, 255, 0.8)" />
+                  <stop offset="30%" stop-color="rgba(80, 135, 220, 0.5)" />
+                  <stop offset="40%" stop-color="rgba(50, 100, 180, 0)" />
+                  <stop offset="50%" stop-color="rgba(50, 100, 180, 0)" />
+                  <stop offset="60%" stop-color="rgba(80, 135, 220, 0.5)" />
+                  <stop offset="70%" stop-color="rgba(110, 170, 255, 0.8)" />
+                  <stop offset="80%" stop-color="rgba(80, 135, 220, 0.5)" />
+                  <stop offset="90%" stop-color="rgba(50, 100, 180, 0)" />
+                  <stop offset="100%" stop-color="rgba(50, 100, 180, 0)" />
+                  <animate attributeName="x1" values="100%;0%" dur="${U}s" begin="1.2s" repeatCount="indefinite" />
+                  <animate attributeName="x2" values="200%;100%" dur="${U}s" begin="1.2s" repeatCount="indefinite" />
+                </linearGradient>
+              </defs>
+              <path class="flow-gradient"
+                    d="M 390 220 L 285 220 L 285 220.01 L 180 220"
+                    stroke="url(#flow-grad-5)"
+                    stroke-width="14"
+                    fill="none"
+                    stroke-linecap="butt"></path>
+            `:""}
 
             <!-- HVAC to buffer return (horizontal cold) -->
-            <defs>
-              <linearGradient id="flow-grad-6" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(50, 100, 180, 0)" />
-                <stop offset="30%" stop-color="rgba(80, 135, 220, 0.4)" />
-                <stop offset="50%" stop-color="rgba(110, 170, 255, 0.7)" />
-                <stop offset="70%" stop-color="rgba(80, 135, 220, 0.4)" />
-                <stop offset="100%" stop-color="rgba(50, 100, 180, 0)" />
-                <animate attributeName="x1" values="200%;0%" dur="${U}s" begin="1.5s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="300%;100%" dur="${U}s" begin="1.5s" repeatCount="indefinite" />
-              </linearGradient>
-            </defs>
-            <path class="flow-gradient"
-                  d="M 620 220 L 550 220 L 550 220.01 L 480 220"
-                  stroke="url(#flow-grad-6)"
-                  stroke-width="14"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${i.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+            ${o.flowRate>this.config.animation.idle_threshold?W`
+              <defs>
+                <linearGradient id="flow-grad-6" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="rgba(50, 100, 180, 0)" />
+                  <stop offset="10%" stop-color="rgba(80, 135, 220, 0.5)" />
+                  <stop offset="20%" stop-color="rgba(110, 170, 255, 0.8)" />
+                  <stop offset="30%" stop-color="rgba(80, 135, 220, 0.5)" />
+                  <stop offset="40%" stop-color="rgba(50, 100, 180, 0)" />
+                  <stop offset="50%" stop-color="rgba(50, 100, 180, 0)" />
+                  <stop offset="60%" stop-color="rgba(80, 135, 220, 0.5)" />
+                  <stop offset="70%" stop-color="rgba(110, 170, 255, 0.8)" />
+                  <stop offset="80%" stop-color="rgba(80, 135, 220, 0.5)" />
+                  <stop offset="90%" stop-color="rgba(50, 100, 180, 0)" />
+                  <stop offset="100%" stop-color="rgba(50, 100, 180, 0)" />
+                  <animate attributeName="x1" values="100%;0%" dur="${U}s" begin="1.5s" repeatCount="indefinite" />
+                  <animate attributeName="x2" values="200%;100%" dur="${U}s" begin="1.5s" repeatCount="indefinite" />
+                </linearGradient>
+              </defs>
+              <path class="flow-gradient"
+                    d="M 620 220 L 550 220 L 550 220.01 L 480 220"
+                    stroke="url(#flow-grad-6)"
+                    stroke-width="14"
+                    fill="none"
+                    stroke-linecap="butt"></path>
+            `:""}
 
             <!-- G2 to DHW (mixed vertical+horizontal hot) - DHW mode only -->
-            <defs>
-              <linearGradient id="flow-grad-7" x1="0%" y1="0%" x2="30%" y2="100%">
-                <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
-                <stop offset="30%" stop-color="rgba(230, 90, 60, 0.4)" />
-                <stop offset="50%" stop-color="rgba(255, 130, 90, 0.7)" />
-                <stop offset="70%" stop-color="rgba(230, 90, 60, 0.4)" />
-                <stop offset="100%" stop-color="rgba(200, 60, 40, 0)" />
-                <animate attributeName="x1" values="0%;60%" dur="${U}s" begin="0.4s" repeatCount="indefinite" />
-                <animate attributeName="y1" values="0%;200%" dur="${U}s" begin="0.4s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="30%;90%" dur="${U}s" begin="0.4s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="100%;300%" dur="${U}s" begin="0.4s" repeatCount="indefinite" />
-              </linearGradient>
-            </defs>
-            <path class="flow-gradient"
-                  d="M 348 195 L 348 370 L 418 370"
-                  stroke="url(#flow-grad-7)"
-                  stroke-width="14"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${a.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+            ${s.isActive&&t.flowRate>this.config.animation.idle_threshold?W`
+              <defs>
+                <linearGradient id="flow-grad-7" x1="0%" y1="0%" x2="30%" y2="100%">
+                  <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="10%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="20%" stop-color="rgba(255, 130, 90, 0.8)" />
+                  <stop offset="30%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="40%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="50%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="60%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="70%" stop-color="rgba(255, 130, 90, 0.8)" />
+                  <stop offset="80%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="90%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="100%" stop-color="rgba(200, 60, 40, 0)" />
+                  <animate attributeName="x1" values="0%;30%" dur="${U}s" begin="0.4s" repeatCount="indefinite" />
+                  <animate attributeName="y1" values="0%;100%" dur="${U}s" begin="0.4s" repeatCount="indefinite" />
+                  <animate attributeName="x2" values="30%;60%" dur="${U}s" begin="0.4s" repeatCount="indefinite" />
+                  <animate attributeName="y2" values="100%;200%" dur="${U}s" begin="0.4s" repeatCount="indefinite" />
+                </linearGradient>
+              </defs>
+              <path class="flow-gradient"
+                    d="M 348 195 L 348 370 L 418 370"
+                    stroke="url(#flow-grad-7)"
+                    stroke-width="14"
+                    fill="none"
+                    stroke-linecap="butt"></path>
+            `:""}
 
             <!-- DHW coil spiral (vertical hot) - DHW mode only -->
-            <defs>
-              <linearGradient id="flow-grad-8" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
-                <stop offset="30%" stop-color="rgba(230, 90, 60, 0.4)" />
-                <stop offset="50%" stop-color="rgba(255, 130, 90, 0.7)" />
-                <stop offset="70%" stop-color="rgba(230, 90, 60, 0.4)" />
-                <stop offset="100%" stop-color="rgba(200, 60, 40, 0)" />
-                <animate attributeName="y1" values="0%;200%" dur="${U}s" begin="0.7s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="100%;300%" dur="${U}s" begin="0.7s" repeatCount="indefinite" />
-              </linearGradient>
-            </defs>
-            <path class="flow-gradient"
-                  d="M 418 370 Q 438 378, 458 370 Q 438 390, 418 390 Q 438 406, 458 390 Q 438 422, 418 422 Q 438 438, 458 422 Q 438 454, 418 454 Q 438 470, 458 454 Q 438 478, 418 470"
-                  stroke="url(#flow-grad-8)"
-                  stroke-width="14"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${a.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+            ${s.isActive&&t.flowRate>this.config.animation.idle_threshold?W`
+              <defs>
+                <linearGradient id="flow-grad-8" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="10%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="20%" stop-color="rgba(255, 130, 90, 0.8)" />
+                  <stop offset="30%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="40%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="50%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="60%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="70%" stop-color="rgba(255, 130, 90, 0.8)" />
+                  <stop offset="80%" stop-color="rgba(230, 90, 60, 0.5)" />
+                  <stop offset="90%" stop-color="rgba(200, 60, 40, 0)" />
+                  <stop offset="100%" stop-color="rgba(200, 60, 40, 0)" />
+                  <animate attributeName="y1" values="0%;100%" dur="${U}s" begin="0.7s" repeatCount="indefinite" />
+                  <animate attributeName="y2" values="100%;200%" dur="${U}s" begin="0.7s" repeatCount="indefinite" />
+                </linearGradient>
+              </defs>
+              <path class="flow-gradient"
+                    d="M 418 370 Q 438 378, 458 370 Q 438 390, 418 390 Q 438 406, 458 390 Q 438 422, 418 422 Q 438 438, 458 422 Q 438 454, 418 454 Q 438 470, 458 454 Q 438 478, 418 470"
+                    stroke="url(#flow-grad-8)"
+                    stroke-width="14"
+                    fill="none"
+                    stroke-linecap="butt"></path>
+            `:""}
 
             <!-- DHW to HP return (mixed horizontal+vertical cold) - DHW mode only -->
-            <defs>
-              <linearGradient id="flow-grad-9" x1="100%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stop-color="rgba(50, 100, 180, 0)" />
-                <stop offset="30%" stop-color="rgba(80, 135, 220, 0.4)" />
-                <stop offset="50%" stop-color="rgba(110, 170, 255, 0.7)" />
-                <stop offset="70%" stop-color="rgba(80, 135, 220, 0.4)" />
-                <stop offset="100%" stop-color="rgba(50, 100, 180, 0)" />
-                <animate attributeName="x1" values="100%;-100%" dur="${U}s" begin="1.0s" repeatCount="indefinite" />
-                <animate attributeName="y1" values="100%;-100%" dur="${U}s" begin="1.0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="0%;-200%" dur="${U}s" begin="1.0s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="0%;-200%" dur="${U}s" begin="1.0s" repeatCount="indefinite" />
-              </linearGradient>
-            </defs>
-            <path class="flow-gradient"
-                  d="M 418 470 L 370 470 L 370 220 L 180 220"
-                  stroke="url(#flow-grad-9)"
-                  stroke-width="14"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${a.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+            ${s.isActive&&t.flowRate>this.config.animation.idle_threshold?W`
+              <defs>
+                <linearGradient id="flow-grad-9" x1="100%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%" stop-color="rgba(50, 100, 180, 0)" />
+                  <stop offset="10%" stop-color="rgba(80, 135, 220, 0.5)" />
+                  <stop offset="20%" stop-color="rgba(110, 170, 255, 0.8)" />
+                  <stop offset="30%" stop-color="rgba(80, 135, 220, 0.5)" />
+                  <stop offset="40%" stop-color="rgba(50, 100, 180, 0)" />
+                  <stop offset="50%" stop-color="rgba(50, 100, 180, 0)" />
+                  <stop offset="60%" stop-color="rgba(80, 135, 220, 0.5)" />
+                  <stop offset="70%" stop-color="rgba(110, 170, 255, 0.8)" />
+                  <stop offset="80%" stop-color="rgba(80, 135, 220, 0.5)" />
+                  <stop offset="90%" stop-color="rgba(50, 100, 180, 0)" />
+                  <stop offset="100%" stop-color="rgba(50, 100, 180, 0)" />
+                  <animate attributeName="x1" values="100%;0%" dur="${U}s" begin="1.0s" repeatCount="indefinite" />
+                  <animate attributeName="y1" values="100%;0%" dur="${U}s" begin="1.0s" repeatCount="indefinite" />
+                  <animate attributeName="x2" values="0%;-100%" dur="${U}s" begin="1.0s" repeatCount="indefinite" />
+                  <animate attributeName="y2" values="0%;-100%" dur="${U}s" begin="1.0s" repeatCount="indefinite" />
+                </linearGradient>
+              </defs>
+              <path class="flow-gradient"
+                    d="M 418 470 L 370 470 L 370 220 L 180 220"
+                    stroke="url(#flow-grad-9)"
+                    stroke-width="14"
+                    fill="none"
+                    stroke-linecap="butt"></path>
+            `:""}
 
             <!-- Temperature and flow rate labels (configurable styling) -->
             <!-- Top row: supply temperatures and flow rate -->
@@ -535,7 +598,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               ${this.formatValue(t.flowRate,1)} L/m
             </text>
 
-            <text x="260" y="240" text-anchor="middle" fill="${d}"
+            <text x="260" y="240" text-anchor="middle" fill="${p}"
                   font-size="${this.config.text_style?.font_size||11}"
                   font-family="${this.config.text_style?.font_family||"Courier New, monospace"}"
                   font-weight="${this.config.text_style?.font_weight||"bold"}">
@@ -543,7 +606,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             </text>
 
             <!-- Supply temp (top) - above supply pipe, centered horizontally -->
-            <text x="550" y="170" text-anchor="middle" fill="${p}"
+            <text x="550" y="170" text-anchor="middle" fill="${c}"
                   font-size="${this.config.text_style?.font_size||11}"
                   font-family="${this.config.text_style?.font_family||"Courier New, monospace"}"
                   font-weight="${this.config.text_style?.font_weight||"bold"}">
@@ -555,15 +618,15 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   font-size="${(this.config.text_style?.font_size||11)-1}"
                   font-family="${this.config.text_style?.font_family||"Courier New, monospace"}"
                   font-weight="normal">
-              ${this.formatValue(i.flowRate,1)} L/m
+              ${this.formatValue(o.flowRate,1)} L/m
             </text>
 
             <!-- Return temp (bottom) - below return pipe, centered horizontally -->
-            <text x="550" y="240" text-anchor="middle" fill="${c}"
+            <text x="550" y="240" text-anchor="middle" fill="${d}"
                   font-size="${this.config.text_style?.font_size||11}"
                   font-family="${this.config.text_style?.font_family||"Courier New, monospace"}"
                   font-weight="${this.config.text_style?.font_weight||"bold"}">
-              ${this.config.text_style?.show_labels?`${this.config.labels.hvac_return}: `:""}${this.formatValue(i.returnTemp,1)}°${this.config.temperature?.unit||"C"}
+              ${this.config.text_style?.show_labels?`${this.config.labels.hvac_return}: `:""}${this.formatValue(o.returnTemp,1)}°${this.config.temperature?.unit||"C"}
             </text>
 
             <!-- Heat Pump (left side) -->
@@ -604,7 +667,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
               <!-- Heat pump label -->
               <text x="60" y="96" text-anchor="middle" fill="${this.getHeatPumpColor(t)}" font-size="10" font-weight="bold">
-                ${this.getDisplayMode(t,a)}
+                ${this.getDisplayMode(t,s)}
               </text>
 
               <!-- Error indicator -->
@@ -666,7 +729,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <rect x="-25" y="12" width="16" height="10" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
 
               <!-- Internal flow path visualization with animations -->
-              ${a.isActive?W`
+              ${s.isActive?W`
                 <!-- DHW Mode: Flow DOWN (from left inlet to bottom outlet) -->
                 <!-- Active path in red with pulsing animation -->
                 <path class="g2-valve-path g2-valve-active-path"
@@ -718,16 +781,16 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
               <!-- Thermal stratification (tank is 100% full, hot rises to top) -->
               <!-- Top section (hottest - supply temp) -->
-              <rect x="15" y="25" width="60" height="30" fill="${p}" opacity="0.9"/>
+              <rect x="15" y="25" width="60" height="30" fill="${c}" opacity="0.9"/>
 
               <!-- Upper-middle section (warm) -->
-              <rect x="15" y="55" width="60" height="35" fill="${p}" opacity="0.7"/>
+              <rect x="15" y="55" width="60" height="35" fill="${c}" opacity="0.7"/>
 
               <!-- Lower-middle section (cooling) -->
-              <rect x="15" y="90" width="60" height="35" fill="${c}" opacity="0.7"/>
+              <rect x="15" y="90" width="60" height="35" fill="${d}" opacity="0.7"/>
 
               <!-- Bottom section (coldest - return temp) -->
-              <rect x="15" y="125" width="60" height="30" fill="${c}" opacity="0.9"/>
+              <rect x="15" y="125" width="60" height="30" fill="${d}" opacity="0.9"/>
 
               <!-- Structural bands -->
               <line x1="10" y1="55" x2="80" y2="55" stroke="#2c3e50" stroke-width="2"/>
@@ -760,25 +823,25 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                     stroke="${f}"
                     stroke-width="14"
                     fill="none"
-                    class="${a.isActive?"dhw-coil-glow-outer":"dhw-coil-glow-layer"}"
+                    class="${s.isActive?"dhw-coil-glow-outer":"dhw-coil-glow-layer"}"
                     pointer-events="none"/>
               <!-- Inner glow layer - pulsing when active -->
               <path d="M 28 40 Q 45 48, 62 40 Q 45 60, 28 60 Q 45 76, 62 60 Q 45 92, 28 92 Q 45 108, 62 92 Q 45 124, 28 124 Q 45 132, 62 124 Q 45 140, 28 140"
                     stroke="${f}"
                     stroke-width="7"
                     fill="none"
-                    class="${a.isActive?"dhw-coil-glow-inner":"dhw-coil-glow-layer"}"
+                    class="${s.isActive?"dhw-coil-glow-inner":"dhw-coil-glow-layer"}"
                     pointer-events="none"/>
               <!-- Main coil path -->
               <path d="M 28 40 Q 45 48, 62 40 Q 45 60, 28 60 Q 45 76, 62 60 Q 45 92, 28 92 Q 45 108, 62 92 Q 45 124, 28 124 Q 45 132, 62 124 Q 45 140, 28 140"
-                    stroke="${a.isActive?f:this.config.temperature?.neutral_color||"#95a5a6"}"
+                    stroke="${s.isActive?f:this.config.temperature?.neutral_color||"#95a5a6"}"
                     stroke-width="4"
                     fill="none"
-                    opacity="${a.isActive?"0.9":"0.3"}"/>
+                    opacity="${s.isActive?"0.9":"0.3"}"/>
 
               <!-- Coil inlet/outlet markers - 100px vertical span -->
-              <circle cx="28" cy="40" r="3" fill="${a.isActive?f:this.config.temperature?.neutral_color||"#95a5a6"}"/>
-              <circle cx="28" cy="140" r="3" fill="${a.isActive?f:this.config.temperature?.neutral_color||"#95a5a6"}"/>
+              <circle cx="28" cy="40" r="3" fill="${s.isActive?f:this.config.temperature?.neutral_color||"#95a5a6"}"/>
+              <circle cx="28" cy="140" r="3" fill="${s.isActive?f:this.config.temperature?.neutral_color||"#95a5a6"}"/>
 
               <!-- Structural bands -->
               <line x1="10" y1="55" x2="80" y2="55" stroke="#2c3e50" stroke-width="2"/>
@@ -791,9 +854,9 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               </text>
 
               <!-- Tank temperature if available -->
-              ${o.tankTemp?W`
+              ${i.tankTemp?W`
                 <text x="45" y="180" text-anchor="middle" fill="#3498db" font-size="11" font-weight="bold">
-                  Tank: ${this.formatValue(o.tankTemp,1)}°${this.config.temperature?.unit||"C"}
+                  Tank: ${this.formatValue(i.tankTemp,1)}°${this.config.temperature?.unit||"C"}
                 </text>
               `:""}
             </g>
@@ -805,7 +868,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 HVAC LOAD
               </text>
               <text x="60" y="55" text-anchor="middle" fill="#e74c3c" font-size="20" font-weight="bold">
-                ${this.formatValue(i.thermal,0)} W
+                ${this.formatValue(o.thermal,0)} W
               </text>
             </g>
 
@@ -814,62 +877,64 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Glow size configurable via aux_heater.glow_size (default: 8px) -->
             <!-- Animation speed increases with power level for visual feedback -->
             <!-- Shadow blur configurable via aux_heater.shadow_blur (default: 1.0) -->
-            <g id="aux-heater"
-               opacity="${r.enabled?"1":"0"}"
-               style="--aux-anim-speed: ${F}s; --aux-shadow-blur: ${G};">
-              <!-- Glow layers - simple solid colors with CSS pulsing animation -->
-              <!-- Outermost glow layer - size based on config -->
-              <rect x="${$}" y="${v}"
-                    width="${A}" height="${k}"
-                    rx="${S}" ry="${C}"
-                    class="${Q}"
-                    fill="#ff4422"
-                    pointer-events="none"/>
+            <!-- Only rendered when enabled to prevent background animation processing -->
+            ${r.enabled?W`
+              <g id="aux-heater"
+                 style="--aux-anim-speed: ${F}s; --aux-shadow-blur: ${G};">
+                <!-- Glow layers - simple solid colors with CSS pulsing animation -->
+                <!-- Outermost glow layer - size based on config -->
+                <rect x="${$}" y="${v}"
+                      width="${A}" height="${k}"
+                      rx="${S}" ry="${C}"
+                      class="${Q}"
+                      fill="#ff4422"
+                      pointer-events="none"/>
 
-              <!-- Middle glow layer - size based on config -->
-              <rect x="${P}" y="${T}"
-                    width="${H}" height="${E}"
-                    rx="${R}" ry="${M}"
-                    class="${B}"
-                    fill="#ff6644"
-                    pointer-events="none"/>
+                <!-- Middle glow layer - size based on config -->
+                <rect x="${P}" y="${T}"
+                      width="${H}" height="${E}"
+                      rx="${R}" ry="${M}"
+                      class="${B}"
+                      fill="#ff6644"
+                      pointer-events="none"/>
 
-              <!-- Inner glow layer - size based on config -->
-              <rect x="${N}" y="${O}"
-                    width="${z}" height="${D}"
-                    rx="${L}" ry="${V}"
-                    class="${I}"
-                    fill="#ff8855"
-                    pointer-events="none"/>
+                <!-- Inner glow layer - size based on config -->
+                <rect x="${N}" y="${O}"
+                      width="${z}" height="${D}"
+                      rx="${L}" ry="${V}"
+                      class="${I}"
+                      fill="#ff8855"
+                      pointer-events="none"/>
 
-              <!-- Main heated cylinder body (centered at x=254) -->
-              <rect x="${x}" y="${_}" width="${60}" height="${16}" rx="2" ry="2"
-                    class="${j}"
-                    fill="${w}"
-                    stroke="#7f8c8d"
-                    stroke-width="1.5"/>
+                <!-- Main heated cylinder body (centered at x=254) -->
+                <rect x="${x}" y="${_}" width="${60}" height="${16}" rx="2" ry="2"
+                      class="${j}"
+                      fill="${w}"
+                      stroke="#7f8c8d"
+                      stroke-width="1.5"/>
 
-              <!-- Left flange (pipe connection) -->
-              <rect x="${218}" y="${174}" width="6" height="12"
-                    fill="#95a5a6"
-                    stroke="#7f8c8d"
-                    stroke-width="1.5"/>
+                <!-- Left flange (pipe connection) -->
+                <rect x="${218}" y="${174}" width="6" height="12"
+                      fill="#95a5a6"
+                      stroke="#7f8c8d"
+                      stroke-width="1.5"/>
 
-              <!-- Right flange (pipe connection) -->
-              <rect x="${284}" y="${174}" width="6" height="12"
-                    fill="#95a5a6"
-                    stroke="#7f8c8d"
-                    stroke-width="1.5"/>
-            </g>
+                <!-- Right flange (pipe connection) -->
+                <rect x="${284}" y="${174}" width="6" height="12"
+                      fill="#95a5a6"
+                      stroke="#7f8c8d"
+                      stroke-width="1.5"/>
+              </g>
+            `:""}
 
             <!-- Version display (upper right corner) -->
             <text x="790" y="15" text-anchor="end" fill="#95a5a6" font-size="10" opacity="0.7">
-              v${ct}
+              v${dt}
             </text>
 
             <!-- Flow dots created programmatically in firstUpdated() -->
           </svg>
         </div>
       </ha-card>
-    `}static get styles(){return ut}getCardSize(){return 5}},e([dt({attribute:!1})],t.HeatPumpFlowCard.prototype,"hass",void 0),e([function(t){return dt({...t,state:!0,attribute:!1})}()],t.HeatPumpFlowCard.prototype,"config",void 0),e([pt("#hp-to-buffer-flow")],t.HeatPumpFlowCard.prototype,"hpToBufferFlow",void 0),e([pt("#buffer-to-hp-flow")],t.HeatPumpFlowCard.prototype,"bufferToHpFlow",void 0),e([pt("#buffer-to-hvac-flow")],t.HeatPumpFlowCard.prototype,"bufferToHvacFlow",void 0),e([pt("#hvac-to-buffer-flow")],t.HeatPumpFlowCard.prototype,"hvacToBufferFlow",void 0),t.HeatPumpFlowCard=e([(t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}):customElements.define(t,e)})("heat-pump-flow-card")],t.HeatPumpFlowCard),window.customCards=window.customCards||[],window.customCards.push({type:"heat-pump-flow-card",name:"Heat Pump Flow Card",description:"Animated heat pump flow visualization card",preview:!0,documentationURL:"https://github.com/YOUR_USERNAME/heat-pump-flow-card"}),window.findHeatPumpCard=function(t=document){const e=document.createTreeWalker(t,NodeFilter.SHOW_ELEMENT);let i;for(;i=e.nextNode();){if("HEAT-PUMP-FLOW-CARD"===i.tagName)return i;if(i.shadowRoot){const t=window.findHeatPumpCard(i.shadowRoot);if(t)return t}}return null},t}({});
+    `}static get styles(){return ut}getCardSize(){return 5}},e([pt({attribute:!1})],t.HeatPumpFlowCard.prototype,"hass",void 0),e([function(t){return pt({...t,state:!0,attribute:!1})}()],t.HeatPumpFlowCard.prototype,"config",void 0),e([ct("#hp-to-buffer-flow")],t.HeatPumpFlowCard.prototype,"hpToBufferFlow",void 0),e([ct("#buffer-to-hp-flow")],t.HeatPumpFlowCard.prototype,"bufferToHpFlow",void 0),e([ct("#buffer-to-hvac-flow")],t.HeatPumpFlowCard.prototype,"bufferToHvacFlow",void 0),e([ct("#hvac-to-buffer-flow")],t.HeatPumpFlowCard.prototype,"hvacToBufferFlow",void 0),t.HeatPumpFlowCard=e([(t=>(e,o)=>{void 0!==o?o.addInitializer(()=>{customElements.define(t,e)}):customElements.define(t,e)})("heat-pump-flow-card")],t.HeatPumpFlowCard),window.customCards=window.customCards||[],window.customCards.push({type:"heat-pump-flow-card",name:"Heat Pump Flow Card",description:"Animated heat pump flow visualization card",preview:!0,documentationURL:"https://github.com/YOUR_USERNAME/heat-pump-flow-card"}),window.findHeatPumpCard=function(t=document){const e=document.createTreeWalker(t,NodeFilter.SHOW_ELEMENT);let o;for(;o=e.nextNode();){if("HEAT-PUMP-FLOW-CARD"===o.tagName)return o;if(o.shadowRoot){const t=window.findHeatPumpCard(o.shadowRoot);if(t)return t}}return null},t}({});
 //# sourceMappingURL=heat-pump-flow-card.js.map
