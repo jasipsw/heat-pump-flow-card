@@ -1245,53 +1245,55 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Glow size configurable via aux_heater.glow_size (default: 8px) -->
             <!-- Animation speed increases with power level for visual feedback -->
             <!-- Shadow blur configurable via aux_heater.shadow_blur (default: 1.0) -->
-            <g id="aux-heater"
-               opacity="${auxHeaterState.enabled ? '1' : '0'}"
-               style="--aux-anim-speed: ${animSpeed}s; --aux-shadow-blur: ${shadowBlur};">
-              <!-- Glow layers - simple solid colors with CSS pulsing animation -->
-              <!-- Outermost glow layer - size based on config -->
-              <rect x="${outerGlow.x}" y="${outerGlow.y}"
-                    width="${outerGlow.width}" height="${outerGlow.height}"
-                    rx="${outerGlow.rx}" ry="${outerGlow.ry}"
-                    class="${outerClass}"
-                    fill="#ff4422"
-                    pointer-events="none"/>
+            <!-- Only rendered when enabled to prevent background animation processing -->
+            ${auxHeaterState.enabled ? html`
+              <g id="aux-heater"
+                 style="--aux-anim-speed: ${animSpeed}s; --aux-shadow-blur: ${shadowBlur};">
+                <!-- Glow layers - simple solid colors with CSS pulsing animation -->
+                <!-- Outermost glow layer - size based on config -->
+                <rect x="${outerGlow.x}" y="${outerGlow.y}"
+                      width="${outerGlow.width}" height="${outerGlow.height}"
+                      rx="${outerGlow.rx}" ry="${outerGlow.ry}"
+                      class="${outerClass}"
+                      fill="#ff4422"
+                      pointer-events="none"/>
 
-              <!-- Middle glow layer - size based on config -->
-              <rect x="${middleGlow.x}" y="${middleGlow.y}"
-                    width="${middleGlow.width}" height="${middleGlow.height}"
-                    rx="${middleGlow.rx}" ry="${middleGlow.ry}"
-                    class="${middleClass}"
-                    fill="#ff6644"
-                    pointer-events="none"/>
+                <!-- Middle glow layer - size based on config -->
+                <rect x="${middleGlow.x}" y="${middleGlow.y}"
+                      width="${middleGlow.width}" height="${middleGlow.height}"
+                      rx="${middleGlow.rx}" ry="${middleGlow.ry}"
+                      class="${middleClass}"
+                      fill="#ff6644"
+                      pointer-events="none"/>
 
-              <!-- Inner glow layer - size based on config -->
-              <rect x="${innerGlow.x}" y="${innerGlow.y}"
-                    width="${innerGlow.width}" height="${innerGlow.height}"
-                    rx="${innerGlow.rx}" ry="${innerGlow.ry}"
-                    class="${innerClass}"
-                    fill="#ff8855"
-                    pointer-events="none"/>
+                <!-- Inner glow layer - size based on config -->
+                <rect x="${innerGlow.x}" y="${innerGlow.y}"
+                      width="${innerGlow.width}" height="${innerGlow.height}"
+                      rx="${innerGlow.rx}" ry="${innerGlow.ry}"
+                      class="${innerClass}"
+                      fill="#ff8855"
+                      pointer-events="none"/>
 
-              <!-- Main heated cylinder body (centered at x=254) -->
-              <rect x="${cylX}" y="${cylY}" width="${cylW}" height="${cylH}" rx="2" ry="2"
-                    class="${cylinderClass}"
-                    fill="${auxCylinderColor}"
-                    stroke="#7f8c8d"
-                    stroke-width="1.5"/>
+                <!-- Main heated cylinder body (centered at x=254) -->
+                <rect x="${cylX}" y="${cylY}" width="${cylW}" height="${cylH}" rx="2" ry="2"
+                      class="${cylinderClass}"
+                      fill="${auxCylinderColor}"
+                      stroke="#7f8c8d"
+                      stroke-width="1.5"/>
 
-              <!-- Left flange (pipe connection) -->
-              <rect x="${cylX - 6}" y="${cylY + 2}" width="6" height="12"
-                    fill="#95a5a6"
-                    stroke="#7f8c8d"
-                    stroke-width="1.5"/>
+                <!-- Left flange (pipe connection) -->
+                <rect x="${cylX - 6}" y="${cylY + 2}" width="6" height="12"
+                      fill="#95a5a6"
+                      stroke="#7f8c8d"
+                      stroke-width="1.5"/>
 
-              <!-- Right flange (pipe connection) -->
-              <rect x="${cylX + cylW}" y="${cylY + 2}" width="6" height="12"
-                    fill="#95a5a6"
-                    stroke="#7f8c8d"
-                    stroke-width="1.5"/>
-            </g>
+                <!-- Right flange (pipe connection) -->
+                <rect x="${cylX + cylW}" y="${cylY + 2}" width="6" height="12"
+                      fill="#95a5a6"
+                      stroke="#7f8c8d"
+                      stroke-width="1.5"/>
+              </g>
+            ` : ''}
 
             <!-- Version display (upper right corner) -->
             <text x="790" y="15" text-anchor="end" fill="#95a5a6" font-size="10" opacity="0.7">
