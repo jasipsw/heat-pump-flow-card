@@ -126,6 +126,12 @@ export const cardStyles = css`
     }
   }
 
+  /* Base state for aux heater elements - hidden by default */
+  .aux-heater-layer {
+    opacity: 0;
+  }
+
+  /* When active, show and animate */
   .aux-glow-outer {
     animation: aux-glow-outer 2s ease-in-out infinite;
   }
