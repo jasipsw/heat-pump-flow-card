@@ -90,47 +90,48 @@ export const cardStyles = css`
   }
 
   /* Aux heater pulsing animations - DRAMATIC pulsing with glow effects */
+  /* Shadow blur sizes are scaled by --aux-shadow-blur CSS variable (default: 1.0) */
   @keyframes aux-glow-outer {
     0%, 100% {
       opacity: 0.2;
-      filter: drop-shadow(0 0 8px rgba(255, 68, 34, 0.5));
+      filter: drop-shadow(0 0 calc(8px * var(--aux-shadow-blur, 1)) rgba(255, 68, 34, 0.5));
     }
     50% {
       opacity: 0.7;
-      filter: drop-shadow(0 0 16px rgba(255, 68, 34, 0.9));
+      filter: drop-shadow(0 0 calc(16px * var(--aux-shadow-blur, 1)) rgba(255, 68, 34, 0.9));
     }
   }
 
   @keyframes aux-glow-middle {
     0%, 100% {
       opacity: 0.4;
-      filter: drop-shadow(0 0 6px rgba(255, 102, 68, 0.6));
+      filter: drop-shadow(0 0 calc(6px * var(--aux-shadow-blur, 1)) rgba(255, 102, 68, 0.6));
     }
     50% {
       opacity: 0.9;
-      filter: drop-shadow(0 0 12px rgba(255, 102, 68, 1.0));
+      filter: drop-shadow(0 0 calc(12px * var(--aux-shadow-blur, 1)) rgba(255, 102, 68, 1.0));
     }
   }
 
   @keyframes aux-glow-inner {
     0%, 100% {
       opacity: 0.6;
-      filter: drop-shadow(0 0 4px rgba(255, 136, 85, 0.7));
+      filter: drop-shadow(0 0 calc(4px * var(--aux-shadow-blur, 1)) rgba(255, 136, 85, 0.7));
     }
     50% {
       opacity: 1.0;
-      filter: drop-shadow(0 0 10px rgba(255, 136, 85, 1.0));
+      filter: drop-shadow(0 0 calc(10px * var(--aux-shadow-blur, 1)) rgba(255, 136, 85, 1.0));
     }
   }
 
   @keyframes aux-cylinder-pulse {
     0%, 100% {
       opacity: 0.7;
-      filter: drop-shadow(0 0 6px rgba(255, 68, 34, 0.6));
+      filter: drop-shadow(0 0 calc(6px * var(--aux-shadow-blur, 1)) rgba(255, 68, 34, 0.6));
     }
     50% {
       opacity: 1.0;
-      filter: drop-shadow(0 0 12px rgba(255, 68, 34, 1.0));
+      filter: drop-shadow(0 0 calc(12px * var(--aux-shadow-blur, 1)) rgba(255, 68, 34, 1.0));
     }
   }
 
@@ -138,6 +139,48 @@ export const cardStyles = css`
   .aux-heater-layer {
     opacity: 0 !important;
     filter: none !important; /* Remove default rect drop-shadow */
+  }
+
+  /* DHW coil pulsing animations - similar to aux heater but for coil heating */
+  @keyframes dhw-coil-glow-outer {
+    0%, 100% {
+      opacity: 0.15;
+      filter: drop-shadow(0 0 6px rgba(255, 102, 68, 0.4));
+    }
+    50% {
+      opacity: 0.4;
+      filter: drop-shadow(0 0 12px rgba(255, 102, 68, 0.7));
+    }
+  }
+
+  @keyframes dhw-coil-glow-inner {
+    0%, 100% {
+      opacity: 0.3;
+      filter: drop-shadow(0 0 4px rgba(255, 136, 85, 0.5));
+    }
+    50% {
+      opacity: 0.6;
+      filter: drop-shadow(0 0 8px rgba(255, 136, 85, 0.9));
+    }
+  }
+
+  /* Base state for DHW coil glow - hidden by default */
+  .dhw-coil-glow-layer {
+    opacity: 0 !important;
+    filter: none !important;
+  }
+
+  /* DHW coil active state - show and animate when G2 valve sends water to DHW */
+  .dhw-coil-glow-outer {
+    opacity: 0.25;
+    animation: dhw-coil-glow-outer 1.5s ease-in-out infinite;
+    filter: none; /* Will be set by animation */
+  }
+
+  .dhw-coil-glow-inner {
+    opacity: 0.45;
+    animation: dhw-coil-glow-inner 1.2s ease-in-out infinite;
+    filter: none; /* Will be set by animation */
   }
 
   /* When active, show and animate - SPEED INCREASES WITH POWER LEVEL */
