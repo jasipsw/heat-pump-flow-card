@@ -418,6 +418,89 @@ export class HeatPumpFlowCard extends LitElement {
     }
   }
 
+  /**
+   * Generate gradient levels for tank visualization
+   * Returns object with gradient levels array and fill percentage
+   */
+  private generateTankGradient(
+    tankType: 'buffer' | 'dhw',
+    currentTemp: number,
+    isHeating: boolean
+  ): { levels: Array<{ y: number; height: number; color: string; opacity: number }>; fillPercentage: number } {
+    const gradientConfig = tankType === 'buffer'
+      ? this.config.buffer_tank?.gradient
+      : this.config.dhw_tank?.gradient;
+
+    // Check if gradient is disabled
+    if (gradientConfig?.enabled === false) {
+      return { levels: [], fillPercentage: 0 };  // Return empty to use fallback rendering
+    }
+
+    // Get configuration with defaults
+    const levels = gradientConfig?.levels ?? 10;
+    const minTempEntity = gradientConfig?.min_temp_entity;
+    const maxTempEntity = gradientConfig?.max_temp_entity;
+    const minTempFallback = gradientConfig?.min_temp_fallback ?? 60;  // 60°F
+    const maxTempFallback = gradientConfig?.max_temp_fallback ?? 130; // 130°F
+
+    const bottomColor = gradientConfig?.bottom_color ?? this.config.temperature?.neutral_color ?? '#95a5a6';
+
+    // Determine top color based on mode
+    let topColor: string;
+    if (tankType === 'buffer') {
+      topColor = isHeating
+        ? (gradientConfig?.heating_top_color ?? this.config.temperature?.hot_color ?? '#e74c3c')
+        : (gradientConfig?.cooling_top_color ?? this.config.temperature?.cold_color ?? '#3498db');
+    } else {
+      // DHW tank always uses heating color
+      topColor = gradientConfig?.top_color ?? this.config.temperature?.hot_color ?? '#e74c3c';
+    }
+
+    // Get min/max temperature values
+    const minTemp = this.getStateValue(minTempEntity) ?? minTempFallback;
+    const maxTemp = this.getStateValue(maxTempEntity) ?? maxTempFallback;
+
+    // Calculate fill ratio (how full the tank is with hot water)
+    const tempRange = maxTemp - minTemp;
+    const fillRatio = tempRange > 0 ? Math.max(0, Math.min(1, (currentTemp - minTemp) / tempRange)) : 0;
+
+    // Tank dimensions (from SVG)
+    const tankStartY = 25;  // Start Y position of water area
+    const tankHeight = 130; // Total height of water area (160 - 25 - 5)
+    const levelHeight = tankHeight / levels;
+
+    // Generate gradient levels from bottom to top
+    const gradientLevels: Array<{ y: number; height: number; color: string; opacity: number }> = [];
+
+    for (let i = 0; i < levels; i++) {
+      const levelRatio = i / (levels - 1);  // 0 at bottom, 1 at top
+      const levelY = tankStartY + tankHeight - ((i + 1) * levelHeight);  // Start from bottom
+
+      // Interpolate color from bottom to top
+      const color = this.interpolateColor(bottomColor, topColor, levelRatio);
+
+      // Calculate opacity based on fill level
+      // Levels below fillRatio are "filled" (high opacity), above are "empty" (low opacity)
+      const levelBottomRatio = i / levels;
+      const levelTopRatio = (i + 1) / levels;
+      const levelMidRatio = (levelBottomRatio + levelTopRatio) / 2;
+
+      const opacity = levelMidRatio <= fillRatio ? 0.85 : 0.15;
+
+      gradientLevels.push({
+        y: levelY,
+        height: levelHeight,
+        color: color,
+        opacity: opacity
+      });
+    }
+
+    return {
+      levels: gradientLevels,
+      fillPercentage: Math.round(fillRatio * 100)
+    };
+  }
+
   private hexToRgb(hex: string): { r: number; g: number; b: number } {
     // Handle CSS color names
     const colorNames: Record<string, string> = {
@@ -438,6 +521,20 @@ export class HeatPumpFlowCard extends LitElement {
           b: parseInt(result[3], 16),
         }
       : { r: 0, g: 0, b: 0 };
+  }
+
+  private interpolateColor(color1: string, color2: string, ratio: number): string {
+    // Clamp ratio between 0 and 1
+    ratio = Math.max(0, Math.min(1, ratio));
+
+    const c1 = this.hexToRgb(color1);
+    const c2 = this.hexToRgb(color2);
+
+    const r = Math.round(c1.r + (c2.r - c1.r) * ratio);
+    const g = Math.round(c1.g + (c2.g - c1.g) * ratio);
+    const b = Math.round(c1.b + (c2.b - c1.b) * ratio);
+
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
   }
 
   private getHeatPumpColor(state: HeatPumpState): string {
@@ -554,6 +651,18 @@ export class HeatPumpFlowCard extends LitElement {
     const bufferSupplyColor = hvacPipeColors.hotPipe;
     const hvacReturnColor = hvacPipeColors.coldPipe;
     const dhwCoilColor = dhwPipeColors.hotPipe;
+
+    // Generate tank gradients
+    const bufferIsHeating = bufferState.supplyTemp > bufferState.returnTemp;
+    const bufferCurrentTemp = bufferState.supplyTemp; // Use supply temp as indicator of tank heat
+    const bufferGradientData = this.generateTankGradient('buffer', bufferCurrentTemp, bufferIsHeating);
+    const bufferGradient = bufferGradientData.levels;
+    const bufferFillPercentage = bufferGradientData.fillPercentage;
+
+    const dhwCurrentTemp = dhwState.tankTemp ?? dhwState.inletTemp; // Use tank temp if available, otherwise inlet
+    const dhwGradientData = this.generateTankGradient('dhw', dhwCurrentTemp, true); // DHW always heating
+    const dhwGradient = dhwGradientData.levels;
+    const dhwFillPercentage = dhwGradientData.fillPercentage;
 
     // Calculate metrics text colors and positioning
     const hpBgColor = this.getHeatPumpColor(hpState);
@@ -1201,28 +1310,36 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Bottom rounded cap -->
               <ellipse cx="45" cy="160" rx="35" ry="15" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
 
-              <!-- Thermal stratification (tank is 100% full, hot rises to top) -->
-              <!-- Top section (hottest - supply temp) -->
-              <rect x="15" y="25" width="60" height="30" fill="${bufferSupplyColor}" opacity="0.9"/>
+              ${bufferGradient.length > 0 ? html`
+                <!-- Temperature gradient visualization (10 levels) -->
+                ${bufferGradient.map(level => html`
+                  <rect x="15" y="${level.y}" width="60" height="${level.height}"
+                        fill="${level.color}" opacity="${level.opacity}"/>
+                `)}
+              ` : html`
+                <!-- Thermal stratification (fallback - 4 zones) -->
+                <rect x="15" y="25" width="60" height="30" fill="${bufferSupplyColor}" opacity="0.9"/>
+                <rect x="15" y="55" width="60" height="35" fill="${bufferSupplyColor}" opacity="0.7"/>
+                <rect x="15" y="90" width="60" height="35" fill="${hvacReturnColor}" opacity="0.7"/>
+                <rect x="15" y="125" width="60" height="30" fill="${hvacReturnColor}" opacity="0.9"/>
 
-              <!-- Upper-middle section (warm) -->
-              <rect x="15" y="55" width="60" height="35" fill="${bufferSupplyColor}" opacity="0.7"/>
-
-              <!-- Lower-middle section (cooling) -->
-              <rect x="15" y="90" width="60" height="35" fill="${hvacReturnColor}" opacity="0.7"/>
-
-              <!-- Bottom section (coldest - return temp) -->
-              <rect x="15" y="125" width="60" height="30" fill="${hvacReturnColor}" opacity="0.9"/>
-
-              <!-- Structural bands -->
-              <line x1="10" y1="55" x2="80" y2="55" stroke="#2c3e50" stroke-width="2"/>
-              <line x1="10" y1="90" x2="80" y2="90" stroke="#2c3e50" stroke-width="2"/>
-              <line x1="10" y1="125" x2="80" y2="125" stroke="#2c3e50" stroke-width="2"/>
+                <!-- Structural bands (fallback only) -->
+                <line x1="10" y1="55" x2="80" y2="55" stroke="#2c3e50" stroke-width="2"/>
+                <line x1="10" y1="90" x2="80" y2="90" stroke="#2c3e50" stroke-width="2"/>
+                <line x1="10" y1="125" x2="80" y2="125" stroke="#2c3e50" stroke-width="2"/>
+              `}
 
               <!-- Tank label inside top section -->
               <text x="45" y="42" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
                 ${this.config.labels!.buffer_tank}
               </text>
+
+              <!-- Fill percentage display (shown when gradient is enabled) -->
+              ${bufferGradient.length > 0 ? html`
+                <text x="45" y="180" text-anchor="middle" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="11" font-weight="bold">
+                  ${bufferFillPercentage}%
+                </text>
+              ` : ''}
             </g>
 
             <!-- DHW (Domestic Hot Water) Tank with Coil (center-bottom) -->
@@ -1236,8 +1353,16 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Bottom rounded cap -->
               <ellipse cx="45" cy="160" rx="35" ry="15" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
 
-              <!-- Inner cylinder (DHW water - always blue/cold) -->
-              <rect x="15" y="25" width="60" height="130" fill="#3498db" opacity="0.3"/>
+              ${dhwGradient.length > 0 ? html`
+                <!-- Temperature gradient visualization (10 levels) -->
+                ${dhwGradient.map(level => html`
+                  <rect x="15" y="${level.y}" width="60" height="${level.height}"
+                        fill="${level.color}" opacity="${level.opacity}"/>
+                `)}
+              ` : html`
+                <!-- Inner cylinder (DHW water - fallback to simple blue) -->
+                <rect x="15" y="25" width="60" height="130" fill="#3498db" opacity="0.3"/>
+              `}
 
               <!-- Heating coil inside tank (spiral) - complete path from inlet to outlet -->
               <!-- Outer glow layer - pulsing when active -->
@@ -1275,12 +1400,26 @@ export class HeatPumpFlowCard extends LitElement {
                 ${this.config.labels!.dhw_tank}
               </text>
 
-              <!-- Tank temperature if available -->
-              ${dhwState.tankTemp ? html`
-                <text x="45" y="180" text-anchor="middle" fill="#3498db" font-size="11" font-weight="bold">
-                  Tank: ${this.formatValue(dhwState.tankTemp, 1)}°${this.config.temperature?.unit || 'C'}
-                </text>
-              ` : ''}
+              <!-- Tank status display (below tank) -->
+              ${dhwGradient.length > 0 ? html`
+                <!-- Show percentage when gradient is enabled -->
+                ${dhwState.tankTemp ? html`
+                  <text x="45" y="180" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
+                    ${dhwFillPercentage}% | ${this.formatValue(dhwState.tankTemp, 1)}°${this.config.temperature?.unit || 'C'}
+                  </text>
+                ` : html`
+                  <text x="45" y="180" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
+                    ${dhwFillPercentage}%
+                  </text>
+                `}
+              ` : html`
+                <!-- Fallback: show only tank temp if available -->
+                ${dhwState.tankTemp ? html`
+                  <text x="45" y="180" text-anchor="middle" fill="#3498db" font-size="11" font-weight="bold">
+                    Tank: ${this.formatValue(dhwState.tankTemp, 1)}°${this.config.temperature?.unit || 'C'}
+                  </text>
+                ` : ''}
+              `}
             </g>
 
             <!-- HVAC Load (right side) -->
