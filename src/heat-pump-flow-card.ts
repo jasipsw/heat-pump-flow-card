@@ -485,7 +485,7 @@ export class HeatPumpFlowCard extends LitElement {
       const levelTopRatio = (i + 1) / levels;
       const levelMidRatio = (levelBottomRatio + levelTopRatio) / 2;
 
-      const opacity = levelMidRatio <= fillRatio ? 0.85 : 0.15;
+      const opacity = levelMidRatio <= fillRatio ? 0.95 : 0.05;
 
       gradientLevels.push({
         y: levelY,
@@ -663,14 +663,6 @@ export class HeatPumpFlowCard extends LitElement {
     const dhwGradientData = this.generateTankGradient('dhw', dhwCurrentTemp, true); // DHW always heating
     const dhwGradient = dhwGradientData.levels;
     const dhwFillPercentage = dhwGradientData.fillPercentage;
-
-    // Debug logging (remove after testing)
-    console.log('Buffer gradient config:', this.config.buffer_tank?.gradient);
-    console.log('Buffer gradient levels:', bufferGradient.length);
-    console.log('Buffer fill %:', bufferFillPercentage);
-    console.log('DHW gradient config:', this.config.dhw_tank?.gradient);
-    console.log('DHW gradient levels:', dhwGradient.length);
-    console.log('DHW fill %:', dhwFillPercentage);
 
     // Calculate metrics text colors and positioning
     const hpBgColor = this.getHeatPumpColor(hpState);
@@ -1321,8 +1313,8 @@ export class HeatPumpFlowCard extends LitElement {
               ${bufferGradient.length > 0 ? html`
                 <!-- Temperature gradient visualization (10 levels) -->
                 ${bufferGradient.map(level => html`
-                  <rect x="15" y="${level.y}" width="60" height="${level.height}"
-                        fill="${level.color}" opacity="${level.opacity}"/>
+                  <rect x="15" y="${level.y.toString()}" width="60" height="${level.height.toString()}"
+                        fill="${level.color}" opacity="${level.opacity.toString()}"/>
                 `)}
               ` : html`
                 <!-- Thermal stratification (fallback - 4 zones) -->
@@ -1364,8 +1356,8 @@ export class HeatPumpFlowCard extends LitElement {
               ${dhwGradient.length > 0 ? html`
                 <!-- Temperature gradient visualization (10 levels) -->
                 ${dhwGradient.map(level => html`
-                  <rect x="15" y="${level.y}" width="60" height="${level.height}"
-                        fill="${level.color}" opacity="${level.opacity}"/>
+                  <rect x="15" y="${level.y.toString()}" width="60" height="${level.height.toString()}"
+                        fill="${level.color}" opacity="${level.opacity.toString()}"/>
                 `)}
               ` : html`
                 <!-- Inner cylinder (DHW water - fallback to simple blue) -->
