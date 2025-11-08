@@ -437,7 +437,7 @@ export class HeatPumpFlowCard extends LitElement {
     }
 
     // Get configuration with defaults
-    const levels = gradientConfig?.levels ?? 10;
+    const levels = Math.max(2, gradientConfig?.levels ?? 10);  // Minimum 2 levels to avoid division by zero
     const minTempEntity = gradientConfig?.min_temp_entity;
     const maxTempEntity = gradientConfig?.max_temp_entity;
     const minTempFallback = gradientConfig?.min_temp_fallback ?? 60;  // 60°F
@@ -663,6 +663,14 @@ export class HeatPumpFlowCard extends LitElement {
     const dhwGradientData = this.generateTankGradient('dhw', dhwCurrentTemp, true); // DHW always heating
     const dhwGradient = dhwGradientData.levels;
     const dhwFillPercentage = dhwGradientData.fillPercentage;
+
+    // Debug logging (remove after testing)
+    console.log('Buffer gradient config:', this.config.buffer_tank?.gradient);
+    console.log('Buffer gradient levels:', bufferGradient.length);
+    console.log('Buffer fill %:', bufferFillPercentage);
+    console.log('DHW gradient config:', this.config.dhw_tank?.gradient);
+    console.log('DHW gradient levels:', dhwGradient.length);
+    console.log('DHW fill %:', dhwFillPercentage);
 
     // Calculate metrics text colors and positioning
     const hpBgColor = this.getHeatPumpColor(hpState);
