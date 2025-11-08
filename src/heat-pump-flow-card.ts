@@ -495,22 +495,10 @@ export class HeatPumpFlowCard extends LitElement {
       });
     }
 
-    const result = {
+    return {
       levels: gradientLevels,
       fillPercentage: Math.round(fillRatio * 100)
     };
-
-    console.log(`[${tankType}] Gradient generated:`, {
-      levels: result.levels.length,
-      fillPercentage: result.fillPercentage,
-      currentTemp,
-      minTemp,
-      maxTemp,
-      fillRatio,
-      sampleLevel: result.levels[0]
-    });
-
-    return result;
   }
 
   /**
@@ -688,9 +676,6 @@ export class HeatPumpFlowCard extends LitElement {
     const dhwGradientData = this.generateTankGradient('dhw', dhwCurrentTemp, true); // DHW always heating
     const dhwGradient = dhwGradientData.levels;
     const dhwFillPercentage = dhwGradientData.fillPercentage;
-
-    console.log('[Render] Buffer gradient:', bufferGradient.length, 'levels');
-    console.log('[Render] DHW gradient:', dhwGradient.length, 'levels');
 
     // Calculate metrics text colors and positioning
     const hpBgColor = this.getHeatPumpColor(hpState);
