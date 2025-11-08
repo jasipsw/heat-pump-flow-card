@@ -89,9 +89,57 @@ export const cardStyles = css`
     transition: fill 0.3s ease;
   }
 
-  /* Aux heater pulsing - using SVG animate instead of CSS for better compatibility */
-  .aux-heater-pulsing {
-    /* Animation is handled by SVG <animate> element */
+  /* Aux heater pulsing animations - CSS keyframes for reliable animation */
+  @keyframes aux-glow-outer {
+    0%, 100% {
+      opacity: calc(var(--aux-intensity, 0) * 0.4);
+    }
+    50% {
+      opacity: calc(var(--aux-intensity, 0) * 0.6);
+    }
+  }
+
+  @keyframes aux-glow-middle {
+    0%, 100% {
+      opacity: calc(var(--aux-intensity, 0) * 0.6);
+    }
+    50% {
+      opacity: calc(var(--aux-intensity, 0) * 0.8);
+    }
+  }
+
+  @keyframes aux-glow-inner {
+    0%, 100% {
+      opacity: calc(var(--aux-intensity, 0) * 0.8);
+    }
+    50% {
+      opacity: calc(var(--aux-intensity, 0) * 1.0);
+    }
+  }
+
+  @keyframes aux-cylinder-pulse {
+    0%, 100% {
+      opacity: 0.9;
+    }
+    50% {
+      opacity: 1.0;
+    }
+  }
+
+  .aux-glow-outer {
+    animation: aux-glow-outer 2s ease-in-out infinite;
+  }
+
+  .aux-glow-middle {
+    animation: aux-glow-middle 1.5s ease-in-out infinite;
+  }
+
+  .aux-glow-inner {
+    animation: aux-glow-inner 1s ease-in-out infinite;
+  }
+
+  .aux-cylinder-pulse {
+    animation: aux-cylinder-pulse 2s ease-in-out infinite;
   }
 
   /* Pipe styling */
