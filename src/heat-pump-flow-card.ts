@@ -160,9 +160,17 @@ export class HeatPumpFlowCard extends LitElement {
     // Create dots for ALL paths (heating and DHW mode)
     // They'll be shown/hidden based on active mode
     const pathConfigs = [
-      // HP to G2 - always flowing in both modes
+      // HP to aux heater - always flowing in both modes
       {
-        id: 'hp-to-g2-heating-path',
+        id: 'hp-to-aux-heating-path',
+        flowRate: hpState.flowRate,
+        supplyTemp: hpState.outletTemp,
+        returnTemp: hpState.inletTemp,
+        mode: 'both'
+      },
+      // Aux heater to G2 - always flowing in both modes
+      {
+        id: 'aux-to-g2-heating-path',
         flowRate: hpState.flowRate,
         supplyTemp: hpState.outletTemp,
         returnTemp: hpState.inletTemp,
@@ -280,9 +288,18 @@ export class HeatPumpFlowCard extends LitElement {
 
     // Define all path configs with mode flags
     const pathConfigs = [
-      // HP to G2 - always flowing
+      // HP to aux heater - always flowing
       {
-        id: 'hp-to-g2-heating-path',
+        id: 'hp-to-aux-heating-path',
+        flowRate: hpState.flowRate,
+        supplyTemp: hpState.outletTemp,
+        returnTemp: hpState.inletTemp,
+        mode: 'both',
+        visible: true
+      },
+      // Aux heater to G2 - always flowing
+      {
+        id: 'aux-to-g2-heating-path',
         flowRate: hpState.flowRate,
         supplyTemp: hpState.outletTemp,
         returnTemp: hpState.inletTemp,
@@ -728,14 +745,23 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
 
-            <!-- Pipe: HP to G2 valve (hot supply) - TOP - Connects to G2 left inlet flange - ON TOP -->
-            <path id="hp-to-g2-heating-path"
-                  d="M 180 180 L 328 180"
+            <!-- Pipe: HP to aux heater (first segment) - Shows cooler water entering aux heater in DHW mode -->
+            <path id="hp-to-aux-heating-path"
+                  d="M 180 180 L 254 180"
                   stroke="${hpOutletColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
+                  opacity="${g2ValveState.isActive ? '0.5' : '1'}"/>
+
+            <!-- Pipe: Aux heater to G2 valve (second segment) - Shows boosted temperature after aux heater in DHW mode -->
+            <path id="aux-to-g2-heating-path"
+                  d="M 254 180 L 328 180"
+                  stroke="${g2ValveState.isActive && auxIntensity > 0 ? (this.config.temperature?.hot_color || '#e74c3c') : hpOutletColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${g2ValveState.isActive ? '1' : '1'}"/>
 
             <!-- Pipe: G2 to Buffer (continuation) - only active in heating mode -->
             <path id="g2-to-buffer-path"
