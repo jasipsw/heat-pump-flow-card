@@ -272,8 +272,15 @@ export class HeatPumpFlowCard extends LitElement {
         circle.style.setProperty('--dot-delay', `${delay}s`);
         circle.style.setProperty('--dot-opacity', isFlowing ? this.config.animation.dot_opacity!.toString() : '0');
 
-        // Insert dots at the BEGINNING of SVG so they render behind everything (pipes, heaters, valves)
-        svg.insertBefore(circle, svg.firstChild);
+        // Insert dots before the first component group (g2-valve) so they render:
+        // - ABOVE pipes (visible)
+        // - BELOW components like aux heater, valves (realistic inside-pipe effect)
+        const g2Valve = svg.querySelector('#g2-valve');
+        if (g2Valve) {
+          svg.insertBefore(circle, g2Valve);
+        } else {
+          svg.appendChild(circle);  // Fallback if g2-valve not found yet
+        }
       }
     });
   }
