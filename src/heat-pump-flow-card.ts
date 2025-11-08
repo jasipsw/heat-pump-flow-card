@@ -1205,7 +1205,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- TEST: Animated gradient rectangle to verify animation technique works -->
             ${this.config.animation?.enabled !== false ? html`
               <g id="test-gradient-group" transform="translate(10, 30)">
-                <rect id="test-gradient-rect" x="0" y="0" width="120" height="40"
+                <rect id="test-gradient-rect" width="120" height="40"
                       fill="url(#flow-gradient-hot)"
                       stroke="#666"
                       stroke-width="2"
