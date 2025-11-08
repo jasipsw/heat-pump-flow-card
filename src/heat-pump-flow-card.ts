@@ -279,14 +279,14 @@ export class HeatPumpFlowCard extends LitElement {
         circle.style.setProperty('--dot-delay', `${delay}s`);
         circle.style.setProperty('--dot-opacity', finalOpacity.toString());
 
-        // Insert dots before the first component group (g2-valve) so they render:
+        // Insert dots before the heat pump (first component) so they render:
         // - ABOVE pipes (visible)
-        // - BELOW components like aux heater, valves (realistic inside-pipe effect)
-        const g2Valve = svg.querySelector('#g2-valve');
-        if (g2Valve) {
-          svg.insertBefore(circle, g2Valve);
+        // - BELOW ALL components: heat pump, valves, tanks, aux heater (realistic inside-pipe effect)
+        const heatPump = svg.querySelector('#heat-pump');
+        if (heatPump) {
+          svg.insertBefore(circle, heatPump);
         } else {
-          svg.appendChild(circle);  // Fallback if g2-valve not found yet
+          svg.appendChild(circle);  // Fallback if heat-pump not found yet
         }
       }
     });
