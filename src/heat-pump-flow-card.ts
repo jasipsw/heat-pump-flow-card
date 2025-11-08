@@ -648,28 +648,28 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- Flow gradients for animated shimmer effect -->
               <!-- Using same technique as working gist: x1 from 0% to 100%, x2 from 100% to 200% -->
-              <!-- Hot water flow gradient (red/orange shimmer) -->
+              <!-- Hot water flow gradient (subtle flowing shimmer) -->
               <linearGradient id="flow-gradient-hot" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(255, 80, 40, 1)" />
-                <stop offset="20%" stop-color="rgba(255, 150, 100, 1)" />
-                <stop offset="50%" stop-color="rgba(255, 255, 255, 1)" />
-                <stop offset="80%" stop-color="rgba(255, 150, 100, 1)" />
-                <stop offset="100%" stop-color="rgba(255, 80, 40, 1)" />
+                <stop offset="0%" stop-color="rgba(255, 120, 80, 0.3)" />
+                <stop offset="30%" stop-color="rgba(255, 180, 140, 0.6)" />
+                <stop offset="50%" stop-color="rgba(255, 220, 200, 0.9)" />
+                <stop offset="70%" stop-color="rgba(255, 180, 140, 0.6)" />
+                <stop offset="100%" stop-color="rgba(255, 120, 80, 0.3)" />
                 <!-- Match gist technique exactly -->
-                <animate attributeName="x1" values="0%;100%" dur="3s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="100%;200%" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="0%;100%" dur="2.5s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="100%;200%" dur="2.5s" repeatCount="indefinite" />
               </linearGradient>
 
-              <!-- Cold water flow gradient (blue/cyan shimmer) -->
+              <!-- Cold water flow gradient (subtle flowing shimmer) -->
               <linearGradient id="flow-gradient-cold" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(80, 150, 255, 1)" />
-                <stop offset="20%" stop-color="rgba(150, 200, 255, 1)" />
-                <stop offset="50%" stop-color="rgba(255, 255, 255, 1)" />
-                <stop offset="80%" stop-color="rgba(150, 200, 255, 1)" />
-                <stop offset="100%" stop-color="rgba(80, 150, 255, 1)" />
+                <stop offset="0%" stop-color="rgba(100, 160, 255, 0.3)" />
+                <stop offset="30%" stop-color="rgba(150, 200, 255, 0.6)" />
+                <stop offset="50%" stop-color="rgba(200, 230, 255, 0.9)" />
+                <stop offset="70%" stop-color="rgba(150, 200, 255, 0.6)" />
+                <stop offset="100%" stop-color="rgba(100, 160, 255, 0.3)" />
                 <!-- Match gist technique exactly -->
-                <animate attributeName="x1" values="0%;100%" dur="3s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="100%;200%" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="0%;100%" dur="2.5s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="100%;200%" dur="2.5s" repeatCount="indefinite" />
               </linearGradient>
 
               <!-- Neutral flow gradient (white shimmer for inactive pipes) -->
@@ -780,12 +780,14 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Animated Flow Overlays (shimmer effect on pipes) -->
             <!-- Hot pipe flows (HP to buffer/DHW) -->
             <!-- Note: Adding tiny imperceptible kinks to straight paths to fix gradient rendering -->
+            <!-- Note: Using different animation-delay via style to stagger animations -->
               <path class="flow-gradient"
                     d="M 180 180 L 217 180 L 217 180.01 L 254 180"
                     stroke="url(#flow-gradient-hot)"
                     stroke-width="14"
                     fill="none"
-                    stroke-linecap="butt"></path>
+                    stroke-linecap="butt"
+                    style="animation-delay: 0s"></path>
 
               <path class="flow-gradient"
                     d="M 254 180 L 291 180 L 291 180.01 L 328 180"
@@ -793,7 +795,8 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="14"
                     fill="none"
                     stroke-linecap="butt"
-                    opacity="${g2ValveState.isActive ? '0.3' : '1'}"></path>
+                    style="animation-delay: 0.3s"
+                    opacity="${g2ValveState.isActive ? '0' : '1'}"></path>
 
               <path class="flow-gradient"
                     d="M 367 180 L 378.5 180 L 378.5 180.01 L 390 180"
@@ -801,14 +804,16 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="14"
                     fill="none"
                     stroke-linecap="butt"
-                    opacity="${g2ValveState.isActive ? '0.3' : '1'}"></path>
+                    style="animation-delay: 0.6s"
+                    opacity="${g2ValveState.isActive ? '0' : '1'}"></path>
 
               <path class="flow-gradient"
                     d="M 480 180 L 550 180 L 550 180.01 L 620 180"
                     stroke="url(#flow-gradient-hot)"
                     stroke-width="14"
                     fill="none"
-                    stroke-linecap="butt"></path>
+                    stroke-linecap="butt"
+                    style="animation-delay: 0.9s"></path>
 
               <!-- Cold pipe flows (return to HP) -->
               <path class="flow-gradient"
@@ -817,14 +822,16 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="14"
                     fill="none"
                     stroke-linecap="butt"
-                    opacity="${g2ValveState.isActive ? '0.3' : '1'}"></path>
+                    style="animation-delay: 1.2s"
+                    opacity="${g2ValveState.isActive ? '0' : '1'}"></path>
 
               <path class="flow-gradient"
                     d="M 620 220 L 550 220 L 550 220.01 L 480 220"
                     stroke="url(#flow-gradient-cold)"
                     stroke-width="14"
                     fill="none"
-                    stroke-linecap="butt"></path>
+                    stroke-linecap="butt"
+                    style="animation-delay: 1.5s"></path>
 
               <!-- DHW mode flows -->
               <path class="flow-gradient"
@@ -833,7 +840,8 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="14"
                     fill="none"
                     stroke-linecap="butt"
-                    opacity="${g2ValveState.isActive ? '1' : '0.3'}"></path>
+                    style="animation-delay: 0.4s"
+                    opacity="${g2ValveState.isActive ? '1' : '0'}"></path>
 
               <!-- DHW coil spiral flow -->
               <path class="flow-gradient"
@@ -842,6 +850,7 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="14"
                     fill="none"
                     stroke-linecap="butt"
+                    style="animation-delay: 0.7s"
                     opacity="${g2ValveState.isActive ? '1' : '0'}"></path>
 
               <path class="flow-gradient"
@@ -850,7 +859,8 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="14"
                     fill="none"
                     stroke-linecap="butt"
-                    opacity="${g2ValveState.isActive ? '1' : '0.3'}"></path>
+                    style="animation-delay: 1.0s"
+                    opacity="${g2ValveState.isActive ? '1' : '0'}"></path>
 
             <!-- Temperature and flow rate labels (configurable styling) -->
             <!-- Top row: supply temperatures and flow rate -->
