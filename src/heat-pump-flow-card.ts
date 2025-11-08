@@ -711,10 +711,11 @@ export class HeatPumpFlowCard extends LitElement {
     // Calculate aux heater dynamic colors and glow
     const auxIntensity = auxHeaterState.intensity;
     // Color transition: gray -> orange -> red-orange based on intensity
-    let auxCylinderColor = '#4a5568'; // Gray when off
+    // Match G2 valve gray color (#bdc3c7) when off
+    let auxCylinderColor = '#bdc3c7'; // Warm gray when off (matches G2 valve)
     if (auxIntensity > 0) {
-      // Interpolate between gray (#4a5568 = rgb(74,85,104)) and red-orange (#ff4422)
-      const grayR = 74, grayG = 85, grayB = 104;
+      // Interpolate between gray (#bdc3c7 = rgb(189,195,199)) and red-orange (#ff4422)
+      const grayR = 189, grayG = 195, grayB = 199;
       const hotR = 255, hotG = 68, hotB = 34;
       const r = Math.round(grayR + (hotR - grayR) * auxIntensity);
       const g = Math.round(grayG + (hotG - grayG) * auxIntensity);
@@ -1211,11 +1212,23 @@ export class HeatPumpFlowCard extends LitElement {
                     fill="#ff8855"
                     pointer-events="none"/>
 
-              <!-- Main heated cylinder (centered at x=254) -->
+              <!-- Main heated cylinder body (centered at x=254) -->
               <rect x="${cylX}" y="${cylY}" width="${cylW}" height="${cylH}" rx="2" ry="2"
                     class="${cylinderClass}"
                     fill="${auxCylinderColor}"
-                    stroke="#2d3748"
+                    stroke="#7f8c8d"
+                    stroke-width="1.5"/>
+
+              <!-- Left flange (pipe connection) -->
+              <rect x="${cylX - 6}" y="${cylY + 2}" width="6" height="12"
+                    fill="#95a5a6"
+                    stroke="#7f8c8d"
+                    stroke-width="1.5"/>
+
+              <!-- Right flange (pipe connection) -->
+              <rect x="${cylX + cylW}" y="${cylY + 2}" width="6" height="12"
+                    fill="#95a5a6"
+                    stroke="#7f8c8d"
                     stroke-width="1.5"/>
             </g>
 
