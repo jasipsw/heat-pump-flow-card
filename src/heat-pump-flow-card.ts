@@ -647,53 +647,54 @@ export class HeatPumpFlowCard extends LitElement {
               </filter>
 
               <!-- Flow gradients for animated shimmer effect -->
+              <!-- Using objectBoundingBox (default) so gradient scales to each path -->
               <!-- Hot water flow gradient (red/orange shimmer) - repeating pattern -->
-              <linearGradient id="flow-gradient-hot" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="200" y2="0">
+              <linearGradient id="flow-gradient-hot" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stop-color="rgba(255, 255, 255, 0)" />
-                <stop offset="20%" stop-color="rgba(255, 200, 150, 0.5)" />
-                <stop offset="40%" stop-color="rgba(255, 255, 255, 0.95)" />
-                <stop offset="60%" stop-color="rgba(255, 200, 150, 0.5)" />
+                <stop offset="20%" stop-color="rgba(255, 200, 150, 0.6)" />
+                <stop offset="40%" stop-color="rgba(255, 255, 255, 1)" />
+                <stop offset="60%" stop-color="rgba(255, 200, 150, 0.6)" />
                 <stop offset="80%" stop-color="rgba(255, 255, 255, 0)" />
                 <stop offset="100%" stop-color="rgba(255, 255, 255, 0)" />
                 <animateTransform
                   attributeName="gradientTransform"
                   type="translate"
-                  from="0 0"
-                  to="200 0"
+                  from="-1 0"
+                  to="1 0"
                   dur="3s"
                   repeatCount="indefinite" />
               </linearGradient>
 
               <!-- Cold water flow gradient (blue/cyan shimmer) - repeating pattern -->
-              <linearGradient id="flow-gradient-cold" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="200" y2="0">
+              <linearGradient id="flow-gradient-cold" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stop-color="rgba(255, 255, 255, 0)" />
-                <stop offset="20%" stop-color="rgba(150, 200, 255, 0.5)" />
-                <stop offset="40%" stop-color="rgba(255, 255, 255, 0.95)" />
-                <stop offset="60%" stop-color="rgba(150, 200, 255, 0.5)" />
+                <stop offset="20%" stop-color="rgba(150, 200, 255, 0.6)" />
+                <stop offset="40%" stop-color="rgba(255, 255, 255, 1)" />
+                <stop offset="60%" stop-color="rgba(150, 200, 255, 0.6)" />
                 <stop offset="80%" stop-color="rgba(255, 255, 255, 0)" />
                 <stop offset="100%" stop-color="rgba(255, 255, 255, 0)" />
                 <animateTransform
                   attributeName="gradientTransform"
                   type="translate"
-                  from="0 0"
-                  to="200 0"
+                  from="-1 0"
+                  to="1 0"
                   dur="3s"
                   repeatCount="indefinite" />
               </linearGradient>
 
               <!-- Neutral flow gradient (white shimmer for inactive pipes) -->
-              <linearGradient id="flow-gradient-neutral" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="200" y2="0">
+              <linearGradient id="flow-gradient-neutral" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stop-color="rgba(255, 255, 255, 0)" />
-                <stop offset="20%" stop-color="rgba(255, 255, 255, 0.3)" />
-                <stop offset="40%" stop-color="rgba(255, 255, 255, 0.7)" />
-                <stop offset="60%" stop-color="rgba(255, 255, 255, 0.3)" />
+                <stop offset="20%" stop-color="rgba(255, 255, 255, 0.4)" />
+                <stop offset="40%" stop-color="rgba(255, 255, 255, 0.8)" />
+                <stop offset="60%" stop-color="rgba(255, 255, 255, 0.4)" />
                 <stop offset="80%" stop-color="rgba(255, 255, 255, 0)" />
                 <stop offset="100%" stop-color="rgba(255, 255, 255, 0)" />
                 <animateTransform
                   attributeName="gradientTransform"
                   type="translate"
-                  from="0 0"
-                  to="200 0"
+                  from="-1 0"
+                  to="1 0"
                   dur="4s"
                   repeatCount="indefinite" />
               </linearGradient>
