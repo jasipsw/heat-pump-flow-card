@@ -49,15 +49,12 @@ export class HeatPumpFlowCard extends LitElement {
         min_flow_rate: 5,
         max_flow_rate: 1,
         max_flow_rate_value: 50,
-        dot_size: 1.0,  // Tiny dots for realistic water particle effect (was 2.5)
+        dot_size: 1.0,  // Tiny dots for realistic water particle effect
         dot_spacing: 30,
         use_temp_color: true,
-        dot_color: '#3498db',
-        dot_stroke_color: 'transparent',  // No stroke to avoid bubble appearance
-        dot_stroke_width: 0,  // No stroke (was 1.0)
-        dot_stroke_opacity: 0,  // No stroke opacity
+        dot_color: '#3498db',  // Fallback if use_temp_color is false
         dot_opacity: 0.9,  // Slightly transparent for softer look
-        dot_shadow: false,  // No shadow for tiny particles (was true)
+        // Note: stroke/border removed for clean particles
         ...animation,
       },
       temperature: {
@@ -271,9 +268,7 @@ export class HeatPumpFlowCard extends LitElement {
         circle.setAttribute('cy', '0');
         circle.setAttribute('r', this.config.animation.dot_size.toString());
         circle.setAttribute('fill', dotColor!);
-        circle.setAttribute('stroke', this.config.animation.dot_stroke_color!);
-        circle.setAttribute('stroke-width', this.config.animation.dot_stroke_width!.toString());
-        circle.setAttribute('stroke-opacity', this.config.animation.dot_stroke_opacity!.toString());
+        // NO stroke/border - clean filled circles only for realistic particles
 
         // Apply perpendicular offset via transform
         circle.style.transform = `translate(0, ${perpendicularOffset}px)`;
