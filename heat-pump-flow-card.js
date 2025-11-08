@@ -782,8 +782,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,o,i){var r,a=argume
               ${y.length>0?W`
                 <!-- Temperature gradient visualization (10 levels) -->
                 ${y.map(t=>W`
-                  <rect x="15" y="${t.y}" width="60" height="${t.height}"
-                        fill="${t.color}" opacity="${t.opacity}"/>
+                  <rect x="15" y="${t.y.toString()}" width="60" height="${t.height.toString()}"
+                        fill="${t.color}" opacity="${t.opacity.toString()}"/>
                 `)}
               `:W`
                 <!-- Thermal stratification (fallback - 4 zones) -->
@@ -825,8 +825,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,o,i){var r,a=argume
               ${_.length>0?W`
                 <!-- Temperature gradient visualization (10 levels) -->
                 ${_.map(t=>W`
-                  <rect x="15" y="${t.y}" width="60" height="${t.height}"
-                        fill="${t.color}" opacity="${t.opacity}"/>
+                  <rect x="15" y="${t.y.toString()}" width="60" height="${t.height.toString()}"
+                        fill="${t.color}" opacity="${t.opacity.toString()}"/>
                 `)}
               `:W`
                 <!-- Inner cylinder (DHW water - fallback to simple blue) -->

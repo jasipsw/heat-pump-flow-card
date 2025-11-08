@@ -1327,8 +1327,8 @@ export class HeatPumpFlowCard extends LitElement {
               ${bufferGradient.length > 0 ? html`
                 <!-- Temperature gradient visualization (10 levels) -->
                 ${bufferGradient.map(level => html`
-                  <rect x="15" y="${level.y}" width="60" height="${level.height}"
-                        fill="${level.color}" opacity="${level.opacity}"/>
+                  <rect x="15" y="${level.y.toString()}" width="60" height="${level.height.toString()}"
+                        fill="${level.color}" opacity="${level.opacity.toString()}"/>
                 `)}
               ` : html`
                 <!-- Thermal stratification (fallback - 4 zones) -->
@@ -1370,8 +1370,8 @@ export class HeatPumpFlowCard extends LitElement {
               ${dhwGradient.length > 0 ? html`
                 <!-- Temperature gradient visualization (10 levels) -->
                 ${dhwGradient.map(level => html`
-                  <rect x="15" y="${level.y}" width="60" height="${level.height}"
-                        fill="${level.color}" opacity="${level.opacity}"/>
+                  <rect x="15" y="${level.y.toString()}" width="60" height="${level.height.toString()}"
+                        fill="${level.color}" opacity="${level.opacity.toString()}"/>
                 `)}
               ` : html`
                 <!-- Inner cylinder (DHW water - fallback to simple blue) -->
