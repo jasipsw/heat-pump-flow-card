@@ -30,6 +30,7 @@ export const cardStyles = css`
   }
 
   /* CSS-based flow dot animations (hardware-accelerated) */
+  /* Small dots with subtle glow (no stroke) for stream effect */
   .flow-dot {
     offset-path: var(--dot-path);
     offset-rotate: 0deg;
@@ -37,7 +38,7 @@ export const cardStyles = css`
     animation-duration: var(--dot-duration, 5s);
     animation-delay: var(--dot-delay, 0s);
     opacity: var(--dot-opacity, 1);
-    filter: drop-shadow(0 0 4px currentColor);
+    filter: drop-shadow(0 0 3px currentColor);  /* Subtle glow matching dot color */
   }
 
   @keyframes flow-along-path {
