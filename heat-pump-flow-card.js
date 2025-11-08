@@ -490,50 +490,53 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var r,s=argume
             <!-- Auxiliary Heater - Glowing cylinder with animated pulsing glow -->
             <!-- Centered between HP outlet (180) and G2 inlet (328) = 254, width 60, so x=224 -->
             <g id="aux-heater" opacity="${s.enabled?"1":"0"}">
-              <!-- Glow layers - simple solid colors, NO filters, visible by default -->
-              ${y>0?B`
-                <!-- Outermost glow layer -->
-                <rect x="214" y="166" width="76" height="28" rx="8" ry="8"
-                      fill="#ff4422"
-                      opacity="${.5*y}"
-                      pointer-events="none">
-                  <animate attributeName="opacity"
-                           values="${.4*y};${.6*y};${.4*y}"
-                           dur="2s"
-                           repeatCount="indefinite"/>
-                </rect>
-                <!-- Middle glow layer -->
-                <rect x="218" y="168" width="68" height="24" rx="6" ry="6"
-                      fill="#ff6644"
-                      opacity="${.7*y}"
-                      pointer-events="none">
-                  <animate attributeName="opacity"
-                           values="${.6*y};${.8*y};${.6*y}"
-                           dur="1.5s"
-                           repeatCount="indefinite"/>
-                </rect>
-                <!-- Inner glow layer -->
-                <rect x="221" y="170" width="62" height="20" rx="4" ry="4"
-                      fill="#ff8855"
-                      opacity="${.9*y}"
-                      pointer-events="none">
-                  <animate attributeName="opacity"
-                           values="${.8*y};${1*y};${.8*y}"
-                           dur="1s"
-                           repeatCount="indefinite"/>
-                </rect>
-              `:""}
+              <!-- DIAGNOSTIC: Simple test rectangle - ALWAYS visible -->
+              <rect x="214" y="166" width="76" height="28" rx="8" ry="8"
+                    fill="lime"
+                    opacity="0.8"
+                    pointer-events="none"/>
+
+              <!-- Glow layers - WITHOUT conditional rendering to test coordinate system -->
+              <!-- Outermost glow layer -->
+              <rect x="214" y="166" width="76" height="28" rx="8" ry="8"
+                    fill="#ff4422"
+                    opacity="${y>0?.5*y:0}"
+                    pointer-events="none">
+                <animate attributeName="opacity"
+                         values="${.4*y};${.6*y};${.4*y}"
+                         dur="2s"
+                         repeatCount="indefinite"/>
+              </rect>
+              <!-- Middle glow layer -->
+              <rect x="218" y="168" width="68" height="24" rx="6" ry="6"
+                    fill="#ff6644"
+                    opacity="${y>0?.7*y:0}"
+                    pointer-events="none">
+                <animate attributeName="opacity"
+                         values="${.6*y};${.8*y};${.6*y}"
+                         dur="1.5s"
+                         repeatCount="indefinite"/>
+              </rect>
+              <!-- Inner glow layer -->
+              <rect x="221" y="170" width="62" height="20" rx="4" ry="4"
+                    fill="#ff8855"
+                    opacity="${y>0?.9*y:0}"
+                    pointer-events="none">
+                <animate attributeName="opacity"
+                         values="${.8*y};${1*y};${.8*y}"
+                         dur="1s"
+                         repeatCount="indefinite"/>
+              </rect>
+
               <!-- Main heated cylinder (no filter to avoid rendering issues) -->
               <rect x="224" y="172" width="60" height="16" rx="2" ry="2"
                     fill="${w}"
                     stroke="#2d3748"
                     stroke-width="1.5">
-                ${y>0?B`
-                  <animate attributeName="opacity"
-                           values="0.9;1;0.9"
-                           dur="2s"
-                           repeatCount="indefinite"/>
-                `:""}
+                <animate attributeName="opacity"
+                         values="0.9;1;0.9"
+                         dur="2s"
+                         repeatCount="${y>0?"indefinite":"0"}"/>
               </rect>
             </g>
 
