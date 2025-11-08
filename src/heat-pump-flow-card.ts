@@ -513,6 +513,18 @@ export class HeatPumpFlowCard extends LitElement {
     return result;
   }
 
+  /**
+   * Render gradient rectangles for tank visualization
+   */
+  private renderGradientRects(levels: Array<{ y: number; height: number; color: string; opacity: number }>) {
+    const rects: any[] = [];
+    for (let i = 0; i < levels.length; i++) {
+      const level = levels[i];
+      rects.push(html`<rect x="15" y="${level.y.toString()}" width="60" height="${level.height.toString()}" fill="${level.color}" opacity="${level.opacity.toString()}"></rect>`);
+    }
+    return rects;
+  }
+
   private hexToRgb(hex: string): { r: number; g: number; b: number } {
     // Handle CSS color names
     const colorNames: Record<string, string> = {
@@ -1325,12 +1337,7 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Bottom rounded cap -->
               <ellipse cx="45" cy="160" rx="35" ry="15" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
 
-              ${bufferGradient.length > 0 ?
-                bufferGradient.map(level => html`
-                  <rect x="15" y="${level.y.toString()}" width="60" height="${level.height.toString()}"
-                        fill="${level.color}" opacity="${level.opacity.toString()}"></rect>
-                `)
-              : html`
+              ${bufferGradient.length > 0 ? this.renderGradientRects(bufferGradient) : html`
                 <!-- Thermal stratification (fallback - 4 zones) -->
                 <rect x="15" y="25" width="60" height="30" fill="${bufferSupplyColor}" opacity="0.9"/>
                 <rect x="15" y="55" width="60" height="35" fill="${bufferSupplyColor}" opacity="0.7"/>
@@ -1367,12 +1374,7 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Bottom rounded cap -->
               <ellipse cx="45" cy="160" rx="35" ry="15" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
 
-              ${dhwGradient.length > 0 ?
-                dhwGradient.map(level => html`
-                  <rect x="15" y="${level.y.toString()}" width="60" height="${level.height.toString()}"
-                        fill="${level.color}" opacity="${level.opacity.toString()}"></rect>
-                `)
-              : html`
+              ${dhwGradient.length > 0 ? this.renderGradientRects(dhwGradient) : html`
                 <!-- Inner cylinder (DHW water - fallback to simple blue) -->
                 <rect x="15" y="25" width="60" height="130" fill="#3498db" opacity="0.3"/>
               `}
