@@ -140,28 +140,28 @@ export const cardStyles = css`
     filter: none !important; /* Remove default rect drop-shadow */
   }
 
-  /* When active, show and animate - FASTER, MORE DRAMATIC with PULSING GLOW */
+  /* When active, show and animate - SPEED INCREASES WITH POWER LEVEL */
   .aux-glow-outer {
     opacity: 0.45;
-    animation: aux-glow-outer 1s ease-in-out infinite;
+    animation: aux-glow-outer var(--aux-anim-speed, 1s) ease-in-out infinite;
     filter: none; /* Will be set by animation */
   }
 
   .aux-glow-middle {
     opacity: 0.65;
-    animation: aux-glow-middle 0.8s ease-in-out infinite;
+    animation: aux-glow-middle calc(var(--aux-anim-speed, 1s) * 0.8) ease-in-out infinite;
     filter: none; /* Will be set by animation */
   }
 
   .aux-glow-inner {
     opacity: 0.8;
-    animation: aux-glow-inner 0.6s ease-in-out infinite;
+    animation: aux-glow-inner calc(var(--aux-anim-speed, 1s) * 0.6) ease-in-out infinite;
     filter: none; /* Will be set by animation */
   }
 
   .aux-cylinder-pulse {
     opacity: 0.85;
-    animation: aux-cylinder-pulse 1s ease-in-out infinite;
+    animation: aux-cylinder-pulse var(--aux-anim-speed, 1s) ease-in-out infinite;
     filter: none; /* Will be set by animation */
   }
 

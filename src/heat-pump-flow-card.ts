@@ -732,6 +732,10 @@ export class HeatPumpFlowCard extends LitElement {
       ry: glowSize * 0.5
     };
 
+    // Calculate animation speed based on power (higher power = faster pulsing)
+    // At 0% power: 2.0s (slow), at 100% power: 0.6s (fast)
+    const animSpeed = auxIntensity > 0 ? (2.0 - auxIntensity * 1.4) : 2.0;
+
     // DEBUG LOGGING for aux heater and pipe colors
     const outerClass = auxIntensity > 0 ? 'aux-glow-outer' : 'aux-heater-layer';
     const middleClass = auxIntensity > 0 ? 'aux-glow-middle' : 'aux-heater-layer';
@@ -744,6 +748,7 @@ export class HeatPumpFlowCard extends LitElement {
       auxPower: auxHeaterState.power,
       auxIntensity,
       glowSize,
+      animSpeed: `${animSpeed.toFixed(2)}s (faster at higher power)`,
       auxCylinderColor,
       hpOutletColor,
       hotColor: this.config.temperature?.hot_color || '#e74c3c',
@@ -1162,8 +1167,10 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Auxiliary Heater - Glowing cylinder with animated pulsing glow -->
             <!-- Centered between HP outlet (180) and G2 inlet (328) = 254 -->
             <!-- Glow size configurable via aux_heater.glow_size (default: 8px) -->
+            <!-- Animation speed increases with power level for visual feedback -->
             <g id="aux-heater"
-               opacity="${auxHeaterState.enabled ? '1' : '0'}">
+               opacity="${auxHeaterState.enabled ? '1' : '0'}"
+               style="--aux-anim-speed: ${animSpeed}s">
               <!-- Glow layers - simple solid colors with CSS pulsing animation -->
               <!-- Outermost glow layer - size based on config -->
               <rect x="${outerGlow.x}" y="${outerGlow.y}"
