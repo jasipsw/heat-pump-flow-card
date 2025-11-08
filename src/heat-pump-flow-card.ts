@@ -759,7 +759,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- HP to aux heater (horizontal hot) -->
             ${hpState.flowRate > this.config.animation!.idle_threshold ? html`
               <defs>
-                <linearGradient id="flow-grad-1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <linearGradient id="flow-grad-1" x1="0%" y1="0%" x2="100%" y2="0%" spreadMethod="repeat">
                   <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
                   <stop offset="10%" stop-color="rgba(230, 90, 60, 0.5)" />
                   <stop offset="20%" stop-color="rgba(255, 130, 90, 0.8)" />
@@ -786,7 +786,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Aux to G2 (horizontal hot) - heating mode only -->
             ${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? html`
               <defs>
-                <linearGradient id="flow-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
+                <linearGradient id="flow-grad-2" x1="0%" y1="0%" x2="100%" y2="0%" spreadMethod="repeat">
                   <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
                   <stop offset="10%" stop-color="rgba(230, 90, 60, 0.5)" />
                   <stop offset="20%" stop-color="rgba(255, 130, 90, 0.8)" />
@@ -813,7 +813,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- G2 to buffer (horizontal hot) - heating mode only -->
             ${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? html`
               <defs>
-                <linearGradient id="flow-grad-3" x1="0%" y1="0%" x2="100%" y2="0%">
+                <linearGradient id="flow-grad-3" x1="0%" y1="0%" x2="100%" y2="0%" spreadMethod="repeat">
                   <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
                   <stop offset="10%" stop-color="rgba(230, 90, 60, 0.5)" />
                   <stop offset="20%" stop-color="rgba(255, 130, 90, 0.8)" />
@@ -840,7 +840,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Buffer to HVAC (horizontal hot) -->
             ${hvacState.flowRate > this.config.animation!.idle_threshold ? html`
               <defs>
-                <linearGradient id="flow-grad-4" x1="0%" y1="0%" x2="100%" y2="0%">
+                <linearGradient id="flow-grad-4" x1="0%" y1="0%" x2="100%" y2="0%" spreadMethod="repeat">
                   <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
                   <stop offset="10%" stop-color="rgba(230, 90, 60, 0.5)" />
                   <stop offset="20%" stop-color="rgba(255, 130, 90, 0.8)" />
@@ -867,7 +867,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Buffer to HP return (horizontal cold) - heating mode only -->
             ${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? html`
               <defs>
-                <linearGradient id="flow-grad-5" x1="0%" y1="0%" x2="100%" y2="0%">
+                <linearGradient id="flow-grad-5" x1="0%" y1="0%" x2="100%" y2="0%" spreadMethod="repeat">
                   <stop offset="0%" stop-color="rgba(50, 100, 180, 0)" />
                   <stop offset="10%" stop-color="rgba(80, 135, 220, 0.5)" />
                   <stop offset="20%" stop-color="rgba(110, 170, 255, 0.8)" />
@@ -894,7 +894,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- HVAC to buffer return (horizontal cold) -->
             ${hvacState.flowRate > this.config.animation!.idle_threshold ? html`
               <defs>
-                <linearGradient id="flow-grad-6" x1="0%" y1="0%" x2="100%" y2="0%">
+                <linearGradient id="flow-grad-6" x1="0%" y1="0%" x2="100%" y2="0%" spreadMethod="repeat">
                   <stop offset="0%" stop-color="rgba(50, 100, 180, 0)" />
                   <stop offset="10%" stop-color="rgba(80, 135, 220, 0.5)" />
                   <stop offset="20%" stop-color="rgba(110, 170, 255, 0.8)" />
@@ -921,7 +921,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- G2 to DHW (mixed vertical+horizontal hot) - DHW mode only -->
             ${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? html`
               <defs>
-                <linearGradient id="flow-grad-7" x1="0%" y1="0%" x2="30%" y2="100%">
+                <linearGradient id="flow-grad-7" x1="0%" y1="0%" x2="30%" y2="100%" spreadMethod="repeat">
                   <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
                   <stop offset="10%" stop-color="rgba(230, 90, 60, 0.5)" />
                   <stop offset="20%" stop-color="rgba(255, 130, 90, 0.8)" />
@@ -950,7 +950,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- DHW coil spiral (vertical hot) - DHW mode only -->
             ${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? html`
               <defs>
-                <linearGradient id="flow-grad-8" x1="0%" y1="0%" x2="0%" y2="100%">
+                <linearGradient id="flow-grad-8" x1="0%" y1="0%" x2="0%" y2="100%" spreadMethod="repeat">
                   <stop offset="0%" stop-color="rgba(200, 60, 40, 0)" />
                   <stop offset="10%" stop-color="rgba(230, 90, 60, 0.5)" />
                   <stop offset="20%" stop-color="rgba(255, 130, 90, 0.8)" />
@@ -977,7 +977,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- DHW to HP return (mixed horizontal+vertical cold) - DHW mode only -->
             ${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? html`
               <defs>
-                <linearGradient id="flow-grad-9" x1="100%" y1="100%" x2="0%" y2="0%">
+                <linearGradient id="flow-grad-9" x1="100%" y1="100%" x2="0%" y2="0%" spreadMethod="repeat">
                   <stop offset="0%" stop-color="rgba(50, 100, 180, 0)" />
                   <stop offset="10%" stop-color="rgba(80, 135, 220, 0.5)" />
                   <stop offset="20%" stop-color="rgba(110, 170, 255, 0.8)" />
