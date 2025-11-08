@@ -1103,12 +1103,10 @@ export class HeatPumpFlowCard extends LitElement {
                     fill="#ff4422"
                     opacity="${auxIntensity > 0 ? auxIntensity * 0.5 : 0}"
                     pointer-events="none">
-                ${auxIntensity > 0 ? html`
-                  <animate attributeName="opacity"
-                           values="${auxIntensity * 0.4};${auxIntensity * 0.6};${auxIntensity * 0.4}"
-                           dur="2s"
-                           repeatCount="indefinite"/>
-                ` : ''}
+                <animate attributeName="opacity"
+                         values="${auxIntensity * 0.4};${auxIntensity * 0.6};${auxIntensity * 0.4}"
+                         dur="2s"
+                         repeatCount="${auxIntensity > 0 ? 'indefinite' : '0'}"/>
               </rect>
 
               <!-- Middle glow layer - properly centered at x=254 -->
@@ -1116,12 +1114,10 @@ export class HeatPumpFlowCard extends LitElement {
                     fill="#ff6644"
                     opacity="${auxIntensity > 0 ? auxIntensity * 0.7 : 0}"
                     pointer-events="none">
-                ${auxIntensity > 0 ? html`
-                  <animate attributeName="opacity"
-                           values="${auxIntensity * 0.6};${auxIntensity * 0.8};${auxIntensity * 0.6}"
-                           dur="1.5s"
-                           repeatCount="indefinite"/>
-                ` : ''}
+                <animate attributeName="opacity"
+                         values="${auxIntensity * 0.6};${auxIntensity * 0.8};${auxIntensity * 0.6}"
+                         dur="1.5s"
+                         repeatCount="${auxIntensity > 0 ? 'indefinite' : '0'}"/>
               </rect>
 
               <!-- Inner glow layer - properly centered at x=254 -->
@@ -1129,12 +1125,10 @@ export class HeatPumpFlowCard extends LitElement {
                     fill="#ff8855"
                     opacity="${auxIntensity > 0 ? auxIntensity * 0.9 : 0}"
                     pointer-events="none">
-                ${auxIntensity > 0 ? html`
-                  <animate attributeName="opacity"
-                           values="${auxIntensity * 0.8};${auxIntensity * 1.0};${auxIntensity * 0.8}"
-                           dur="1s"
-                           repeatCount="indefinite"/>
-                ` : ''}
+                <animate attributeName="opacity"
+                         values="${auxIntensity * 0.8};${auxIntensity * 1.0};${auxIntensity * 0.8}"
+                         dur="1s"
+                         repeatCount="${auxIntensity > 0 ? 'indefinite' : '0'}"/>
               </rect>
 
               <!-- Main heated cylinder (centered at x=254) -->
@@ -1142,12 +1136,10 @@ export class HeatPumpFlowCard extends LitElement {
                     fill="${auxCylinderColor}"
                     stroke="#2d3748"
                     stroke-width="1.5">
-                ${auxIntensity > 0 ? html`
-                  <animate attributeName="opacity"
-                           values="0.9;1;0.9"
-                           dur="2s"
-                           repeatCount="indefinite"/>
-                ` : ''}
+                <animate attributeName="opacity"
+                         values="0.9;1;0.9"
+                         dur="2s"
+                         repeatCount="${auxIntensity > 0 ? 'indefinite' : '0'}"/>
               </rect>
             </g>
 
