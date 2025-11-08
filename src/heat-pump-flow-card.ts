@@ -800,7 +800,7 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke="url(#flow-gradient-hot)"
                     stroke-width="10"
                     fill="none"
-                    stroke-linecap="round"/>
+                    stroke-linecap="round"></path>
 
               <path class="flow-gradient"
                     d="M 254 180 L 328 180"
@@ -808,7 +808,7 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="10"
                     fill="none"
                     stroke-linecap="round"
-                    opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
+                    opacity="${g2ValveState.isActive ? '0.3' : '1'}"></path>
 
               <path class="flow-gradient"
                     d="M 367 180 L 390 180"
@@ -816,14 +816,14 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="10"
                     fill="none"
                     stroke-linecap="round"
-                    opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
+                    opacity="${g2ValveState.isActive ? '0.3' : '1'}"></path>
 
               <path class="flow-gradient"
                     d="M 480 180 L 620 180"
                     stroke="url(#flow-gradient-hot)"
                     stroke-width="10"
                     fill="none"
-                    stroke-linecap="round"/>
+                    stroke-linecap="round"></path>
 
               <!-- Cold pipe flows (return to HP) -->
               <path class="flow-gradient"
@@ -832,14 +832,14 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="10"
                     fill="none"
                     stroke-linecap="round"
-                    opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
+                    opacity="${g2ValveState.isActive ? '0.3' : '1'}"></path>
 
               <path class="flow-gradient"
                     d="M 620 220 L 480 220"
                     stroke="url(#flow-gradient-cold)"
                     stroke-width="10"
                     fill="none"
-                    stroke-linecap="round"/>
+                    stroke-linecap="round"></path>
 
               <!-- DHW mode flows -->
               <path class="flow-gradient"
@@ -848,7 +848,7 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="10"
                     fill="none"
                     stroke-linecap="round"
-                    opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
+                    opacity="${g2ValveState.isActive ? '1' : '0.3'}"></path>
 
               <!-- DHW coil spiral flow -->
               <path class="flow-gradient"
@@ -857,7 +857,7 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="8"
                     fill="none"
                     stroke-linecap="round"
-                    opacity="${g2ValveState.isActive ? '1' : '0'}"/>
+                    opacity="${g2ValveState.isActive ? '1' : '0'}"></path>
 
               <path class="flow-gradient"
                     d="M 418 470 L 370 470 L 370 220 L 180 220"
@@ -865,7 +865,7 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="10"
                     fill="none"
                     stroke-linecap="round"
-                    opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
+                    opacity="${g2ValveState.isActive ? '1' : '0.3'}"></path>
             ` : ''}
 
             <!-- Temperature and flow rate labels (configurable styling) -->
