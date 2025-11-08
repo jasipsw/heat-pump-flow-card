@@ -612,6 +612,10 @@ export class HeatPumpFlowCard extends LitElement {
     // At 0% power: 2.0s (slow), at 100% power: 0.6s (fast)
     const animSpeed = auxIntensity > 0 ? (2.0 - auxIntensity * 1.4) : 2.0;
 
+    // Calculate flow animation speed based on flow rate (higher flow = faster animation)
+    // At 0 L/min: 4s (slow), at 10 L/min: 2s (medium), at 15+ L/min: 1.2s (fast)
+    const flowAnimSpeed = Math.max(1.2, Math.min(4.0, 4.0 - (hpState.flowRate * 0.18)));
+
     // Get shadow blur multiplier from config (default: 1.0)
     const shadowBlur = this.config.aux_heater?.shadow_blur ?? 1.0;
 
@@ -648,28 +652,28 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- Flow gradients for animated shimmer effect -->
               <!-- Using same technique as working gist: x1 from 0% to 100%, x2 from 100% to 200% -->
-              <!-- Hot water flow gradient (subtle flowing shimmer) -->
-              <linearGradient id="flow-gradient-hot" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(255, 120, 80, 0.3)" />
-                <stop offset="30%" stop-color="rgba(255, 180, 140, 0.6)" />
-                <stop offset="50%" stop-color="rgba(255, 220, 200, 0.9)" />
-                <stop offset="70%" stop-color="rgba(255, 180, 140, 0.6)" />
-                <stop offset="100%" stop-color="rgba(255, 120, 80, 0.3)" />
-                <!-- Match gist technique exactly -->
-                <animate attributeName="x1" values="0%;100%" dur="2.5s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="100%;200%" dur="2.5s" repeatCount="indefinite" />
+              <!-- Hot water flow gradient (Option C: Darker peak, no white) -->
+              <linearGradient id="flow-gradient-hot" x1="-50%" y1="0%" x2="50%" y2="0%">
+                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.3)" />
+                <stop offset="30%" stop-color="rgba(230, 90, 60, 0.6)" />
+                <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
+                <stop offset="70%" stop-color="rgba(230, 90, 60, 0.6)" />
+                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
+                <!-- Start off-screen and animate across, with dynamic speed -->
+                <animate attributeName="x1" values="-50%;50%" dur="${flowAnimSpeed}s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${flowAnimSpeed}s" repeatCount="indefinite" />
               </linearGradient>
 
-              <!-- Cold water flow gradient (subtle flowing shimmer) - REVERSED DIRECTION for return flow -->
-              <linearGradient id="flow-gradient-cold" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(100, 160, 255, 0.3)" />
-                <stop offset="30%" stop-color="rgba(150, 200, 255, 0.6)" />
-                <stop offset="50%" stop-color="rgba(200, 230, 255, 0.9)" />
-                <stop offset="70%" stop-color="rgba(150, 200, 255, 0.6)" />
-                <stop offset="100%" stop-color="rgba(100, 160, 255, 0.3)" />
-                <!-- Reverse direction: 100% to 0% and 200% to 100% -->
-                <animate attributeName="x1" values="100%;0%" dur="2.5s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="200%;100%" dur="2.5s" repeatCount="indefinite" />
+              <!-- Cold water flow gradient (Option C: Darker peak, no white) - REVERSED DIRECTION for return flow -->
+              <linearGradient id="flow-gradient-cold" x1="50%" y1="0%" x2="-50%" y2="0%">
+                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.3)" />
+                <stop offset="30%" stop-color="rgba(80, 135, 220, 0.6)" />
+                <stop offset="50%" stop-color="rgba(110, 170, 255, 0.9)" />
+                <stop offset="70%" stop-color="rgba(80, 135, 220, 0.6)" />
+                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.3)" />
+                <!-- Reverse direction with off-screen start and dynamic speed -->
+                <animate attributeName="x1" values="150%;50%" dur="${flowAnimSpeed}s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;-50%" dur="${flowAnimSpeed}s" repeatCount="indefinite" />
               </linearGradient>
 
               <!-- Neutral flow gradient (white shimmer for inactive pipes) -->
