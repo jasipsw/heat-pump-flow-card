@@ -495,10 +495,22 @@ export class HeatPumpFlowCard extends LitElement {
       });
     }
 
-    return {
+    const result = {
       levels: gradientLevels,
       fillPercentage: Math.round(fillRatio * 100)
     };
+
+    console.log(`[${tankType}] Gradient generated:`, {
+      levels: result.levels.length,
+      fillPercentage: result.fillPercentage,
+      currentTemp,
+      minTemp,
+      maxTemp,
+      fillRatio,
+      sampleLevel: result.levels[0]
+    });
+
+    return result;
   }
 
   private hexToRgb(hex: string): { r: number; g: number; b: number } {
@@ -663,6 +675,9 @@ export class HeatPumpFlowCard extends LitElement {
     const dhwGradientData = this.generateTankGradient('dhw', dhwCurrentTemp, true); // DHW always heating
     const dhwGradient = dhwGradientData.levels;
     const dhwFillPercentage = dhwGradientData.fillPercentage;
+
+    console.log('[Render] Buffer gradient:', bufferGradient.length, 'levels');
+    console.log('[Render] DHW gradient:', dhwGradient.length, 'levels');
 
     // Calculate metrics text colors and positioning
     const hpBgColor = this.getHeatPumpColor(hpState);
@@ -1302,7 +1317,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Improved Buffer Tank (center) -->
             <g id="buffer-tank" transform="translate(390, 100)" filter="url(#entity-shadow)">
               <!-- Tank cylinder body - reduced from 160 to 140 height -->
-              <rect x="10" y="20" width="70" height="140" fill="${bufferGradient.length > 0 ? 'none' : '#34495e'}" stroke="#2c3e50" stroke-width="3"/>
+              <rect x="10" y="20" width="70" height="140" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
 
               <!-- Top rounded cap - reduced from rx=40 to rx=35 -->
               <ellipse cx="45" cy="20" rx="35" ry="15" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
@@ -1310,13 +1325,12 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Bottom rounded cap -->
               <ellipse cx="45" cy="160" rx="35" ry="15" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
 
-              ${bufferGradient.length > 0 ? html`
-                <!-- Temperature gradient visualization (10 levels) -->
-                ${bufferGradient.map(level => html`
+              ${bufferGradient.length > 0 ?
+                bufferGradient.map(level => html`
                   <rect x="15" y="${level.y.toString()}" width="60" height="${level.height.toString()}"
                         fill="${level.color}" opacity="${level.opacity.toString()}"></rect>
-                `)}
-              ` : html`
+                `)
+              : html`
                 <!-- Thermal stratification (fallback - 4 zones) -->
                 <rect x="15" y="25" width="60" height="30" fill="${bufferSupplyColor}" opacity="0.9"/>
                 <rect x="15" y="55" width="60" height="35" fill="${bufferSupplyColor}" opacity="0.7"/>
@@ -1345,7 +1359,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- DHW (Domestic Hot Water) Tank with Coil (center-bottom) -->
             <g id="dhw-tank" transform="translate(390, 330)" filter="url(#entity-shadow)">
               <!-- Tank cylinder body - reduced from 160 to 140 height -->
-              <rect x="10" y="20" width="70" height="140" fill="${dhwGradient.length > 0 ? 'none' : '#34495e'}" stroke="#2c3e50" stroke-width="3"/>
+              <rect x="10" y="20" width="70" height="140" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
 
               <!-- Top rounded cap - reduced from rx=40 to rx=35 -->
               <ellipse cx="45" cy="20" rx="35" ry="15" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
@@ -1353,13 +1367,12 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Bottom rounded cap -->
               <ellipse cx="45" cy="160" rx="35" ry="15" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
 
-              ${dhwGradient.length > 0 ? html`
-                <!-- Temperature gradient visualization (10 levels) -->
-                ${dhwGradient.map(level => html`
+              ${dhwGradient.length > 0 ?
+                dhwGradient.map(level => html`
                   <rect x="15" y="${level.y.toString()}" width="60" height="${level.height.toString()}"
                         fill="${level.color}" opacity="${level.opacity.toString()}"></rect>
-                `)}
-              ` : html`
+                `)
+              : html`
                 <!-- Inner cylinder (DHW water - fallback to simple blue) -->
                 <rect x="15" y="25" width="60" height="130" fill="#3498db" opacity="0.3"/>
               `}
