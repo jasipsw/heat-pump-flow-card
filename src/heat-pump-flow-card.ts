@@ -49,7 +49,7 @@ export class HeatPumpFlowCard extends LitElement {
         min_flow_rate: 5,
         max_flow_rate: 1,
         max_flow_rate_value: 50,
-        idle_threshold: 0,  // Hide animations at/below this flow rate (L/min)
+        idle_threshold: 0.5,  // Hide animations at/below this flow rate (L/min)
         dot_size: 1.5,  // Small particles for water effect (increased from 1.0 for better visibility)
         dot_spacing: 30,
         use_temp_color: false,  // Use single color for visibility on all pipe colors
