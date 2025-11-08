@@ -647,31 +647,55 @@ export class HeatPumpFlowCard extends LitElement {
               </filter>
 
               <!-- Flow gradients for animated shimmer effect -->
-              <!-- Hot water flow gradient (red/orange shimmer) -->
-              <linearGradient id="flow-gradient-hot">
+              <!-- Hot water flow gradient (red/orange shimmer) - repeating pattern -->
+              <linearGradient id="flow-gradient-hot" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="200" y2="0">
                 <stop offset="0%" stop-color="rgba(255, 255, 255, 0)" />
-                <stop offset="30%" stop-color="rgba(255, 200, 150, 0.4)" />
-                <stop offset="50%" stop-color="rgba(255, 255, 255, 0.9)" />
-                <stop offset="70%" stop-color="rgba(255, 200, 150, 0.4)" />
+                <stop offset="20%" stop-color="rgba(255, 200, 150, 0.5)" />
+                <stop offset="40%" stop-color="rgba(255, 255, 255, 0.95)" />
+                <stop offset="60%" stop-color="rgba(255, 200, 150, 0.5)" />
+                <stop offset="80%" stop-color="rgba(255, 255, 255, 0)" />
                 <stop offset="100%" stop-color="rgba(255, 255, 255, 0)" />
+                <animateTransform
+                  attributeName="gradientTransform"
+                  type="translate"
+                  from="0 0"
+                  to="200 0"
+                  dur="3s"
+                  repeatCount="indefinite" />
               </linearGradient>
 
-              <!-- Cold water flow gradient (blue/cyan shimmer) -->
-              <linearGradient id="flow-gradient-cold">
+              <!-- Cold water flow gradient (blue/cyan shimmer) - repeating pattern -->
+              <linearGradient id="flow-gradient-cold" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="200" y2="0">
                 <stop offset="0%" stop-color="rgba(255, 255, 255, 0)" />
-                <stop offset="30%" stop-color="rgba(150, 200, 255, 0.4)" />
-                <stop offset="50%" stop-color="rgba(255, 255, 255, 0.9)" />
-                <stop offset="70%" stop-color="rgba(150, 200, 255, 0.4)" />
+                <stop offset="20%" stop-color="rgba(150, 200, 255, 0.5)" />
+                <stop offset="40%" stop-color="rgba(255, 255, 255, 0.95)" />
+                <stop offset="60%" stop-color="rgba(150, 200, 255, 0.5)" />
+                <stop offset="80%" stop-color="rgba(255, 255, 255, 0)" />
                 <stop offset="100%" stop-color="rgba(255, 255, 255, 0)" />
+                <animateTransform
+                  attributeName="gradientTransform"
+                  type="translate"
+                  from="0 0"
+                  to="200 0"
+                  dur="3s"
+                  repeatCount="indefinite" />
               </linearGradient>
 
               <!-- Neutral flow gradient (white shimmer for inactive pipes) -->
-              <linearGradient id="flow-gradient-neutral">
+              <linearGradient id="flow-gradient-neutral" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="200" y2="0">
                 <stop offset="0%" stop-color="rgba(255, 255, 255, 0)" />
-                <stop offset="30%" stop-color="rgba(255, 255, 255, 0.2)" />
-                <stop offset="50%" stop-color="rgba(255, 255, 255, 0.6)" />
-                <stop offset="70%" stop-color="rgba(255, 255, 255, 0.2)" />
+                <stop offset="20%" stop-color="rgba(255, 255, 255, 0.3)" />
+                <stop offset="40%" stop-color="rgba(255, 255, 255, 0.7)" />
+                <stop offset="60%" stop-color="rgba(255, 255, 255, 0.3)" />
+                <stop offset="80%" stop-color="rgba(255, 255, 255, 0)" />
                 <stop offset="100%" stop-color="rgba(255, 255, 255, 0)" />
+                <animateTransform
+                  attributeName="gradientTransform"
+                  type="translate"
+                  from="0 0"
+                  to="200 0"
+                  dur="4s"
+                  repeatCount="indefinite" />
               </linearGradient>
             </defs>
 
@@ -775,9 +799,7 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke="url(#flow-gradient-hot)"
                     stroke-width="10"
                     fill="none"
-                    stroke-linecap="round"
-                    stroke-dasharray="30 70"
-                    style="--flow-duration: ${this.getAnimationDuration(hpState.flowRate)}s; --flow-dash-length: 100;"/>
+                    stroke-linecap="round"/>
 
               <path class="flow-gradient"
                     d="M 254 180 L 328 180"
@@ -785,8 +807,6 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="10"
                     fill="none"
                     stroke-linecap="round"
-                    stroke-dasharray="30 70"
-                    style="--flow-duration: ${this.getAnimationDuration(hpState.flowRate)}s; --flow-dash-length: 100;"
                     opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
 
               <path class="flow-gradient"
@@ -795,8 +815,6 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="10"
                     fill="none"
                     stroke-linecap="round"
-                    stroke-dasharray="30 70"
-                    style="--flow-duration: ${this.getAnimationDuration(hpState.flowRate)}s; --flow-dash-length: 100;"
                     opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
 
               <path class="flow-gradient"
@@ -804,9 +822,7 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke="url(#flow-gradient-hot)"
                     stroke-width="10"
                     fill="none"
-                    stroke-linecap="round"
-                    stroke-dasharray="30 70"
-                    style="--flow-duration: ${this.getAnimationDuration(hvacState.flowRate)}s; --flow-dash-length: 100;"/>
+                    stroke-linecap="round"/>
 
               <!-- Cold pipe flows (return to HP) -->
               <path class="flow-gradient"
@@ -815,8 +831,6 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="10"
                     fill="none"
                     stroke-linecap="round"
-                    stroke-dasharray="30 70"
-                    style="--flow-duration: ${this.getAnimationDuration(hpState.flowRate)}s; --flow-dash-length: 100;"
                     opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
 
               <path class="flow-gradient"
@@ -824,9 +838,7 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke="url(#flow-gradient-cold)"
                     stroke-width="10"
                     fill="none"
-                    stroke-linecap="round"
-                    stroke-dasharray="30 70"
-                    style="--flow-duration: ${this.getAnimationDuration(hvacState.flowRate)}s; --flow-dash-length: 100;"/>
+                    stroke-linecap="round"/>
 
               <!-- DHW mode flows -->
               <path class="flow-gradient"
@@ -835,8 +847,6 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="10"
                     fill="none"
                     stroke-linecap="round"
-                    stroke-dasharray="30 70"
-                    style="--flow-duration: ${this.getAnimationDuration(hpState.flowRate)}s; --flow-dash-length: 100;"
                     opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
 
               <!-- DHW coil spiral flow -->
@@ -846,8 +856,6 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="8"
                     fill="none"
                     stroke-linecap="round"
-                    stroke-dasharray="20 50"
-                    style="--flow-duration: ${this.getAnimationDuration(hpState.flowRate) * 1.5}s; --flow-dash-length: 100;"
                     opacity="${g2ValveState.isActive ? '1' : '0'}"/>
 
               <path class="flow-gradient"
@@ -856,8 +864,6 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="10"
                     fill="none"
                     stroke-linecap="round"
-                    stroke-dasharray="30 70"
-                    style="--flow-duration: ${this.getAnimationDuration(hpState.flowRate)}s; --flow-dash-length: 100;"
                     opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
             ` : ''}
 
