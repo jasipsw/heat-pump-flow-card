@@ -49,15 +49,15 @@ export class HeatPumpFlowCard extends LitElement {
         min_flow_rate: 5,
         max_flow_rate: 1,
         max_flow_rate_value: 50,
-        dot_size: 8,
+        dot_size: 2.5,  // Small dots for stream effect (was 8)
         dot_spacing: 30,
         use_temp_color: true,
         dot_color: '#3498db',
-        dot_stroke_color: 'white',
-        dot_stroke_width: 1.0,  // Reduced from 1.5 for less prominent stroke
-        dot_stroke_opacity: 0.8,  // New: control stroke opacity separately
-        dot_opacity: 1,
-        dot_shadow: true,
+        dot_stroke_color: 'transparent',  // No stroke to avoid bubble appearance
+        dot_stroke_width: 0,  // No stroke (was 1.0)
+        dot_stroke_opacity: 0,  // No stroke opacity
+        dot_opacity: 0.85,  // Slightly transparent for softer look (was 1)
+        dot_shadow: true,  // Subtle glow for visibility
         ...animation,
       },
       temperature: {
@@ -247,8 +247,9 @@ export class HeatPumpFlowCard extends LitElement {
       const duration = this.getAnimationDuration(pathConfig.flowRate);
       const isFlowing = pathConfig.flowRate > 0;
 
-      // Create 3 dots per path (reduced from 5 for better performance)
-      for (let i = 0; i < 3; i++) {
+      // Create 10 small dots per path for stream effect (was 3 large dots)
+      const dotCount = 10;
+      for (let i = 0; i < dotCount; i++) {
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
 
         // Add CSS class for animation
@@ -265,7 +266,7 @@ export class HeatPumpFlowCard extends LitElement {
         circle.setAttribute('stroke-opacity', this.config.animation.dot_stroke_opacity!.toString());
 
         // Set CSS variables for animation control
-        const delay = (i / 3) * duration; // Space dots evenly
+        const delay = (i / dotCount) * duration; // Space dots evenly
         circle.style.setProperty('--dot-path', `path('${pathData}')`);
         circle.style.setProperty('--dot-duration', `${duration}s`);
         circle.style.setProperty('--dot-delay', `${delay}s`);
