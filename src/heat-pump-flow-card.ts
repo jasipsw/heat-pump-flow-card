@@ -702,6 +702,21 @@ export class HeatPumpFlowCard extends LitElement {
     // Glow opacity for filter - boosted for visibility
     const auxGlowOpacity = Math.min(auxIntensity * 1.5, 1.0);
 
+    // DEBUG LOGGING for aux heater and pipe colors
+    console.log('[Aux Heater Debug]', {
+      auxEnabled: auxHeaterState.enabled,
+      auxPower: auxHeaterState.power,
+      auxIntensity,
+      auxCylinderColor,
+      g2ValveActive: g2ValveState.isActive,
+      hpOutletColor,
+      hotColor: this.config.temperature?.hot_color || '#e74c3c',
+      pipeLogic: {
+        firstSegmentOpacity: g2ValveState.isActive && auxIntensity > 0 ? '0.4' : '1',
+        secondSegmentColor: g2ValveState.isActive && auxIntensity > 0 ? (this.config.temperature?.hot_color || '#e74c3c') : hpOutletColor,
+        shouldShowBoost: g2ValveState.isActive && auxIntensity > 0
+      }
+    });
 
     return html`
       <ha-card>
@@ -1108,21 +1123,21 @@ export class HeatPumpFlowCard extends LitElement {
               <rect x="216" y="166" width="76" height="28" rx="8" ry="8"
                     class="${auxIntensity > 0 ? 'aux-glow-outer' : ''}"
                     fill="#ff4422"
-                    opacity="${auxIntensity > 0 ? auxIntensity * 0.5 : 0}"
+                    style="opacity: ${auxIntensity > 0 ? '' : '0'}"
                     pointer-events="none"/>
 
               <!-- Middle glow layer - properly centered at x=254 -->
               <rect x="220" y="168" width="68" height="24" rx="6" ry="6"
                     class="${auxIntensity > 0 ? 'aux-glow-middle' : ''}"
                     fill="#ff6644"
-                    opacity="${auxIntensity > 0 ? auxIntensity * 0.7 : 0}"
+                    style="opacity: ${auxIntensity > 0 ? '' : '0'}"
                     pointer-events="none"/>
 
               <!-- Inner glow layer - properly centered at x=254 -->
               <rect x="223" y="170" width="62" height="20" rx="4" ry="4"
                     class="${auxIntensity > 0 ? 'aux-glow-inner' : ''}"
                     fill="#ff8855"
-                    opacity="${auxIntensity > 0 ? auxIntensity * 0.9 : 0}"
+                    style="opacity: ${auxIntensity > 0 ? '' : '0'}"
                     pointer-events="none"/>
 
               <!-- Main heated cylinder (centered at x=254) -->
@@ -1130,7 +1145,8 @@ export class HeatPumpFlowCard extends LitElement {
                     class="${auxIntensity > 0 ? 'aux-cylinder-pulse' : ''}"
                     fill="${auxCylinderColor}"
                     stroke="#2d3748"
-                    stroke-width="1.5"/>
+                    stroke-width="1.5"
+                    style="opacity: ${auxIntensity > 0 ? '' : '0'}"/>
             </g>
 
             <!-- Version display (upper right corner) -->
