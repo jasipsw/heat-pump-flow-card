@@ -49,6 +49,7 @@ export class HeatPumpFlowCard extends LitElement {
         min_flow_rate: 5,
         max_flow_rate: 1,
         max_flow_rate_value: 50,
+        idle_threshold: 0,  // Hide animations at/below this flow rate (L/min)
         dot_size: 1.5,  // Small particles for water effect (increased from 1.0 for better visibility)
         dot_spacing: 30,
         use_temp_color: false,  // Use single color for visibility on all pipe colors
@@ -394,8 +395,8 @@ export class HeatPumpFlowCard extends LitElement {
     const cfg = this.config.temperature!;
     const delta = Math.abs(hotTemp - coldTemp);
 
-    // If no flow or delta below threshold, both pipes are neutral
-    if (flowRate <= 0 || delta < cfg.delta_threshold!) {
+    // If flow below idle threshold or delta below threshold, both pipes are neutral
+    if (flowRate <= this.config.animation!.idle_threshold! || delta < cfg.delta_threshold!) {
       return {
         hotPipe: cfg.neutral_color!,
         coldPipe: cfg.neutral_color!
@@ -773,7 +774,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${hpState.flowRate > 0.5 ? '1' : '0'}"></path>
+                  opacity="${hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
 
             <!-- Aux to G2 (horizontal hot) - heating mode only -->
             <defs>
@@ -793,7 +794,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!g2ValveState.isActive && hpState.flowRate > 0.5 ? '1' : '0'}"></path>
+                  opacity="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
 
             <!-- G2 to buffer (horizontal hot) - heating mode only -->
             <defs>
@@ -813,7 +814,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!g2ValveState.isActive && hpState.flowRate > 0.5 ? '1' : '0'}"></path>
+                  opacity="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
 
             <!-- Buffer to HVAC (horizontal hot) -->
             <defs>
@@ -833,7 +834,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${hvacState.flowRate > 0.5 ? '1' : '0'}"></path>
+                  opacity="${hvacState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
 
             <!-- Buffer to HP return (horizontal cold) - heating mode only -->
             <defs>
@@ -853,7 +854,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!g2ValveState.isActive && hpState.flowRate > 0.5 ? '1' : '0'}"></path>
+                  opacity="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
 
             <!-- HVAC to buffer return (horizontal cold) -->
             <defs>
@@ -873,7 +874,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${hvacState.flowRate > 0.5 ? '1' : '0'}"></path>
+                  opacity="${hvacState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
 
             <!-- G2 to DHW (mixed vertical+horizontal hot) - DHW mode only -->
             <defs>
@@ -895,7 +896,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > 0.5 ? '1' : '0'}"></path>
+                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
 
             <!-- DHW coil spiral (vertical hot) - DHW mode only -->
             <defs>
@@ -915,7 +916,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > 0.5 ? '1' : '0'}"></path>
+                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
 
             <!-- DHW to HP return (mixed horizontal+vertical cold) - DHW mode only -->
             <defs>
@@ -937,7 +938,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > 0.5 ? '1' : '0'}"></path>
+                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
 
             <!-- Temperature and flow rate labels (configurable styling) -->
             <!-- Top row: supply temperatures and flow rate -->
@@ -1227,18 +1228,6 @@ export class HeatPumpFlowCard extends LitElement {
               </text>
               <text x="60" y="55" text-anchor="middle" fill="#e74c3c" font-size="20" font-weight="bold">
                 ${this.formatValue(hvacState.thermal, 0)} W
-              </text>
-            </g>
-
-            <!-- TEST: Animated gradient rectangle to verify animation technique works -->
-            <g id="test-gradient-group" transform="translate(10, 30)">
-              <rect id="test-gradient-rect" width="120" height="40"
-                    fill="url(#flow-gradient-hot)"
-                    stroke="#666"
-                    stroke-width="2"
-                    rx="4"></rect>
-              <text id="test-gradient-text" x="60" y="25" text-anchor="middle" fill="#000" font-size="12" font-weight="bold">
-                GRADIENT TEST
               </text>
             </g>
 
