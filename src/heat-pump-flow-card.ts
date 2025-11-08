@@ -660,16 +660,16 @@ export class HeatPumpFlowCard extends LitElement {
                 <animate attributeName="x2" values="100%;200%" dur="2.5s" repeatCount="indefinite" />
               </linearGradient>
 
-              <!-- Cold water flow gradient (subtle flowing shimmer) -->
+              <!-- Cold water flow gradient (subtle flowing shimmer) - REVERSED DIRECTION for return flow -->
               <linearGradient id="flow-gradient-cold" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stop-color="rgba(100, 160, 255, 0.3)" />
                 <stop offset="30%" stop-color="rgba(150, 200, 255, 0.6)" />
                 <stop offset="50%" stop-color="rgba(200, 230, 255, 0.9)" />
                 <stop offset="70%" stop-color="rgba(150, 200, 255, 0.6)" />
                 <stop offset="100%" stop-color="rgba(100, 160, 255, 0.3)" />
-                <!-- Match gist technique exactly -->
-                <animate attributeName="x1" values="0%;100%" dur="2.5s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="100%;200%" dur="2.5s" repeatCount="indefinite" />
+                <!-- Reverse direction: 100% to 0% and 200% to 100% -->
+                <animate attributeName="x1" values="100%;0%" dur="2.5s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="200%;100%" dur="2.5s" repeatCount="indefinite" />
               </linearGradient>
 
               <!-- Neutral flow gradient (white shimmer for inactive pipes) -->
