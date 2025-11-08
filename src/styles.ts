@@ -92,28 +92,28 @@ export const cardStyles = css`
   /* Aux heater pulsing animations - CSS keyframes for reliable animation */
   @keyframes aux-glow-outer {
     0%, 100% {
-      opacity: calc(var(--aux-intensity, 0) * 0.4);
+      opacity: 0.4;
     }
     50% {
-      opacity: calc(var(--aux-intensity, 0) * 0.6);
+      opacity: 0.6;
     }
   }
 
   @keyframes aux-glow-middle {
     0%, 100% {
-      opacity: calc(var(--aux-intensity, 0) * 0.6);
+      opacity: 0.6;
     }
     50% {
-      opacity: calc(var(--aux-intensity, 0) * 0.8);
+      opacity: 0.8;
     }
   }
 
   @keyframes aux-glow-inner {
     0%, 100% {
-      opacity: calc(var(--aux-intensity, 0) * 0.8);
+      opacity: 0.8;
     }
     50% {
-      opacity: calc(var(--aux-intensity, 0) * 1.0);
+      opacity: 1.0;
     }
   }
 
@@ -126,6 +126,12 @@ export const cardStyles = css`
     }
   }
 
+  /* Base state for aux heater elements - hidden by default */
+  .aux-heater-layer {
+    opacity: 0;
+  }
+
+  /* When active, show and animate */
   .aux-glow-outer {
     animation: aux-glow-outer 2s ease-in-out infinite;
   }

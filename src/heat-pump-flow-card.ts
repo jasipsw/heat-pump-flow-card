@@ -708,13 +708,12 @@ export class HeatPumpFlowCard extends LitElement {
       auxPower: auxHeaterState.power,
       auxIntensity,
       auxCylinderColor,
-      g2ValveActive: g2ValveState.isActive,
       hpOutletColor,
       hotColor: this.config.temperature?.hot_color || '#e74c3c',
       pipeLogic: {
-        firstSegmentOpacity: g2ValveState.isActive && auxIntensity > 0 ? '0.4' : '1',
-        secondSegmentColor: g2ValveState.isActive && auxIntensity > 0 ? (this.config.temperature?.hot_color || '#e74c3c') : hpOutletColor,
-        shouldShowBoost: g2ValveState.isActive && auxIntensity > 0
+        firstSegmentOpacity: auxIntensity > 0 ? '0.5' : '1',
+        secondSegmentColor: auxIntensity > 0 ? (this.config.temperature?.hot_color || '#e74c3c') : hpOutletColor,
+        shouldShowBoost: auxIntensity > 0
       }
     });
 
@@ -761,22 +760,20 @@ export class HeatPumpFlowCard extends LitElement {
                   opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
 
             <!-- Pipe: HP to aux heater (first segment) -->
-            <!-- In heating mode: normal red (hpOutletColor) -->
-            <!-- In DHW mode with aux active: dimmed to show it's cooler before aux boost -->
+            <!-- Shows water at HP outlet temperature before aux heater boost -->
             <path id="hp-to-aux-heating-path"
                   d="M 180 180 L 254 180"
                   stroke="${hpOutletColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && auxIntensity > 0 ? '0.4' : '1'}"/>
+                  opacity="${auxIntensity > 0 ? '0.5' : '1'}"/>
 
             <!-- Pipe: Aux heater to G2 valve (second segment) -->
-            <!-- In DHW mode with aux active: bright red to show temperature boost -->
-            <!-- Otherwise: normal red (matches first segment) -->
+            <!-- Shows boosted temperature after aux heater adds energy -->
             <path id="aux-to-g2-heating-path"
                   d="M 254 180 L 328 180"
-                  stroke="${g2ValveState.isActive && auxIntensity > 0 ? (this.config.temperature?.hot_color || '#e74c3c') : hpOutletColor}"
+                  stroke="${auxIntensity > 0 ? (this.config.temperature?.hot_color || '#e74c3c') : hpOutletColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
@@ -1116,37 +1113,32 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Auxiliary Heater - Glowing cylinder with animated pulsing glow -->
             <!-- Centered between HP outlet (180) and G2 inlet (328) = 254, width 60, so x=224 -->
             <g id="aux-heater"
-               opacity="${auxHeaterState.enabled ? '1' : '0'}"
-               style="--aux-intensity: ${auxIntensity}">
+               opacity="${auxHeaterState.enabled ? '1' : '0'}">
               <!-- Glow layers - simple solid colors with CSS pulsing animation -->
               <!-- Outermost glow layer - properly centered at x=254 -->
               <rect x="216" y="166" width="76" height="28" rx="8" ry="8"
-                    class="${auxIntensity > 0 ? 'aux-glow-outer' : ''}"
+                    class="aux-heater-layer ${auxIntensity > 0 ? 'aux-glow-outer' : ''}"
                     fill="#ff4422"
-                    style="opacity: ${auxIntensity > 0 ? '' : '0'}"
                     pointer-events="none"/>
 
               <!-- Middle glow layer - properly centered at x=254 -->
               <rect x="220" y="168" width="68" height="24" rx="6" ry="6"
-                    class="${auxIntensity > 0 ? 'aux-glow-middle' : ''}"
+                    class="aux-heater-layer ${auxIntensity > 0 ? 'aux-glow-middle' : ''}"
                     fill="#ff6644"
-                    style="opacity: ${auxIntensity > 0 ? '' : '0'}"
                     pointer-events="none"/>
 
               <!-- Inner glow layer - properly centered at x=254 -->
               <rect x="223" y="170" width="62" height="20" rx="4" ry="4"
-                    class="${auxIntensity > 0 ? 'aux-glow-inner' : ''}"
+                    class="aux-heater-layer ${auxIntensity > 0 ? 'aux-glow-inner' : ''}"
                     fill="#ff8855"
-                    style="opacity: ${auxIntensity > 0 ? '' : '0'}"
                     pointer-events="none"/>
 
               <!-- Main heated cylinder (centered at x=254) -->
               <rect x="224" y="172" width="60" height="16" rx="2" ry="2"
-                    class="${auxIntensity > 0 ? 'aux-cylinder-pulse' : ''}"
+                    class="aux-heater-layer ${auxIntensity > 0 ? 'aux-cylinder-pulse' : ''}"
                     fill="${auxCylinderColor}"
                     stroke="#2d3748"
-                    stroke-width="1.5"
-                    style="opacity: ${auxIntensity > 0 ? '' : '0'}"/>
+                    stroke-width="1.5"/>
             </g>
 
             <!-- Version display (upper right corner) -->
