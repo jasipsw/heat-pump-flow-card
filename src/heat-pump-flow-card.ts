@@ -736,6 +736,9 @@ export class HeatPumpFlowCard extends LitElement {
     // At 0% power: 2.0s (slow), at 100% power: 0.6s (fast)
     const animSpeed = auxIntensity > 0 ? (2.0 - auxIntensity * 1.4) : 2.0;
 
+    // Get shadow blur multiplier from config (default: 1.0)
+    const shadowBlur = this.config.aux_heater?.shadow_blur ?? 1.0;
+
     // DEBUG LOGGING for aux heater and pipe colors
     const outerClass = auxIntensity > 0 ? 'aux-glow-outer' : 'aux-heater-layer';
     const middleClass = auxIntensity > 0 ? 'aux-glow-middle' : 'aux-heater-layer';
@@ -748,6 +751,7 @@ export class HeatPumpFlowCard extends LitElement {
       auxPower: auxHeaterState.power,
       auxIntensity,
       glowSize,
+      shadowBlur: `${shadowBlur}x (multiplier for drop-shadow blur)`,
       animSpeed: `${animSpeed.toFixed(2)}s (faster at higher power)`,
       auxCylinderColor,
       hpOutletColor,
@@ -768,7 +772,7 @@ export class HeatPumpFlowCard extends LitElement {
         secondSegmentColor: auxIntensity > 0 ? (this.config.temperature?.hot_color || '#e74c3c') : hpOutletColor,
         shouldShowBoost: auxIntensity > 0
       },
-      configTip: 'Add "glow_size: 20" to aux_heater config to make animation much larger (default: 8)'
+      configTip: 'Add "glow_size: 20" and "shadow_blur: 2.0" to aux_heater config for more dramatic effect'
     });
 
     return html`
@@ -1125,6 +1129,21 @@ export class HeatPumpFlowCard extends LitElement {
               <rect x="15" y="25" width="60" height="130" fill="#3498db" opacity="0.3"/>
 
               <!-- Heating coil inside tank (spiral) - complete path from inlet to outlet -->
+              <!-- Outer glow layer - pulsing when active -->
+              <path d="M 28 40 Q 45 48, 62 40 Q 45 60, 28 60 Q 45 76, 62 60 Q 45 92, 28 92 Q 45 108, 62 92 Q 45 124, 28 124 Q 45 132, 62 124 Q 45 140, 28 140"
+                    stroke="${dhwCoilColor}"
+                    stroke-width="10"
+                    fill="none"
+                    class="${g2ValveState.isActive ? 'dhw-coil-glow-outer' : 'dhw-coil-glow-layer'}"
+                    pointer-events="none"/>
+              <!-- Inner glow layer - pulsing when active -->
+              <path d="M 28 40 Q 45 48, 62 40 Q 45 60, 28 60 Q 45 76, 62 60 Q 45 92, 28 92 Q 45 108, 62 92 Q 45 124, 28 124 Q 45 132, 62 124 Q 45 140, 28 140"
+                    stroke="${dhwCoilColor}"
+                    stroke-width="7"
+                    fill="none"
+                    class="${g2ValveState.isActive ? 'dhw-coil-glow-inner' : 'dhw-coil-glow-layer'}"
+                    pointer-events="none"/>
+              <!-- Main coil path -->
               <path d="M 28 40 Q 45 48, 62 40 Q 45 60, 28 60 Q 45 76, 62 60 Q 45 92, 28 92 Q 45 108, 62 92 Q 45 124, 28 124 Q 45 132, 62 124 Q 45 140, 28 140"
                     stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                     stroke-width="4"
@@ -1168,9 +1187,10 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Centered between HP outlet (180) and G2 inlet (328) = 254 -->
             <!-- Glow size configurable via aux_heater.glow_size (default: 8px) -->
             <!-- Animation speed increases with power level for visual feedback -->
+            <!-- Shadow blur configurable via aux_heater.shadow_blur (default: 1.0) -->
             <g id="aux-heater"
                opacity="${auxHeaterState.enabled ? '1' : '0'}"
-               style="--aux-anim-speed: ${animSpeed}s">
+               style="--aux-anim-speed: ${animSpeed}s; --aux-shadow-blur: ${shadowBlur};">
               <!-- Glow layers - simple solid colors with CSS pulsing animation -->
               <!-- Outermost glow layer - size based on config -->
               <rect x="${outerGlow.x}" y="${outerGlow.y}"
