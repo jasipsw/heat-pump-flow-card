@@ -249,8 +249,8 @@ export class HeatPumpFlowCard extends LitElement {
       const duration = this.getAnimationDuration(pathConfig.flowRate);
       const isFlowing = pathConfig.flowRate > 0;
 
-      // Create 40 tiny dots per path for realistic water particle stream effect
-      const dotCount = 40;
+      // Create 20 particles per path (reduced from 40 to reduce density/crowding)
+      const dotCount = 20;
       for (let i = 0; i < dotCount; i++) {
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
 
@@ -258,19 +258,26 @@ export class HeatPumpFlowCard extends LitElement {
         circle.classList.add('flow-dot');
         circle.setAttribute('data-path-id', pathConfig.id);
 
+        // Random size variation (0.8 - 2.0px) to break up straight-line appearance
+        const randomSize = 0.8 + Math.random() * 1.2;  // Range: 0.8 to 2.0
+
+        // Random opacity variation (0.5 - 0.9) for visual variety
+        const randomOpacity = 0.5 + Math.random() * 0.4;  // Range: 0.5 to 0.9
+
         // Position at origin (CSS offset-path will move it along the path centerline)
         circle.setAttribute('cx', '0');
         circle.setAttribute('cy', '0');
-        circle.setAttribute('r', this.config.animation.dot_size.toString());
+        circle.setAttribute('r', randomSize.toString());
         circle.setAttribute('fill', dotColor!);
         // NO stroke/border - clean filled circles only for realistic particles
 
         // Set CSS variables for animation control
         const delay = (i / dotCount) * duration; // Space dots evenly along path
+        const finalOpacity = isFlowing ? randomOpacity : 0;  // Use random opacity when flowing
         circle.style.setProperty('--dot-path', `path('${pathData}')`);
         circle.style.setProperty('--dot-duration', `${duration}s`);
         circle.style.setProperty('--dot-delay', `${delay}s`);
-        circle.style.setProperty('--dot-opacity', isFlowing ? this.config.animation.dot_opacity!.toString() : '0');
+        circle.style.setProperty('--dot-opacity', finalOpacity.toString());
 
         // Insert dots before the first component group (g2-valve) so they render:
         // - ABOVE pipes (visible)
