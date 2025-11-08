@@ -1204,14 +1204,16 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- TEST: Animated gradient rectangle to verify animation technique works -->
             ${this.config.animation?.enabled !== false ? html`
-              <rect id="test-gradient-rect" x="10" y="30" width="120" height="40"
-                    fill="url(#flow-gradient-hot)"
-                    stroke="#666"
-                    stroke-width="2"
-                    rx="4"></rect>
-              <text id="test-gradient-text" x="70" y="55" text-anchor="middle" fill="#000" font-size="12" font-weight="bold">
-                GRADIENT TEST
-              </text>
+              <g id="test-gradient-group" transform="translate(10, 30)">
+                <rect id="test-gradient-rect" x="0" y="0" width="120" height="40"
+                      fill="url(#flow-gradient-hot)"
+                      stroke="#666"
+                      stroke-width="2"
+                      rx="4"></rect>
+                <text id="test-gradient-text" x="60" y="25" text-anchor="middle" fill="#000" font-size="12" font-weight="bold">
+                  GRADIENT TEST
+                </text>
+              </g>
             ` : ''}
 
             <!-- Flow dots created programmatically in firstUpdated() -->
