@@ -1302,7 +1302,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Improved Buffer Tank (center) -->
             <g id="buffer-tank" transform="translate(390, 100)" filter="url(#entity-shadow)">
               <!-- Tank cylinder body - reduced from 160 to 140 height -->
-              <rect x="10" y="20" width="70" height="140" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
+              <rect x="10" y="20" width="70" height="140" fill="${bufferGradient.length > 0 ? 'none' : '#34495e'}" stroke="#2c3e50" stroke-width="3"/>
 
               <!-- Top rounded cap - reduced from rx=40 to rx=35 -->
               <ellipse cx="45" cy="20" rx="35" ry="15" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
@@ -1345,7 +1345,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- DHW (Domestic Hot Water) Tank with Coil (center-bottom) -->
             <g id="dhw-tank" transform="translate(390, 330)" filter="url(#entity-shadow)">
               <!-- Tank cylinder body - reduced from 160 to 140 height -->
-              <rect x="10" y="20" width="70" height="140" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
+              <rect x="10" y="20" width="70" height="140" fill="${dhwGradient.length > 0 ? 'none' : '#34495e'}" stroke="#2c3e50" stroke-width="3"/>
 
               <!-- Top rounded cap - reduced from rx=40 to rx=35 -->
               <ellipse cx="45" cy="20" rx="35" ry="15" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
