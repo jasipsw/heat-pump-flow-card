@@ -133,165 +133,15 @@ export class HeatPumpFlowCard extends LitElement {
   }
 
   protected firstUpdated(): void {
-    // Only create dots if animations enabled (CSS handles animation automatically)
+    // Animation variables setup (CSS handles animation automatically via pipe overlays)
     if (this.config.animation.enabled) {
-      this.createFlowDots();
-      // Initial animation variable setup
       setTimeout(() => {
         this.updateAnimationVariables();
       }, 100);
     }
   }
 
-  // No more JavaScript animation loops - CSS handles everything!
-
-  private createFlowDots(): void {
-    const svg = this.shadowRoot?.querySelector('svg');
-    if (!svg) return;
-
-    const hpState = this.getHeatPumpState();
-    const bufferState = this.getBufferTankState();
-    const hvacState = this.getHVACState();
-    const dhwState = this.getDHWTankState();
-
-    // Create dots for ALL paths (heating and DHW mode)
-    // They'll be shown/hidden based on active mode
-    const pathConfigs = [
-      // HP to aux heater - always flowing in both modes
-      {
-        id: 'hp-to-aux-heating-path',
-        flowRate: hpState.flowRate,
-        supplyTemp: hpState.outletTemp,
-        returnTemp: hpState.inletTemp,
-        mode: 'both'
-      },
-      // Aux heater to G2 - always flowing in both modes
-      {
-        id: 'aux-to-g2-heating-path',
-        flowRate: hpState.flowRate,
-        supplyTemp: hpState.outletTemp,
-        returnTemp: hpState.inletTemp,
-        mode: 'both'
-      },
-      // G2 to buffer - heating mode only
-      {
-        id: 'g2-to-buffer-path',
-        flowRate: hpState.flowRate,
-        supplyTemp: hpState.outletTemp,
-        returnTemp: hpState.inletTemp,
-        mode: 'heating'
-      },
-      {
-        id: 'buffer-to-hp-path',
-        flowRate: hpState.flowRate,
-        supplyTemp: hpState.outletTemp,
-        returnTemp: hpState.inletTemp,
-        mode: 'heating'
-      },
-      {
-        id: 'buffer-to-hvac-path',
-        flowRate: hvacState.flowRate,
-        supplyTemp: bufferState.supplyTemp,
-        returnTemp: hvacState.returnTemp,
-        mode: 'both'  // Always visible
-      },
-      {
-        id: 'hvac-to-buffer-path',
-        flowRate: hvacState.flowRate,
-        supplyTemp: bufferState.supplyTemp,
-        returnTemp: hvacState.returnTemp,
-        mode: 'both'  // Always visible
-      },
-      // DHW mode paths
-      {
-        id: 'g2-to-dhw-path',
-        flowRate: hpState.flowRate,
-        supplyTemp: dhwState.inletTemp,
-        returnTemp: dhwState.outletTemp,
-        mode: 'dhw'
-      },
-      {
-        id: 'dhw-coil-path',
-        flowRate: hpState.flowRate,
-        supplyTemp: dhwState.inletTemp,
-        returnTemp: dhwState.outletTemp,
-        mode: 'dhw'
-      },
-      {
-        id: 'dhw-to-hp-return-path',
-        flowRate: hpState.flowRate,
-        supplyTemp: hpState.outletTemp,
-        returnTemp: hpState.inletTemp,
-        mode: 'dhw'
-      }
-    ];
-
-    pathConfigs.forEach((pathConfig, pathIndex) => {
-      const pathElement = this.shadowRoot?.querySelector(`#${pathConfig.id}`) as SVGPathElement;
-      if (!pathElement) return;
-
-      // Get path data for CSS offset-path
-      const pathData = pathElement.getAttribute('d');
-      if (!pathData) return;
-
-      // Calculate color and duration
-      const pipeColors = this.getPipeColors(pathConfig.supplyTemp, pathConfig.returnTemp, pathConfig.flowRate);
-
-      // Determine if this is a supply (hot) or return (cold) pipe based on path name
-      // Return pipes flow back TO the heat pump or TO the buffer tank
-      const isReturnPipe = pathConfig.id.includes('-to-hp-') ||
-                           pathConfig.id.includes('hvac-to-buffer') ||
-                           pathConfig.id.includes('dhw-to-hp');
-      const dotColor = this.config.animation.use_temp_color
-        ? (isReturnPipe ? pipeColors.coldPipe : pipeColors.hotPipe)
-        : this.config.animation.dot_color;
-
-      const duration = this.getAnimationDuration(pathConfig.flowRate);
-      const isFlowing = pathConfig.flowRate > 0;
-
-      // Create 20 particles per path (reduced from 40 to reduce density/crowding)
-      const dotCount = 20;
-      for (let i = 0; i < dotCount; i++) {
-        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-
-        // Add CSS class for animation
-        circle.classList.add('flow-dot');
-        circle.setAttribute('data-path-id', pathConfig.id);
-
-        // Subtle random size variation (1.0 - 1.5px) to break up straight-line appearance
-        const randomSize = 1.0 + Math.random() * 0.5;  // Range: 1.0 to 1.5px (narrower for consistent density)
-
-        // Subtle random opacity variation (0.6 - 0.85) for visual variety
-        const randomOpacity = 0.6 + Math.random() * 0.25;  // Range: 0.6 to 0.85 (brighter, more visible)
-
-        // Position at origin (CSS offset-path will move it along the path centerline)
-        circle.setAttribute('cx', '0');
-        circle.setAttribute('cy', '0');
-        circle.setAttribute('r', randomSize.toString());
-        circle.setAttribute('fill', dotColor!);
-        // NO stroke/border - clean filled circles only for realistic particles
-
-        // Set CSS variables for animation control
-        const delay = (i / dotCount) * duration; // Space dots evenly along path
-        const finalOpacity = isFlowing ? randomOpacity : 0;  // Use random opacity when flowing
-        circle.style.setProperty('--dot-path', `path('${pathData}')`);
-        circle.style.setProperty('--dot-duration', `${duration}s`);
-        circle.style.setProperty('--dot-delay', `${delay}s`);
-        circle.style.setProperty('--dot-opacity', finalOpacity.toString());
-
-        // Insert dots before aux heater (last component before version text) so they render:
-        // - ABOVE pipes (visible)
-        // - ABOVE all tank/component bodies (visible on DHW coil)
-        // - BELOW aux heater glow and version text (clean layering)
-        const auxHeater = svg.querySelector('#aux-heater');
-        if (auxHeater) {
-          svg.insertBefore(circle, auxHeater);
-        } else {
-          svg.appendChild(circle);  // Fallback - append at end
-        }
-      }
-    });
-  }
+  // Flow animation now uses animated stroke-dasharray on pipe overlays (CSS-based)
 
   // Update CSS animation variables when state changes (CSS handles the actual animation)
   private updateAnimationVariables(): void {
@@ -795,6 +645,34 @@ export class HeatPumpFlowCard extends LitElement {
               <filter id="aux-glow-inner">
                 <feGaussianBlur in="SourceGraphic" stdDeviation="4"/>
               </filter>
+
+              <!-- Flow gradients for animated shimmer effect -->
+              <!-- Hot water flow gradient (red/orange shimmer) -->
+              <linearGradient id="flow-gradient-hot">
+                <stop offset="0%" stop-color="rgba(255, 255, 255, 0)" />
+                <stop offset="30%" stop-color="rgba(255, 200, 150, 0.4)" />
+                <stop offset="50%" stop-color="rgba(255, 255, 255, 0.9)" />
+                <stop offset="70%" stop-color="rgba(255, 200, 150, 0.4)" />
+                <stop offset="100%" stop-color="rgba(255, 255, 255, 0)" />
+              </linearGradient>
+
+              <!-- Cold water flow gradient (blue/cyan shimmer) -->
+              <linearGradient id="flow-gradient-cold">
+                <stop offset="0%" stop-color="rgba(255, 255, 255, 0)" />
+                <stop offset="30%" stop-color="rgba(150, 200, 255, 0.4)" />
+                <stop offset="50%" stop-color="rgba(255, 255, 255, 0.9)" />
+                <stop offset="70%" stop-color="rgba(150, 200, 255, 0.4)" />
+                <stop offset="100%" stop-color="rgba(255, 255, 255, 0)" />
+              </linearGradient>
+
+              <!-- Neutral flow gradient (white shimmer for inactive pipes) -->
+              <linearGradient id="flow-gradient-neutral">
+                <stop offset="0%" stop-color="rgba(255, 255, 255, 0)" />
+                <stop offset="30%" stop-color="rgba(255, 255, 255, 0.2)" />
+                <stop offset="50%" stop-color="rgba(255, 255, 255, 0.6)" />
+                <stop offset="70%" stop-color="rgba(255, 255, 255, 0.2)" />
+                <stop offset="100%" stop-color="rgba(255, 255, 255, 0)" />
+              </linearGradient>
             </defs>
 
             <!-- Flow Pipes (rendered first so they appear behind entities) -->
@@ -888,6 +766,100 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"/>
+
+            <!-- Animated Flow Overlays (shimmer effect on pipes) -->
+            ${this.config.animation?.enabled !== false ? html`
+              <!-- Hot pipe flows (HP to buffer/DHW) -->
+              <path class="flow-gradient"
+                    d="M 180 180 L 254 180"
+                    stroke="url(#flow-gradient-hot)"
+                    stroke-width="10"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-dasharray="30 70"
+                    style="--flow-duration: ${this.getAnimationDuration(hpState.flowRate)}s; --flow-dash-length: 100;"/>
+
+              <path class="flow-gradient"
+                    d="M 254 180 L 328 180"
+                    stroke="url(#flow-gradient-hot)"
+                    stroke-width="10"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-dasharray="30 70"
+                    style="--flow-duration: ${this.getAnimationDuration(hpState.flowRate)}s; --flow-dash-length: 100;"
+                    opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
+
+              <path class="flow-gradient"
+                    d="M 367 180 L 390 180"
+                    stroke="url(#flow-gradient-hot)"
+                    stroke-width="10"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-dasharray="30 70"
+                    style="--flow-duration: ${this.getAnimationDuration(hpState.flowRate)}s; --flow-dash-length: 100;"
+                    opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
+
+              <path class="flow-gradient"
+                    d="M 480 180 L 620 180"
+                    stroke="url(#flow-gradient-hot)"
+                    stroke-width="10"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-dasharray="30 70"
+                    style="--flow-duration: ${this.getAnimationDuration(hvacState.flowRate)}s; --flow-dash-length: 100;"/>
+
+              <!-- Cold pipe flows (return to HP) -->
+              <path class="flow-gradient"
+                    d="M 390 220 L 180 220"
+                    stroke="url(#flow-gradient-cold)"
+                    stroke-width="10"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-dasharray="30 70"
+                    style="--flow-duration: ${this.getAnimationDuration(hpState.flowRate)}s; --flow-dash-length: 100;"
+                    opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
+
+              <path class="flow-gradient"
+                    d="M 620 220 L 480 220"
+                    stroke="url(#flow-gradient-cold)"
+                    stroke-width="10"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-dasharray="30 70"
+                    style="--flow-duration: ${this.getAnimationDuration(hvacState.flowRate)}s; --flow-dash-length: 100;"/>
+
+              <!-- DHW mode flows -->
+              <path class="flow-gradient"
+                    d="M 348 195 L 348 370 L 418 370"
+                    stroke="url(#flow-gradient-hot)"
+                    stroke-width="10"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-dasharray="30 70"
+                    style="--flow-duration: ${this.getAnimationDuration(hpState.flowRate)}s; --flow-dash-length: 100;"
+                    opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
+
+              <!-- DHW coil spiral flow -->
+              <path class="flow-gradient"
+                    d="M 418 370 Q 438 378, 458 370 Q 438 390, 418 390 Q 438 406, 458 390 Q 438 422, 418 422 Q 438 438, 458 422 Q 438 454, 418 454 Q 438 470, 458 454 Q 438 478, 418 470"
+                    stroke="url(#flow-gradient-hot)"
+                    stroke-width="8"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-dasharray="20 50"
+                    style="--flow-duration: ${this.getAnimationDuration(hpState.flowRate) * 1.5}s; --flow-dash-length: 100;"
+                    opacity="${g2ValveState.isActive ? '1' : '0'}"/>
+
+              <path class="flow-gradient"
+                    d="M 418 470 L 370 470 L 370 220 L 180 220"
+                    stroke="url(#flow-gradient-cold)"
+                    stroke-width="10"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-dasharray="30 70"
+                    style="--flow-duration: ${this.getAnimationDuration(hpState.flowRate)}s; --flow-dash-length: 100;"
+                    opacity="${g2ValveState.isActive ? '1' : '0.3'}"/>
+            ` : ''}
 
             <!-- Temperature and flow rate labels (configurable styling) -->
             <!-- Top row: supply temperatures and flow rate -->

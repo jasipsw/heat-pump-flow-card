@@ -29,24 +29,19 @@ export const cardStyles = css`
     font-family: var(--paper-font-body1_-_font-family);
   }
 
-  /* CSS-based flow dot animations (hardware-accelerated) */
-  /* Small white particles with subtle motion blur for realistic water flow */
-  .flow-dot {
-    offset-path: var(--dot-path);
-    offset-rotate: 0deg;
-    animation: flow-along-path linear infinite;
-    animation-duration: var(--dot-duration, 5s);
-    animation-delay: var(--dot-delay, 0s);
-    opacity: var(--dot-opacity, 1);
-    filter: blur(0.5px);  /* Subtle motion blur - makes particles look like flowing water */
+  /* Animated gradient flow effect on pipes */
+  .flow-gradient {
+    animation: flow-gradient-move linear infinite;
+    animation-duration: var(--flow-duration, 3s);
+    opacity: 0.8;
   }
 
-  @keyframes flow-along-path {
+  @keyframes flow-gradient-move {
     from {
-      offset-distance: 0%;
+      stroke-dashoffset: 0;
     }
     to {
-      offset-distance: 100%;
+      stroke-dashoffset: var(--flow-dash-length, 100);
     }
   }
 
