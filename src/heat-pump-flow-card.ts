@@ -485,7 +485,7 @@ export class HeatPumpFlowCard extends LitElement {
       const levelTopRatio = (i + 1) / levels;
       const levelMidRatio = (levelBottomRatio + levelTopRatio) / 2;
 
-      const opacity = levelMidRatio <= fillRatio ? 0.85 : 0.15;
+      const opacity = levelMidRatio <= fillRatio ? 0.95 : 0.05;
 
       gradientLevels.push({
         y: levelY,
