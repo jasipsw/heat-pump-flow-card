@@ -647,41 +647,41 @@ export class HeatPumpFlowCard extends LitElement {
               </filter>
 
               <!-- Flow gradients for animated shimmer effect -->
-              <!-- Animate x1/x2 to create sliding gradient shimmer along the stroke -->
+              <!-- Using same technique as working gist: x1 from 0% to 100%, x2 from 100% to 200% -->
               <!-- Hot water flow gradient (red/orange shimmer) -->
               <linearGradient id="flow-gradient-hot">
-                <stop offset="0%" stop-color="rgba(255, 100, 50, 0)" />
-                <stop offset="40%" stop-color="rgba(255, 150, 100, 0.7)" />
+                <stop offset="0%" stop-color="rgba(255, 80, 40, 1)" />
+                <stop offset="20%" stop-color="rgba(255, 150, 100, 1)" />
                 <stop offset="50%" stop-color="rgba(255, 255, 255, 1)" />
-                <stop offset="60%" stop-color="rgba(255, 150, 100, 0.7)" />
-                <stop offset="100%" stop-color="rgba(255, 100, 50, 0)" />
-                <!-- Animate x1 from -100% to 100% to create flowing effect -->
-                <animate attributeName="x1" values="-100%;100%" dur="2s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="0%;200%" dur="2s" repeatCount="indefinite" />
+                <stop offset="80%" stop-color="rgba(255, 150, 100, 1)" />
+                <stop offset="100%" stop-color="rgba(255, 80, 40, 1)" />
+                <!-- Match gist technique exactly -->
+                <animate attributeName="x1" values="0%;100%" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="100%;200%" dur="3s" repeatCount="indefinite" />
               </linearGradient>
 
               <!-- Cold water flow gradient (blue/cyan shimmer) -->
               <linearGradient id="flow-gradient-cold">
-                <stop offset="0%" stop-color="rgba(100, 150, 255, 0)" />
-                <stop offset="40%" stop-color="rgba(150, 200, 255, 0.7)" />
+                <stop offset="0%" stop-color="rgba(80, 150, 255, 1)" />
+                <stop offset="20%" stop-color="rgba(150, 200, 255, 1)" />
                 <stop offset="50%" stop-color="rgba(255, 255, 255, 1)" />
-                <stop offset="60%" stop-color="rgba(150, 200, 255, 0.7)" />
-                <stop offset="100%" stop-color="rgba(100, 150, 255, 0)" />
-                <!-- Animate x1 from -100% to 100% to create flowing effect -->
-                <animate attributeName="x1" values="-100%;100%" dur="2s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="0%;200%" dur="2s" repeatCount="indefinite" />
+                <stop offset="80%" stop-color="rgba(150, 200, 255, 1)" />
+                <stop offset="100%" stop-color="rgba(80, 150, 255, 1)" />
+                <!-- Match gist technique exactly -->
+                <animate attributeName="x1" values="0%;100%" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="100%;200%" dur="3s" repeatCount="indefinite" />
               </linearGradient>
 
               <!-- Neutral flow gradient (white shimmer for inactive pipes) -->
               <linearGradient id="flow-gradient-neutral">
-                <stop offset="0%" stop-color="rgba(200, 200, 200, 0)" />
-                <stop offset="40%" stop-color="rgba(255, 255, 255, 0.5)" />
+                <stop offset="0%" stop-color="rgba(180, 180, 180, 1)" />
+                <stop offset="20%" stop-color="rgba(220, 220, 220, 1)" />
                 <stop offset="50%" stop-color="rgba(255, 255, 255, 1)" />
-                <stop offset="60%" stop-color="rgba(255, 255, 255, 0.5)" />
-                <stop offset="100%" stop-color="rgba(200, 200, 200, 0)" />
+                <stop offset="80%" stop-color="rgba(220, 220, 220, 1)" />
+                <stop offset="100%" stop-color="rgba(180, 180, 180, 1)" />
                 <!-- Slower animation for neutral flow -->
-                <animate attributeName="x1" values="-100%;100%" dur="3s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="0%;200%" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="0%;100%" dur="4s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="100%;200%" dur="4s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
 
