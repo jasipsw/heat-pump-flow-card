@@ -249,8 +249,8 @@ export class HeatPumpFlowCard extends LitElement {
       const duration = this.getAnimationDuration(pathConfig.flowRate);
       const isFlowing = pathConfig.flowRate > 0;
 
-      // Create 40 tiny dots per path for realistic water particle stream effect
-      const dotCount = 40;
+      // Create 20 particles per path (reduced from 40 to reduce density/crowding)
+      const dotCount = 20;
       for (let i = 0; i < dotCount; i++) {
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
 
@@ -258,28 +258,35 @@ export class HeatPumpFlowCard extends LitElement {
         circle.classList.add('flow-dot');
         circle.setAttribute('data-path-id', pathConfig.id);
 
+        // Random size variation (0.8 - 2.0px) to break up straight-line appearance
+        const randomSize = 0.8 + Math.random() * 1.2;  // Range: 0.8 to 2.0
+
+        // Random opacity variation (0.5 - 0.9) for visual variety
+        const randomOpacity = 0.5 + Math.random() * 0.4;  // Range: 0.5 to 0.9
+
         // Position at origin (CSS offset-path will move it along the path centerline)
         circle.setAttribute('cx', '0');
         circle.setAttribute('cy', '0');
-        circle.setAttribute('r', this.config.animation.dot_size.toString());
+        circle.setAttribute('r', randomSize.toString());
         circle.setAttribute('fill', dotColor!);
         // NO stroke/border - clean filled circles only for realistic particles
 
         // Set CSS variables for animation control
         const delay = (i / dotCount) * duration; // Space dots evenly along path
+        const finalOpacity = isFlowing ? randomOpacity : 0;  // Use random opacity when flowing
         circle.style.setProperty('--dot-path', `path('${pathData}')`);
         circle.style.setProperty('--dot-duration', `${duration}s`);
         circle.style.setProperty('--dot-delay', `${delay}s`);
-        circle.style.setProperty('--dot-opacity', isFlowing ? this.config.animation.dot_opacity!.toString() : '0');
+        circle.style.setProperty('--dot-opacity', finalOpacity.toString());
 
-        // Insert dots before the first component group (g2-valve) so they render:
+        // Insert dots before the heat pump (first component) so they render:
         // - ABOVE pipes (visible)
-        // - BELOW components like aux heater, valves (realistic inside-pipe effect)
-        const g2Valve = svg.querySelector('#g2-valve');
-        if (g2Valve) {
-          svg.insertBefore(circle, g2Valve);
+        // - BELOW ALL components: heat pump, valves, tanks, aux heater (realistic inside-pipe effect)
+        const heatPump = svg.querySelector('#heat-pump');
+        if (heatPump) {
+          svg.insertBefore(circle, heatPump);
         } else {
-          svg.appendChild(circle);  // Fallback if g2-valve not found yet
+          svg.appendChild(circle);  // Fallback if heat-pump not found yet
         }
       }
     });
@@ -704,10 +711,11 @@ export class HeatPumpFlowCard extends LitElement {
     // Calculate aux heater dynamic colors and glow
     const auxIntensity = auxHeaterState.intensity;
     // Color transition: gray -> orange -> red-orange based on intensity
-    let auxCylinderColor = '#4a5568'; // Gray when off
+    // Match G2 valve gray color (#bdc3c7) when off
+    let auxCylinderColor = '#bdc3c7'; // Warm gray when off (matches G2 valve)
     if (auxIntensity > 0) {
-      // Interpolate between gray (#4a5568 = rgb(74,85,104)) and red-orange (#ff4422)
-      const grayR = 74, grayG = 85, grayB = 104;
+      // Interpolate between gray (#bdc3c7 = rgb(189,195,199)) and red-orange (#ff4422)
+      const grayR = 189, grayG = 195, grayB = 199;
       const hotR = 255, hotG = 68, hotB = 34;
       const r = Math.round(grayR + (hotR - grayR) * auxIntensity);
       const g = Math.round(grayG + (hotG - grayG) * auxIntensity);
@@ -1204,11 +1212,23 @@ export class HeatPumpFlowCard extends LitElement {
                     fill="#ff8855"
                     pointer-events="none"/>
 
-              <!-- Main heated cylinder (centered at x=254) -->
+              <!-- Main heated cylinder body (centered at x=254) -->
               <rect x="${cylX}" y="${cylY}" width="${cylW}" height="${cylH}" rx="2" ry="2"
                     class="${cylinderClass}"
                     fill="${auxCylinderColor}"
-                    stroke="#2d3748"
+                    stroke="#7f8c8d"
+                    stroke-width="1.5"/>
+
+              <!-- Left flange (pipe connection) -->
+              <rect x="${cylX - 6}" y="${cylY + 2}" width="6" height="12"
+                    fill="#95a5a6"
+                    stroke="#7f8c8d"
+                    stroke-width="1.5"/>
+
+              <!-- Right flange (pipe connection) -->
+              <rect x="${cylX + cylW}" y="${cylY + 2}" width="6" height="12"
+                    fill="#95a5a6"
+                    stroke="#7f8c8d"
                     stroke-width="1.5"/>
             </g>
 
