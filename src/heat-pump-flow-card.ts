@@ -647,56 +647,41 @@ export class HeatPumpFlowCard extends LitElement {
               </filter>
 
               <!-- Flow gradients for animated shimmer effect -->
-              <!-- Using objectBoundingBox (default) so gradient scales to each path -->
-              <!-- Hot water flow gradient (red/orange shimmer) - repeating pattern -->
-              <linearGradient id="flow-gradient-hot" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(255, 255, 255, 0)" />
-                <stop offset="20%" stop-color="rgba(255, 200, 150, 0.6)" />
-                <stop offset="40%" stop-color="rgba(255, 255, 255, 1)" />
-                <stop offset="60%" stop-color="rgba(255, 200, 150, 0.6)" />
-                <stop offset="80%" stop-color="rgba(255, 255, 255, 0)" />
-                <stop offset="100%" stop-color="rgba(255, 255, 255, 0)" />
-                <animateTransform
-                  attributeName="gradientTransform"
-                  type="translate"
-                  from="-1 0"
-                  to="1 0"
-                  dur="3s"
-                  repeatCount="indefinite" />
+              <!-- Animate x1/x2 to create sliding gradient shimmer along the stroke -->
+              <!-- Hot water flow gradient (red/orange shimmer) -->
+              <linearGradient id="flow-gradient-hot">
+                <stop offset="0%" stop-color="rgba(255, 100, 50, 0)" />
+                <stop offset="40%" stop-color="rgba(255, 150, 100, 0.7)" />
+                <stop offset="50%" stop-color="rgba(255, 255, 255, 1)" />
+                <stop offset="60%" stop-color="rgba(255, 150, 100, 0.7)" />
+                <stop offset="100%" stop-color="rgba(255, 100, 50, 0)" />
+                <!-- Animate x1 from -100% to 100% to create flowing effect -->
+                <animate attributeName="x1" values="-100%;100%" dur="2s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="0%;200%" dur="2s" repeatCount="indefinite" />
               </linearGradient>
 
-              <!-- Cold water flow gradient (blue/cyan shimmer) - repeating pattern -->
-              <linearGradient id="flow-gradient-cold" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(255, 255, 255, 0)" />
-                <stop offset="20%" stop-color="rgba(150, 200, 255, 0.6)" />
-                <stop offset="40%" stop-color="rgba(255, 255, 255, 1)" />
-                <stop offset="60%" stop-color="rgba(150, 200, 255, 0.6)" />
-                <stop offset="80%" stop-color="rgba(255, 255, 255, 0)" />
-                <stop offset="100%" stop-color="rgba(255, 255, 255, 0)" />
-                <animateTransform
-                  attributeName="gradientTransform"
-                  type="translate"
-                  from="-1 0"
-                  to="1 0"
-                  dur="3s"
-                  repeatCount="indefinite" />
+              <!-- Cold water flow gradient (blue/cyan shimmer) -->
+              <linearGradient id="flow-gradient-cold">
+                <stop offset="0%" stop-color="rgba(100, 150, 255, 0)" />
+                <stop offset="40%" stop-color="rgba(150, 200, 255, 0.7)" />
+                <stop offset="50%" stop-color="rgba(255, 255, 255, 1)" />
+                <stop offset="60%" stop-color="rgba(150, 200, 255, 0.7)" />
+                <stop offset="100%" stop-color="rgba(100, 150, 255, 0)" />
+                <!-- Animate x1 from -100% to 100% to create flowing effect -->
+                <animate attributeName="x1" values="-100%;100%" dur="2s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="0%;200%" dur="2s" repeatCount="indefinite" />
               </linearGradient>
 
               <!-- Neutral flow gradient (white shimmer for inactive pipes) -->
-              <linearGradient id="flow-gradient-neutral" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(255, 255, 255, 0)" />
-                <stop offset="20%" stop-color="rgba(255, 255, 255, 0.4)" />
-                <stop offset="40%" stop-color="rgba(255, 255, 255, 0.8)" />
-                <stop offset="60%" stop-color="rgba(255, 255, 255, 0.4)" />
-                <stop offset="80%" stop-color="rgba(255, 255, 255, 0)" />
-                <stop offset="100%" stop-color="rgba(255, 255, 255, 0)" />
-                <animateTransform
-                  attributeName="gradientTransform"
-                  type="translate"
-                  from="-1 0"
-                  to="1 0"
-                  dur="4s"
-                  repeatCount="indefinite" />
+              <linearGradient id="flow-gradient-neutral">
+                <stop offset="0%" stop-color="rgba(200, 200, 200, 0)" />
+                <stop offset="40%" stop-color="rgba(255, 255, 255, 0.5)" />
+                <stop offset="50%" stop-color="rgba(255, 255, 255, 1)" />
+                <stop offset="60%" stop-color="rgba(255, 255, 255, 0.5)" />
+                <stop offset="100%" stop-color="rgba(200, 200, 200, 0)" />
+                <!-- Slower animation for neutral flow -->
+                <animate attributeName="x1" values="-100%;100%" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="0%;200%" dur="3s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
 
