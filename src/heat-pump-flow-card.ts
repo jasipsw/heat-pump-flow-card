@@ -239,9 +239,14 @@ export class HeatPumpFlowCard extends LitElement {
 
       // Calculate color and duration
       const pipeColors = this.getPipeColors(pathConfig.supplyTemp, pathConfig.returnTemp, pathConfig.flowRate);
-      const isHotPipe = pathIndex % 2 === 0; // Even indices are hot pipes
+
+      // Determine if this is a supply (hot) or return (cold) pipe based on path name
+      // Return pipes flow back TO the heat pump or TO the buffer tank
+      const isReturnPipe = pathConfig.id.includes('-to-hp-') ||
+                           pathConfig.id.includes('hvac-to-buffer') ||
+                           pathConfig.id.includes('dhw-to-hp');
       const dotColor = this.config.animation.use_temp_color
-        ? (isHotPipe ? pipeColors.hotPipe : pipeColors.coldPipe)
+        ? (isReturnPipe ? pipeColors.coldPipe : pipeColors.hotPipe)
         : this.config.animation.dot_color;
 
       const duration = this.getAnimationDuration(pathConfig.flowRate);
@@ -373,9 +378,13 @@ export class HeatPumpFlowCard extends LitElement {
       if (!dots) return;
 
       const pipeColors = this.getPipeColors(pathConfig.supplyTemp, pathConfig.returnTemp, pathConfig.flowRate);
-      const isHotPipe = pathIndex % 2 === 0;
+
+      // Determine if this is a supply (hot) or return (cold) pipe based on path name
+      const isReturnPipe = pathConfig.id.includes('-to-hp-') ||
+                           pathConfig.id.includes('hvac-to-buffer') ||
+                           pathConfig.id.includes('dhw-to-hp');
       const dotColor = this.config.animation.use_temp_color
-        ? (isHotPipe ? pipeColors.hotPipe : pipeColors.coldPipe)
+        ? (isReturnPipe ? pipeColors.coldPipe : pipeColors.hotPipe)
         : this.config.animation.dot_color;
 
       const duration = this.getAnimationDuration(pathConfig.flowRate);
@@ -384,9 +393,13 @@ export class HeatPumpFlowCard extends LitElement {
       // Hide dots if this path is not visible in current mode, or if not flowing
       const shouldShow = pathConfig.visible && isFlowing;
 
-      dots.forEach((dot) => {
+      // Update each dot with new duration, delay (for proper spacing), and color
+      const dotCount = dots.length;
+      dots.forEach((dot, index) => {
+        const delay = (index / dotCount) * duration; // Recalculate delay for even spacing
         (dot as SVGCircleElement).setAttribute('fill', dotColor!);
         (dot as SVGCircleElement).style.setProperty('--dot-duration', `${duration}s`);
+        (dot as SVGCircleElement).style.setProperty('--dot-delay', `${delay}s`);  // Update delay!
         (dot as SVGCircleElement).style.setProperty('--dot-opacity', shouldShow ? this.config.animation.dot_opacity!.toString() : '0');
       });
     });
@@ -740,41 +753,12 @@ export class HeatPumpFlowCard extends LitElement {
     // Get shadow blur multiplier from config (default: 1.0)
     const shadowBlur = this.config.aux_heater?.shadow_blur ?? 1.0;
 
-    // DEBUG LOGGING for aux heater and pipe colors
+    // Determine CSS classes for glow layers based on aux heater intensity
     const outerClass = auxIntensity > 0 ? 'aux-glow-outer' : 'aux-heater-layer';
     const middleClass = auxIntensity > 0 ? 'aux-glow-middle' : 'aux-heater-layer';
     const innerClass = auxIntensity > 0 ? 'aux-glow-inner' : 'aux-heater-layer';
     // Main cylinder always visible (just gray when off), only animates when active
     const cylinderClass = auxIntensity > 0 ? 'aux-cylinder-pulse' : '';
-
-    console.log('[Aux Heater Debug]', {
-      auxEnabled: auxHeaterState.enabled,
-      auxPower: auxHeaterState.power,
-      auxIntensity,
-      glowSize,
-      shadowBlur: `${shadowBlur}x (multiplier for drop-shadow blur)`,
-      animSpeed: `${animSpeed.toFixed(2)}s (faster at higher power)`,
-      auxCylinderColor,
-      hpOutletColor,
-      hotColor: this.config.temperature?.hot_color || '#e74c3c',
-      glowDimensions: {
-        outer: `${outerGlow.width}x${outerGlow.height}`,
-        middle: `${middleGlow.width}x${middleGlow.height}`,
-        inner: `${innerGlow.width}x${innerGlow.height}`
-      },
-      cssClasses: {
-        outer: outerClass,
-        middle: middleClass,
-        inner: innerClass,
-        cylinder: cylinderClass
-      },
-      pipeLogic: {
-        firstSegmentOpacity: auxIntensity > 0 ? '0.5' : '1',
-        secondSegmentColor: auxIntensity > 0 ? (this.config.temperature?.hot_color || '#e74c3c') : hpOutletColor,
-        shouldShowBoost: auxIntensity > 0
-      },
-      configTip: 'Add "glow_size: 20" and "shadow_blur: 2.0" to aux_heater config for more dramatic effect'
-    });
 
     return html`
       <ha-card>
