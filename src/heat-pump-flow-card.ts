@@ -49,15 +49,15 @@ export class HeatPumpFlowCard extends LitElement {
         min_flow_rate: 5,
         max_flow_rate: 1,
         max_flow_rate_value: 50,
-        dot_size: 2.5,  // Small dots for stream effect (was 8)
+        dot_size: 1.0,  // Tiny dots for realistic water particle effect (was 2.5)
         dot_spacing: 30,
         use_temp_color: true,
         dot_color: '#3498db',
         dot_stroke_color: 'transparent',  // No stroke to avoid bubble appearance
         dot_stroke_width: 0,  // No stroke (was 1.0)
         dot_stroke_opacity: 0,  // No stroke opacity
-        dot_opacity: 0.85,  // Slightly transparent for softer look (was 1)
-        dot_shadow: true,  // Subtle glow for visibility
+        dot_opacity: 0.9,  // Slightly transparent for softer look
+        dot_shadow: false,  // No shadow for tiny particles (was true)
         ...animation,
       },
       temperature: {
@@ -252,8 +252,8 @@ export class HeatPumpFlowCard extends LitElement {
       const duration = this.getAnimationDuration(pathConfig.flowRate);
       const isFlowing = pathConfig.flowRate > 0;
 
-      // Create 10 small dots per path for stream effect (was 3 large dots)
-      const dotCount = 10;
+      // Create 40 tiny dots per path for realistic water particle stream effect
+      const dotCount = 40;
       for (let i = 0; i < dotCount; i++) {
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
 
@@ -261,7 +261,12 @@ export class HeatPumpFlowCard extends LitElement {
         circle.classList.add('flow-dot');
         circle.setAttribute('data-path-id', pathConfig.id);
 
-        // Position at origin (CSS offset-path will move it)
+        // Random perpendicular offset to simulate pipe width (±3px from centerline)
+        const perpendicularOffset = (Math.random() - 0.5) * 6;  // Range: -3 to +3
+        circle.setAttribute('data-perpendicular-offset', perpendicularOffset.toString());
+
+        // Position at origin (CSS offset-path will move it along the path)
+        // The perpendicular offset will be applied via transform
         circle.setAttribute('cx', '0');
         circle.setAttribute('cy', '0');
         circle.setAttribute('r', this.config.animation.dot_size.toString());
@@ -270,8 +275,11 @@ export class HeatPumpFlowCard extends LitElement {
         circle.setAttribute('stroke-width', this.config.animation.dot_stroke_width!.toString());
         circle.setAttribute('stroke-opacity', this.config.animation.dot_stroke_opacity!.toString());
 
+        // Apply perpendicular offset via transform
+        circle.style.transform = `translate(0, ${perpendicularOffset}px)`;
+
         // Set CSS variables for animation control
-        const delay = (i / dotCount) * duration; // Space dots evenly
+        const delay = (i / dotCount) * duration; // Space dots evenly along path
         circle.style.setProperty('--dot-path', `path('${pathData}')`);
         circle.style.setProperty('--dot-duration', `${duration}s`);
         circle.style.setProperty('--dot-delay', `${delay}s`);
