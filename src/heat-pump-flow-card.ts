@@ -685,26 +685,6 @@ export class HeatPumpFlowCard extends LitElement {
     // Glow opacity for filter - boosted for visibility
     const auxGlowOpacity = Math.min(auxIntensity * 1.5, 1.0);
 
-    // Debug logging for aux heater
-    if (auxHeaterState.enabled) {
-      console.log('[Heat Pump Card] Aux Heater Debug:', {
-        enabled: auxHeaterState.enabled,
-        power: auxHeaterState.power,
-        maxPower: auxHeaterState.maxPower,
-        intensity: auxIntensity,
-        cylinderColor: auxCylinderColor,
-        glowBlur: auxGlowBlur,
-        glowOpacity: auxGlowOpacity,
-        // NEW: Base opacities set directly on rectangles (should be visible immediately)
-        outerGlowBaseOpacity: auxIntensity * 0.5,
-        middleGlowBaseOpacity: auxIntensity * 0.7,
-        innerGlowBaseOpacity: auxIntensity * 0.9,
-        // Animation ranges
-        outerGlowAnimRange: `${auxIntensity * 0.4} to ${auxIntensity * 0.6}`,
-        middleGlowAnimRange: `${auxIntensity * 0.6} to ${auxIntensity * 0.8}`,
-        innerGlowAnimRange: `${auxIntensity * 0.8} to ${auxIntensity * 1.0}`
-      });
-    }
 
     return html`
       <ha-card>
@@ -1090,32 +1070,59 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Auxiliary Heater - Glowing cylinder with animated pulsing glow -->
             <!-- Centered between HP outlet (180) and G2 inlet (328) = 254, width 60, so x=224 -->
-            <!-- DIAGNOSTIC MODE: Glow layers forced to MAXIMUM opacity, NO animation -->
             <g id="aux-heater" opacity="${auxHeaterState.enabled ? '1' : '0'}">
-              <!-- Outermost glow layer - FORCED TO VISIBLE -->
-              <rect x="214" y="166" width="76" height="28" rx="8" ry="8"
+              <!-- Glow layers - simple solid colors with pulsing animation -->
+              <!-- Outermost glow layer - properly centered at x=254 -->
+              <rect x="216" y="166" width="76" height="28" rx="8" ry="8"
                     fill="#ff4422"
-                    opacity="0.6"
-                    pointer-events="none"/>
+                    opacity="${auxIntensity > 0 ? auxIntensity * 0.5 : 0}"
+                    pointer-events="none">
+                ${auxIntensity > 0 ? html`
+                  <animate attributeName="opacity"
+                           values="${auxIntensity * 0.4};${auxIntensity * 0.6};${auxIntensity * 0.4}"
+                           dur="2s"
+                           repeatCount="indefinite"/>
+                ` : ''}
+              </rect>
 
-              <!-- Middle glow layer - FORCED TO VISIBLE -->
-              <rect x="218" y="168" width="68" height="24" rx="6" ry="6"
+              <!-- Middle glow layer - properly centered at x=254 -->
+              <rect x="220" y="168" width="68" height="24" rx="6" ry="6"
                     fill="#ff6644"
-                    opacity="0.7"
-                    pointer-events="none"/>
+                    opacity="${auxIntensity > 0 ? auxIntensity * 0.7 : 0}"
+                    pointer-events="none">
+                ${auxIntensity > 0 ? html`
+                  <animate attributeName="opacity"
+                           values="${auxIntensity * 0.6};${auxIntensity * 0.8};${auxIntensity * 0.6}"
+                           dur="1.5s"
+                           repeatCount="indefinite"/>
+                ` : ''}
+              </rect>
 
-              <!-- Inner glow layer - FORCED TO VISIBLE -->
-              <rect x="221" y="170" width="62" height="20" rx="4" ry="4"
+              <!-- Inner glow layer - properly centered at x=254 -->
+              <rect x="223" y="170" width="62" height="20" rx="4" ry="4"
                     fill="#ff8855"
-                    opacity="0.8"
-                    pointer-events="none"/>
+                    opacity="${auxIntensity > 0 ? auxIntensity * 0.9 : 0}"
+                    pointer-events="none">
+                ${auxIntensity > 0 ? html`
+                  <animate attributeName="opacity"
+                           values="${auxIntensity * 0.8};${auxIntensity * 1.0};${auxIntensity * 0.8}"
+                           dur="1s"
+                           repeatCount="indefinite"/>
+                ` : ''}
+              </rect>
 
-              <!-- Main heated cylinder - FORCED TO VISIBLE, NO ANIMATION -->
+              <!-- Main heated cylinder (centered at x=254) -->
               <rect x="224" y="172" width="60" height="16" rx="2" ry="2"
-                    fill="#ff4422"
+                    fill="${auxCylinderColor}"
                     stroke="#2d3748"
-                    stroke-width="1.5"
-                    opacity="1"/>
+                    stroke-width="1.5">
+                ${auxIntensity > 0 ? html`
+                  <animate attributeName="opacity"
+                           values="0.9;1;0.9"
+                           dur="2s"
+                           repeatCount="indefinite"/>
+                ` : ''}
+              </rect>
             </g>
 
             <!-- Version display (upper right corner) -->
