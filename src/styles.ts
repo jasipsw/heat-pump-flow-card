@@ -30,7 +30,7 @@ export const cardStyles = css`
   }
 
   /* CSS-based flow dot animations (hardware-accelerated) */
-  /* Tiny particles for realistic water flow stream effect */
+  /* Small white particles with subtle motion blur for realistic water flow */
   .flow-dot {
     offset-path: var(--dot-path);
     offset-rotate: 0deg;
@@ -38,7 +38,7 @@ export const cardStyles = css`
     animation-duration: var(--dot-duration, 5s);
     animation-delay: var(--dot-delay, 0s);
     opacity: var(--dot-opacity, 1);
-    /* No filter for tiny particles - cleaner, more performant */
+    filter: blur(0.5px);  /* Subtle motion blur - makes particles look like flowing water */
   }
 
   @keyframes flow-along-path {

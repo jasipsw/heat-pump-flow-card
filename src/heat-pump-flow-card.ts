@@ -49,11 +49,11 @@ export class HeatPumpFlowCard extends LitElement {
         min_flow_rate: 5,
         max_flow_rate: 1,
         max_flow_rate_value: 50,
-        dot_size: 1.0,  // Tiny dots for realistic water particle effect
+        dot_size: 1.5,  // Small particles for water effect (increased from 1.0 for better visibility)
         dot_spacing: 30,
-        use_temp_color: true,
-        dot_color: '#3498db',  // Fallback if use_temp_color is false
-        dot_opacity: 0.9,  // Slightly transparent for softer look
+        use_temp_color: false,  // Use single color for visibility on all pipe colors
+        dot_color: 'rgba(255, 255, 255, 0.75)',  // White - visible on red, blue, and gray pipes
+        dot_opacity: 1.0,  // Full opacity (transparency in rgba color)
         // Note: stroke/border removed for clean particles
         ...animation,
       },
@@ -258,20 +258,12 @@ export class HeatPumpFlowCard extends LitElement {
         circle.classList.add('flow-dot');
         circle.setAttribute('data-path-id', pathConfig.id);
 
-        // Random perpendicular offset to simulate pipe width (±3px from centerline)
-        const perpendicularOffset = (Math.random() - 0.5) * 6;  // Range: -3 to +3
-        circle.setAttribute('data-perpendicular-offset', perpendicularOffset.toString());
-
-        // Position at origin (CSS offset-path will move it along the path)
-        // The perpendicular offset will be applied via transform
+        // Position at origin (CSS offset-path will move it along the path centerline)
         circle.setAttribute('cx', '0');
         circle.setAttribute('cy', '0');
         circle.setAttribute('r', this.config.animation.dot_size.toString());
         circle.setAttribute('fill', dotColor!);
         // NO stroke/border - clean filled circles only for realistic particles
-
-        // Apply perpendicular offset via transform
-        circle.style.transform = `translate(0, ${perpendicularOffset}px)`;
 
         // Set CSS variables for animation control
         const delay = (i / dotCount) * duration; // Space dots evenly along path
@@ -280,7 +272,8 @@ export class HeatPumpFlowCard extends LitElement {
         circle.style.setProperty('--dot-delay', `${delay}s`);
         circle.style.setProperty('--dot-opacity', isFlowing ? this.config.animation.dot_opacity!.toString() : '0');
 
-        svg.appendChild(circle);
+        // Insert dots at the BEGINNING of SVG so they render behind everything (pipes, heaters, valves)
+        svg.insertBefore(circle, svg.firstChild);
       }
     });
   }
