@@ -69,6 +69,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     power_entity?: string;         // Power consumption entity (W)
     max_power?: number;            // Maximum power for normalization (default: 18000W = 18kW)
     display_name?: string;         // Display name shown on visualization (e.g., "V18", "AUX", etc.)
+    glow_size?: number;            // Glow animation extension in pixels (default: 8, larger = more dramatic)
     name?: string;                 // Internal name (deprecated, use display_name)
   };
 

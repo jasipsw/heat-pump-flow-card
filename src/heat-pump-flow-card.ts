@@ -702,6 +702,36 @@ export class HeatPumpFlowCard extends LitElement {
     // Glow opacity for filter - boosted for visibility
     const auxGlowOpacity = Math.min(auxIntensity * 1.5, 1.0);
 
+    // Calculate glow layer sizes based on config (default 8px extension)
+    const glowSize = this.config.aux_heater?.glow_size ?? 8;
+    // Main cylinder dimensions (centered at x=254, y=180)
+    const cylX = 224, cylY = 172, cylW = 60, cylH = 16;
+    // Glow layers extend outward from main cylinder
+    const outerGlow = {
+      x: cylX - glowSize,
+      y: cylY - glowSize,
+      width: cylW + 2 * glowSize,
+      height: cylH + 2 * glowSize,
+      rx: glowSize,
+      ry: glowSize
+    };
+    const middleGlow = {
+      x: cylX - glowSize * 0.75,
+      y: cylY - glowSize * 0.75,
+      width: cylW + 2 * glowSize * 0.75,
+      height: cylH + 2 * glowSize * 0.75,
+      rx: glowSize * 0.75,
+      ry: glowSize * 0.75
+    };
+    const innerGlow = {
+      x: cylX - glowSize * 0.5,
+      y: cylY - glowSize * 0.5,
+      width: cylW + 2 * glowSize * 0.5,
+      height: cylH + 2 * glowSize * 0.5,
+      rx: glowSize * 0.5,
+      ry: glowSize * 0.5
+    };
+
     // DEBUG LOGGING for aux heater and pipe colors
     const outerClass = auxIntensity > 0 ? 'aux-glow-outer' : 'aux-heater-layer';
     const middleClass = auxIntensity > 0 ? 'aux-glow-middle' : 'aux-heater-layer';
@@ -712,9 +742,15 @@ export class HeatPumpFlowCard extends LitElement {
       auxEnabled: auxHeaterState.enabled,
       auxPower: auxHeaterState.power,
       auxIntensity,
+      glowSize,
       auxCylinderColor,
       hpOutletColor,
       hotColor: this.config.temperature?.hot_color || '#e74c3c',
+      glowDimensions: {
+        outer: `${outerGlow.width}x${outerGlow.height}`,
+        middle: `${middleGlow.width}x${middleGlow.height}`,
+        inner: `${innerGlow.width}x${innerGlow.height}`
+      },
       cssClasses: {
         outer: outerClass,
         middle: middleClass,
@@ -726,7 +762,7 @@ export class HeatPumpFlowCard extends LitElement {
         secondSegmentColor: auxIntensity > 0 ? (this.config.temperature?.hot_color || '#e74c3c') : hpOutletColor,
         shouldShowBoost: auxIntensity > 0
       },
-      inspectionTip: 'Open DevTools > Elements, find <g id="aux-heater"> and inspect the <rect> elements to see their classes and computed styles'
+      configTip: 'Add "glow_size: 20" to aux_heater config to make animation much larger (default: 8)'
     });
 
     return html`
@@ -1123,31 +1159,38 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- Auxiliary Heater - Glowing cylinder with animated pulsing glow -->
-            <!-- Centered between HP outlet (180) and G2 inlet (328) = 254, width 60, so x=224 -->
+            <!-- Centered between HP outlet (180) and G2 inlet (328) = 254 -->
+            <!-- Glow size configurable via aux_heater.glow_size (default: 8px) -->
             <g id="aux-heater"
                opacity="${auxHeaterState.enabled ? '1' : '0'}">
               <!-- Glow layers - simple solid colors with CSS pulsing animation -->
-              <!-- Outermost glow layer - properly centered at x=254 -->
-              <rect x="216" y="166" width="76" height="28" rx="8" ry="8"
-                    class="${auxIntensity > 0 ? 'aux-glow-outer' : 'aux-heater-layer'}"
+              <!-- Outermost glow layer - size based on config -->
+              <rect x="${outerGlow.x}" y="${outerGlow.y}"
+                    width="${outerGlow.width}" height="${outerGlow.height}"
+                    rx="${outerGlow.rx}" ry="${outerGlow.ry}"
+                    class="${outerClass}"
                     fill="#ff4422"
                     pointer-events="none"/>
 
-              <!-- Middle glow layer - properly centered at x=254 -->
-              <rect x="220" y="168" width="68" height="24" rx="6" ry="6"
-                    class="${auxIntensity > 0 ? 'aux-glow-middle' : 'aux-heater-layer'}"
+              <!-- Middle glow layer - size based on config -->
+              <rect x="${middleGlow.x}" y="${middleGlow.y}"
+                    width="${middleGlow.width}" height="${middleGlow.height}"
+                    rx="${middleGlow.rx}" ry="${middleGlow.ry}"
+                    class="${middleClass}"
                     fill="#ff6644"
                     pointer-events="none"/>
 
-              <!-- Inner glow layer - properly centered at x=254 -->
-              <rect x="223" y="170" width="62" height="20" rx="4" ry="4"
-                    class="${auxIntensity > 0 ? 'aux-glow-inner' : 'aux-heater-layer'}"
+              <!-- Inner glow layer - size based on config -->
+              <rect x="${innerGlow.x}" y="${innerGlow.y}"
+                    width="${innerGlow.width}" height="${innerGlow.height}"
+                    rx="${innerGlow.rx}" ry="${innerGlow.ry}"
+                    class="${innerClass}"
                     fill="#ff8855"
                     pointer-events="none"/>
 
               <!-- Main heated cylinder (centered at x=254) -->
-              <rect x="224" y="172" width="60" height="16" rx="2" ry="2"
-                    class="${auxIntensity > 0 ? 'aux-cylinder-pulse' : 'aux-heater-layer'}"
+              <rect x="${cylX}" y="${cylY}" width="${cylW}" height="${cylH}" rx="2" ry="2"
+                    class="${cylinderClass}"
                     fill="${auxCylinderColor}"
                     stroke="#2d3748"
                     stroke-width="1.5"/>
