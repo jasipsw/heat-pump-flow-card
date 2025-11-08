@@ -437,7 +437,7 @@ export class HeatPumpFlowCard extends LitElement {
     }
 
     // Get configuration with defaults
-    const levels = gradientConfig?.levels ?? 10;
+    const levels = Math.max(2, gradientConfig?.levels ?? 10);  // Minimum 2 levels to avoid division by zero
     const minTempEntity = gradientConfig?.min_temp_entity;
     const maxTempEntity = gradientConfig?.max_temp_entity;
     const minTempFallback = gradientConfig?.min_temp_fallback ?? 60;  // 60°F
