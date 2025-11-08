@@ -395,8 +395,8 @@ export class HeatPumpFlowCard extends LitElement {
     const cfg = this.config.temperature!;
     const delta = Math.abs(hotTemp - coldTemp);
 
-    // If no flow or delta below threshold, both pipes are neutral
-    if (flowRate <= 0 || delta < cfg.delta_threshold!) {
+    // If flow below idle threshold or delta below threshold, both pipes are neutral
+    if (flowRate <= this.config.animation!.idle_threshold! || delta < cfg.delta_threshold!) {
       return {
         hotPipe: cfg.neutral_color!,
         coldPipe: cfg.neutral_color!
