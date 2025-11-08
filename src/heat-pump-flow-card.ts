@@ -703,6 +703,11 @@ export class HeatPumpFlowCard extends LitElement {
     const auxGlowOpacity = Math.min(auxIntensity * 1.5, 1.0);
 
     // DEBUG LOGGING for aux heater and pipe colors
+    const outerClass = auxIntensity > 0 ? 'aux-glow-outer' : 'aux-heater-layer';
+    const middleClass = auxIntensity > 0 ? 'aux-glow-middle' : 'aux-heater-layer';
+    const innerClass = auxIntensity > 0 ? 'aux-glow-inner' : 'aux-heater-layer';
+    const cylinderClass = auxIntensity > 0 ? 'aux-cylinder-pulse' : 'aux-heater-layer';
+
     console.log('[Aux Heater Debug]', {
       auxEnabled: auxHeaterState.enabled,
       auxPower: auxHeaterState.power,
@@ -710,11 +715,18 @@ export class HeatPumpFlowCard extends LitElement {
       auxCylinderColor,
       hpOutletColor,
       hotColor: this.config.temperature?.hot_color || '#e74c3c',
+      cssClasses: {
+        outer: outerClass,
+        middle: middleClass,
+        inner: innerClass,
+        cylinder: cylinderClass
+      },
       pipeLogic: {
         firstSegmentOpacity: auxIntensity > 0 ? '0.5' : '1',
         secondSegmentColor: auxIntensity > 0 ? (this.config.temperature?.hot_color || '#e74c3c') : hpOutletColor,
         shouldShowBoost: auxIntensity > 0
-      }
+      },
+      inspectionTip: 'Open DevTools > Elements, find <g id="aux-heater"> and inspect the <rect> elements to see their classes and computed styles'
     });
 
     return html`
