@@ -258,11 +258,11 @@ export class HeatPumpFlowCard extends LitElement {
         circle.classList.add('flow-dot');
         circle.setAttribute('data-path-id', pathConfig.id);
 
-        // Random size variation (0.8 - 2.0px) to break up straight-line appearance
-        const randomSize = 0.8 + Math.random() * 1.2;  // Range: 0.8 to 2.0
+        // Subtle random size variation (1.0 - 1.5px) to break up straight-line appearance
+        const randomSize = 1.0 + Math.random() * 0.5;  // Range: 1.0 to 1.5px (narrower for consistent density)
 
-        // Random opacity variation (0.5 - 0.9) for visual variety
-        const randomOpacity = 0.5 + Math.random() * 0.4;  // Range: 0.5 to 0.9
+        // Subtle random opacity variation (0.6 - 0.85) for visual variety
+        const randomOpacity = 0.6 + Math.random() * 0.25;  // Range: 0.6 to 0.85 (brighter, more visible)
 
         // Position at origin (CSS offset-path will move it along the path centerline)
         circle.setAttribute('cx', '0');
@@ -279,14 +279,15 @@ export class HeatPumpFlowCard extends LitElement {
         circle.style.setProperty('--dot-delay', `${delay}s`);
         circle.style.setProperty('--dot-opacity', finalOpacity.toString());
 
-        // Insert dots before the heat pump (first component) so they render:
+        // Insert dots before aux heater (last component before version text) so they render:
         // - ABOVE pipes (visible)
-        // - BELOW ALL components: heat pump, valves, tanks, aux heater (realistic inside-pipe effect)
-        const heatPump = svg.querySelector('#heat-pump');
-        if (heatPump) {
-          svg.insertBefore(circle, heatPump);
+        // - ABOVE all tank/component bodies (visible on DHW coil)
+        // - BELOW aux heater glow and version text (clean layering)
+        const auxHeater = svg.querySelector('#aux-heater');
+        if (auxHeater) {
+          svg.insertBefore(circle, auxHeater);
         } else {
-          svg.appendChild(circle);  // Fallback if heat-pump not found yet
+          svg.appendChild(circle);  // Fallback - append at end
         }
       }
     });
@@ -731,30 +732,30 @@ export class HeatPumpFlowCard extends LitElement {
     const glowSize = this.config.aux_heater?.glow_size ?? 8;
     // Main cylinder dimensions (centered at x=254, y=180)
     const cylX = 224, cylY = 172, cylW = 60, cylH = 16;
-    // Glow layers extend outward from main cylinder
+    // Glow layers extend VERTICALLY only (not horizontally past flanges)
     const outerGlow = {
-      x: cylX - glowSize,
-      y: cylY - glowSize,
-      width: cylW + 2 * glowSize,
-      height: cylH + 2 * glowSize,
-      rx: glowSize,
-      ry: glowSize
+      x: cylX,  // Same x as cylinder - no horizontal extension
+      y: cylY - glowSize,  // Extend upward
+      width: cylW,  // Same width as cylinder
+      height: cylH + 2 * glowSize,  // Extend up and down
+      rx: 2,  // Match cylinder corner radius
+      ry: 2
     };
     const middleGlow = {
-      x: cylX - glowSize * 0.75,
+      x: cylX,
       y: cylY - glowSize * 0.75,
-      width: cylW + 2 * glowSize * 0.75,
+      width: cylW,
       height: cylH + 2 * glowSize * 0.75,
-      rx: glowSize * 0.75,
-      ry: glowSize * 0.75
+      rx: 2,
+      ry: 2
     };
     const innerGlow = {
-      x: cylX - glowSize * 0.5,
+      x: cylX,
       y: cylY - glowSize * 0.5,
-      width: cylW + 2 * glowSize * 0.5,
+      width: cylW,
       height: cylH + 2 * glowSize * 0.5,
-      rx: glowSize * 0.5,
-      ry: glowSize * 0.5
+      rx: 2,
+      ry: 2
     };
 
     // Calculate animation speed based on power (higher power = faster pulsing)
