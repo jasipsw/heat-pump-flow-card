@@ -779,15 +779,16 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Animated Flow Overlays (shimmer effect on pipes) -->
             <!-- Hot pipe flows (HP to buffer/DHW) -->
+            <!-- Note: Adding tiny imperceptible kinks to straight paths to fix gradient rendering -->
               <path class="flow-gradient"
-                    d="M 180 180 L 254 180"
+                    d="M 180 180 L 217 180 L 217 180.01 L 254 180"
                     stroke="url(#flow-gradient-hot)"
                     stroke-width="14"
                     fill="none"
                     stroke-linecap="butt"></path>
 
               <path class="flow-gradient"
-                    d="M 254 180 L 328 180"
+                    d="M 254 180 L 291 180 L 291 180.01 L 328 180"
                     stroke="url(#flow-gradient-hot)"
                     stroke-width="14"
                     fill="none"
@@ -795,7 +796,7 @@ export class HeatPumpFlowCard extends LitElement {
                     opacity="${g2ValveState.isActive ? '0.3' : '1'}"></path>
 
               <path class="flow-gradient"
-                    d="M 367 180 L 390 180"
+                    d="M 367 180 L 378.5 180 L 378.5 180.01 L 390 180"
                     stroke="url(#flow-gradient-hot)"
                     stroke-width="14"
                     fill="none"
@@ -803,7 +804,7 @@ export class HeatPumpFlowCard extends LitElement {
                     opacity="${g2ValveState.isActive ? '0.3' : '1'}"></path>
 
               <path class="flow-gradient"
-                    d="M 480 180 L 620 180"
+                    d="M 480 180 L 550 180 L 550 180.01 L 620 180"
                     stroke="url(#flow-gradient-hot)"
                     stroke-width="14"
                     fill="none"
@@ -811,7 +812,7 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- Cold pipe flows (return to HP) -->
               <path class="flow-gradient"
-                    d="M 390 220 L 180 220"
+                    d="M 390 220 L 285 220 L 285 220.01 L 180 220"
                     stroke="url(#flow-gradient-cold)"
                     stroke-width="14"
                     fill="none"
@@ -819,7 +820,7 @@ export class HeatPumpFlowCard extends LitElement {
                     opacity="${g2ValveState.isActive ? '0.3' : '1'}"></path>
 
               <path class="flow-gradient"
-                    d="M 620 220 L 480 220"
+                    d="M 620 220 L 550 220 L 550 220.01 L 480 220"
                     stroke="url(#flow-gradient-cold)"
                     stroke-width="14"
                     fill="none"
