@@ -1117,25 +1117,25 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Glow layers - simple solid colors with CSS pulsing animation -->
               <!-- Outermost glow layer - properly centered at x=254 -->
               <rect x="216" y="166" width="76" height="28" rx="8" ry="8"
-                    class="aux-heater-layer ${auxIntensity > 0 ? 'aux-glow-outer' : ''}"
+                    class="${auxIntensity > 0 ? 'aux-glow-outer' : 'aux-heater-layer'}"
                     fill="#ff4422"
                     pointer-events="none"/>
 
               <!-- Middle glow layer - properly centered at x=254 -->
               <rect x="220" y="168" width="68" height="24" rx="6" ry="6"
-                    class="aux-heater-layer ${auxIntensity > 0 ? 'aux-glow-middle' : ''}"
+                    class="${auxIntensity > 0 ? 'aux-glow-middle' : 'aux-heater-layer'}"
                     fill="#ff6644"
                     pointer-events="none"/>
 
               <!-- Inner glow layer - properly centered at x=254 -->
               <rect x="223" y="170" width="62" height="20" rx="4" ry="4"
-                    class="aux-heater-layer ${auxIntensity > 0 ? 'aux-glow-inner' : ''}"
+                    class="${auxIntensity > 0 ? 'aux-glow-inner' : 'aux-heater-layer'}"
                     fill="#ff8855"
                     pointer-events="none"/>
 
               <!-- Main heated cylinder (centered at x=254) -->
               <rect x="224" y="172" width="60" height="16" rx="2" ry="2"
-                    class="aux-heater-layer ${auxIntensity > 0 ? 'aux-cylinder-pulse' : ''}"
+                    class="${auxIntensity > 0 ? 'aux-cylinder-pulse' : 'aux-heater-layer'}"
                     fill="${auxCylinderColor}"
                     stroke="#2d3748"
                     stroke-width="1.5"/>

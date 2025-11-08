@@ -128,23 +128,27 @@ export const cardStyles = css`
 
   /* Base state for aux heater elements - hidden by default */
   .aux-heater-layer {
-    opacity: 0;
+    opacity: 0 !important;
   }
 
   /* When active, show and animate */
   .aux-glow-outer {
+    opacity: 0.5;
     animation: aux-glow-outer 2s ease-in-out infinite;
   }
 
   .aux-glow-middle {
+    opacity: 0.7;
     animation: aux-glow-middle 1.5s ease-in-out infinite;
   }
 
   .aux-glow-inner {
+    opacity: 0.9;
     animation: aux-glow-inner 1s ease-in-out infinite;
   }
 
   .aux-cylinder-pulse {
+    opacity: 0.95;
     animation: aux-cylinder-pulse 2s ease-in-out infinite;
   }
 
