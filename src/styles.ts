@@ -89,67 +89,80 @@ export const cardStyles = css`
     transition: fill 0.3s ease;
   }
 
-  /* Aux heater pulsing animations - CSS keyframes for reliable animation */
+  /* Aux heater pulsing animations - DRAMATIC pulsing with glow effects */
   @keyframes aux-glow-outer {
     0%, 100% {
-      opacity: 0.4;
+      opacity: 0.2;
+      filter: drop-shadow(0 0 8px rgba(255, 68, 34, 0.5));
     }
     50% {
-      opacity: 0.6;
+      opacity: 0.7;
+      filter: drop-shadow(0 0 16px rgba(255, 68, 34, 0.9));
     }
   }
 
   @keyframes aux-glow-middle {
     0%, 100% {
-      opacity: 0.6;
+      opacity: 0.4;
+      filter: drop-shadow(0 0 6px rgba(255, 102, 68, 0.6));
     }
     50% {
-      opacity: 0.8;
+      opacity: 0.9;
+      filter: drop-shadow(0 0 12px rgba(255, 102, 68, 1.0));
     }
   }
 
   @keyframes aux-glow-inner {
     0%, 100% {
-      opacity: 0.8;
+      opacity: 0.6;
+      filter: drop-shadow(0 0 4px rgba(255, 136, 85, 0.7));
     }
     50% {
       opacity: 1.0;
+      filter: drop-shadow(0 0 10px rgba(255, 136, 85, 1.0));
     }
   }
 
   @keyframes aux-cylinder-pulse {
     0%, 100% {
-      opacity: 0.9;
+      opacity: 0.7;
+      filter: drop-shadow(0 0 6px rgba(255, 68, 34, 0.6));
     }
     50% {
       opacity: 1.0;
+      filter: drop-shadow(0 0 12px rgba(255, 68, 34, 1.0));
     }
   }
 
   /* Base state for aux heater elements - hidden by default */
   .aux-heater-layer {
     opacity: 0 !important;
+    filter: none !important; /* Remove default rect drop-shadow */
   }
 
-  /* When active, show and animate */
+  /* When active, show and animate - FASTER, MORE DRAMATIC with PULSING GLOW */
   .aux-glow-outer {
-    opacity: 0.5;
-    animation: aux-glow-outer 2s ease-in-out infinite;
+    opacity: 0.45;
+    animation: aux-glow-outer 1s ease-in-out infinite;
+    filter: none; /* Will be set by animation */
   }
 
   .aux-glow-middle {
-    opacity: 0.7;
-    animation: aux-glow-middle 1.5s ease-in-out infinite;
+    opacity: 0.65;
+    animation: aux-glow-middle 0.8s ease-in-out infinite;
+    filter: none; /* Will be set by animation */
   }
 
   .aux-glow-inner {
-    opacity: 0.9;
-    animation: aux-glow-inner 1s ease-in-out infinite;
+    opacity: 0.8;
+    animation: aux-glow-inner 0.6s ease-in-out infinite;
+    filter: none; /* Will be set by animation */
   }
 
   .aux-cylinder-pulse {
-    opacity: 0.95;
-    animation: aux-cylinder-pulse 2s ease-in-out infinite;
+    opacity: 0.85;
+    animation: aux-cylinder-pulse 1s ease-in-out infinite;
+    filter: none; /* Will be set by animation */
   }
 
   /* Pipe styling */
