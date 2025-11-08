@@ -1144,6 +1144,18 @@ export class HeatPumpFlowCard extends LitElement {
               </text>
             </g>
 
+            <!-- TEST: Animated gradient rectangle to verify animation technique works -->
+            <g id="test-gradient-group" transform="translate(10, 30)">
+              <rect id="test-gradient-rect" width="120" height="40"
+                    fill="url(#flow-gradient-hot)"
+                    stroke="#666"
+                    stroke-width="2"
+                    rx="4"></rect>
+              <text id="test-gradient-text" x="60" y="25" text-anchor="middle" fill="#000" font-size="12" font-weight="bold">
+                GRADIENT TEST
+              </text>
+            </g>
+
             <!-- Auxiliary Heater - Glowing cylinder with animated pulsing glow -->
             <!-- Centered between HP outlet (180) and G2 inlet (328) = 254 -->
             <!-- Glow size configurable via aux_heater.glow_size (default: 8px) -->
@@ -1201,20 +1213,6 @@ export class HeatPumpFlowCard extends LitElement {
             <text x="790" y="15" text-anchor="end" fill="#95a5a6" font-size="10" opacity="0.7">
               v${CARD_VERSION}
             </text>
-
-            <!-- TEST: Animated gradient rectangle to verify animation technique works -->
-            ${this.config.animation?.enabled !== false ? html`
-              <g id="test-gradient-group" transform="translate(10, 30)">
-                <rect id="test-gradient-rect" width="120" height="40"
-                      fill="url(#flow-gradient-hot)"
-                      stroke="#666"
-                      stroke-width="2"
-                      rx="4"></rect>
-                <text id="test-gradient-text" x="60" y="25" text-anchor="middle" fill="#000" font-size="12" font-weight="bold">
-                  GRADIENT TEST
-                </text>
-              </g>
-            ` : ''}
 
             <!-- Flow dots created programmatically in firstUpdated() -->
           </svg>
