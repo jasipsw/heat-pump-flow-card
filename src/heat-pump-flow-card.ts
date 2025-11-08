@@ -774,7 +774,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+                  visibility="${hpState.flowRate > this.config.animation!.idle_threshold ? 'visible' : 'hidden'}"></path>
 
             <!-- Aux to G2 (horizontal hot) - heating mode only -->
             <defs>
@@ -794,7 +794,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+                  visibility="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? 'visible' : 'hidden'}"></path>
 
             <!-- G2 to buffer (horizontal hot) - heating mode only -->
             <defs>
@@ -814,7 +814,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+                  visibility="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? 'visible' : 'hidden'}"></path>
 
             <!-- Buffer to HVAC (horizontal hot) -->
             <defs>
@@ -834,7 +834,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${hvacState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+                  visibility="${hvacState.flowRate > this.config.animation!.idle_threshold ? 'visible' : 'hidden'}"></path>
 
             <!-- Buffer to HP return (horizontal cold) - heating mode only -->
             <defs>
@@ -854,7 +854,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+                  visibility="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? 'visible' : 'hidden'}"></path>
 
             <!-- HVAC to buffer return (horizontal cold) -->
             <defs>
@@ -874,7 +874,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${hvacState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+                  visibility="${hvacState.flowRate > this.config.animation!.idle_threshold ? 'visible' : 'hidden'}"></path>
 
             <!-- G2 to DHW (mixed vertical+horizontal hot) - DHW mode only -->
             <defs>
@@ -896,7 +896,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+                  visibility="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? 'visible' : 'hidden'}"></path>
 
             <!-- DHW coil spiral (vertical hot) - DHW mode only -->
             <defs>
@@ -916,7 +916,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+                  visibility="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? 'visible' : 'hidden'}"></path>
 
             <!-- DHW to HP return (mixed horizontal+vertical cold) - DHW mode only -->
             <defs>
@@ -938,7 +938,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+                  visibility="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? 'visible' : 'hidden'}"></path>
 
             <!-- Temperature and flow rate labels (configurable styling) -->
             <!-- Top row: supply temperatures and flow rate -->
