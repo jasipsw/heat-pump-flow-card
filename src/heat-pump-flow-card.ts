@@ -1,6 +1,5 @@
-import { LitElement, html, css, PropertyValues } from 'lit';
+import { LitElement, html, css, PropertyValues, svg } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { HomeAssistant, LovelaceCardEditor } from 'custom-card-helpers';
 import { HeatPumpFlowCardConfig, HeatPumpState, BufferTankState, HVACState, DHWTankState, G2ValveState, AuxHeaterState, HousePerformanceState } from './types';
 import { CARD_VERSION, BUILD_TIMESTAMP } from './const';
@@ -518,13 +517,13 @@ export class HeatPumpFlowCard extends LitElement {
    * Render gradient rectangles for tank visualization
    */
   private renderGradientRects(levels: Array<{ y: number; height: number; color: string; opacity: number }>) {
-    // Build rects as a single HTML string to avoid Lit template boundaries
-    let rectsHtml = '';
+    // Use svg template literal to render rects as direct SVG children
+    const rects = [];
     for (let i = 0; i < levels.length; i++) {
       const level = levels[i];
-      rectsHtml += `<rect x="15" y="${level.y}" width="60" height="${level.height}" fill="${level.color}" opacity="${level.opacity}"></rect>`;
+      rects.push(svg`<rect x="15" y="${level.y}" width="60" height="${level.height}" fill="${level.color}" opacity="${level.opacity}"></rect>`);
     }
-    return unsafeHTML(rectsHtml);
+    return rects;
   }
 
   private hexToRgb(hex: string): { r: number; g: number; b: number } {
