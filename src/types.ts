@@ -46,6 +46,17 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     level_entity?: string;         // Tank level (optional)
     name?: string;
     icon?: string;
+    gradient?: {
+      enabled?: boolean;            // Enable gradient visualization (default: true)
+      levels?: number;              // Number of gradient steps (default: 10)
+      min_temp_entity?: string;     // Min temperature sensor (e.g., indoor temp)
+      max_temp_entity?: string;     // Max temperature sensor (e.g., heating setpoint)
+      min_temp_fallback?: number;   // Fallback min temp (default: 60°F)
+      max_temp_fallback?: number;   // Fallback max temp (default: 130°F)
+      bottom_color?: string;        // Bottom color (default: neutral_color)
+      heating_top_color?: string;   // Top color for heating (default: hot_color)
+      cooling_top_color?: string;   // Top color for cooling (default: cold_color)
+    };
   };
 
   // DHW (Domestic Hot Water) Tank Configuration
@@ -55,6 +66,16 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     tank_temp_entity?: string;     // DHW tank temperature (optional)
     name?: string;
     icon?: string;
+    gradient?: {
+      enabled?: boolean;            // Enable gradient visualization (default: true)
+      levels?: number;              // Number of gradient steps (default: 10)
+      min_temp_entity?: string;     // Min temperature sensor (e.g., street water temp)
+      max_temp_entity?: string;     // Max temperature sensor (e.g., DHW setpoint)
+      min_temp_fallback?: number;   // Fallback min temp (default: 60°F)
+      max_temp_fallback?: number;   // Fallback max temp (default: 130°F)
+      bottom_color?: string;        // Bottom color (default: neutral_color)
+      top_color?: string;           // Top color (default: hot_color)
+    };
   };
 
   // G2 Valve Configuration (diverter valve between buffer and DHW)
