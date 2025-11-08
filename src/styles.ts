@@ -30,19 +30,9 @@ export const cardStyles = css`
   }
 
   /* Animated gradient flow effect on pipes */
+  /* Note: Animation is handled by SVG animateTransform on the gradient definitions */
   .flow-gradient {
-    animation: flow-gradient-move linear infinite;
-    animation-duration: var(--flow-duration, 3s);
-    opacity: 0.8;
-  }
-
-  @keyframes flow-gradient-move {
-    from {
-      stroke-dashoffset: 0;
-    }
-    to {
-      stroke-dashoffset: var(--flow-dash-length, 100);
-    }
+    opacity: 0.85;
   }
 
   /* Fan rotation animation */
