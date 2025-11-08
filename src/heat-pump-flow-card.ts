@@ -649,7 +649,7 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Flow gradients for animated shimmer effect -->
               <!-- Using same technique as working gist: x1 from 0% to 100%, x2 from 100% to 200% -->
               <!-- Hot water flow gradient (red/orange shimmer) -->
-              <linearGradient id="flow-gradient-hot">
+              <linearGradient id="flow-gradient-hot" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stop-color="rgba(255, 80, 40, 1)" />
                 <stop offset="20%" stop-color="rgba(255, 150, 100, 1)" />
                 <stop offset="50%" stop-color="rgba(255, 255, 255, 1)" />
@@ -661,7 +661,7 @@ export class HeatPumpFlowCard extends LitElement {
               </linearGradient>
 
               <!-- Cold water flow gradient (blue/cyan shimmer) -->
-              <linearGradient id="flow-gradient-cold">
+              <linearGradient id="flow-gradient-cold" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stop-color="rgba(80, 150, 255, 1)" />
                 <stop offset="20%" stop-color="rgba(150, 200, 255, 1)" />
                 <stop offset="50%" stop-color="rgba(255, 255, 255, 1)" />
@@ -673,7 +673,7 @@ export class HeatPumpFlowCard extends LitElement {
               </linearGradient>
 
               <!-- Neutral flow gradient (white shimmer for inactive pipes) -->
-              <linearGradient id="flow-gradient-neutral">
+              <linearGradient id="flow-gradient-neutral" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stop-color="rgba(180, 180, 180, 1)" />
                 <stop offset="20%" stop-color="rgba(220, 220, 220, 1)" />
                 <stop offset="50%" stop-color="rgba(255, 255, 255, 1)" />
@@ -1208,7 +1208,7 @@ export class HeatPumpFlowCard extends LitElement {
                     fill="url(#flow-gradient-hot)"
                     stroke="#666"
                     stroke-width="2"
-                    rx="4"/>
+                    rx="4"></rect>
               <text id="test-gradient-text" x="70" y="55" text-anchor="middle" fill="#000" font-size="12" font-weight="bold">
                 GRADIENT TEST
               </text>
