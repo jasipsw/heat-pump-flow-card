@@ -778,8 +778,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-linecap="butt"/>
 
             <!-- Animated Flow Overlays (shimmer effect on pipes) -->
-            ${this.config.animation?.enabled !== false ? html`
-              <!-- Hot pipe flows (HP to buffer/DHW) -->
+            <!-- Hot pipe flows (HP to buffer/DHW) -->
               <path class="flow-gradient"
                     d="M 180 180 L 254 180"
                     stroke="url(#flow-gradient-hot)"
@@ -851,7 +850,6 @@ export class HeatPumpFlowCard extends LitElement {
                     fill="none"
                     stroke-linecap="round"
                     opacity="${g2ValveState.isActive ? '1' : '0.3'}"></path>
-            ` : ''}
 
             <!-- Temperature and flow rate labels (configurable styling) -->
             <!-- Top row: supply temperatures and flow rate -->
