@@ -736,7 +736,8 @@ export class HeatPumpFlowCard extends LitElement {
     const outerClass = auxIntensity > 0 ? 'aux-glow-outer' : 'aux-heater-layer';
     const middleClass = auxIntensity > 0 ? 'aux-glow-middle' : 'aux-heater-layer';
     const innerClass = auxIntensity > 0 ? 'aux-glow-inner' : 'aux-heater-layer';
-    const cylinderClass = auxIntensity > 0 ? 'aux-cylinder-pulse' : 'aux-heater-layer';
+    // Main cylinder always visible (just gray when off), only animates when active
+    const cylinderClass = auxIntensity > 0 ? 'aux-cylinder-pulse' : '';
 
     console.log('[Aux Heater Debug]', {
       auxEnabled: auxHeaterState.enabled,
