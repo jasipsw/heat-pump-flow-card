@@ -194,8 +194,8 @@ export const cardStyles = css`
     filter: none; /* Will be set by animation */
   }
 
-  /* Pipe styling */
-  path {
+  /* Pipe styling - exclude flow-gradient animations from drop-shadow */
+  path:not(.flow-gradient) {
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
   }
 
