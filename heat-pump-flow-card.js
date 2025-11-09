@@ -293,7 +293,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${a.isActive?"1":"0"}"/>
+                  opacity="${a.isActive&&t.flowRate>this.config.animation.idle_threshold?"0":a.isActive?"1":"0"}"/>
 
             <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) - At x=348, horizontally separated from return -->
             <path id="g2-to-dhw-path"
@@ -302,7 +302,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${a.isActive?"1":"0"}"/>
+                  opacity="${a.isActive&&t.flowRate>this.config.animation.idle_threshold?"0":a.isActive?"1":"0"}"/>
 
             <!-- DHW coil spiral path (for flow animation) - Matches actual tank coil position -->
             <path id="dhw-coil-path"
