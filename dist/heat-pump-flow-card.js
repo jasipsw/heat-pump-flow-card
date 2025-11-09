@@ -30,7 +30,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
   /* Animated gradient flow effect on pipes */
   /* Note: Animation is handled by SVG animateTransform on the gradient definitions */
   .flow-gradient {
-    opacity: 0.85;
+    opacity: 1.0;
   }
 
   /* Fan rotation animation */
