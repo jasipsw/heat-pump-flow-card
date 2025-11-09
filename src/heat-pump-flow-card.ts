@@ -702,7 +702,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '0' : '1'}"/>
+                  opacity="${hpState.flowRate > this.config.animation!.idle_threshold ? '0' : '1'}"/>
 
             <!-- Pipe: G2 to Buffer (continuation) - only active in heating mode -->
             <path id="g2-to-buffer-path"
@@ -792,14 +792,14 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-linecap="butt"
                   opacity="${hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
 
-            <!-- Aux to G2 (horizontal hot) - heating mode only -->
+            <!-- Aux to G2 (horizontal hot) - shows whenever there's flow -->
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 254 180 L 291 180 L 291 180.01 L 328 180"
                   stroke="${hpOutletColor}"
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+                  opacity="${hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
             <!-- Animated gradient overlay -->
             <defs>
               <linearGradient id="flow-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -818,7 +818,7 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+                  opacity="${hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
 
             <!-- G2 to buffer (horizontal hot) - heating mode only -->
             <!-- Solid backing to prevent color bleeding through gradient -->
