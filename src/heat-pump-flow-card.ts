@@ -673,63 +673,69 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Z-ORDER: Return pipes first (behind), then supply pipes (on top) -->
 
             <!-- Pipe: Buffer to HP (cold return) - BOTTOM - 10px gap from HP - BEHIND -->
+            <!-- Hidden when flow animation is active to prevent muddy colors from gradient transparency -->
             <path id="buffer-to-hp-path"
                   d="M 390 220 L 180 220"
                   stroke="${g2ValveState.isActive ? (this.config.temperature?.neutral_color || '#95a5a6') : hpInletColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
+                  opacity="${g2ValveState.isActive ? '0.3' : (hpState.flowRate > this.config.animation!.idle_threshold ? '0' : '1')}"/>
 
             <!-- Pipe: HP to aux heater (first segment) -->
             <!-- Shows water at HP outlet temperature before aux heater boost -->
+            <!-- Hidden when flow animation is active to prevent muddy colors from gradient transparency -->
             <path id="hp-to-aux-heating-path"
                   d="M 180 180 L 254 180"
                   stroke="${hpOutletColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${auxIntensity > 0 ? '0.5' : '1'}"/>
+                  opacity="${hpState.flowRate > this.config.animation!.idle_threshold ? '0' : (auxIntensity > 0 ? '0.5' : '1')}"/>
 
             <!-- Pipe: Aux heater to G2 valve (second segment) -->
             <!-- Shows boosted temperature after aux heater adds energy -->
+            <!-- Hidden when flow animation is active to prevent muddy colors from gradient transparency -->
             <path id="aux-to-g2-heating-path"
                   d="M 254 180 L 328 180"
                   stroke="${auxIntensity > 0 ? (this.config.temperature?.hot_color || '#e74c3c') : hpOutletColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="1"/>
+                  opacity="${auxIntensity > 0 && !g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '0' : '1'}"/>
 
             <!-- Pipe: G2 to Buffer (continuation) - only active in heating mode -->
+            <!-- Hidden when flow animation is active to prevent muddy colors from gradient transparency -->
             <path id="g2-to-buffer-path"
                   d="M 367 180 L 390 180"
                   stroke="${g2ValveState.isActive ? (this.config.temperature?.neutral_color || '#95a5a6') : hpOutletColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
+                  opacity="${g2ValveState.isActive ? '0.3' : (hpState.flowRate > this.config.animation!.idle_threshold ? '0' : '1')}"/>
 
             <!-- DHW MODE PIPES (shown when G2 valve is ON - DHW mode) -->
             <!-- Z-ORDER: Return pipes first (behind), then supply pipes (on top) -->
 
             <!-- Pipe: DHW outlet to HP return (BOTTOM) - Separated horizontally at x=370 - BEHIND -->
-            <!-- Always visible: blue when active, gray when inactive -->
+            <!-- Gray when inactive, hidden when active with flow animation to prevent muddy colors -->
             <path id="dhw-to-hp-return-path"
                   d="M 418 470 L 370 470 L 370 220 L 180 220"
                   stroke="${g2ValveState.isActive ? dhwReturnColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
-                  stroke-linecap="butt"/>
+                  stroke-linecap="butt"
+                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '0' : '1'}"/>
 
             <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) - At x=348, horizontally separated from return -->
-            <!-- Always visible: red when active, gray when inactive -->
+            <!-- Gray when inactive, hidden when active with flow animation to prevent muddy colors -->
             <path id="g2-to-dhw-path"
                   d="M 348 195 L 348 370 L 418 370"
                   stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
-                  stroke-linecap="butt"/>
+                  stroke-linecap="butt"
+                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '0' : '1'}"/>
 
             <!-- DHW coil spiral path (for flow animation) - Matches actual tank coil position -->
             <path id="dhw-coil-path"
@@ -741,20 +747,24 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- Z-ORDER: Return first (behind), supply on top -->
             <!-- Pipe: HVAC to Buffer (cold return) - 10px gap from buffer - BEHIND -->
+            <!-- Hidden when flow animation is active to prevent muddy colors from gradient transparency -->
             <path id="hvac-to-buffer-path"
                   d="M 620 220 L 480 220"
                   stroke="${hvacReturnColor}"
                   stroke-width="12"
                   fill="none"
-                  stroke-linecap="butt"/>
+                  stroke-linecap="butt"
+                  opacity="${hvacState.flowRate > this.config.animation!.idle_threshold ? '0' : '1'}"/>
 
             <!-- Pipe: Buffer to HVAC (hot supply) - 10px gap from buffer - ON TOP -->
+            <!-- Hidden when flow animation is active to prevent muddy colors from gradient transparency -->
             <path id="buffer-to-hvac-path"
                   d="M 480 180 L 620 180"
                   stroke="${bufferSupplyColor}"
                   stroke-width="12"
                   fill="none"
-                  stroke-linecap="butt"/>
+                  stroke-linecap="butt"
+                  opacity="${hvacState.flowRate > this.config.animation!.idle_threshold ? '0' : '1'}"/>
 
             <!-- Animated Flow Overlays (shimmer effect on pipes) -->
             <!-- Note: Adding tiny kinks to straight paths for gradient rendering -->
