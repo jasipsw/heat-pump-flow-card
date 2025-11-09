@@ -293,7 +293,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${a.isActive?"1":"0.3"}"/>
+                  opacity="${a.isActive?"1":"0"}"/>
 
             <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) - At x=348, horizontally separated from return -->
             <path id="g2-to-dhw-path"
@@ -302,7 +302,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${a.isActive?"1":"0.3"}"/>
+                  opacity="${a.isActive?"1":"0"}"/>
 
             <!-- DHW coil spiral path (for flow animation) - Matches actual tank coil position -->
             <path id="dhw-coil-path"
@@ -454,17 +454,15 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-linecap="butt"
                   opacity="${i.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
 
-            <!-- G2 to DHW (mixed vertical+horizontal hot) - DHW mode only -->
+            <!-- G2 to DHW (predominantly vertical hot) - DHW mode only -->
             <defs>
-              <linearGradient id="flow-grad-7" x1="0%" y1="0%" x2="30%" y2="100%">
+              <linearGradient id="flow-grad-7" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stop-color="rgba(200, 60, 40, 0.3)" />
                 <stop offset="40%" stop-color="rgba(240, 100, 70, 0.6)" />
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.6)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
-                <animate attributeName="x1" values="-15%;15%" dur="${Y}s" begin="0.4s" repeatCount="indefinite" />
                 <animate attributeName="y1" values="-50%;50%" dur="${Y}s" begin="0.4s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="15%;45%" dur="${Y}s" begin="0.4s" repeatCount="indefinite" />
                 <animate attributeName="y2" values="50%;150%" dur="${Y}s" begin="0.4s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
@@ -496,18 +494,16 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-linecap="butt"
                   opacity="${a.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
 
-            <!-- DHW to HP return (mixed horizontal+vertical cold) - DHW mode only -->
+            <!-- DHW to HP return (predominantly horizontal cold) - DHW mode only -->
             <defs>
-              <linearGradient id="flow-grad-9" x1="100%" y1="100%" x2="0%" y2="0%">
+              <linearGradient id="flow-grad-9" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stop-color="rgba(50, 100, 180, 0.3)" />
                 <stop offset="40%" stop-color="rgba(80, 140, 220, 0.6)" />
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 0.9)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.6)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.3)" />
                 <animate attributeName="x1" values="50%;-50%" dur="${Y}s" begin="1.0s" repeatCount="indefinite" />
-                <animate attributeName="y1" values="50%;-50%" dur="${Y}s" begin="1.0s" repeatCount="indefinite" />
                 <animate attributeName="x2" values="150%;50%" dur="${Y}s" begin="1.0s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="150%;50%" dur="${Y}s" begin="1.0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
