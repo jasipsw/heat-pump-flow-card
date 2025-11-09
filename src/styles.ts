@@ -31,8 +31,8 @@ export const cardStyles = css`
 
   /* Animated gradient flow effect on pipes */
   /* Note: Animation is handled by SVG animateTransform on the gradient definitions */
+  /* Note: Opacity controlled per-element via opacity attribute (0 = hidden, 1 = visible) */
   .flow-gradient {
-    opacity: 1.0;
   }
 
   /* Fan rotation animation */
