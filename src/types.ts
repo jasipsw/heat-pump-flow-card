@@ -93,6 +93,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     show_label?: boolean;          // Show label above heater (default: true when display_name is set)
     logo_url?: string;             // URL to brand logo image (local /local/... or external https://...)
     logo_background_color?: string; // Background color for logo (default: transparent, e.g., "white", "#ffffff")
+    label_color?: string;          // Text color for label (default: "#2c3e50")
     glow_size?: number;            // Glow animation extension in pixels (default: 8, larger = more dramatic)
     shadow_blur?: number;          // Drop-shadow blur intensity multiplier (default: 1.0, 2.0 = double blur)
     name?: string;                 // Internal name (deprecated, use display_name)
