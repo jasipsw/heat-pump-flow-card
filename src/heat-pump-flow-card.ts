@@ -718,24 +718,24 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Z-ORDER: Return pipes first (behind), then supply pipes (on top) -->
 
             <!-- Pipe: DHW outlet to HP return (BOTTOM) - Separated horizontally at x=370 - BEHIND -->
-            <!-- Gray when inactive, hidden when active with flow animation to prevent muddy colors -->
+            <!-- Always visible: gray when inactive, hidden only when active WITH flow animation -->
             <path id="dhw-to-hp-return-path"
                   d="M 418 470 L 370 470 L 370 220 L 180 220"
                   stroke="${g2ValveState.isActive ? dhwReturnColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '0' : '1'}"/>
+                  opacity="${!g2ValveState.isActive ? '1' : (hpState.flowRate > this.config.animation!.idle_threshold ? '0' : '1')}"/>
 
             <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) - At x=348, horizontally separated from return -->
-            <!-- Gray when inactive, hidden when active with flow animation to prevent muddy colors -->
+            <!-- Always visible: gray when inactive, hidden only when active WITH flow animation -->
             <path id="g2-to-dhw-path"
                   d="M 348 195 L 348 370 L 418 370"
                   stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '0' : '1'}"/>
+                  opacity="${!g2ValveState.isActive ? '1' : (hpState.flowRate > this.config.animation!.idle_threshold ? '0' : '1')}"/>
 
             <!-- DHW coil spiral path (for flow animation) - Matches actual tank coil position -->
             <path id="dhw-coil-path"
@@ -774,11 +774,11 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- HP to aux heater (horizontal hot) -->
             <defs>
               <linearGradient id="flow-grad-1" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.3)" />
-                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.6)" />
-                <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
-                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.6)" />
-                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
+                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.6)" />
+                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
+                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
                 <animate attributeName="x1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
                 <animate attributeName="x2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
@@ -794,11 +794,11 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Aux to G2 (horizontal hot) - shows when aux heater is active -->
             <defs>
               <linearGradient id="flow-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.3)" />
-                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.6)" />
-                <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
-                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.6)" />
-                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
+                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.6)" />
+                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
+                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
                 <animate attributeName="x1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0.3s" repeatCount="indefinite" />
                 <animate attributeName="x2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0.3s" repeatCount="indefinite" />
               </linearGradient>
@@ -814,11 +814,11 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- G2 to buffer (horizontal hot) - heating mode only -->
             <defs>
               <linearGradient id="flow-grad-3" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.3)" />
-                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.6)" />
-                <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
-                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.6)" />
-                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
+                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.6)" />
+                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
+                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
                 <animate attributeName="x1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0.6s" repeatCount="indefinite" />
                 <animate attributeName="x2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0.6s" repeatCount="indefinite" />
               </linearGradient>
@@ -834,11 +834,11 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Buffer to HVAC (horizontal hot) -->
             <defs>
               <linearGradient id="flow-grad-4" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.3)" />
-                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.6)" />
-                <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
-                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.6)" />
-                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
+                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.6)" />
+                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
+                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
                 <animate attributeName="x1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0.9s" repeatCount="indefinite" />
                 <animate attributeName="x2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0.9s" repeatCount="indefinite" />
               </linearGradient>
@@ -854,11 +854,11 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Buffer to HP return (horizontal cold) - heating mode only -->
             <defs>
               <linearGradient id="flow-grad-5" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.3)" />
-                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.6)" />
-                <stop offset="50%" stop-color="rgba(110, 170, 255, 0.9)" />
-                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.6)" />
-                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.3)" />
+                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.6)" />
+                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
+                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
                 <animate attributeName="x1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="1.2s" repeatCount="indefinite" />
                 <animate attributeName="x2" values="150%;50%" dur="${flowAnimSpeed}s" begin="1.2s" repeatCount="indefinite" />
               </linearGradient>
@@ -874,11 +874,11 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- HVAC to buffer return (horizontal cold) -->
             <defs>
               <linearGradient id="flow-grad-6" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.3)" />
-                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.6)" />
-                <stop offset="50%" stop-color="rgba(110, 170, 255, 0.9)" />
-                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.6)" />
-                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.3)" />
+                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.6)" />
+                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
+                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
                 <animate attributeName="x1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="1.5s" repeatCount="indefinite" />
                 <animate attributeName="x2" values="150%;50%" dur="${flowAnimSpeed}s" begin="1.5s" repeatCount="indefinite" />
               </linearGradient>
@@ -894,11 +894,11 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- G2 to DHW - vertical segment (hot) - DHW mode only -->
             <defs>
               <linearGradient id="flow-grad-7a" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.3)" />
-                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.6)" />
-                <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
-                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.6)" />
-                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
+                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.6)" />
+                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
+                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
                 <animate attributeName="y1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0.4s" repeatCount="indefinite" />
                 <animate attributeName="y2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0.4s" repeatCount="indefinite" />
               </linearGradient>
@@ -914,11 +914,11 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- G2 to DHW - horizontal segment (hot) - DHW mode only -->
             <defs>
               <linearGradient id="flow-grad-7b" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.3)" />
-                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.6)" />
-                <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
-                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.6)" />
-                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
+                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.6)" />
+                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
+                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
                 <animate attributeName="x1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0.4s" repeatCount="indefinite" />
                 <animate attributeName="x2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0.4s" repeatCount="indefinite" />
               </linearGradient>
@@ -934,11 +934,11 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- DHW coil spiral (vertical hot) - DHW mode only -->
             <defs>
               <linearGradient id="flow-grad-8" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.3)" />
-                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.6)" />
-                <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
-                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.6)" />
-                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
+                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.6)" />
+                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
+                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
                 <animate attributeName="y1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0.7s" repeatCount="indefinite" />
                 <animate attributeName="y2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0.7s" repeatCount="indefinite" />
               </linearGradient>
@@ -954,11 +954,11 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- DHW to HP return - horizontal segment 1 (cold) - DHW mode only -->
             <defs>
               <linearGradient id="flow-grad-9a" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.3)" />
-                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.6)" />
-                <stop offset="50%" stop-color="rgba(110, 170, 255, 0.9)" />
-                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.6)" />
-                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.3)" />
+                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.6)" />
+                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
+                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
                 <animate attributeName="x1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="1.0s" repeatCount="indefinite" />
                 <animate attributeName="x2" values="150%;50%" dur="${flowAnimSpeed}s" begin="1.0s" repeatCount="indefinite" />
               </linearGradient>
@@ -974,11 +974,11 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- DHW to HP return - vertical segment (cold) - DHW mode only -->
             <defs>
               <linearGradient id="flow-grad-9b" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.3)" />
-                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.6)" />
-                <stop offset="50%" stop-color="rgba(110, 170, 255, 0.9)" />
-                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.6)" />
-                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.3)" />
+                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.6)" />
+                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
+                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
                 <animate attributeName="y1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="1.0s" repeatCount="indefinite" />
                 <animate attributeName="y2" values="150%;50%" dur="${flowAnimSpeed}s" begin="1.0s" repeatCount="indefinite" />
               </linearGradient>
@@ -994,11 +994,11 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- DHW to HP return - horizontal segment 2 (cold) - DHW mode only -->
             <defs>
               <linearGradient id="flow-grad-9c" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.3)" />
-                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.6)" />
-                <stop offset="50%" stop-color="rgba(110, 170, 255, 0.9)" />
-                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.6)" />
-                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.3)" />
+                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.6)" />
+                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
+                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
                 <animate attributeName="x1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="1.0s" repeatCount="indefinite" />
                 <animate attributeName="x2" values="150%;50%" dur="${flowAnimSpeed}s" begin="1.0s" repeatCount="indefinite" />
               </linearGradient>
