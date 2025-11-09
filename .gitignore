@@ -1,4 +1,8 @@
 node_modules/
 *.log
 .DS_Store
-# Note: dist/ is NOT ignored because HACS needs the compiled JS file
+
+# Built files - workflow builds these on merge to avoid conflicts
+dist/
+heat-pump-flow-card.js
+heat-pump-flow-card.js.map
