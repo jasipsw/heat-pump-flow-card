@@ -266,13 +266,14 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
             <!-- Pipe: Aux heater to G2 valve (second segment) -->
             <!-- Shows boosted temperature after aux heater adds energy -->
+            <!-- Hidden when flow animation is active to prevent red-on-red visibility issues -->
             <path id="aux-to-g2-heating-path"
                   d="M 254 180 L 328 180"
                   stroke="${S>0?this.config.temperature?.hot_color||"#e74c3c":l}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="1"/>
+                  opacity="${S>0&&!a.isActive&&t.flowRate>this.config.animation.idle_threshold?"0":"1"}"/>
 
             <!-- Pipe: G2 to Buffer (continuation) - only active in heating mode -->
             <path id="g2-to-buffer-path"
