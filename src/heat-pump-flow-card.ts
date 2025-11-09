@@ -905,6 +905,92 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-linecap="butt"
                   opacity="${hvacState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
 
+            <!-- Z-ORDER: Return paths first (behind), then supply paths (on top) -->
+
+            <!-- DHW to HP return - horizontal segment 1 (cold) - DHW mode only -->
+            <!-- Solid backing to prevent color bleeding through gradient -->
+            <path d="M 418 470 L 394 470 L 394 470.01 L 370 470"
+                  stroke="${dhwReturnColor}"
+                  stroke-width="14"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+            <!-- Animated gradient overlay -->
+            <defs>
+              <linearGradient id="flow-grad-9a" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.6)" />
+                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
+                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
+                <animate attributeName="x1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="150%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+              </linearGradient>
+            </defs>
+            <path class="flow-gradient"
+                  d="M 418 470 L 394 470 L 394 470.01 L 370 470"
+                  stroke="url(#flow-grad-9a)"
+                  stroke-width="14"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+
+            <!-- DHW to HP return - vertical segment (cold) - DHW mode only -->
+            <!-- Solid backing to prevent color bleeding through gradient -->
+            <path d="M 370 470 L 370 345 L 370 345.01 L 370 220"
+                  stroke="${dhwReturnColor}"
+                  stroke-width="14"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+            <!-- Animated gradient overlay -->
+            <defs>
+              <linearGradient id="flow-grad-9b" x1="370" y1="470" x2="370" y2="220" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.6)" />
+                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
+                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
+                <animate attributeName="y1" values="345;95" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="595;345" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+              </linearGradient>
+            </defs>
+            <path class="flow-gradient"
+                  d="M 370 470 L 370 345 L 370 345.01 L 370 220"
+                  stroke="url(#flow-grad-9b)"
+                  stroke-width="14"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+
+            <!-- DHW to HP return - horizontal segment 2 (cold) - DHW mode only -->
+            <!-- Solid backing to prevent color bleeding through gradient -->
+            <path d="M 370 220 L 275 220 L 275 220.01 L 180 220"
+                  stroke="${dhwReturnColor}"
+                  stroke-width="14"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+            <!-- Animated gradient overlay -->
+            <defs>
+              <linearGradient id="flow-grad-9c" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.6)" />
+                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
+                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
+                <animate attributeName="x1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="150%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+              </linearGradient>
+            </defs>
+            <path class="flow-gradient"
+                  d="M 370 220 L 275 220 L 275 220.01 L 180 220"
+                  stroke="url(#flow-grad-9c)"
+                  stroke-width="14"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+
             <!-- G2 to DHW - vertical segment (hot) - DHW mode only -->
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 348 195 L 348 282.5 L 348 282.51 L 348 370"
@@ -915,14 +1001,14 @@ export class HeatPumpFlowCard extends LitElement {
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
             <!-- Animated gradient overlay -->
             <defs>
-              <linearGradient id="flow-grad-7a" x1="0%" y1="0%" x2="0%" y2="100%">
+              <linearGradient id="flow-grad-7a" x1="348" y1="195" x2="348" y2="370" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stop-color="rgba(200, 60, 40, 0.6)" />
                 <stop offset="40%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="y1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y1" values="107;282" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="282;457" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -971,103 +1057,19 @@ export class HeatPumpFlowCard extends LitElement {
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
             <!-- Animated gradient overlay -->
             <defs>
-              <linearGradient id="flow-grad-8" x1="0%" y1="0%" x2="0%" y2="100%">
+              <linearGradient id="flow-grad-8" x1="438" y1="370" x2="438" y2="478" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stop-color="rgba(200, 60, 40, 0.6)" />
                 <stop offset="40%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="y1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y1" values="316;424" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="424;532" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
                   d="M 418 370 Q 438 378, 458 370 Q 438 390, 418 390 Q 438 406, 458 390 Q 438 422, 418 422 Q 438 438, 458 422 Q 438 454, 418 454 Q 438 470, 458 454 Q 438 478, 418 470"
                   stroke="url(#flow-grad-8)"
-                  stroke-width="14"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
-
-            <!-- DHW to HP return - horizontal segment 1 (cold) - DHW mode only -->
-            <!-- Solid backing to prevent color bleeding through gradient -->
-            <path d="M 418 470 L 394 470 L 394 470.01 L 370 470"
-                  stroke="${dhwReturnColor}"
-                  stroke-width="14"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
-            <!-- Animated gradient overlay -->
-            <defs>
-              <linearGradient id="flow-grad-9a" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.9)" />
-                <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
-                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
-                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="x1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="150%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
-              </linearGradient>
-            </defs>
-            <path class="flow-gradient"
-                  d="M 418 470 L 394 470 L 394 470.01 L 370 470"
-                  stroke="url(#flow-grad-9a)"
-                  stroke-width="14"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
-
-            <!-- DHW to HP return - vertical segment (cold) - DHW mode only -->
-            <!-- Solid backing to prevent color bleeding through gradient -->
-            <path d="M 370 470 L 370 345 L 370 345.01 L 370 220"
-                  stroke="${dhwReturnColor}"
-                  stroke-width="14"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
-            <!-- Animated gradient overlay -->
-            <defs>
-              <linearGradient id="flow-grad-9b" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.9)" />
-                <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
-                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
-                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="y1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="150%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
-              </linearGradient>
-            </defs>
-            <path class="flow-gradient"
-                  d="M 370 470 L 370 345 L 370 345.01 L 370 220"
-                  stroke="url(#flow-grad-9b)"
-                  stroke-width="14"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
-
-            <!-- DHW to HP return - horizontal segment 2 (cold) - DHW mode only -->
-            <!-- Solid backing to prevent color bleeding through gradient -->
-            <path d="M 370 220 L 275 220 L 275 220.01 L 180 220"
-                  stroke="${dhwReturnColor}"
-                  stroke-width="14"
-                  fill="none"
-                  stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
-            <!-- Animated gradient overlay -->
-            <defs>
-              <linearGradient id="flow-grad-9c" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.9)" />
-                <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
-                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
-                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="x1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="150%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
-              </linearGradient>
-            </defs>
-            <path class="flow-gradient"
-                  d="M 370 220 L 275 220 L 275 220.01 L 180 220"
-                  stroke="url(#flow-grad-9c)"
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
@@ -1368,11 +1370,11 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- Tank status display (always shown) -->
               ${dhwState.tankTemp ? html`
-                <text x="45" y="165" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
+                <text x="45" y="185" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
                   ${dhwFillPercentage}% | ${this.formatValue(dhwState.tankTemp, 1)}°${this.config.temperature?.unit || 'C'}
                 </text>
               ` : html`
-                <text x="45" y="165" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
+                <text x="45" y="185" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
                   ${dhwFillPercentage}%
                 </text>
               `}
