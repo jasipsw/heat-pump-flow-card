@@ -1,8 +1,3 @@
 node_modules/
 *.log
 .DS_Store
-
-# Built files - workflow builds these on merge to avoid conflicts
-dist/
-heat-pump-flow-card.js
-heat-pump-flow-card.js.map
