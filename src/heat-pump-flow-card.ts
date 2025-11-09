@@ -1016,19 +1016,19 @@ export class HeatPumpFlowCard extends LitElement {
             <rect x="341" y="363"
                   width="14" height="14"
                   fill="${this.config.temperature?.neutral_color || '#95a5a6'}"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"/>
+                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></rect>
 
             <!-- Corner at DHW to HP return first turn (370, 470) - horizontal to vertical -->
             <rect x="363" y="463"
                   width="14" height="14"
                   fill="${this.config.temperature?.neutral_color || '#95a5a6'}"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"/>
+                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></rect>
 
             <!-- Corner at DHW to HP return second turn (370, 220) - vertical to horizontal -->
             <rect x="363" y="213"
                   width="14" height="14"
                   fill="${this.config.temperature?.neutral_color || '#95a5a6'}"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"/>
+                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></rect>
 
             <!-- Temperature and flow rate labels (configurable styling) -->
             <!-- Top row: supply temperatures and flow rate -->
