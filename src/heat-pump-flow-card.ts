@@ -311,18 +311,28 @@ export class HeatPumpFlowCard extends LitElement {
       ? this.config.buffer_tank?.gradient
       : this.config.dhw_tank?.gradient;
 
-    // Check if gradient is disabled
-    if (gradientConfig?.enabled === false) {
-      return { levels: [], fillPercentage: 0 };  // Return empty to use fallback rendering
-    }
-
-    // Get configuration with defaults
-    const levels = Math.max(2, gradientConfig?.levels ?? 10);  // Minimum 2 levels to avoid division by zero
+    // Get configuration with defaults for fill percentage calculation
     const minTempEntity = gradientConfig?.min_temp_entity;
     const maxTempEntity = gradientConfig?.max_temp_entity;
     const minTempFallback = gradientConfig?.min_temp_fallback ?? 60;  // 60°F
     const maxTempFallback = gradientConfig?.max_temp_fallback ?? 130; // 130°F
 
+    // Get min/max temperature values
+    const minTemp = this.getStateValue(minTempEntity) ?? minTempFallback;
+    const maxTemp = this.getStateValue(maxTempEntity) ?? maxTempFallback;
+
+    // Calculate fill ratio (how full the tank is with hot water)
+    const tempRange = maxTemp - minTemp;
+    const fillRatio = tempRange > 0 ? Math.max(0, Math.min(1, (currentTemp - minTemp) / tempRange)) : 0;
+    const fillPercentage = Math.round(fillRatio * 100);
+
+    // Check if gradient visualization is disabled
+    if (gradientConfig?.enabled === false) {
+      return { levels: [], fillPercentage };  // Return percentage but empty gradient
+    }
+
+    // Get configuration for gradient visualization
+    const levels = Math.max(2, gradientConfig?.levels ?? 10);  // Minimum 2 levels to avoid division by zero
     const bottomColor = gradientConfig?.bottom_color ?? this.config.temperature?.neutral_color ?? '#95a5a6';
 
     // Determine top color based on mode
@@ -335,14 +345,6 @@ export class HeatPumpFlowCard extends LitElement {
       // DHW tank always uses heating color
       topColor = gradientConfig?.top_color ?? this.config.temperature?.hot_color ?? '#e74c3c';
     }
-
-    // Get min/max temperature values
-    const minTemp = this.getStateValue(minTempEntity) ?? minTempFallback;
-    const maxTemp = this.getStateValue(maxTempEntity) ?? maxTempFallback;
-
-    // Calculate fill ratio (how full the tank is with hot water)
-    const tempRange = maxTemp - minTemp;
-    const fillRatio = tempRange > 0 ? Math.max(0, Math.min(1, (currentTemp - minTemp) / tempRange)) : 0;
 
     // Tank dimensions (from SVG)
     const tankStartY = 25;  // Start Y position of water area
@@ -377,7 +379,7 @@ export class HeatPumpFlowCard extends LitElement {
 
     return {
       levels: gradientLevels,
-      fillPercentage: Math.round(fillRatio * 100)
+      fillPercentage
     };
   }
 
@@ -1333,12 +1335,10 @@ export class HeatPumpFlowCard extends LitElement {
                 ${this.config.labels!.buffer_tank}
               </text>
 
-              <!-- Fill percentage display (shown when gradient is enabled) -->
-              ${bufferGradient.length > 0 ? html`
-                <text x="45" y="180" text-anchor="middle" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="11" font-weight="bold">
-                  ${bufferFillPercentage}%
-                </text>
-              ` : ''}
+              <!-- Fill percentage display (always shown) -->
+              <text x="45" y="180" text-anchor="middle" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="11" font-weight="bold">
+                ${bufferFillPercentage}%
+              </text>
             </g>
 
             <!-- DHW (Domestic Hot Water) Tank with Coil (center-bottom) -->
@@ -1394,24 +1394,15 @@ export class HeatPumpFlowCard extends LitElement {
               </text>
 
               <!-- Tank status display (below tank) -->
-              ${dhwGradient.length > 0 ? html`
-                <!-- Show percentage when gradient is enabled -->
-                ${dhwState.tankTemp ? html`
-                  <text x="45" y="180" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
-                    ${dhwFillPercentage}% | ${this.formatValue(dhwState.tankTemp, 1)}°${this.config.temperature?.unit || 'C'}
-                  </text>
-                ` : html`
-                  <text x="45" y="180" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
-                    ${dhwFillPercentage}%
-                  </text>
-                `}
+              <!-- Tank status display (always shown) -->
+              ${dhwState.tankTemp ? html`
+                <text x="45" y="180" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
+                  ${dhwFillPercentage}% | ${this.formatValue(dhwState.tankTemp, 1)}°${this.config.temperature?.unit || 'C'}
+                </text>
               ` : html`
-                <!-- Fallback: show only tank temp if available -->
-                ${dhwState.tankTemp ? html`
-                  <text x="45" y="180" text-anchor="middle" fill="#3498db" font-size="11" font-weight="bold">
-                    Tank: ${this.formatValue(dhwState.tankTemp, 1)}°${this.config.temperature?.unit || 'C'}
-                  </text>
-                ` : ''}
+                <text x="45" y="180" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
+                  ${dhwFillPercentage}%
+                </text>
               `}
             </g>
 
