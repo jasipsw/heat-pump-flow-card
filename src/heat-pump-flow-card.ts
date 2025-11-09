@@ -543,9 +543,8 @@ export class HeatPumpFlowCard extends LitElement {
     const hpInletColor = hpPipeColors.coldPipe;
     const bufferSupplyColor = hvacPipeColors.hotPipe;
     const hvacReturnColor = hvacPipeColors.coldPipe;
-    // DHW pipes: always use hot/cold colors in DHW mode (ignore temp delta)
-    const dhwCoilColor = this.config.temperature?.hot_color || '#e74c3c';
-    const dhwReturnColor = this.config.temperature?.cold_color || '#3498db';
+    const dhwCoilColor = dhwPipeColors.hotPipe;
+    const dhwReturnColor = dhwPipeColors.coldPipe;
 
     // Generate tank gradients
     const bufferIsHeating = bufferState.supplyTemp > bufferState.returnTemp;
