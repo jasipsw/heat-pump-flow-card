@@ -543,7 +543,9 @@ export class HeatPumpFlowCard extends LitElement {
     const hpInletColor = hpPipeColors.coldPipe;
     const bufferSupplyColor = hvacPipeColors.hotPipe;
     const hvacReturnColor = hvacPipeColors.coldPipe;
-    const dhwCoilColor = dhwPipeColors.hotPipe;
+    // DHW pipes: always use hot/cold colors in DHW mode (ignore temp delta)
+    const dhwCoilColor = this.config.temperature?.hot_color || '#e74c3c';
+    const dhwReturnColor = this.config.temperature?.cold_color || '#3498db';
 
     // Generate tank gradients
     const bufferIsHeating = bufferState.supplyTemp > bufferState.returnTemp;
@@ -713,7 +715,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Pipe: DHW outlet to HP return (BOTTOM) - Separated horizontally at x=370 - BEHIND -->
             <path id="dhw-to-hp-return-path"
                   d="M 418 470 L 370 470 L 370 220 L 180 220"
-                  stroke="${g2ValveState.isActive ? hpInletColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
+                  stroke="${g2ValveState.isActive ? dhwReturnColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
