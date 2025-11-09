@@ -287,22 +287,22 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,o,i){var a,r=argume
             <!-- Z-ORDER: Return pipes first (behind), then supply pipes (on top) -->
 
             <!-- Pipe: DHW outlet to HP return (BOTTOM) - Separated horizontally at x=370 - BEHIND -->
+            <!-- Always visible: blue when active, gray when inactive -->
             <path id="dhw-to-hp-return-path"
                   d="M 418 470 L 370 470 L 370 220 L 180 220"
                   stroke="${a.isActive?p:this.config.temperature?.neutral_color||"#95a5a6"}"
                   stroke-width="12"
                   fill="none"
-                  stroke-linecap="butt"
-                  opacity="${a.isActive?"1":"0"}"/>
+                  stroke-linecap="butt"/>
 
             <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) - At x=348, horizontally separated from return -->
+            <!-- Always visible: red when active, gray when inactive -->
             <path id="g2-to-dhw-path"
                   d="M 348 195 L 348 370 L 418 370"
                   stroke="${a.isActive?f:this.config.temperature?.neutral_color||"#95a5a6"}"
                   stroke-width="12"
                   fill="none"
-                  stroke-linecap="butt"
-                  opacity="${a.isActive?"1":"0"}"/>
+                  stroke-linecap="butt"/>
 
             <!-- DHW coil spiral path (for flow animation) - Matches actual tank coil position -->
             <path id="dhw-coil-path"
@@ -354,7 +354,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,o,i){var a,r=argume
                   stroke-linecap="butt"
                   opacity="${t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
 
-            <!-- Aux to G2 (horizontal hot) - heating mode only -->
+            <!-- Aux to G2 (horizontal hot) - shows when aux heater is active -->
             <defs>
               <linearGradient id="flow-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stop-color="rgba(200, 60, 40, 0.3)" />
@@ -372,7 +372,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,o,i){var a,r=argume
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!a.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${S>0&&!a.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
 
             <!-- G2 to buffer (horizontal hot) - heating mode only -->
             <defs>
