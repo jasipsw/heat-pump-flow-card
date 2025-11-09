@@ -365,7 +365,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Aux to G2 (horizontal hot) - shows when aux heater is active -->
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 254 180 L 291 180 L 291 180.01 L 328 180"
-                  stroke="${S>0?this.config.temperature?.hot_color||"#e74c3c":l}"
+                  stroke="${l}"
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
