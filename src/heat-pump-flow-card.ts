@@ -536,15 +536,17 @@ export class HeatPumpFlowCard extends LitElement {
     // Calculate pipe colors based on temperature delta
     const hpPipeColors = this.getPipeColors(hpState.outletTemp, hpState.inletTemp, hpState.flowRate);
     const hvacPipeColors = this.getPipeColors(bufferState.supplyTemp, hvacState.returnTemp, hvacState.flowRate);
-    const dhwPipeColors = this.getPipeColors(dhwState.inletTemp, dhwState.outletTemp, hpState.flowRate);
 
     // Extract individual pipe colors
     const hpOutletColor = hpPipeColors.hotPipe;
     const hpInletColor = hpPipeColors.coldPipe;
     const bufferSupplyColor = hvacPipeColors.hotPipe;
     const hvacReturnColor = hvacPipeColors.coldPipe;
-    const dhwCoilColor = dhwPipeColors.hotPipe;
-    const dhwReturnColor = dhwPipeColors.coldPipe;
+
+    // DHW pipes always use hot/cold colors when active (not calculated from delta)
+    // to match the fixed-color flow gradient animations
+    const dhwCoilColor = this.config.temperature!.hot_color!;
+    const dhwReturnColor = this.config.temperature!.cold_color!;
 
     // Generate tank gradients
     const bufferIsHeating = bufferState.supplyTemp > bufferState.returnTemp;
