@@ -1001,6 +1001,25 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
 
+            <!-- Pipe corner elbows to hide animation seams - DHW mode only -->
+            <!-- Corner at G2 to DHW (348, 370) -->
+            <circle cx="348" cy="370"
+                    r="7"
+                    fill="${this.config.temperature?.neutral_color || '#95a5a6'}"
+                    opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"/>
+
+            <!-- Corner at DHW to HP return first turn (370, 470) -->
+            <circle cx="370" cy="470"
+                    r="7"
+                    fill="${this.config.temperature?.neutral_color || '#95a5a6'}"
+                    opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"/>
+
+            <!-- Corner at DHW to HP return second turn (370, 220) -->
+            <circle cx="370" cy="220"
+                    r="7"
+                    fill="${this.config.temperature?.neutral_color || '#95a5a6'}"
+                    opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"/>
+
             <!-- Temperature and flow rate labels (configurable styling) -->
             <!-- Top row: supply temperatures and flow rate -->
             <text x="260" y="170" text-anchor="middle" fill="${hpOutletColor}"
