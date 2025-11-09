@@ -879,31 +879,22 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                     stroke="#7f8c8d"
                     stroke-width="1.5"></rect>`}
 
-              <!-- Label and logo (above heater) -->
-              <!-- Background for logo/label (if logo background color is set) -->
-              ${this.config.aux_heater?.logo_background_color?Q`<rect
-                    x="${224}"
-                    y="162"
-                    width="60"
-                    height="18"
-                    rx="3"
-                    fill="${this.config.aux_heater.logo_background_color}"
-                    opacity="0.9"></rect>`:""}
-
-              <!-- Brand logo (if configured) -->
-              ${this.config.aux_heater?.logo_url?Q`<image x="${228}"
-                       y="164"
-                       width="14"
-                       height="14"
+              <!-- Label and logo (inside the heater cylinder) -->
+              <!-- Brand logo (if configured) - left-aligned within cylinder, vertically centered -->
+              ${this.config.aux_heater?.logo_url?Q`<image x="${227}"
+                       y="${175}"
+                       width="10"
+                       height="10"
                        href="${this.config.aux_heater.logo_url}"
                        opacity="0.9"></image>`:""}
 
-              <!-- Label text (if show_label is not false and displayName exists) -->
-              ${!1!==this.config.aux_heater?.show_label&&r.displayName?Q`<text x="${254+(this.config.aux_heater?.logo_url?-8:0)}"
-                      y="175"
+              <!-- Label text (if show_label is not false and displayName exists) - horizontally centered in cylinder, vertically centered -->
+              ${!1!==this.config.aux_heater?.show_label&&r.displayName?Q`<text x="${254}"
+                      y="${180}"
                       text-anchor="middle"
-                      fill="#95a5a6"
-                      font-size="10"
+                      dominant-baseline="middle"
+                      fill="${this.config.aux_heater?.label_color||"#2c3e50"}"
+                      font-size="9"
                       font-weight="bold">${r.displayName}</text>`:""}
             </g>
 
