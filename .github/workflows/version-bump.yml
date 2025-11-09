@@ -15,6 +15,9 @@ on:
 jobs:
   bump-version:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     # Only run for claude/** branches on create, or any PR
     if: |
       (github.event_name == 'create' && startsWith(github.ref, 'refs/heads/claude/')) ||
