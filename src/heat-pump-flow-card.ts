@@ -1304,39 +1304,31 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="1.5"></rect>`}
 
               <!-- Label and logo (above heater) -->
-              ${(this.config.aux_heater?.show_label !== false && auxHeaterState.displayName) || this.config.aux_heater?.logo_url ? html`
-                <!-- Background for logo/label (if logo background color is set) -->
-                ${this.config.aux_heater?.logo_background_color ? svg`<rect
-                      x="${cylX + cylW/2 - 30}"
-                      y="162"
-                      width="60"
-                      height="18"
-                      rx="3"
-                      fill="${this.config.aux_heater.logo_background_color}"
-                      opacity="0.9"></rect>` : ''}
+              <!-- Background for logo/label (if logo background color is set) -->
+              ${this.config.aux_heater?.logo_background_color ? svg`<rect
+                    x="${cylX + cylW/2 - 30}"
+                    y="162"
+                    width="60"
+                    height="18"
+                    rx="3"
+                    fill="${this.config.aux_heater.logo_background_color}"
+                    opacity="0.9"></rect>` : ''}
 
-                <!-- Brand logo (if configured) -->
-                ${this.config.aux_heater?.logo_url ? html`
-                  <image x="${cylX + cylW/2 - 26}"
-                         y="164"
-                         width="14"
-                         height="14"
-                         href="${this.config.aux_heater.logo_url}"
-                         opacity="0.9"/>
-                ` : ''}
+              <!-- Brand logo (if configured) -->
+              ${this.config.aux_heater?.logo_url ? svg`<image x="${cylX + cylW/2 - 26}"
+                       y="164"
+                       width="14"
+                       height="14"
+                       href="${this.config.aux_heater.logo_url}"
+                       opacity="0.9"></image>` : ''}
 
-                <!-- Label text (if show_label is not false and displayName exists) -->
-                ${this.config.aux_heater?.show_label !== false && auxHeaterState.displayName ? html`
-                  <text x="${cylX + cylW/2 + (this.config.aux_heater?.logo_url ? -8 : 0)}"
-                        y="175"
-                        text-anchor="middle"
-                        fill="#95a5a6"
-                        font-size="10"
-                        font-weight="bold">
-                    ${auxHeaterState.displayName}
-                  </text>
-                ` : ''}
-              ` : ''}
+              <!-- Label text (if show_label is not false and displayName exists) -->
+              ${this.config.aux_heater?.show_label !== false && auxHeaterState.displayName ? svg`<text x="${cylX + cylW/2 + (this.config.aux_heater?.logo_url ? -8 : 0)}"
+                      y="175"
+                      text-anchor="middle"
+                      fill="#95a5a6"
+                      font-size="10"
+                      font-weight="bold">${auxHeaterState.displayName}</text>` : ''}
             </g>
 
             <!-- Version display (upper right corner) -->
