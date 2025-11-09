@@ -832,55 +832,53 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Glow size configurable via aux_heater.glow_size (default: 8px) -->
             <!-- Animation speed increases with power level for visual feedback -->
             <!-- Shadow blur configurable via aux_heater.shadow_blur (default: 1.0) -->
-            <!-- Only rendered when enabled to prevent background animation processing -->
-            ${r.enabled?W`
-              <g id="aux-heater"
-                 style="--aux-anim-speed: ${X}s; --aux-shadow-blur: ${K};">
-                <!-- Glow layers - simple solid colors with CSS pulsing animation -->
-                <!-- Outermost glow layer - size based on config -->
-                <rect x="${T}" y="${M}"
-                      width="${R}" height="${N}"
-                      rx="${z}" ry="${O}"
-                      class="${Y}"
-                      fill="#ff4422"
-                      pointer-events="none"/>
+            <g id="aux-heater"
+               opacity="${r.enabled?"1":"0"}"
+               style="--aux-anim-speed: ${X}s; --aux-shadow-blur: ${K};">
+              <!-- Glow layers - simple solid colors with CSS pulsing animation -->
+              <!-- Outermost glow layer - size based on config -->
+              <rect x="${T}" y="${M}"
+                    width="${R}" height="${N}"
+                    rx="${z}" ry="${O}"
+                    class="${Y}"
+                    fill="#ff4422"
+                    pointer-events="none"/>
 
-                <!-- Middle glow layer - size based on config -->
-                <rect x="${V}" y="${D}"
-                      width="${L}" height="${F}"
-                      rx="${U}" ry="${G}"
-                      class="${tt}"
-                      fill="#ff6644"
-                      pointer-events="none"/>
+              <!-- Middle glow layer - size based on config -->
+              <rect x="${V}" y="${D}"
+                    width="${L}" height="${F}"
+                    rx="${U}" ry="${G}"
+                    class="${tt}"
+                    fill="#ff6644"
+                    pointer-events="none"/>
 
-                <!-- Inner glow layer - size based on config -->
-                <rect x="${Q}" y="${B}"
-                      width="${I}" height="${j}"
-                      rx="${q}" ry="${Z}"
-                      class="${et}"
-                      fill="#ff8855"
-                      pointer-events="none"/>
+              <!-- Inner glow layer - size based on config -->
+              <rect x="${Q}" y="${B}"
+                    width="${I}" height="${j}"
+                    rx="${q}" ry="${Z}"
+                    class="${et}"
+                    fill="#ff8855"
+                    pointer-events="none"/>
 
-                <!-- Main heated cylinder body (centered at x=254) -->
-                <rect x="${H}" y="${E}" width="${60}" height="${16}" rx="2" ry="2"
-                      class="${it}"
-                      fill="${C}"
-                      stroke="#7f8c8d"
-                      stroke-width="1.5"/>
+              <!-- Main heated cylinder body (centered at x=254) -->
+              <rect x="${H}" y="${E}" width="${60}" height="${16}" rx="2" ry="2"
+                    class="${it}"
+                    fill="${C}"
+                    stroke="#7f8c8d"
+                    stroke-width="1.5"/>
 
-                <!-- Left flange (pipe connection) -->
-                <rect x="${218}" y="${174}" width="6" height="12"
-                      fill="#95a5a6"
-                      stroke="#7f8c8d"
-                      stroke-width="1.5"/>
+              <!-- Left flange (pipe connection) -->
+              <rect x="${218}" y="${174}" width="6" height="12"
+                    fill="#95a5a6"
+                    stroke="#7f8c8d"
+                    stroke-width="1.5"/>
 
-                <!-- Right flange (pipe connection) -->
-                <rect x="${284}" y="${174}" width="6" height="12"
-                      fill="#95a5a6"
-                      stroke="#7f8c8d"
-                      stroke-width="1.5"/>
-              </g>
-            `:""}
+              <!-- Right flange (pipe connection) -->
+              <rect x="${284}" y="${174}" width="6" height="12"
+                    fill="#95a5a6"
+                    stroke="#7f8c8d"
+                    stroke-width="1.5"/>
+            </g>
 
             <!-- Version display (upper right corner) -->
             <text x="790" y="15" text-anchor="end" fill="#95a5a6" font-size="10" opacity="0.7">
