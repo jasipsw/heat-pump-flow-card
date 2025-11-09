@@ -880,39 +880,31 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                     stroke-width="1.5"></rect>`}
 
               <!-- Label and logo (above heater) -->
-              ${!1!==this.config.aux_heater?.show_label&&r.displayName||this.config.aux_heater?.logo_url?W`
-                <!-- Background for logo/label (if logo background color is set) -->
-                ${this.config.aux_heater?.logo_background_color?Q`<rect
-                      x="${224}"
-                      y="162"
-                      width="60"
-                      height="18"
-                      rx="3"
-                      fill="${this.config.aux_heater.logo_background_color}"
-                      opacity="0.9"></rect>`:""}
+              <!-- Background for logo/label (if logo background color is set) -->
+              ${this.config.aux_heater?.logo_background_color?Q`<rect
+                    x="${224}"
+                    y="162"
+                    width="60"
+                    height="18"
+                    rx="3"
+                    fill="${this.config.aux_heater.logo_background_color}"
+                    opacity="0.9"></rect>`:""}
 
-                <!-- Brand logo (if configured) -->
-                ${this.config.aux_heater?.logo_url?W`
-                  <image x="${228}"
-                         y="164"
-                         width="14"
-                         height="14"
-                         href="${this.config.aux_heater.logo_url}"
-                         opacity="0.9"/>
-                `:""}
+              <!-- Brand logo (if configured) -->
+              ${this.config.aux_heater?.logo_url?Q`<image x="${228}"
+                       y="164"
+                       width="14"
+                       height="14"
+                       href="${this.config.aux_heater.logo_url}"
+                       opacity="0.9"></image>`:""}
 
-                <!-- Label text (if show_label is not false and displayName exists) -->
-                ${!1!==this.config.aux_heater?.show_label&&r.displayName?W`
-                  <text x="${254+(this.config.aux_heater?.logo_url?-8:0)}"
-                        y="175"
-                        text-anchor="middle"
-                        fill="#95a5a6"
-                        font-size="10"
-                        font-weight="bold">
-                    ${r.displayName}
-                  </text>
-                `:""}
-              `:""}
+              <!-- Label text (if show_label is not false and displayName exists) -->
+              ${!1!==this.config.aux_heater?.show_label&&r.displayName?Q`<text x="${254+(this.config.aux_heater?.logo_url?-8:0)}"
+                      y="175"
+                      text-anchor="middle"
+                      fill="#95a5a6"
+                      font-size="10"
+                      font-weight="bold">${r.displayName}</text>`:""}
             </g>
 
             <!-- Version display (upper right corner) -->
