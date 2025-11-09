@@ -878,20 +878,20 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-linecap="butt"
                   opacity="${hvacState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
 
-            <!-- G2 to DHW (predominantly vertical hot) - DHW mode only -->
+            <!-- G2 to DHW (horizontal hot) - DHW mode only -->
             <defs>
-              <linearGradient id="flow-grad-7" x1="0%" y1="0%" x2="0%" y2="100%">
+              <linearGradient id="flow-grad-7" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stop-color="rgba(200, 60, 40, 0.3)" />
                 <stop offset="40%" stop-color="rgba(240, 100, 70, 0.6)" />
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.6)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
-                <animate attributeName="y1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0.4s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0.4s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0.4s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0.4s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
-                  d="M 348 195 L 348 370 L 418 370"
+                  d="M 348 195 L 348 282.5 L 348 282.51 L 348 370 L 418 370"
                   stroke="url(#flow-grad-7)"
                   stroke-width="14"
                   fill="none"
@@ -931,7 +931,7 @@ export class HeatPumpFlowCard extends LitElement {
               </linearGradient>
             </defs>
             <path class="flow-gradient"
-                  d="M 418 470 L 370 470 L 370 220 L 180 220"
+                  d="M 418 470 L 370 470 L 370 345 L 370 345.01 L 370 220 L 180 220"
                   stroke="url(#flow-grad-9)"
                   stroke-width="14"
                   fill="none"
