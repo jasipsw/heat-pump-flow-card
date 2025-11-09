@@ -487,11 +487,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Animated gradient overlay -->
             <defs>
               <linearGradient id="flow-grad-7a" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="0%" stop-color="rgba(200, 60, 40, 1.0)" />
+                <stop offset="40%" stop-color="rgba(240, 100, 70, 1.0)" />
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
-                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
-                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
+                <stop offset="60%" stop-color="rgba(240, 100, 70, 1.0)" />
+                <stop offset="100%" stop-color="rgba(200, 60, 40, 1.0)" />
                 <animate attributeName="y1" values="-50%;50%" dur="${Y}s" begin="0.4s" repeatCount="indefinite" />
                 <animate attributeName="y2" values="50%;150%" dur="${Y}s" begin="0.4s" repeatCount="indefinite" />
               </linearGradient>
@@ -543,11 +543,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Animated gradient overlay -->
             <defs>
               <linearGradient id="flow-grad-8" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="0%" stop-color="rgba(200, 60, 40, 1.0)" />
+                <stop offset="40%" stop-color="rgba(240, 100, 70, 1.0)" />
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
-                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
-                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
+                <stop offset="60%" stop-color="rgba(240, 100, 70, 1.0)" />
+                <stop offset="100%" stop-color="rgba(200, 60, 40, 1.0)" />
                 <animate attributeName="y1" values="-50%;50%" dur="${Y}s" begin="0.8s" repeatCount="indefinite" />
                 <animate attributeName="y2" values="50%;150%" dur="${Y}s" begin="0.8s" repeatCount="indefinite" />
               </linearGradient>
@@ -599,11 +599,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Animated gradient overlay -->
             <defs>
               <linearGradient id="flow-grad-9b" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="0%" stop-color="rgba(50, 100, 180, 1.0)" />
+                <stop offset="40%" stop-color="rgba(80, 140, 220, 1.0)" />
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
-                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
-                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
+                <stop offset="60%" stop-color="rgba(80, 140, 220, 1.0)" />
+                <stop offset="100%" stop-color="rgba(50, 100, 180, 1.0)" />
                 <animate attributeName="y1" values="50%;-50%" dur="${Y}s" begin="1.2s" repeatCount="indefinite" />
                 <animate attributeName="y2" values="150%;50%" dur="${Y}s" begin="1.2s" repeatCount="indefinite" />
               </linearGradient>
