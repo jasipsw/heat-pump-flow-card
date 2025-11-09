@@ -457,11 +457,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- G2 to DHW (diagonal hot - down and right) - DHW mode only -->
             <defs>
               <linearGradient id="flow-grad-7" x1="0%" y1="0%" x2="40%" y2="100%">
-                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.3)" />
-                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.6)" />
-                <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
-                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.6)" />
-                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
+                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.5)" />
+                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.85)" />
+                <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
+                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.85)" />
+                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.5)" />
                 <animate attributeName="x1" values="-20%;20%" dur="${Y}s" begin="0.4s" repeatCount="indefinite" />
                 <animate attributeName="y1" values="-50%;50%" dur="${Y}s" begin="0.4s" repeatCount="indefinite" />
                 <animate attributeName="x2" values="20%;60%" dur="${Y}s" begin="0.4s" repeatCount="indefinite" />
@@ -499,11 +499,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- DHW to HP return (diagonal cold - left and up) - DHW mode only -->
             <defs>
               <linearGradient id="flow-grad-9" x1="100%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.3)" />
-                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.6)" />
-                <stop offset="50%" stop-color="rgba(110, 170, 255, 0.9)" />
-                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.6)" />
-                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.3)" />
+                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.5)" />
+                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.85)" />
+                <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
+                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.85)" />
+                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.5)" />
                 <animate attributeName="x1" values="150%;50%" dur="${Y}s" begin="1.0s" repeatCount="indefinite" />
                 <animate attributeName="y1" values="150%;50%" dur="${Y}s" begin="1.0s" repeatCount="indefinite" />
                 <animate attributeName="x2" values="50%;-50%" dur="${Y}s" begin="1.0s" repeatCount="indefinite" />
