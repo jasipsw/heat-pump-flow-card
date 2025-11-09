@@ -205,7 +205,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
   ellipse {
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
   }
-`;return console.info(`%c  HEAT-PUMP-FLOW-CARD  \n%c  Version ${ut}  \n%c  Built: ${gt}  `,"color: orange; font-weight: bold; background: black","color: white; font-weight: bold; background: dimgray","color: #95a5a6; font-weight: normal; background: dimgray"),t.HeatPumpFlowCard=class extends lt{constructor(){super(...arguments),this.lastRenderTime=0,this.lastHassState={}}static getConfigElement(){}static getStubConfig(){return{type:"custom:heat-pump-flow-card",title:"Heat Pump Flow"}}setConfig(t){if(!t)throw new Error("Invalid configuration");const{animation:e,temperature:i,display:o,heat_pump_visual:a,labels:r,...s}=t;this.config={...s,animation:{enabled:!0,min_flow_rate:5,max_flow_rate:1,max_flow_rate_value:50,idle_threshold:0,dot_size:1.5,dot_spacing:30,use_temp_color:!1,dot_color:"rgba(255, 255, 255, 0.75)",dot_opacity:1,...e},temperature:{delta_threshold:10,hot_color:"#e74c3c",cold_color:"#3498db",neutral_color:"#95a5a6",unit:"C",...i},display:{show_values:!0,show_labels:!0,show_icons:!0,compact:!1,decimal_places:1,...o},heat_pump_visual:{off_color:"#95a5a6",heating_color:"#e74c3c",cooling_color:"#3498db",dhw_color:"#e67e22",defrost_color:"#f1c40f",show_metrics:!0,animate_fan:!0,...a},labels:{hp_supply:"HP Supply",hp_return:"HP Return",hvac_supply:"HVAC Supply",hvac_return:"HVAC Return",buffer_tank:"BUFFER",dhw_tank:"DHW",power_in:"Power In",thermal_out:"Thermal Out",cop:"COP",flow:"Flow",energy:"Energy",cost:"Cost",...r}}}shouldUpdate(t){if(t.has("config"))return!0;if(t.has("hass")){const t=Date.now();if(t-this.lastRenderTime<1e3)return this.updateAnimationVariables(),!1;this.lastRenderTime=t}return super.shouldUpdate(t)}updated(t){super.updated(t),t.has("hass")&&this.hass&&this.updateAnimationVariables()}firstUpdated(){this.config.animation.enabled&&setTimeout(()=>{this.updateAnimationVariables()},100)}updateAnimationVariables(){this.updateFanAnimation()}updateFanAnimation(){const t=this.shadowRoot?.querySelector("#fan-blades");if(!t||!this.config.heat_pump_visual?.animate_fan)return;const e=this.getHeatPumpState().fanSpeed||0;if(e>0){t.classList.add("fan-rotating");const i=e>0?100/e:999;t.style.setProperty("--fan-duration",`${i}s`)}else t.classList.remove("fan-rotating")}getHeatPumpState(){const t=this.config.heat_pump||{};return{power:this.getStateValue(t.power_entity)||0,thermal:this.getStateValue(t.thermal_entity)||0,cop:this.getStateValue(t.cop_entity)||0,outletTemp:this.getStateValue(t.outlet_temp_entity)||0,inletTemp:this.getStateValue(t.inlet_temp_entity)||0,flowRate:this.getStateValue(t.flow_rate_entity)||0,fanSpeed:this.getStateValue(t.fan_speed_entity),mode:this.getStateString(t.mode_entity),modeDisplay:this.getStateString(t.mode_display_entity),defrost:"on"===this.getStateString(t.defrost_entity),error:this.getStateString(t.error_entity),energy:this.getStateValue(t.energy_entity),cost:this.getStateValue(t.cost_entity),runtime:this.getStateValue(t.runtime_entity)}}getStateString(t){if(!t||!this.hass)return;const e=this.hass.states[t];return e?.state}getBufferTankState(){const t=this.config.buffer_tank||{};return{supplyTemp:this.getStateValue(t.supply_temp_entity)||0,returnTemp:this.getStateValue(t.return_temp_entity)||0,level:this.getStateValue(t.level_entity)}}getHVACState(){const t=this.config.hvac||{};return{thermal:this.getStateValue(t.thermal_entity)||0,flowRate:this.getStateValue(t.flow_rate_entity)||0,supplyTemp:this.getStateValue(t.supply_temp_entity)||0,returnTemp:this.getStateValue(t.return_temp_entity)||0}}getDHWTankState(){const t=this.config.dhw_tank||{};return{inletTemp:this.getStateValue(t.inlet_temp_entity)||0,outletTemp:this.getStateValue(t.outlet_temp_entity)||0,tankTemp:this.getStateValue(t.tank_temp_entity)}}getG2ValveState(){const t=this.config.g2_valve||{},e=this.getStateString(t.state_entity);return{isActive:"on"===e||"true"===e||"1"===e}}getAuxHeaterState(){const t=this.config.aux_heater||{},e=t.enabled||!1,i=this.getStateValue(t.power_entity)||0,o=t.max_power||18e3;return{enabled:e,power:i,maxPower:o,intensity:Math.min(i/o,1),displayName:t.display_name||t.name||"AUX"}}getStateValue(t){if(!t||!this.hass)return;const e=this.hass.states[t];if(!e)return;const i=parseFloat(e.state);return isNaN(i)?void 0:i}getStateUnit(t){if(!t||!this.hass)return"";const e=this.hass.states[t];return e?.attributes?.unit_of_measurement||""}formatValue(t,e=1){return void 0===t?"N/A":t.toFixed(e)}getPipeColors(t,e,i){const o=this.config.temperature,a=Math.abs(t-e);return i<=this.config.animation.idle_threshold||a<o.delta_threshold?{hotPipe:o.neutral_color,coldPipe:o.neutral_color}:t>e?{hotPipe:o.hot_color,coldPipe:o.cold_color}:{hotPipe:o.cold_color,coldPipe:o.hot_color}}generateTankGradient(t,e,i){const o="buffer"===t?this.config.buffer_tank?.gradient:this.config.dhw_tank?.gradient;if(!1===o?.enabled)return{levels:[],fillPercentage:0};const a=Math.max(2,o?.levels??10),r=o?.min_temp_entity,s=o?.max_temp_entity,n=o?.min_temp_fallback??60,l=o?.max_temp_fallback??130,h=o?.bottom_color??this.config.temperature?.neutral_color??"#95a5a6";let c;c="buffer"===t?i?o?.heating_top_color??this.config.temperature?.hot_color??"#e74c3c":o?.cooling_top_color??this.config.temperature?.cold_color??"#3498db":o?.top_color??this.config.temperature?.hot_color??"#e74c3c";const d=this.getStateValue(r)??n,p=(this.getStateValue(s)??l)-d,f=p>0?Math.max(0,Math.min(1,(e-d)/p)):0,u=130/a,g=[];for(let t=0;t<a;t++){const e=t/(a-1),i=155-(t+1)*u,o=this.interpolateColor(h,c,e),r=(t/a+(t+1)/a)/2<=f?.95:.05;g.push({y:i,height:u,color:o,opacity:r})}return{levels:g,fillPercentage:Math.round(100*f)}}renderGradientRects(t){const e=[];for(let i=0;i<t.length;i++){const o=t[i];e.push(Q`<rect x="15" y="${o.y}" width="60" height="${o.height}" fill="${o.color}" opacity="${o.opacity}"></rect>`)}return e}hexToRgb(t){const e={black:"#000000",white:"#FFFFFF",red:"#FF0000",green:"#008000",blue:"#0000FF",yellow:"#FFFF00",cyan:"#00FFFF",magenta:"#FF00FF",orange:"#FFA500",purple:"#800080",pink:"#FFC0CB",brown:"#A52A2A",gray:"#808080",grey:"#808080"}[t.toLowerCase()]||t,i=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(e);return i?{r:parseInt(i[1],16),g:parseInt(i[2],16),b:parseInt(i[3],16)}:{r:0,g:0,b:0}}interpolateColor(t,e,i){i=Math.max(0,Math.min(1,i));const o=this.hexToRgb(t),a=this.hexToRgb(e),r=Math.round(o.r+(a.r-o.r)*i),s=Math.round(o.g+(a.g-o.g)*i),n=Math.round(o.b+(a.b-o.b)*i);return`#${r.toString(16).padStart(2,"0")}${s.toString(16).padStart(2,"0")}${n.toString(16).padStart(2,"0")}`}getHeatPumpColor(t){const e=this.config.heat_pump_visual;if(t.defrost)return e.defrost_color;if(t.power<=0)return e.off_color;const i=(t.mode||t.modeDisplay)?.toLowerCase();return i?.includes("heat")?e.heating_color:i?.includes("cool")?e.cooling_color:i?.includes("dhw")||i?.includes("hot water")?e.dhw_color:e.off_color}getDisplayMode(t,e){return t.mode?t.mode.toUpperCase():t.modeDisplay?t.modeDisplay.toUpperCase():t.defrost?"DEFROST":t.power<=0&&t.thermal<=0?"OFF":t.power>0?e.isActive?"DHW":"HEATING":"OFF"}getContrastTextColor(t){const e=t.replace("#","");return(.299*parseInt(e.substr(0,2),16)+.587*parseInt(e.substr(2,2),16)+.114*parseInt(e.substr(4,2),16))/255>.35?"#2c3e50":"#ffffff"}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return W``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getG2ValveState(),r=this.getAuxHeaterState(),s=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),n=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),l=this.getPipeColors(o.inletTemp,o.outletTemp,t.flowRate),h=s.hotPipe,c=s.coldPipe,d=n.hotPipe,p=n.coldPipe,f=l.hotPipe,u=e.supplyTemp>e.returnTemp,g=e.supplyTemp,m=this.generateTankGradient("buffer",g,u),y=m.levels,w=m.fillPercentage,b=o.tankTemp??o.inletTemp,x=this.generateTankGradient("dhw",b,!0),_=x.levels,$=x.fillPercentage,v=this.getHeatPumpColor(t),k=this.getContrastTextColor(v),A=t.error?126:111,S=r.intensity;let C="#bdc3c7";if(S>0){const t=189,e=195,i=199,o=255,a=68,r=34;C=`rgb(${Math.round(t+(o-t)*S)}, ${Math.round(e+(a-e)*S)}, ${Math.round(i+(r-i)*S)})`}const P=this.config.aux_heater?.glow_size??8,H=224,E=172,T=H,M=E-P,R=60,N=16+2*P,z=2,O=2,V=H,D=E-.75*P,L=60,F=16+2*P*.75,U=2,G=2,Q=H,B=E-.5*P,I=60,j=16+2*P*.5,q=2,Z=2,X=S>0?2-1.4*S:2,J=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),K=this.config.aux_heater?.shadow_blur??1,Y=S>0?"aux-glow-outer":"aux-heater-layer",tt=S>0?"aux-glow-middle":"aux-heater-layer",et=S>0?"aux-glow-inner":"aux-heater-layer",it=S>0?"aux-cylinder-pulse":"";return W`
+`;return console.info(`%c  HEAT-PUMP-FLOW-CARD  \n%c  Version ${ut}  \n%c  Built: ${gt}  `,"color: orange; font-weight: bold; background: black","color: white; font-weight: bold; background: dimgray","color: #95a5a6; font-weight: normal; background: dimgray"),t.HeatPumpFlowCard=class extends lt{constructor(){super(...arguments),this.lastRenderTime=0,this.lastHassState={}}static getConfigElement(){}static getStubConfig(){return{type:"custom:heat-pump-flow-card",title:"Heat Pump Flow"}}setConfig(t){if(!t)throw new Error("Invalid configuration");const{animation:e,temperature:i,display:o,heat_pump_visual:a,labels:r,...s}=t;this.config={...s,animation:{enabled:!0,min_flow_rate:5,max_flow_rate:1,max_flow_rate_value:50,idle_threshold:0,dot_size:1.5,dot_spacing:30,use_temp_color:!1,dot_color:"rgba(255, 255, 255, 0.75)",dot_opacity:1,...e},temperature:{delta_threshold:10,hot_color:"#e74c3c",cold_color:"#3498db",neutral_color:"#95a5a6",unit:"C",...i},display:{show_values:!0,show_labels:!0,show_icons:!0,compact:!1,decimal_places:1,...o},heat_pump_visual:{off_color:"#95a5a6",heating_color:"#e74c3c",cooling_color:"#3498db",dhw_color:"#e67e22",defrost_color:"#f1c40f",show_metrics:!0,animate_fan:!0,...a},labels:{hp_supply:"HP Supply",hp_return:"HP Return",hvac_supply:"HVAC Supply",hvac_return:"HVAC Return",buffer_tank:"BUFFER",dhw_tank:"DHW",power_in:"Power In",thermal_out:"Thermal Out",cop:"COP",flow:"Flow",energy:"Energy",cost:"Cost",...r}}}shouldUpdate(t){if(t.has("config"))return!0;if(t.has("hass")){const t=Date.now();if(t-this.lastRenderTime<1e3)return this.updateAnimationVariables(),!1;this.lastRenderTime=t}return super.shouldUpdate(t)}updated(t){super.updated(t),t.has("hass")&&this.hass&&this.updateAnimationVariables()}firstUpdated(){this.config.animation.enabled&&setTimeout(()=>{this.updateAnimationVariables()},100)}updateAnimationVariables(){this.updateFanAnimation()}updateFanAnimation(){const t=this.shadowRoot?.querySelector("#fan-blades");if(!t||!this.config.heat_pump_visual?.animate_fan)return;const e=this.getHeatPumpState().fanSpeed||0;if(e>0){t.classList.add("fan-rotating");const i=e>0?100/e:999;t.style.setProperty("--fan-duration",`${i}s`)}else t.classList.remove("fan-rotating")}getHeatPumpState(){const t=this.config.heat_pump||{};return{power:this.getStateValue(t.power_entity)||0,thermal:this.getStateValue(t.thermal_entity)||0,cop:this.getStateValue(t.cop_entity)||0,outletTemp:this.getStateValue(t.outlet_temp_entity)||0,inletTemp:this.getStateValue(t.inlet_temp_entity)||0,flowRate:this.getStateValue(t.flow_rate_entity)||0,fanSpeed:this.getStateValue(t.fan_speed_entity),mode:this.getStateString(t.mode_entity),modeDisplay:this.getStateString(t.mode_display_entity),defrost:"on"===this.getStateString(t.defrost_entity),error:this.getStateString(t.error_entity),energy:this.getStateValue(t.energy_entity),cost:this.getStateValue(t.cost_entity),runtime:this.getStateValue(t.runtime_entity)}}getStateString(t){if(!t||!this.hass)return;const e=this.hass.states[t];return e?.state}getBufferTankState(){const t=this.config.buffer_tank||{};return{supplyTemp:this.getStateValue(t.supply_temp_entity)||0,returnTemp:this.getStateValue(t.return_temp_entity)||0,level:this.getStateValue(t.level_entity)}}getHVACState(){const t=this.config.hvac||{};return{thermal:this.getStateValue(t.thermal_entity)||0,flowRate:this.getStateValue(t.flow_rate_entity)||0,supplyTemp:this.getStateValue(t.supply_temp_entity)||0,returnTemp:this.getStateValue(t.return_temp_entity)||0}}getDHWTankState(){const t=this.config.dhw_tank||{};return{inletTemp:this.getStateValue(t.inlet_temp_entity)||0,outletTemp:this.getStateValue(t.outlet_temp_entity)||0,tankTemp:this.getStateValue(t.tank_temp_entity)}}getG2ValveState(){const t=this.config.g2_valve||{},e=this.getStateString(t.state_entity);return{isActive:"on"===e||"true"===e||"1"===e}}getAuxHeaterState(){const t=this.config.aux_heater||{},e=t.enabled||!1,i=this.getStateValue(t.power_entity)||0,o=t.max_power||18e3;return{enabled:e,power:i,maxPower:o,intensity:Math.min(i/o,1),displayName:t.display_name||t.name||"AUX"}}getStateValue(t){if(!t||!this.hass)return;const e=this.hass.states[t];if(!e)return;const i=parseFloat(e.state);return isNaN(i)?void 0:i}getStateUnit(t){if(!t||!this.hass)return"";const e=this.hass.states[t];return e?.attributes?.unit_of_measurement||""}formatValue(t,e=1){return void 0===t?"N/A":t.toFixed(e)}getPipeColors(t,e,i){const o=this.config.temperature,a=Math.abs(t-e);return i<=this.config.animation.idle_threshold||a<o.delta_threshold?{hotPipe:o.neutral_color,coldPipe:o.neutral_color}:t>e?{hotPipe:o.hot_color,coldPipe:o.cold_color}:{hotPipe:o.cold_color,coldPipe:o.hot_color}}generateTankGradient(t,e,i){const o="buffer"===t?this.config.buffer_tank?.gradient:this.config.dhw_tank?.gradient;if(!1===o?.enabled)return{levels:[],fillPercentage:0};const a=Math.max(2,o?.levels??10),r=o?.min_temp_entity,s=o?.max_temp_entity,n=o?.min_temp_fallback??60,l=o?.max_temp_fallback??130,h=o?.bottom_color??this.config.temperature?.neutral_color??"#95a5a6";let c;c="buffer"===t?i?o?.heating_top_color??this.config.temperature?.hot_color??"#e74c3c":o?.cooling_top_color??this.config.temperature?.cold_color??"#3498db":o?.top_color??this.config.temperature?.hot_color??"#e74c3c";const d=this.getStateValue(r)??n,p=(this.getStateValue(s)??l)-d,f=p>0?Math.max(0,Math.min(1,(e-d)/p)):0,u=130/a,g=[];for(let t=0;t<a;t++){const e=t/(a-1),i=155-(t+1)*u,o=this.interpolateColor(h,c,e),r=(t/a+(t+1)/a)/2<=f?.95:.05;g.push({y:i,height:u,color:o,opacity:r})}return{levels:g,fillPercentage:Math.round(100*f)}}renderGradientRects(t){const e=[];for(let i=0;i<t.length;i++){const o=t[i];e.push(Q`<rect x="15" y="${o.y}" width="60" height="${o.height}" fill="${o.color}" opacity="${o.opacity}"></rect>`)}return e}hexToRgb(t){const e={black:"#000000",white:"#FFFFFF",red:"#FF0000",green:"#008000",blue:"#0000FF",yellow:"#FFFF00",cyan:"#00FFFF",magenta:"#FF00FF",orange:"#FFA500",purple:"#800080",pink:"#FFC0CB",brown:"#A52A2A",gray:"#808080",grey:"#808080"}[t.toLowerCase()]||t,i=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(e);return i?{r:parseInt(i[1],16),g:parseInt(i[2],16),b:parseInt(i[3],16)}:{r:0,g:0,b:0}}interpolateColor(t,e,i){i=Math.max(0,Math.min(1,i));const o=this.hexToRgb(t),a=this.hexToRgb(e),r=Math.round(o.r+(a.r-o.r)*i),s=Math.round(o.g+(a.g-o.g)*i),n=Math.round(o.b+(a.b-o.b)*i);return`#${r.toString(16).padStart(2,"0")}${s.toString(16).padStart(2,"0")}${n.toString(16).padStart(2,"0")}`}getHeatPumpColor(t){const e=this.config.heat_pump_visual;if(t.defrost)return e.defrost_color;if(t.power<=0)return e.off_color;const i=(t.mode||t.modeDisplay)?.toLowerCase();return i?.includes("heat")?e.heating_color:i?.includes("cool")?e.cooling_color:i?.includes("dhw")||i?.includes("hot water")?e.dhw_color:e.off_color}getDisplayMode(t,e){return t.mode?t.mode.toUpperCase():t.modeDisplay?t.modeDisplay.toUpperCase():t.defrost?"DEFROST":t.power<=0&&t.thermal<=0?"OFF":t.power>0?e.isActive?"DHW":"HEATING":"OFF"}getContrastTextColor(t){const e=t.replace("#","");return(.299*parseInt(e.substr(0,2),16)+.587*parseInt(e.substr(2,2),16)+.114*parseInt(e.substr(4,2),16))/255>.35?"#2c3e50":"#ffffff"}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return W``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getG2ValveState(),r=this.getAuxHeaterState(),s=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),n=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),l=this.getPipeColors(o.inletTemp,o.outletTemp,t.flowRate),h=s.hotPipe,c=s.coldPipe,d=n.hotPipe,p=n.coldPipe,f=l.hotPipe,u=e.supplyTemp>e.returnTemp,g=e.supplyTemp,m=this.generateTankGradient("buffer",g,u),y=m.levels,w=m.fillPercentage,b=o.tankTemp??o.inletTemp,x=this.generateTankGradient("dhw",b,!0),_=x.levels,$=x.fillPercentage,v=this.getHeatPumpColor(t),k=this.getContrastTextColor(v),A=t.error?126:111,S=r.intensity;let C="#bdc3c7";if(S>0){const t=189,e=195,i=199,o=255,a=68,r=34;C=`rgb(${Math.round(t+(o-t)*S)}, ${Math.round(e+(a-e)*S)}, ${Math.round(i+(r-i)*S)})`}const P=this.config.aux_heater?.glow_size??8,H=224,E=172,T=H,M=E-P,R=60,N=16+2*P,z=2,O=2,V=H,D=E-.75*P,L=60,F=16+2*P*.75,U=2,G=2,B=H,I=E-.5*P,j=60,q=16+2*P*.5,Z=2,X=2,J=S>0?2-1.4*S:2,K=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),Y=this.config.aux_heater?.shadow_blur??1,tt=S>0?"aux-glow-outer":"aux-heater-layer",et=S>0?"aux-glow-middle":"aux-heater-layer",it=S>0?"aux-glow-inner":"aux-heater-layer",ot=S>0?"aux-cylinder-pulse":"";return W`
       <ha-card>
         ${this.config.title?W`<h1 class="card-header">${this.config.title}</h1>`:""}
 
@@ -342,8 +342,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.6)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${J}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${J}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${K}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${K}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -362,8 +362,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.6)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${J}s" begin="0.3s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${J}s" begin="0.3s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${K}s" begin="0.3s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${K}s" begin="0.3s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -382,8 +382,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.6)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${J}s" begin="0.6s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${J}s" begin="0.6s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${K}s" begin="0.6s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${K}s" begin="0.6s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -402,8 +402,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.6)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${J}s" begin="0.9s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${J}s" begin="0.9s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${K}s" begin="0.9s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${K}s" begin="0.9s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -422,8 +422,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 0.9)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.6)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.3)" />
-                <animate attributeName="x1" values="50%;-50%" dur="${J}s" begin="1.2s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="150%;50%" dur="${J}s" begin="1.2s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="50%;-50%" dur="${K}s" begin="1.2s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="150%;50%" dur="${K}s" begin="1.2s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -442,8 +442,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 0.9)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.6)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.3)" />
-                <animate attributeName="x1" values="50%;-50%" dur="${J}s" begin="1.5s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="150%;50%" dur="${J}s" begin="1.5s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="50%;-50%" dur="${K}s" begin="1.5s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="150%;50%" dur="${K}s" begin="1.5s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -462,10 +462,10 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.6)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
-                <animate attributeName="x1" values="-15%;15%" dur="${J}s" begin="0.4s" repeatCount="indefinite" />
-                <animate attributeName="y1" values="-50%;50%" dur="${J}s" begin="0.4s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="15%;45%" dur="${J}s" begin="0.4s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="50%;150%" dur="${J}s" begin="0.4s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-15%;15%" dur="${K}s" begin="0.4s" repeatCount="indefinite" />
+                <animate attributeName="y1" values="-50%;50%" dur="${K}s" begin="0.4s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="15%;45%" dur="${K}s" begin="0.4s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="50%;150%" dur="${K}s" begin="0.4s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -484,8 +484,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 0.9)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.6)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.3)" />
-                <animate attributeName="y1" values="-50%;50%" dur="${J}s" begin="0.7s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="50%;150%" dur="${J}s" begin="0.7s" repeatCount="indefinite" />
+                <animate attributeName="y1" values="-50%;50%" dur="${K}s" begin="0.7s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="50%;150%" dur="${K}s" begin="0.7s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -504,10 +504,10 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 0.9)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.6)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.3)" />
-                <animate attributeName="x1" values="50%;-50%" dur="${J}s" begin="1.0s" repeatCount="indefinite" />
-                <animate attributeName="y1" values="50%;-50%" dur="${J}s" begin="1.0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="150%;50%" dur="${J}s" begin="1.0s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="150%;50%" dur="${J}s" begin="1.0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="50%;-50%" dur="${K}s" begin="1.0s" repeatCount="indefinite" />
+                <animate attributeName="y1" values="50%;-50%" dur="${K}s" begin="1.0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="150%;50%" dur="${K}s" begin="1.0s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="150%;50%" dur="${K}s" begin="1.0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -832,55 +832,53 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Glow size configurable via aux_heater.glow_size (default: 8px) -->
             <!-- Animation speed increases with power level for visual feedback -->
             <!-- Shadow blur configurable via aux_heater.shadow_blur (default: 1.0) -->
-            <!-- Only rendered when enabled to prevent background animation processing -->
-            ${r.enabled?W`
-              <g id="aux-heater"
-                 style="--aux-anim-speed: ${X}s; --aux-shadow-blur: ${K};">
-                <!-- Glow layers - simple solid colors with CSS pulsing animation -->
-                <!-- Outermost glow layer - size based on config -->
-                <rect x="${T}" y="${M}"
-                      width="${R}" height="${N}"
-                      rx="${z}" ry="${O}"
-                      class="${Y}"
-                      fill="#ff4422"
-                      pointer-events="none"/>
+            <g id="aux-heater"
+               opacity="${r.enabled?"1":"0"}"
+               style="--aux-anim-speed: ${J}s; --aux-shadow-blur: ${Y};">
+              <!-- Glow layers - simple solid colors with CSS pulsing animation -->
+              <!-- Outermost glow layer - size based on config -->
+              ${Q`<rect x="${T}" y="${M}"
+                    width="${R}" height="${N}"
+                    rx="${z}" ry="${O}"
+                    class="${tt}"
+                    fill="#ff4422"
+                    pointer-events="none"></rect>`}
 
-                <!-- Middle glow layer - size based on config -->
-                <rect x="${V}" y="${D}"
-                      width="${L}" height="${F}"
-                      rx="${U}" ry="${G}"
-                      class="${tt}"
-                      fill="#ff6644"
-                      pointer-events="none"/>
+              <!-- Middle glow layer - size based on config -->
+              ${Q`<rect x="${V}" y="${D}"
+                    width="${L}" height="${F}"
+                    rx="${U}" ry="${G}"
+                    class="${et}"
+                    fill="#ff6644"
+                    pointer-events="none"></rect>`}
 
-                <!-- Inner glow layer - size based on config -->
-                <rect x="${Q}" y="${B}"
-                      width="${I}" height="${j}"
-                      rx="${q}" ry="${Z}"
-                      class="${et}"
-                      fill="#ff8855"
-                      pointer-events="none"/>
+              <!-- Inner glow layer - size based on config -->
+              ${Q`<rect x="${B}" y="${I}"
+                    width="${j}" height="${q}"
+                    rx="${Z}" ry="${X}"
+                    class="${it}"
+                    fill="#ff8855"
+                    pointer-events="none"></rect>`}
 
-                <!-- Main heated cylinder body (centered at x=254) -->
-                <rect x="${H}" y="${E}" width="${60}" height="${16}" rx="2" ry="2"
-                      class="${it}"
-                      fill="${C}"
-                      stroke="#7f8c8d"
-                      stroke-width="1.5"/>
+              <!-- Main heated cylinder body (centered at x=254) -->
+              ${Q`<rect x="${H}" y="${E}" width="${60}" height="${16}" rx="2" ry="2"
+                    class="${ot}"
+                    fill="${C}"
+                    stroke="#7f8c8d"
+                    stroke-width="1.5"></rect>`}
 
-                <!-- Left flange (pipe connection) -->
-                <rect x="${218}" y="${174}" width="6" height="12"
-                      fill="#95a5a6"
-                      stroke="#7f8c8d"
-                      stroke-width="1.5"/>
+              <!-- Left flange (pipe connection) -->
+              ${Q`<rect x="${218}" y="${174}" width="6" height="12"
+                    fill="#95a5a6"
+                    stroke="#7f8c8d"
+                    stroke-width="1.5"></rect>`}
 
-                <!-- Right flange (pipe connection) -->
-                <rect x="${284}" y="${174}" width="6" height="12"
-                      fill="#95a5a6"
-                      stroke="#7f8c8d"
-                      stroke-width="1.5"/>
-              </g>
-            `:""}
+              <!-- Right flange (pipe connection) -->
+              ${Q`<rect x="${284}" y="${174}" width="6" height="12"
+                    fill="#95a5a6"
+                    stroke="#7f8c8d"
+                    stroke-width="1.5"></rect>`}
+            </g>
 
             <!-- Version display (upper right corner) -->
             <text x="790" y="15" text-anchor="end" fill="#95a5a6" font-size="10" opacity="0.7">
