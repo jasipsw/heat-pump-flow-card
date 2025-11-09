@@ -945,14 +945,14 @@ export class HeatPumpFlowCard extends LitElement {
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
             <!-- Animated gradient overlay -->
             <defs>
-              <linearGradient id="flow-grad-9b" x1="0%" y1="0%" x2="0%" y2="100%">
+              <linearGradient id="flow-grad-9b" x1="370" y1="470" x2="370" y2="220" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stop-color="rgba(50, 100, 180, 0.6)" />
                 <stop offset="40%" stop-color="rgba(80, 140, 220, 0.9)" />
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="y1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="150%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y1" values="345;95" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="595;345" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -1057,14 +1057,14 @@ export class HeatPumpFlowCard extends LitElement {
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
             <!-- Animated gradient overlay -->
             <defs>
-              <linearGradient id="flow-grad-8" x1="0%" y1="0%" x2="0%" y2="100%">
+              <linearGradient id="flow-grad-8" x1="438" y1="370" x2="438" y2="478" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stop-color="rgba(200, 60, 40, 0.6)" />
                 <stop offset="40%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="y1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y1" values="316;424" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="424;532" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
