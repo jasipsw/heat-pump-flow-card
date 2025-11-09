@@ -379,8 +379,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${Y}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${Y}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${Y}s" begin="0.2s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${Y}s" begin="0.2s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -407,8 +407,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${Y}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${Y}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${Y}s" begin="0.4s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${Y}s" begin="0.4s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
