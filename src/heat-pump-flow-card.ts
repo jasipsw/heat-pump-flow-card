@@ -921,8 +921,8 @@ export class HeatPumpFlowCard extends LitElement {
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="y1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0.4s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0.4s" repeatCount="indefinite" />
+                <animate attributeName="y1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -949,8 +949,8 @@ export class HeatPumpFlowCard extends LitElement {
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0.6s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0.6s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -977,8 +977,8 @@ export class HeatPumpFlowCard extends LitElement {
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="y1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0.8s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0.8s" repeatCount="indefinite" />
+                <animate attributeName="y1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -1005,8 +1005,8 @@ export class HeatPumpFlowCard extends LitElement {
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="x1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="1.0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="150%;50%" dur="${flowAnimSpeed}s" begin="1.0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="150%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -1033,8 +1033,8 @@ export class HeatPumpFlowCard extends LitElement {
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="y1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="1.2s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="150%;50%" dur="${flowAnimSpeed}s" begin="1.2s" repeatCount="indefinite" />
+                <animate attributeName="y1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="150%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -1061,8 +1061,8 @@ export class HeatPumpFlowCard extends LitElement {
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="x1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="1.4s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="150%;50%" dur="${flowAnimSpeed}s" begin="1.4s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="150%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
