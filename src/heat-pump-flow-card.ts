@@ -718,24 +718,24 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Z-ORDER: Return pipes first (behind), then supply pipes (on top) -->
 
             <!-- Pipe: DHW outlet to HP return (BOTTOM) - Separated horizontally at x=370 - BEHIND -->
-            <!-- Gray when inactive, hidden when active with flow animation to prevent muddy colors -->
+            <!-- Always visible: gray when inactive, hidden only when active WITH flow animation -->
             <path id="dhw-to-hp-return-path"
                   d="M 418 470 L 370 470 L 370 220 L 180 220"
                   stroke="${g2ValveState.isActive ? dhwReturnColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '0' : '1'}"/>
+                  opacity="${!g2ValveState.isActive ? '1' : (hpState.flowRate > this.config.animation!.idle_threshold ? '0' : '1')}"/>
 
             <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) - At x=348, horizontally separated from return -->
-            <!-- Gray when inactive, hidden when active with flow animation to prevent muddy colors -->
+            <!-- Always visible: gray when inactive, hidden only when active WITH flow animation -->
             <path id="g2-to-dhw-path"
                   d="M 348 195 L 348 370 L 418 370"
                   stroke="${g2ValveState.isActive ? dhwCoilColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '0' : '1'}"/>
+                  opacity="${!g2ValveState.isActive ? '1' : (hpState.flowRate > this.config.animation!.idle_threshold ? '0' : '1')}"/>
 
             <!-- DHW coil spiral path (for flow animation) - Matches actual tank coil position -->
             <path id="dhw-coil-path"
