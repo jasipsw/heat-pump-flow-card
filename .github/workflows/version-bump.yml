@@ -1,10 +1,8 @@
 name: Auto Version Bump
 
 on:
-  push:
-    branches:
-      - main
-      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
     paths:
       - 'src/**'
       - 'package.json'
@@ -12,16 +10,21 @@ on:
 
   create:
     branches:
-      - '*'
+      - 'claude/**'
 
 jobs:
   bump-version:
     runs-on: ubuntu-latest
+    # Only run for claude/** branches on create, or any PR
+    if: |
+      (github.event_name == 'create' && startsWith(github.ref, 'refs/heads/claude/')) ||
+      (github.event_name == 'pull_request')
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
@@ -85,4 +88,4 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          branch: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
