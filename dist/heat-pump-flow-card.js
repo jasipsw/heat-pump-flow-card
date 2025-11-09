@@ -262,7 +262,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${t.flowRate>this.config.animation.idle_threshold?"0":S>0?"0.5":"1"}"/>
+                  opacity="${S>0?"0.5":"1"}"/>
 
             <!-- Pipe: Aux heater to G2 valve (second segment) -->
             <!-- Shows boosted temperature after aux heater adds energy -->
@@ -272,7 +272,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!a.isActive&&t.flowRate>this.config.animation.idle_threshold?"0":"1"}"/>
+                  opacity="1"/>
 
             <!-- Pipe: G2 to Buffer (continuation) - only active in heating mode -->
             <path id="g2-to-buffer-path"
@@ -281,7 +281,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!a.isActive&&t.flowRate>this.config.animation.idle_threshold?"0":a.isActive?"0.3":"1"}"/>
+                  opacity="${a.isActive?"0.3":"1"}"/>
 
             <!-- DHW MODE PIPES (shown when G2 valve is ON - DHW mode) -->
             <!-- Z-ORDER: Return pipes first (behind), then supply pipes (on top) -->
@@ -293,7 +293,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${a.isActive&&t.flowRate>this.config.animation.idle_threshold?"0":a.isActive?"1":"0.3"}"/>
+                  opacity="${a.isActive?"1":"0.3"}"/>
 
             <!-- Pipe: G2 valve down to DHW tank inlet (supply to coil) - At x=348, horizontally separated from return -->
             <path id="g2-to-dhw-path"
@@ -302,7 +302,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${a.isActive&&t.flowRate>this.config.animation.idle_threshold?"0":a.isActive?"1":"0.3"}"/>
+                  opacity="${a.isActive?"1":"0.3"}"/>
 
             <!-- DHW coil spiral path (for flow animation) - Matches actual tank coil position -->
             <path id="dhw-coil-path"
@@ -319,8 +319,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke="${p}"
                   stroke-width="12"
                   fill="none"
-                  stroke-linecap="butt"
-                  opacity="${i.flowRate>this.config.animation.idle_threshold?"0":"1"}"/>
+                  stroke-linecap="butt"/>
 
             <!-- Pipe: Buffer to HVAC (hot supply) - 10px gap from buffer - ON TOP -->
             <path id="buffer-to-hvac-path"
@@ -328,8 +327,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke="${d}"
                   stroke-width="12"
                   fill="none"
-                  stroke-linecap="butt"
-                  opacity="${i.flowRate>this.config.animation.idle_threshold?"0":"1"}"/>
+                  stroke-linecap="butt"/>
 
             <!-- Animated Flow Overlays (shimmer effect on pipes) -->
             <!-- Note: Adding tiny kinks to straight paths for gradient rendering -->
