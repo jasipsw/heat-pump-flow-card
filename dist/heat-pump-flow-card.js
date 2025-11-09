@@ -273,7 +273,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!a.isActive&&t.flowRate>this.config.animation.idle_threshold?"0":"1"}"/>
+                  opacity="${t.flowRate>this.config.animation.idle_threshold?"0":"1"}"/>
 
             <!-- Pipe: G2 to Buffer (continuation) - only active in heating mode -->
             <path id="g2-to-buffer-path"
@@ -363,14 +363,14 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-linecap="butt"
                   opacity="${t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
 
-            <!-- Aux to G2 (horizontal hot) - heating mode only -->
+            <!-- Aux to G2 (horizontal hot) - shows whenever there's flow -->
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 254 180 L 291 180 L 291 180.01 L 328 180"
                   stroke="${l}"
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!a.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
             <!-- Animated gradient overlay -->
             <defs>
               <linearGradient id="flow-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -389,7 +389,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="14"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!a.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
 
             <!-- G2 to buffer (horizontal hot) - heating mode only -->
             <!-- Solid backing to prevent color bleeding through gradient -->
