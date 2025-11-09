@@ -1261,47 +1261,47 @@ export class HeatPumpFlowCard extends LitElement {
                style="--aux-anim-speed: ${animSpeed}s; --aux-shadow-blur: ${shadowBlur};">
               <!-- Glow layers - simple solid colors with CSS pulsing animation -->
               <!-- Outermost glow layer - size based on config -->
-              <rect x="${outerGlow.x}" y="${outerGlow.y}"
+              ${svg`<rect x="${outerGlow.x}" y="${outerGlow.y}"
                     width="${outerGlow.width}" height="${outerGlow.height}"
                     rx="${outerGlow.rx}" ry="${outerGlow.ry}"
                     class="${outerClass}"
                     fill="#ff4422"
-                    pointer-events="none"/>
+                    pointer-events="none"></rect>`}
 
               <!-- Middle glow layer - size based on config -->
-              <rect x="${middleGlow.x}" y="${middleGlow.y}"
+              ${svg`<rect x="${middleGlow.x}" y="${middleGlow.y}"
                     width="${middleGlow.width}" height="${middleGlow.height}"
                     rx="${middleGlow.rx}" ry="${middleGlow.ry}"
                     class="${middleClass}"
                     fill="#ff6644"
-                    pointer-events="none"/>
+                    pointer-events="none"></rect>`}
 
               <!-- Inner glow layer - size based on config -->
-              <rect x="${innerGlow.x}" y="${innerGlow.y}"
+              ${svg`<rect x="${innerGlow.x}" y="${innerGlow.y}"
                     width="${innerGlow.width}" height="${innerGlow.height}"
                     rx="${innerGlow.rx}" ry="${innerGlow.ry}"
                     class="${innerClass}"
                     fill="#ff8855"
-                    pointer-events="none"/>
+                    pointer-events="none"></rect>`}
 
               <!-- Main heated cylinder body (centered at x=254) -->
-              <rect x="${cylX}" y="${cylY}" width="${cylW}" height="${cylH}" rx="2" ry="2"
+              ${svg`<rect x="${cylX}" y="${cylY}" width="${cylW}" height="${cylH}" rx="2" ry="2"
                     class="${cylinderClass}"
                     fill="${auxCylinderColor}"
                     stroke="#7f8c8d"
-                    stroke-width="1.5"/>
+                    stroke-width="1.5"></rect>`}
 
               <!-- Left flange (pipe connection) -->
-              <rect x="${cylX - 6}" y="${cylY + 2}" width="6" height="12"
+              ${svg`<rect x="${cylX - 6}" y="${cylY + 2}" width="6" height="12"
                     fill="#95a5a6"
                     stroke="#7f8c8d"
-                    stroke-width="1.5"/>
+                    stroke-width="1.5"></rect>`}
 
               <!-- Right flange (pipe connection) -->
-              <rect x="${cylX + cylW}" y="${cylY + 2}" width="6" height="12"
+              ${svg`<rect x="${cylX + cylW}" y="${cylY + 2}" width="6" height="12"
                     fill="#95a5a6"
                     stroke="#7f8c8d"
-                    stroke-width="1.5"/>
+                    stroke-width="1.5"></rect>`}
             </g>
 
             <!-- Version display (upper right corner) -->
