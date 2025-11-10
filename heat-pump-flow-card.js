@@ -356,7 +356,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <path id="dhw-tank-inlet-path"
                   d="M 305 420 L 435 420"
                   stroke="${u}"
-                  stroke-width="12"
+                  stroke-width="8"
                   fill="none"
                   stroke-linecap="butt"/>
 
@@ -369,7 +369,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <path id="dhw-tank-outlet-path"
                   d="M 470 380 L 550 380"
                   stroke="${g}"
-                  stroke-width="12"
+                  stroke-width="8"
                   fill="none"
                   stroke-linecap="butt"/>
 
@@ -738,7 +738,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 360 420 L 397.5 420 L 397.5 420.01 L 435 420"
                   stroke="${u}"
-                  stroke-width="10"
+                  stroke-width="6"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${(o.tankInletFlow??0)>this.config.animation.idle_threshold?"1":"0"}"></path>
@@ -757,7 +757,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <path class="flow-gradient"
                   d="M 360 420 L 397.5 420 L 397.5 420.01 L 435 420"
                   stroke="url(#flow-grad-dhw-inlet)"
-                  stroke-width="10"
+                  stroke-width="6"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${(o.tankInletFlow??0)>this.config.animation.idle_threshold?"1":"0"}"></path>
@@ -766,7 +766,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 470 380 L 510 380 L 510 380.01 L 550 380"
                   stroke="${g}"
-                  stroke-width="10"
+                  stroke-width="6"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${(o.tankInletFlow??0)>this.config.animation.idle_threshold?"1":"0"}"></path>
@@ -785,7 +785,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <path class="flow-gradient"
                   d="M 470 380 L 510 380 L 510 380.01 L 550 380"
                   stroke="url(#flow-grad-dhw-outlet)"
-                  stroke-width="10"
+                  stroke-width="6"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${(o.tankInletFlow??0)>this.config.animation.idle_threshold?"1":"0"}"></path>
