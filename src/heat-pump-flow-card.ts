@@ -102,6 +102,7 @@ export class HeatPumpFlowCard extends LitElement {
       temperature_status: {
         enabled: false,
         circle_radius: 12,
+        ...temperature_status,
         points: {
           hp_outlet: { enabled: true },
           hp_inlet: { enabled: true },
@@ -113,7 +114,6 @@ export class HeatPumpFlowCard extends LitElement {
           dhw_outlet: { enabled: true },
           ...temperature_status?.points,
         },
-        ...temperature_status,
       },
     };
   }
