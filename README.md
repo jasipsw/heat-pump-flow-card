@@ -55,7 +55,7 @@ A beautiful, animated Home Assistant card that visualizes heat pump water flow b
 
 🛢️ **Dual Tank Support** - Buffer tank and DHW (Domestic Hot Water) tank with gradient temperature visualization
 
-📊 **Real-Time Data** - Shows thermal power, COP, temperatures, flow rates, energy consumption, costs, and runtime
+📊 **Real-Time Data** - Shows thermal power, COP, temperatures, flow rates, energy consumption, costs, and runtime. All metrics are clickable to view history graphs.
 
 🌈 **Tank Gradient Visualization** - Tanks fill with color gradients representing temperature stratification from bottom to top
 
@@ -375,7 +375,7 @@ labels:
 
 #### Detailed Metrics Panel
 
-Enable a detailed metrics panel below the heat pump showing compressor frequency, temperatures, fan speeds, and more.
+Enable a detailed metrics panel below the heat pump showing compressor frequency, temperatures, fan speeds, and more. **All metrics are clickable** - click any metric to view its history graph in Home Assistant.
 
 | Name | Type | Description |
 |------|------|-------------|
@@ -399,6 +399,8 @@ Enable a detailed metrics panel below the heat pump showing compressor frequency
 | `din7_mode_switch_entity` | string | DIN7 AC/heating mode switch |
 | `pump_enabled_entity` | string | Pump enabled status |
 | `compressor_max_percentage_entity` | string | Compressor max percentage |
+| `defrost_entity` | string | Defrost status (shown in detailed metrics when active) |
+| `error_entity` | string | Error status (shown in detailed metrics when present) |
 
 **Example:**
 ```yaml
@@ -426,6 +428,8 @@ heat_pump:
   e_heater_power_entity: sensor.cx50_c62_e_heater_compensation_power
   pump_enabled_entity: binary_sensor.cx_pump_enabled
   compressor_max_percentage_entity: number.cx50_compressor_max_percentage
+  defrost_entity: binary_sensor.cx_defrost_active
+  error_entity: sensor.cx50_error_status
 ```
 
 ### Heat Pump Visual Options (`heat_pump_visual`)
