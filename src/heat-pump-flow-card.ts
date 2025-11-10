@@ -716,15 +716,11 @@ export class HeatPumpFlowCard extends LitElement {
     // DHW Tank 2 gradient (if enabled)
     let dhwTank2Gradient: Array<{ y: number; height: number; color: string; opacity: number }> = [];
     let dhwTank2FillPercentage = 0;
-    console.log('DHW Tank 2 State in render():', dhwTank2State);
     if (dhwTank2State.enabled) {
-      console.log('DHW Tank 2 is enabled - generating gradient');
       const dhw2CurrentTemp = dhwTank2State.tankTemp ?? dhwTank2State.inletTemp;
       const dhw2GradientData = this.generateTankGradient('dhw_tank_2', dhw2CurrentTemp, true);
       dhwTank2Gradient = dhw2GradientData.levels;
       dhwTank2FillPercentage = dhw2GradientData.fillPercentage;
-    } else {
-      console.log('DHW Tank 2 is NOT enabled');
     }
 
     // Calculate metrics text colors and positioning
@@ -931,7 +927,7 @@ export class HeatPumpFlowCard extends LitElement {
                    opacity="0.8"/>
 
             <!-- Pipe: DHW tank outlet (hot water) -->
-            ${dhwTank2State.enabled ? html`
+            ${dhwTank2State.enabled ? svg`
               <!-- Pipe from DHW tank 1 to DHW tank 2 -->
               <path id="dhw-tank-outlet-path"
                     d="M 470 380 L 560 380"
@@ -939,7 +935,7 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-width="8"
                     fill="none"
                     stroke-linecap="butt"/>
-            ` : html`
+            ` : svg`
               <!-- Pipe from DHW tank 1 to house (when tank 2 is disabled) -->
               <path id="dhw-tank-outlet-path"
                     d="M 470 380 L 550 380"
@@ -950,7 +946,7 @@ export class HeatPumpFlowCard extends LitElement {
             `}
 
             <!-- Pipe: DHW tank 2 outlet to house (only when tank 2 is enabled) -->
-            ${dhwTank2State.enabled ? html`
+            ${dhwTank2State.enabled ? svg`
               <path id="dhw-tank-2-outlet-path"
                     d="M 630 380 L 710 380"
                     stroke="${dhwTank2OutletColor}"
@@ -962,7 +958,7 @@ export class HeatPumpFlowCard extends LitElement {
               <image x="710" y="355" width="50" height="50"
                      href="${this.config.dhw_tank_2?.tank_outlet_icon_url || 'https://cdn-icons-png.flaticon.com/512/2917/2917995.png'}"
                      opacity="0.8"/>
-            ` : html`
+            ` : svg`
               <!-- Faucet icon at DHW tank 1 outlet (when tank 2 is disabled) -->
               <image x="550" y="355" width="50" height="50"
                      href="${this.config.dhw_tank?.tank_outlet_icon_url || 'https://cdn-icons-png.flaticon.com/512/2917/2917995.png'}"
@@ -1639,7 +1635,7 @@ export class HeatPumpFlowCard extends LitElement {
             </g>
 
             <!-- DHW Tank 2 (Secondary/Finishing Heater) - Optional -->
-            ${dhwTank2State.enabled ? html`
+            ${dhwTank2State.enabled ? svg`
             <g id="dhw-tank-2" transform="translate(550, 330)" filter="url(#entity-shadow)">
               <!-- Tank cylinder body -->
               <rect x="10" y="20" width="70" height="140" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
@@ -1650,7 +1646,7 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Bottom rounded cap -->
               <ellipse cx="45" cy="160" rx="35" ry="15" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
 
-              ${dhwTank2Gradient.length > 0 ? this.renderGradientRects(dhwTank2Gradient) : html`
+              ${dhwTank2Gradient.length > 0 ? this.renderGradientRects(dhwTank2Gradient) : svg`
                 <!-- Inner cylinder (DHW water - fallback to simple red) -->
                 <rect x="15" y="25" width="60" height="130" fill="#e74c3c" opacity="0.3"/>
               `}
