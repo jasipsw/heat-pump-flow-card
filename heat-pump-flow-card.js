@@ -941,11 +941,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
               <!-- Tank status display (always shown) -->
               ${o.tankTemp?G`
-                <text x="45" y="165" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
+                <text x="45" y="180" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
                   ${x}% | ${this.formatValue(o.tankTemp,1)}°${this.config.temperature?.unit||"C"}
                 </text>
               `:G`
-                <text x="45" y="165" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
+                <text x="45" y="180" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
                   ${x}%
                 </text>
               `}
