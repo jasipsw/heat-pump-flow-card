@@ -161,6 +161,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     return_temp_entity?: string;  // Return temperature
     name?: string;
     icon?: string;
+    logo_url?: string;            // Logo URL (displayed above HVAC load box)
   };
 
   // House/Building Performance Configuration

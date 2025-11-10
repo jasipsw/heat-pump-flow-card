@@ -1739,6 +1739,18 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- HVAC Load (right side) -->
             <g id="hvac-load" transform="translate(630, 150)" filter="url(#entity-shadow)">
+              <!-- Logo centered above HVAC box -->
+              ${this.config.hvac?.logo_url ? svg`
+                <image
+                  x="${60 - 10}"
+                  y="-25"
+                  width="20"
+                  height="20"
+                  href="${this.config.hvac.logo_url}"
+                  opacity="0.9"
+                  preserveAspectRatio="xMidYMid meet" />
+              ` : ''}
+
               <rect width="120" height="100" rx="10" fill="#2c3e50" stroke="#34495e" stroke-width="2"/>
               <text x="60" y="30" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
                 HVAC LOAD
