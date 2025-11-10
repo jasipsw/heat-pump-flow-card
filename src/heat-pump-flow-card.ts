@@ -1373,7 +1373,7 @@ export class HeatPumpFlowCard extends LitElement {
                     fill="${this.config.buffer_tank?.label_color || 'white'}"
                     font-size="${this.config.buffer_tank?.label_font_size || 12}"
                     font-weight="bold">
-                ${this.config.labels!.buffer_tank}
+                ${this.config.buffer_tank?.name || 'BUFFER'}
               </text>
 
               <!-- Fill percentage display (always shown) -->
@@ -1434,7 +1434,7 @@ export class HeatPumpFlowCard extends LitElement {
                     fill="${this.config.dhw_tank?.label_color || 'white'}"
                     font-size="${this.config.dhw_tank?.label_font_size || 12}"
                     font-weight="bold">
-                ${this.config.labels!.dhw_tank}
+                ${this.config.dhw_tank?.name || 'DHW'}
               </text>
             </g>
 

@@ -44,7 +44,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     supply_temp_entity?: string;  // Supply temperature
     return_temp_entity?: string;  // Return temperature
     level_entity?: string;         // Tank level (optional)
-    name?: string;
+    name?: string;                 // Tank display name (default: BUFFER)
     icon?: string;
     label_color?: string;          // Label text color (default: white)
     label_font_size?: number;      // Label font size in pixels (default: 12)
@@ -68,7 +68,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     inlet_temp_entity?: string;    // DHW coil inlet temperature
     outlet_temp_entity?: string;   // DHW coil outlet temperature
     tank_temp_entity?: string;     // DHW tank temperature (optional)
-    name?: string;
+    name?: string;                 // Tank display name (default: DHW)
     icon?: string;
     label_color?: string;          // Label text color (default: white)
     label_font_size?: number;      // Label font size in pixels (default: 12)

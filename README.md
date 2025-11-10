@@ -194,6 +194,7 @@ heat_pump_visual:
 buffer_tank:
   supply_temp_entity: sensor.hvac_buffer_tank_supply_temperature
   return_temp_entity: sensor.hvac_buffer_tank_return_temperature
+  name: "BUFFER TANK"                        # Custom tank label
   label_color: "#ffffff"                     # White label text
   label_font_size: 12                        # Font size in pixels
   gradient:
@@ -209,6 +210,7 @@ dhw_tank:
   inlet_temp_entity: sensor.dhw_inlet_temperature
   outlet_temp_entity: sensor.dhw_outlet_temperature
   tank_temp_entity: sensor.dhw_tank_temperature
+  name: "HOT WATER"                          # Custom tank label
   label_color: "#ffffff"                     # White label text
   label_font_size: 12                        # Font size in pixels
   gradient:
@@ -385,6 +387,7 @@ heat_pump_visual:
 | `supply_temp_entity` | string | - | Buffer tank supply (hot) temperature |
 | `return_temp_entity` | string | - | Buffer tank return (cold) temperature |
 | `level_entity` | string | - | Tank level sensor (optional) |
+| `name` | string | BUFFER | Tank display name/label |
 | `label_color` | string | white | Tank label text color |
 | `label_font_size` | number | 12 | Tank label font size in pixels |
 | `gradient` | object | - | Gradient visualization configuration (see below) |
@@ -422,6 +425,7 @@ Domestic Hot Water tank with heating coil visualization.
 | `inlet_temp_entity` | string | - | DHW coil inlet temperature |
 | `outlet_temp_entity` | string | - | DHW coil outlet temperature |
 | `tank_temp_entity` | string | - | DHW tank temperature (optional) |
+| `name` | string | DHW | Tank display name/label |
 | `label_color` | string | white | Tank label text color |
 | `label_font_size` | number | 12 | Tank label font size in pixels |
 | `gradient` | object | - | Gradient visualization configuration |
