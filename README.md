@@ -43,7 +43,7 @@ A beautiful, animated Home Assistant card that visualizes heat pump water flow b
 
 🌡️ **Temperature-Based Colors** - Pipes change color from blue (cold) to red (hot) based on actual water temperature with configurable thresholds
 
-📍 **Temperature Status Indicators** - Clean circular indicators show real-time temperatures at critical points (HP inlet/outlet, buffer supply/return, HVAC supply/return, DHW inlet/outlet). Click any indicator to view Home Assistant history graphs.
+📍 **Temperature Status Indicators** - Clean circular indicators show real-time temperatures at critical points (HP inlet/outlet, buffer supply/return, HVAC supply/return, DHW coil inlet/outlet, DHW tank inlet/outlet). Click any indicator to view Home Assistant history graphs.
 
 🌀 **Animated Heat Pump** - Spinning fan that rotates based on actual fan speed (0-100%) with customizable brand logos and colors
 
@@ -207,17 +207,22 @@ buffer_tank:
     cooling_top_color: "#3498db"
 
 dhw_tank:
-  inlet_temp_entity: sensor.dhw_inlet_temperature
-  outlet_temp_entity: sensor.dhw_outlet_temperature
-  tank_temp_entity: sensor.dhw_tank_temperature
-  name: "HOT WATER"                          # Custom tank label
-  label_color: "#ffffff"                     # White label text
-  label_font_size: 12                        # Font size in pixels
+  inlet_temp_entity: sensor.dhw_inlet_temperature         # DHW coil inlet (hot from HP)
+  outlet_temp_entity: sensor.dhw_outlet_temperature       # DHW coil outlet (return to HP)
+  tank_temp_entity: sensor.dhw_tank_temperature           # Tank water temperature
+  tank_inlet_flow_entity: sensor.street_water_flow        # Street water flow rate (optional)
+  tank_inlet_temp_entity: sensor.street_water_temp        # Street water temperature
+  tank_inlet_color: "#3498db"                             # Cold inlet color (default: light blue)
+  tank_outlet_temp_entity: sensor.dhw_hot_outlet_temp     # Hot water outlet temperature
+  tank_outlet_color: "#e74c3c"                            # Hot outlet color (default: red)
+  name: "HOT WATER"                                       # Custom tank label
+  label_color: "#ffffff"                                  # White label text
+  label_font_size: 12                                     # Font size in pixels
   gradient:
     enabled: true
     levels: 10
-    min_temp: 60                               # Can use hard-coded number
-    max_temp: sensor.dhw_setpoint              # Or mix both approaches
+    min_temp: 60                                          # Can use hard-coded number
+    max_temp: sensor.dhw_setpoint                         # Or mix both approaches
     bottom_color: "#95a5a6"
     top_color: "#e74c3c"
 
@@ -567,9 +572,13 @@ temperature_status:
     hvac_return:
       enabled: true  # Show indicator at HVAC return
     dhw_inlet:
-      enabled: true  # Show indicator at DHW coil inlet
+      enabled: true  # Show indicator at DHW coil inlet (hot from HP)
     dhw_outlet:
-      enabled: true  # Show indicator at DHW coil outlet
+      enabled: true  # Show indicator at DHW coil outlet (return to HP)
+    dhw_tank_inlet:
+      enabled: true  # Show indicator at DHW tank cold inlet (street water)
+    dhw_tank_outlet:
+      enabled: true  # Show indicator at DHW tank hot outlet (to house)
 ```
 
 **Features:**

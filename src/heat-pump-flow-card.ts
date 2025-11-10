@@ -112,6 +112,8 @@ export class HeatPumpFlowCard extends LitElement {
           hvac_return: { enabled: true },
           dhw_inlet: { enabled: true },
           dhw_outlet: { enabled: true },
+          dhw_tank_inlet: { enabled: true },
+          dhw_tank_outlet: { enabled: true },
           ...temperature_status?.points,
         },
       },
@@ -235,6 +237,9 @@ export class HeatPumpFlowCard extends LitElement {
       inletTemp: this.getStateValue(cfg.inlet_temp_entity) || 0,
       outletTemp: this.getStateValue(cfg.outlet_temp_entity) || 0,
       tankTemp: this.getStateValue(cfg.tank_temp_entity),
+      tankInletFlow: this.getStateValue(cfg.tank_inlet_flow_entity),
+      tankInletTemp: this.getStateValue(cfg.tank_inlet_temp_entity),
+      tankOutletTemp: this.getStateValue(cfg.tank_outlet_temp_entity),
     };
   }
 
@@ -656,6 +661,10 @@ export class HeatPumpFlowCard extends LitElement {
     const dhwCoilColor = this.config.temperature!.hot_color!;
     const dhwReturnColor = this.config.temperature!.cold_color!;
 
+    // DHW tank inlet/outlet colors (street water and house hot water)
+    const dhwTankInletColor = this.config.dhw_tank?.tank_inlet_color || '#3498db';  // Light blue for cold street water
+    const dhwTankOutletColor = this.config.dhw_tank?.tank_outlet_color || '#e74c3c'; // Red for hot output
+
     // Generate tank gradients
     const bufferIsHeating = bufferState.supplyTemp > bufferState.returnTemp;
     const bufferCurrentTemp = bufferState.supplyTemp; // Use supply temp as indicator of tank heat
@@ -667,6 +676,18 @@ export class HeatPumpFlowCard extends LitElement {
     const dhwGradientData = this.generateTankGradient('dhw', dhwCurrentTemp, true); // DHW always heating
     const dhwGradient = dhwGradientData.levels;
     const dhwFillPercentage = dhwGradientData.fillPercentage;
+
+    // Debug logging for DHW gradient
+    console.log('DHW Gradient Debug:', {
+      tankTemp: dhwState.tankTemp,
+      inletTemp: dhwState.inletTemp,
+      outletTemp: dhwState.outletTemp,
+      currentTemp: dhwCurrentTemp,
+      minTemp: this.config.dhw_tank?.gradient?.min_temp,
+      maxTemp: this.config.dhw_tank?.gradient?.max_temp,
+      fillPercentage: dhwFillPercentage,
+      gradientLevels: dhwGradient.length
+    });
 
     // Calculate metrics text colors and positioning
     const hpBgColor = this.getHeatPumpColor(hpState);
@@ -856,6 +877,23 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-width="0"
                   fill="none"
                   opacity="0"/>
+
+            <!-- DHW TANK INLET/OUTLET PIPES (street water in, hot water out) -->
+            <!-- Pipe: Street water inlet to DHW tank (cold water supply from left) -->
+            <path id="dhw-tank-inlet-path"
+                  d="M 320 480 L 400 480"
+                  stroke="${dhwTankInletColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="butt"/>
+
+            <!-- Pipe: DHW tank outlet to house (hot water output to right) -->
+            <path id="dhw-tank-outlet-path"
+                  d="M 470 380 L 550 380"
+                  stroke="${dhwTankOutletColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="butt"/>
 
             <!-- Z-ORDER: Return first (behind), supply on top -->
             <!-- Pipe: HVAC to Buffer (cold return) - 10px gap from buffer - BEHIND -->
@@ -1218,6 +1256,62 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
 
+            <!-- DHW Tank Inlet (street water) - horizontal cold -->
+            <!-- Solid backing to prevent color bleeding through gradient -->
+            <path d="M 320 480 L 360 480 L 360 480.01 L 400 480"
+                  stroke="${dhwTankInletColor}"
+                  stroke-width="10"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${(dhwState.tankInletFlow ?? 0) > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+            <!-- Animated gradient overlay -->
+            <defs>
+              <linearGradient id="flow-grad-dhw-inlet" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="rgba(52, 152, 219, 0.6)" />
+                <stop offset="40%" stop-color="rgba(72, 172, 239, 0.9)" />
+                <stop offset="50%" stop-color="rgba(92, 192, 255, 1.0)" />
+                <stop offset="60%" stop-color="rgba(72, 172, 239, 0.9)" />
+                <stop offset="100%" stop-color="rgba(52, 152, 219, 0.6)" />
+                <animate attributeName="x1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0s" repeatCount="indefinite" />
+              </linearGradient>
+            </defs>
+            <path class="flow-gradient"
+                  d="M 320 480 L 360 480 L 360 480.01 L 400 480"
+                  stroke="url(#flow-grad-dhw-inlet)"
+                  stroke-width="10"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${(dhwState.tankInletFlow ?? 0) > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+
+            <!-- DHW Tank Outlet (hot water to house) - horizontal hot -->
+            <!-- Solid backing to prevent color bleeding through gradient -->
+            <path d="M 470 380 L 510 380 L 510 380.01 L 550 380"
+                  stroke="${dhwTankOutletColor}"
+                  stroke-width="10"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${(dhwState.tankInletFlow ?? 0) > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+            <!-- Animated gradient overlay -->
+            <defs>
+              <linearGradient id="flow-grad-dhw-outlet" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="rgba(200, 60, 40, 0.6)" />
+                <stop offset="40%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
+                <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
+                <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
+                <animate attributeName="x1" values="-50%;50%" dur="${flowAnimSpeed}s" begin="0.3s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${flowAnimSpeed}s" begin="0.3s" repeatCount="indefinite" />
+              </linearGradient>
+            </defs>
+            <path class="flow-gradient"
+                  d="M 470 380 L 510 380 L 510 380.01 L 550 380"
+                  stroke="url(#flow-grad-dhw-outlet)"
+                  stroke-width="10"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${(dhwState.tankInletFlow ?? 0) > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+
             <!-- Pipe corner elbows to hide animation seams - DHW mode only -->
             <!-- Corner at G2 to DHW (348, 370) - vertical to horizontal -->
             <rect x="341" y="363"
@@ -1473,6 +1567,11 @@ export class HeatPumpFlowCard extends LitElement {
                     font-weight="bold">
                 ${this.config.dhw_tank?.name || 'DHW'}
               </text>
+
+              <!-- Fill percentage display (always shown) -->
+              <text x="45" y="175" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
+                ${dhwFillPercentage}%
+              </text>
             </g>
 
             <!-- HVAC Load (right side) -->
@@ -1645,6 +1744,26 @@ export class HeatPumpFlowCard extends LitElement {
               dhwState.outletTemp,
               this.config.temperature_status?.points?.dhw_outlet,
               dhwReturnColor
+            )}
+
+            <!-- DHW Tank Street Water Inlet (cold water supply) -->
+            ${this.renderTemperatureIndicator(
+              360,
+              480,
+              this.config.temperature_status?.points?.dhw_tank_inlet?.entity || this.config.dhw_tank?.tank_inlet_temp_entity,
+              dhwState.tankInletTemp ?? 0,
+              this.config.temperature_status?.points?.dhw_tank_inlet,
+              dhwTankInletColor
+            )}
+
+            <!-- DHW Tank Hot Water Outlet (to house) -->
+            ${this.renderTemperatureIndicator(
+              510,
+              380,
+              this.config.temperature_status?.points?.dhw_tank_outlet?.entity || this.config.dhw_tank?.tank_outlet_temp_entity,
+              dhwState.tankOutletTemp ?? 0,
+              this.config.temperature_status?.points?.dhw_tank_outlet,
+              dhwTankOutletColor
             )}
           </svg>
         </div>
