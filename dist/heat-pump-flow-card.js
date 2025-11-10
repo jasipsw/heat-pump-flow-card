@@ -258,7 +258,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
           href="${t}"
           opacity="${r}"
         />
-      `}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return U``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getDHWTank2State(),r=this.getG2ValveState(),n=this.getAuxHeaterState(),s=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),l=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),h=s.hotPipe,d=s.coldPipe,c=l.hotPipe,p=l.coldPipe,f=this.config.temperature.hot_color,u=this.config.temperature.cold_color,g=this.config.dhw_tank?.inlet_color||this.config.temperature.cold_color,m=this.config.dhw_tank?.outlet_color||this.config.temperature.hot_color,y=this.config.dhw_tank?.tank_inlet_color||"#3498db",w=this.config.dhw_tank?.tank_outlet_color||"#e74c3c",_=this.config.dhw_tank_2?.tank_outlet_color||"#e74c3c",b=e.supplyTemp>e.returnTemp,$=e.supplyTemp,x=this.generateTankGradient("buffer",$,b),k=x.levels,v=x.fillPercentage,A=o.tankTemp??o.inletTemp,S=this.generateTankGradient("dhw",A,!0),T=S.levels,H=S.fillPercentage;let C=[],P=0;if(a.enabled){const t=a.tankTemp??a.inletTemp,e=this.generateTankGradient("dhw_tank_2",t,!0);C=e.levels,P=e.fillPercentage}const M=this.getHeatPumpColor(t),E=this.getContrastTextColor(M),L=t.error?126:111,R=n.intensity;let D="#bdc3c7";if(R>0){const t=189,e=195,i=199,o=255,a=68,r=34;D=`rgb(${Math.round(t+(o-t)*R)}, ${Math.round(e+(a-e)*R)}, ${Math.round(i+(r-i)*R)})`}const V=this.config.aux_heater?.glow_size??8,z=224,O=172,W=60,N=z,F=O-V,I=W,Q=16+2*V,B=2,j=2,q=z,Z=O-.75*V,Y=W,X=16+2*V*.75,J=2,K=2,tt=z,et=O-.5*V,it=W,ot=16+2*V*.5,at=2,rt=2,nt=R>0?2-1.4*R:2,st=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),lt=this.config.aux_heater?.shadow_blur??1,ht=R>0?"aux-glow-outer":"aux-heater-layer",dt=R>0?"aux-glow-middle":"aux-heater-layer",ct=R>0?"aux-glow-inner":"aux-heater-layer",pt=R>0?"aux-cylinder-pulse":"";return U`
+      `}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return U``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getDHWTank2State(),r=this.getG2ValveState(),n=this.getAuxHeaterState(),s=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),l=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),h=s.hotPipe,d=s.coldPipe,c=l.hotPipe,p=l.coldPipe,f=this.config.temperature.hot_color,u=this.config.temperature.cold_color,g=this.config.dhw_tank?.inlet_color||this.config.temperature.cold_color,m=this.config.dhw_tank?.outlet_color||this.config.temperature.hot_color,y=this.config.dhw_tank?.tank_inlet_color||"#3498db",w=this.config.dhw_tank?.tank_outlet_color||"#e74c3c",_=this.config.dhw_tank_2?.tank_outlet_color||"#e74c3c",b=e.supplyTemp>e.returnTemp,$=e.supplyTemp,x=this.generateTankGradient("buffer",$,b),k=x.levels,v=x.fillPercentage,A=o.tankTemp??o.inletTemp,S=this.generateTankGradient("dhw",A,!0),T=S.levels,H=S.fillPercentage;let C=[],P=0;if(a.enabled){const t=a.tankTemp??a.inletTemp,e=this.generateTankGradient("dhw_tank_2",t,!0);C=e.levels,P=e.fillPercentage}const M=this.getHeatPumpColor(t),E=this.getContrastTextColor(M);t.error;const L=n.intensity;let R="#bdc3c7";if(L>0){const t=189,e=195,i=199,o=255,a=68,r=34;R=`rgb(${Math.round(t+(o-t)*L)}, ${Math.round(e+(a-e)*L)}, ${Math.round(i+(r-i)*L)})`}const D=this.config.aux_heater?.glow_size??8,V=224,z=172,O=60,W=V,N=z-D,F=O,I=16+2*D,Q=2,B=2,j=V,q=z-.75*D,Z=O,Y=16+2*D*.75,X=2,J=2,K=V,tt=z-.5*D,et=O,it=16+2*D*.5,ot=2,at=2,rt=L>0?2-1.4*L:2,nt=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),st=this.config.aux_heater?.shadow_blur??1,lt=L>0?"aux-glow-outer":"aux-heater-layer",ht=L>0?"aux-glow-middle":"aux-heater-layer",dt=L>0?"aux-glow-inner":"aux-heater-layer",ct=L>0?"aux-cylinder-pulse":"";return U`
       <ha-card>
         ${this.config.title?U`<h1 class="card-header">${this.config.title}</h1>`:""}
 
@@ -329,14 +329,14 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${R>0?"0.5":"1"}"/>
+                  opacity="${L>0?"0.5":"1"}"/>
 
             <!-- Pipe: Aux heater to G2 valve (second segment) -->
             <!-- Shows boosted temperature after aux heater adds energy -->
             <!-- Hidden when flow animation is active to prevent color visibility issues -->
             <path id="aux-to-g2-heating-path"
                   d="M 254 180 L 328 180"
-                  stroke="${R>0?this.config.temperature?.hot_color||"#e74c3c":h}"
+                  stroke="${L>0?this.config.temperature?.hot_color||"#e74c3c":h}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
@@ -465,8 +465,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${nt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${nt}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -493,8 +493,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${nt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${nt}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -522,8 +522,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${st}s" begin="0.9s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${st}s" begin="0.9s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${nt}s" begin="0.9s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${nt}s" begin="0.9s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -550,8 +550,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="x1" values="50%;-50%" dur="${st}s" begin="1.2s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="150%;50%" dur="${st}s" begin="1.2s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="50%;-50%" dur="${nt}s" begin="1.2s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="150%;50%" dur="${nt}s" begin="1.2s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -578,8 +578,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="x1" values="50%;-50%" dur="${st}s" begin="1.5s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="150%;50%" dur="${st}s" begin="1.5s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="50%;-50%" dur="${nt}s" begin="1.5s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="150%;50%" dur="${nt}s" begin="1.5s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -608,8 +608,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="x1" values="50%;-50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="150%;50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="50%;-50%" dur="${nt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="150%;50%" dur="${nt}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -636,8 +636,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="y1" values="345;95" dur="${st}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="595;345" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y1" values="345;95" dur="${nt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="595;345" dur="${nt}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -664,8 +664,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="x1" values="50%;-50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="150%;50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="50%;-50%" dur="${nt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="150%;50%" dur="${nt}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -692,8 +692,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="y1" values="107;282" dur="${st}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="282;457" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y1" values="107;282" dur="${nt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="282;457" dur="${nt}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -720,8 +720,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${nt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${nt}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -748,8 +748,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="y1" values="316;424" dur="${st}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="424;532" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y1" values="316;424" dur="${nt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="424;532" dur="${nt}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -776,8 +776,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(92, 192, 255, 1.0)" />
                 <stop offset="60%" stop-color="rgba(72, 172, 239, 0.9)" />
                 <stop offset="100%" stop-color="rgba(52, 152, 219, 0.6)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${nt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${nt}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -804,8 +804,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${nt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${nt}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -884,7 +884,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               `:""}
 
               <!-- Temperature Setpoint Indicators (3 circles below mode text, styled like pipe temp sensors) -->
-              <g id="hp-setpoints" transform="translate(0, ${L})">
+              <g id="hp-setpoints" transform="translate(0, 108)">
                 <!-- Heating Target Temperature (red circle, left position) -->
                 ${void 0!==t.heatingTargetTemp?G`
                   <circle cx="24" cy="0" r="${this.config.temperature_status?.circle_radius||12}"
@@ -915,9 +915,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   </text>
                 `:""}
               </g>
+            </g>
 
-              <!-- Detailed Metrics Panel (always shown, includes core metrics + optional detailed metrics) -->
-              <g id="hp-detailed-metrics" transform="translate(0, ${L+20})">
+            <!-- Detailed Metrics Panel (always shown, includes core metrics + optional detailed metrics) -->
+            <!-- Position below the heat pump box (box is 150px tall, so start at y=255) -->
+            <g id="hp-detailed-metrics" transform="translate(50, 255)">
                 <!-- Divider line -->
                 <line x1="8" y1="0" x2="112" y2="0" stroke="${E}" stroke-width="0.5" opacity="0.3"/>
 
@@ -1015,7 +1017,6 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   `:""}
                 `:""}
               </g>
-            </g>
 
             <!-- Heat Pump Metrics (legacy - now moved inside HP box, keeping for optional extra data) -->
             <g id="hp-metrics-external" transform="translate(50, 265)" opacity="0">
@@ -1303,36 +1304,36 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Shadow blur configurable via aux_heater.shadow_blur (default: 1.0) -->
             <g id="aux-heater"
                opacity="${n.enabled?"1":"0"}"
-               style="--aux-anim-speed: ${nt}s; --aux-shadow-blur: ${lt};">
+               style="--aux-anim-speed: ${rt}s; --aux-shadow-blur: ${st};">
               <!-- Glow layers - simple solid colors with CSS pulsing animation -->
               <!-- Outermost glow layer - size based on config -->
-              ${G`<rect x="${N}" y="${F}"
-                    width="${I}" height="${Q}"
-                    rx="${B}" ry="${j}"
-                    class="${ht}"
+              ${G`<rect x="${W}" y="${N}"
+                    width="${F}" height="${I}"
+                    rx="${Q}" ry="${B}"
+                    class="${lt}"
                     fill="#ff4422"
                     pointer-events="none"></rect>`}
 
               <!-- Middle glow layer - size based on config -->
-              ${G`<rect x="${q}" y="${Z}"
-                    width="${Y}" height="${X}"
-                    rx="${J}" ry="${K}"
-                    class="${dt}"
+              ${G`<rect x="${j}" y="${q}"
+                    width="${Z}" height="${Y}"
+                    rx="${X}" ry="${J}"
+                    class="${ht}"
                     fill="#ff6644"
                     pointer-events="none"></rect>`}
 
               <!-- Inner glow layer - size based on config -->
-              ${G`<rect x="${tt}" y="${et}"
-                    width="${it}" height="${ot}"
-                    rx="${at}" ry="${rt}"
-                    class="${ct}"
+              ${G`<rect x="${K}" y="${tt}"
+                    width="${et}" height="${it}"
+                    rx="${ot}" ry="${at}"
+                    class="${dt}"
                     fill="#ff8855"
                     pointer-events="none"></rect>`}
 
               <!-- Main heated cylinder body (centered at x=254) -->
-              ${G`<rect x="${z}" y="${O}" width="${W}" height="${16}" rx="2" ry="2"
-                    class="${pt}"
-                    fill="${D}"
+              ${G`<rect x="${V}" y="${z}" width="${O}" height="${16}" rx="2" ry="2"
+                    class="${ct}"
+                    fill="${R}"
                     stroke="#7f8c8d"
                     stroke-width="1.5"></rect>`}
 
