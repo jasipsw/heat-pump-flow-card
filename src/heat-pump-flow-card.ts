@@ -1544,9 +1544,9 @@ export class HeatPumpFlowCard extends LitElement {
               hpInletColor
             )}
 
-            <!-- Buffer supply (on supply pipe at y=180, closer to buffer tank) -->
+            <!-- Buffer supply (on supply pipe at y=180, outside buffer tank) -->
             ${this.renderTemperatureIndicator(
-              405,
+              385,
               180,
               this.config.temperature_status?.points?.buffer_supply?.entity || this.config.buffer_tank?.supply_temp_entity,
               bufferState.supplyTemp,
@@ -1564,9 +1564,9 @@ export class HeatPumpFlowCard extends LitElement {
               bufferSupplyColor
             )}
 
-            <!-- Buffer return (on return pipe at y=220, closer to buffer tank) -->
+            <!-- Buffer return (on return pipe at y=220, outside buffer tank) -->
             ${this.renderTemperatureIndicator(
-              405,
+              385,
               220,
               this.config.temperature_status?.points?.buffer_return?.entity || this.config.buffer_tank?.return_temp_entity,
               bufferState.returnTemp,
