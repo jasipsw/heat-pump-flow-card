@@ -398,15 +398,34 @@ export class HeatPumpFlowCard extends LitElement {
       ? this.config.buffer_tank?.gradient
       : this.config.dhw_tank?.gradient;
 
-    // Get configuration with defaults for fill percentage calculation
-    const minTempEntity = gradientConfig?.min_temp_entity;
-    const maxTempEntity = gradientConfig?.max_temp_entity;
-    const minTempFallback = gradientConfig?.min_temp_fallback ?? 60;  // 60°F
-    const maxTempFallback = gradientConfig?.max_temp_fallback ?? 130; // 130°F
+    // Get min/max temperature values with new flexible configuration
+    // Priority: min_temp/max_temp (new) > min_temp_entity/max_temp_entity (deprecated) > defaults
+    let minTemp: number;
+    let maxTemp: number;
 
-    // Get min/max temperature values
-    const minTemp = this.getStateValue(minTempEntity) ?? minTempFallback;
-    const maxTemp = this.getStateValue(maxTempEntity) ?? maxTempFallback;
+    // Get min temperature
+    if (gradientConfig?.min_temp !== undefined) {
+      // New config: can be number or entity
+      const tempValue = typeof gradientConfig.min_temp === 'number'
+        ? gradientConfig.min_temp
+        : this.getStateValue(gradientConfig.min_temp);
+      minTemp = tempValue ?? 60;
+    } else {
+      // Fallback to deprecated config
+      minTemp = this.getStateValue(gradientConfig?.min_temp_entity) ?? gradientConfig?.min_temp_fallback ?? 60;
+    }
+
+    // Get max temperature
+    if (gradientConfig?.max_temp !== undefined) {
+      // New config: can be number or entity
+      const tempValue = typeof gradientConfig.max_temp === 'number'
+        ? gradientConfig.max_temp
+        : this.getStateValue(gradientConfig.max_temp);
+      maxTemp = tempValue ?? 130;
+    } else {
+      // Fallback to deprecated config
+      maxTemp = this.getStateValue(gradientConfig?.max_temp_entity) ?? gradientConfig?.max_temp_fallback ?? 130;
+    }
 
     // Calculate fill ratio (how full the tank is with hot water)
     const tempRange = maxTemp - minTemp;
@@ -1181,23 +1200,6 @@ export class HeatPumpFlowCard extends LitElement {
                   fill="${this.config.temperature?.neutral_color || '#95a5a6'}"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></rect>
 
-            <!-- Flow rate labels (configurable styling) -->
-            <!-- Flow rate between pipes (HP to G2/Buffer) -->
-            <text x="277" y="205" text-anchor="middle" fill="#95a5a6"
-                  font-size="${(this.config.text_style?.font_size || 11) - 1}"
-                  font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
-                  font-weight="normal">
-              ${this.formatValue(hpState.flowRate, 1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}
-            </text>
-
-            <!-- Flow rate - centered vertically between pipes, centered horizontally -->
-            <text x="550" y="205" text-anchor="middle" fill="#95a5a6"
-                  font-size="${(this.config.text_style?.font_size || 11) - 1}"
-                  font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
-                  font-weight="normal">
-              ${this.formatValue(hvacState.flowRate, 1)} ${this.getStateUnit(this.config.hvac?.flow_rate_entity) || 'L/m'}
-            </text>
-
             <!-- Heat Pump (left side) -->
             <g id="heat-pump" transform="translate(50, 100)" filter="url(#entity-shadow)">
               <!-- Heat pump body with state-based color -->
@@ -1255,6 +1257,11 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="62" y="${metricsY}" fill="${hpTextColor}" font-size="10" font-weight="bold">OUT</text>
               <text x="62" y="${metricsY + 14}" fill="${hpTextColor}" font-size="10">${this.formatValue(hpState.thermal/1000, 1)} kW</text>
               <text x="62" y="${metricsY + 28}" fill="${hpTextColor}" font-size="9">COP ${this.formatValue(hpState.cop, 2)}</text>
+
+              <!-- Flow rate display at bottom -->
+              <text x="60" y="${metricsY + 42}" text-anchor="middle" fill="${hpTextColor}" font-size="9">
+                ${this.formatValue(hpState.flowRate, 1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}
+              </text>
             </g>
 
             <!-- Heat Pump Metrics (legacy - now moved inside HP box, keeping for optional extra data) -->
@@ -1425,19 +1432,6 @@ export class HeatPumpFlowCard extends LitElement {
               </text>
             </g>
 
-            <!-- DHW Tank percentage display (outside filtered group to avoid shadow filter affecting text color) -->
-            <g transform="translate(390, 330)">
-              ${dhwState.tankTemp ? svg`
-                <text x="45" y="162" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
-                  ${dhwFillPercentage}% | ${this.formatValue(dhwState.tankTemp, 1)}°${this.getStateUnit(this.config.dhw_tank?.tank_temp_entity) || 'C'}
-                </text>
-              ` : svg`
-                <text x="45" y="162" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
-                  ${dhwFillPercentage}%
-                </text>
-              `}
-            </g>
-
             <!-- HVAC Load (right side) -->
             <g id="hvac-load" transform="translate(630, 150)" filter="url(#entity-shadow)">
               <rect width="120" height="100" rx="10" fill="#2c3e50" stroke="#34495e" stroke-width="2"/>
@@ -1446,6 +1440,10 @@ export class HeatPumpFlowCard extends LitElement {
               </text>
               <text x="60" y="55" text-anchor="middle" fill="#e74c3c" font-size="20" font-weight="bold">
                 ${this.formatValue(hvacState.thermal, 0)} W
+              </text>
+              <!-- Flow rate display at bottom -->
+              <text x="60" y="85" text-anchor="middle" fill="white" font-size="10">
+                ${this.formatValue(hvacState.flowRate, 1)} ${this.getStateUnit(this.config.hvac?.flow_rate_entity) || 'L/m'}
               </text>
             </g>
 
@@ -1546,9 +1544,9 @@ export class HeatPumpFlowCard extends LitElement {
               hpInletColor
             )}
 
-            <!-- Buffer supply (on supply pipe at y=180, just before buffer tank) -->
+            <!-- Buffer supply (on supply pipe at y=180, closer to buffer tank) -->
             ${this.renderTemperatureIndicator(
-              365,
+              405,
               180,
               this.config.temperature_status?.points?.buffer_supply?.entity || this.config.buffer_tank?.supply_temp_entity,
               bufferState.supplyTemp,
@@ -1556,9 +1554,9 @@ export class HeatPumpFlowCard extends LitElement {
               bufferSupplyColor
             )}
 
-            <!-- HVAC supply (on supply pipe at y=180, just after buffer tank) -->
+            <!-- HVAC supply (on supply pipe at y=180, near HVAC load) -->
             ${this.renderTemperatureIndicator(
-              505,
+              615,
               180,
               this.config.temperature_status?.points?.hvac_supply?.entity || this.config.hvac?.supply_temp_entity,
               hvacState.supplyTemp,
@@ -1566,9 +1564,9 @@ export class HeatPumpFlowCard extends LitElement {
               bufferSupplyColor
             )}
 
-            <!-- Buffer return (on return pipe at y=220, just before buffer tank) -->
+            <!-- Buffer return (on return pipe at y=220, closer to buffer tank) -->
             ${this.renderTemperatureIndicator(
-              365,
+              405,
               220,
               this.config.temperature_status?.points?.buffer_return?.entity || this.config.buffer_tank?.return_temp_entity,
               bufferState.returnTemp,
@@ -1576,9 +1574,9 @@ export class HeatPumpFlowCard extends LitElement {
               hvacReturnColor
             )}
 
-            <!-- HVAC return (on return pipe at y=220, just after buffer tank) -->
+            <!-- HVAC return (on return pipe at y=220, near HVAC load) -->
             ${this.renderTemperatureIndicator(
-              505,
+              615,
               220,
               this.config.temperature_status?.points?.hvac_return?.entity || this.config.hvac?.return_temp_entity,
               hvacState.returnTemp,
@@ -1586,9 +1584,9 @@ export class HeatPumpFlowCard extends LitElement {
               hvacReturnColor
             )}
 
-            <!-- DHW Tank Inlet (on pipe before tank, top of coil connection) -->
+            <!-- DHW Tank Inlet (on pipe closer to tank coil connection) -->
             ${this.renderTemperatureIndicator(
-              365,
+              405,
               370,
               this.config.temperature_status?.points?.dhw_inlet?.entity || this.config.dhw_tank?.inlet_temp_entity,
               dhwState.inletTemp,
@@ -1596,9 +1594,9 @@ export class HeatPumpFlowCard extends LitElement {
               dhwCoilColor
             )}
 
-            <!-- DHW Tank Outlet (on pipe before tank, bottom of coil connection) -->
+            <!-- DHW Tank Outlet (on pipe closer to tank coil connection) -->
             ${this.renderTemperatureIndicator(
-              365,
+              405,
               470,
               this.config.temperature_status?.points?.dhw_outlet?.entity || this.config.dhw_tank?.outlet_temp_entity,
               dhwState.outletTemp,
