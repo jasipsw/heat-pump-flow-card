@@ -214,10 +214,10 @@ dhw_tank:
   tank_inlet_flow_entity: sensor.street_water_flow        # Street water flow rate (optional)
   tank_inlet_temp_entity: sensor.street_water_temp        # Street water temperature
   tank_inlet_color: "#3498db"                             # Cold inlet color (default: light blue)
-  tank_inlet_icon_url: "/local/water_source.png"          # Water source icon (default: water tower)
+  tank_inlet_icon_url: "mdi:water-pump"                   # Water source icon (MDI icon or image URL)
   tank_outlet_temp_entity: sensor.dhw_hot_outlet_temp     # Hot water outlet temperature
   tank_outlet_color: "#e74c3c"                            # Hot outlet color (default: red)
-  tank_outlet_icon_url: "/local/faucet.png"               # Hot water outlet icon (when tank 2 disabled)
+  tank_outlet_icon_url: "mdi:faucet-variant"              # Hot water outlet icon (when tank 2 disabled)
   name: "HOT WATER"                                       # Custom tank label
   logo_url: "/local/chiltrix-logo.png"                    # Brand logo next to label
   label_color: "#ffffff"                                  # White label text
@@ -442,11 +442,15 @@ Domestic Hot Water tank with heating coil visualization.
 | `tank_inlet_flow_entity` | string | - | Street water flow rate (L/min) - optional, no animation if not provided |
 | `tank_inlet_temp_entity` | string | - | Street water temperature |
 | `tank_inlet_color` | string | #3498db | Street water pipe color (light blue for cold) |
-| `tank_inlet_icon_url` | string | water tower icon | Icon URL for water source |
+| `tank_inlet_icon_url` | string | mdi:water-pump | Icon for water source (supports MDI icons like `mdi:water-pump` or image URLs) |
 | `tank_outlet_temp_entity` | string | - | Hot water outlet temperature (to house or tank 2) |
 | `tank_outlet_color` | string | #e74c3c | Hot water outlet pipe color (red for hot) |
-| `tank_outlet_icon_url` | string | faucet icon | Hot water outlet icon URL (shown when tank 2 is disabled) |
+| `tank_outlet_icon_url` | string | mdi:faucet-variant | Hot water outlet icon (supports MDI icons like `mdi:faucet-variant` or image URLs, shown when tank 2 is disabled) |
 | `gradient` | object | - | Gradient visualization configuration |
+
+> **Icon Support:** The `tank_inlet_icon_url` and `tank_outlet_icon_url` properties support both:
+> - **MDI Icons**: Use Home Assistant's Material Design Icons (e.g., `mdi:faucet-variant`, `mdi:water-pump`, `mdi:water-well`)
+> - **Image URLs**: Use local or remote image files (e.g., `/local/custom-faucet.png`, `https://...`)
 
 **Gradient Configuration:**
 
@@ -477,9 +481,11 @@ Domestic Hot Water tank with heating coil visualization.
 | `logo_url` | string | - | Logo URL displayed left of label |
 | `label_color` | string | white | Tank label text color |
 | `label_font_size` | number | 12 | Tank label font size in pixels |
-| `tank_outlet_icon_url` | string | faucet icon | Final outlet icon URL (e.g., faucet) |
+| `tank_outlet_icon_url` | string | mdi:faucet-variant | Final outlet icon (supports MDI icons or image URLs) |
 | `tank_outlet_color` | string | #e74c3c | Final outlet pipe color (red for hot) |
 | `gradient` | object | - | Gradient visualization configuration (same as dhw_tank) |
+
+> **Icon Support:** The `tank_outlet_icon_url` property supports both MDI icons (e.g., `mdi:faucet-variant`) and image URLs (e.g., `/local/custom-faucet.png`).
 
 **Gradient Configuration:** Same options as `dhw_tank` gradient configuration above.
 
@@ -501,7 +507,7 @@ dhw_tank_2:
   tank_temp_entity: sensor.main_dhw_tank_temp
   name: "MAIN DHW"
   logo_url: "/local/rheem-logo.png"
-  tank_outlet_icon_url: "/local/faucet.png"  # Optional custom faucet icon
+  tank_outlet_icon_url: "mdi:faucet-variant"  # MDI icon or custom image URL
 ```
 
 ### G2 Valve Options (`g2_valve`)
