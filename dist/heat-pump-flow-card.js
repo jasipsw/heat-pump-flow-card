@@ -258,7 +258,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
           href="${t}"
           opacity="${r}"
         />
-      `}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return U``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getDHWTank2State(),r=this.getG2ValveState(),n=this.getAuxHeaterState(),s=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),l=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),h=s.hotPipe,d=s.coldPipe,c=l.hotPipe,p=l.coldPipe,f=this.config.temperature.hot_color,u=this.config.temperature.cold_color,g=this.config.dhw_tank?.tank_inlet_color||"#3498db",m=this.config.dhw_tank?.tank_outlet_color||"#e74c3c",w=this.config.dhw_tank_2?.tank_outlet_color||"#e74c3c",y=e.supplyTemp>e.returnTemp,_=e.supplyTemp,b=this.generateTankGradient("buffer",_,y),$=b.levels,x=b.fillPercentage,k=o.tankTemp??o.inletTemp,v=this.generateTankGradient("dhw",k,!0),A=v.levels,S=v.fillPercentage;let H=[],C=0;if(a.enabled){const t=a.tankTemp??a.inletTemp,e=this.generateTankGradient("dhw_tank_2",t,!0);H=e.levels,C=e.fillPercentage}const P=this.getHeatPumpColor(t),T=this.getContrastTextColor(P),L=t.error?126:111,M=n.intensity;let E="#bdc3c7";if(M>0){const t=189,e=195,i=199,o=255,a=68,r=34;E=`rgb(${Math.round(t+(o-t)*M)}, ${Math.round(e+(a-e)*M)}, ${Math.round(i+(r-i)*M)})`}const R=this.config.aux_heater?.glow_size??8,D=224,O=172,N=60,W=D,V=O-R,F=N,z=16+2*R,I=2,Q=2,B=D,j=O-.75*R,q=N,Z=16+2*R*.75,Y=2,J=2,K=D,X=O-.5*R,tt=N,et=16+2*R*.5,it=2,ot=2,at=M>0?2-1.4*M:2,rt=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),nt=this.config.aux_heater?.shadow_blur??1,st=M>0?"aux-glow-outer":"aux-heater-layer",lt=M>0?"aux-glow-middle":"aux-heater-layer",ht=M>0?"aux-glow-inner":"aux-heater-layer",dt=M>0?"aux-cylinder-pulse":"";return U`
+      `}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return U``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getDHWTank2State(),r=this.getG2ValveState(),n=this.getAuxHeaterState(),s=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),l=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),h=s.hotPipe,d=s.coldPipe,c=l.hotPipe,p=l.coldPipe,f=this.config.temperature.hot_color,u=this.config.temperature.cold_color,g=this.config.dhw_tank?.inlet_color||this.config.temperature.cold_color,m=this.config.dhw_tank?.outlet_color||this.config.temperature.hot_color,w=this.config.dhw_tank?.tank_inlet_color||"#3498db",y=this.config.dhw_tank?.tank_outlet_color||"#e74c3c",_=this.config.dhw_tank_2?.tank_outlet_color||"#e74c3c",b=e.supplyTemp>e.returnTemp,$=e.supplyTemp,x=this.generateTankGradient("buffer",$,b),k=x.levels,v=x.fillPercentage,A=o.tankTemp??o.inletTemp,S=this.generateTankGradient("dhw",A,!0),H=S.levels,C=S.fillPercentage;let P=[],T=0;if(a.enabled){const t=a.tankTemp??a.inletTemp,e=this.generateTankGradient("dhw_tank_2",t,!0);P=e.levels,T=e.fillPercentage}const L=this.getHeatPumpColor(t),M=this.getContrastTextColor(L),E=t.error?126:111,R=n.intensity;let D="#bdc3c7";if(R>0){const t=189,e=195,i=199,o=255,a=68,r=34;D=`rgb(${Math.round(t+(o-t)*R)}, ${Math.round(e+(a-e)*R)}, ${Math.round(i+(r-i)*R)})`}const O=this.config.aux_heater?.glow_size??8,N=224,W=172,V=60,F=N,z=W-O,I=V,Q=16+2*O,B=2,j=2,q=N,Z=W-.75*O,Y=V,J=16+2*O*.75,K=2,X=2,tt=N,et=W-.5*O,it=V,ot=16+2*O*.5,at=2,rt=2,nt=R>0?2-1.4*R:2,st=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),lt=this.config.aux_heater?.shadow_blur??1,ht=R>0?"aux-glow-outer":"aux-heater-layer",dt=R>0?"aux-glow-middle":"aux-heater-layer",ct=R>0?"aux-glow-inner":"aux-heater-layer",pt=R>0?"aux-cylinder-pulse":"";return U`
       <ha-card>
         ${this.config.title?U`<h1 class="card-header">${this.config.title}</h1>`:""}
 
@@ -329,14 +329,14 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${M>0?"0.5":"1"}"/>
+                  opacity="${R>0?"0.5":"1"}"/>
 
             <!-- Pipe: Aux heater to G2 valve (second segment) -->
             <!-- Shows boosted temperature after aux heater adds energy -->
             <!-- Hidden when flow animation is active to prevent color visibility issues -->
             <path id="aux-to-g2-heating-path"
                   d="M 254 180 L 328 180"
-                  stroke="${M>0?this.config.temperature?.hot_color||"#e74c3c":h}"
+                  stroke="${R>0?this.config.temperature?.hot_color||"#e74c3c":h}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
@@ -384,7 +384,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Pipe: Street water inlet to DHW tank (cold water supply to vertical center) -->
             <path id="dhw-tank-inlet-path"
                   d="M 305 420 L 435 420"
-                  stroke="${g}"
+                  stroke="${w}"
                   stroke-width="8"
                   fill="none"
                   stroke-linecap="butt"/>
@@ -405,7 +405,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <!-- Pipe from DHW tank 1 to house (when tank 2 is disabled) -->
               <path id="dhw-tank-outlet-path"
                     d="M 470 380 L 550 380"
-                    stroke="${m}"
+                    stroke="${y}"
                     stroke-width="8"
                     fill="none"
                     stroke-linecap="butt"/>
@@ -415,7 +415,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             ${a.enabled?G`
               <path id="dhw-tank-2-outlet-path"
                     d="M 630 380 L 710 380"
-                    stroke="${w}"
+                    stroke="${_}"
                     stroke-width="8"
                     fill="none"
                     stroke-linecap="butt"/>
@@ -465,8 +465,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${rt}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${rt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${st}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -493,8 +493,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${rt}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${rt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${st}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -522,8 +522,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${rt}s" begin="0.9s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${rt}s" begin="0.9s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${st}s" begin="0.9s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${st}s" begin="0.9s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -550,8 +550,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="x1" values="50%;-50%" dur="${rt}s" begin="1.2s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="150%;50%" dur="${rt}s" begin="1.2s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="50%;-50%" dur="${st}s" begin="1.2s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="150%;50%" dur="${st}s" begin="1.2s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -578,8 +578,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="x1" values="50%;-50%" dur="${rt}s" begin="1.5s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="150%;50%" dur="${rt}s" begin="1.5s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="50%;-50%" dur="${st}s" begin="1.5s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="150%;50%" dur="${st}s" begin="1.5s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -608,8 +608,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="x1" values="50%;-50%" dur="${rt}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="150%;50%" dur="${rt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="50%;-50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="150%;50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -636,8 +636,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="y1" values="345;95" dur="${rt}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="595;345" dur="${rt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y1" values="345;95" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="595;345" dur="${st}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -664,8 +664,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
                 <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
                 <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
-                <animate attributeName="x1" values="50%;-50%" dur="${rt}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="150%;50%" dur="${rt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="50%;-50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="150%;50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -692,8 +692,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="y1" values="107;282" dur="${rt}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="282;457" dur="${rt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y1" values="107;282" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="282;457" dur="${st}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -720,8 +720,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${rt}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${rt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${st}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -748,8 +748,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="y1" values="316;424" dur="${rt}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="y2" values="424;532" dur="${rt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y1" values="316;424" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="y2" values="424;532" dur="${st}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -763,7 +763,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- DHW Tank Inlet (street water) - horizontal cold -->
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 360 420 L 397.5 420 L 397.5 420.01 L 435 420"
-                  stroke="${g}"
+                  stroke="${w}"
                   stroke-width="6"
                   fill="none"
                   stroke-linecap="butt"
@@ -776,8 +776,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(92, 192, 255, 1.0)" />
                 <stop offset="60%" stop-color="rgba(72, 172, 239, 0.9)" />
                 <stop offset="100%" stop-color="rgba(52, 152, 219, 0.6)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${rt}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${rt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${st}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -791,7 +791,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- DHW Tank Outlet (hot water to house) - horizontal hot -->
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 470 380 L 510 380 L 510 380.01 L 550 380"
-                  stroke="${m}"
+                  stroke="${y}"
                   stroke-width="6"
                   fill="none"
                   stroke-linecap="butt"
@@ -804,8 +804,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <stop offset="50%" stop-color="rgba(255, 130, 90, 1.0)" />
                 <stop offset="60%" stop-color="rgba(240, 100, 70, 0.9)" />
                 <stop offset="100%" stop-color="rgba(200, 60, 40, 0.6)" />
-                <animate attributeName="x1" values="-50%;50%" dur="${rt}s" begin="0s" repeatCount="indefinite" />
-                <animate attributeName="x2" values="50%;150%" dur="${rt}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x1" values="-50%;50%" dur="${st}s" begin="0s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="50%;150%" dur="${st}s" begin="0s" repeatCount="indefinite" />
               </linearGradient>
             </defs>
             <path class="flow-gradient"
@@ -885,16 +885,16 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
               <!-- Critical metrics inside HP box (2-column: Input | Output) -->
               <!-- Left column: INPUT parameters -->
-              <text x="8" y="${L}" fill="${T}" font-size="10" font-weight="bold">IN</text>
-              <text x="8" y="${L+14}" fill="${T}" font-size="10">${this.formatValue(t.power/1e3,1)} kW</text>
+              <text x="8" y="${E}" fill="${M}" font-size="10" font-weight="bold">IN</text>
+              <text x="8" y="${E+14}" fill="${M}" font-size="10">${this.formatValue(t.power/1e3,1)} kW</text>
 
               <!-- Right column: OUTPUT parameters -->
-              <text x="62" y="${L}" fill="${T}" font-size="10" font-weight="bold">OUT</text>
-              <text x="62" y="${L+14}" fill="${T}" font-size="10">${this.formatValue(t.thermal/1e3,1)} kW</text>
-              <text x="62" y="${L+28}" fill="${T}" font-size="9">COP ${this.formatValue(t.cop,2)}</text>
+              <text x="62" y="${E}" fill="${M}" font-size="10" font-weight="bold">OUT</text>
+              <text x="62" y="${E+14}" fill="${M}" font-size="10">${this.formatValue(t.thermal/1e3,1)} kW</text>
+              <text x="62" y="${E+28}" fill="${M}" font-size="9">COP ${this.formatValue(t.cop,2)}</text>
 
               <!-- Flow rate display at bottom -->
-              <text x="60" y="${L+42}" text-anchor="middle" fill="${T}" font-size="9">
+              <text x="60" y="${E+42}" text-anchor="middle" fill="${M}" font-size="9">
                 ${this.formatValue(t.flowRate,1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity)||"L/m"}
               </text>
             </g>
@@ -990,7 +990,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <!-- Bottom rounded cap -->
               <ellipse cx="45" cy="160" rx="35" ry="15" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
 
-              ${$.length>0?this.renderGradientRects($):U`
+              ${k.length>0?this.renderGradientRects(k):U`
                 <!-- Thermal stratification (fallback - 4 zones) -->
                 <rect x="15" y="25" width="60" height="30" fill="${c}" opacity="0.9"/>
                 <rect x="15" y="55" width="60" height="35" fill="${c}" opacity="0.7"/>
@@ -1024,8 +1024,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               `:""}
 
               <!-- Fill percentage display (always shown) -->
-              <text x="45" y="173" text-anchor="middle" fill="${y?"#e74c3c":"#3498db"}" font-size="11" font-weight="bold">
-                ${x}%
+              <text x="45" y="173" text-anchor="middle" fill="${b?"#e74c3c":"#3498db"}" font-size="11" font-weight="bold">
+                ${v}%
               </text>
             </g>
 
@@ -1040,7 +1040,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <!-- Bottom rounded cap -->
               <ellipse cx="45" cy="160" rx="35" ry="15" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
 
-              ${A.length>0?this.renderGradientRects(A):U`
+              ${H.length>0?this.renderGradientRects(H):U`
                 <!-- Inner cylinder (DHW water - fallback to simple blue) -->
                 <rect x="15" y="25" width="60" height="130" fill="#3498db" opacity="0.3"/>
               `}
@@ -1098,7 +1098,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
               <!-- Fill percentage display (always shown) -->
               <text x="45" y="173" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
-                ${S}%
+                ${C}%
               </text>
             </g>
 
@@ -1114,7 +1114,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <!-- Bottom rounded cap -->
               <ellipse cx="45" cy="160" rx="35" ry="15" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
 
-              ${H.length>0?this.renderGradientRects(H):G`
+              ${P.length>0?this.renderGradientRects(P):G`
                 <!-- Inner cylinder (DHW water - fallback to simple red) -->
                 <rect x="15" y="25" width="60" height="130" fill="#e74c3c" opacity="0.3"/>
               `}
@@ -1146,7 +1146,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
               <!-- Fill percentage display (always shown) -->
               <text x="45" y="173" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
-                ${C}%
+                ${T}%
               </text>
             </g>
             `:""}
@@ -1173,36 +1173,36 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Shadow blur configurable via aux_heater.shadow_blur (default: 1.0) -->
             <g id="aux-heater"
                opacity="${n.enabled?"1":"0"}"
-               style="--aux-anim-speed: ${at}s; --aux-shadow-blur: ${nt};">
+               style="--aux-anim-speed: ${nt}s; --aux-shadow-blur: ${lt};">
               <!-- Glow layers - simple solid colors with CSS pulsing animation -->
               <!-- Outermost glow layer - size based on config -->
-              ${G`<rect x="${W}" y="${V}"
-                    width="${F}" height="${z}"
-                    rx="${I}" ry="${Q}"
-                    class="${st}"
+              ${G`<rect x="${F}" y="${z}"
+                    width="${I}" height="${Q}"
+                    rx="${B}" ry="${j}"
+                    class="${ht}"
                     fill="#ff4422"
                     pointer-events="none"></rect>`}
 
               <!-- Middle glow layer - size based on config -->
-              ${G`<rect x="${B}" y="${j}"
-                    width="${q}" height="${Z}"
-                    rx="${Y}" ry="${J}"
-                    class="${lt}"
+              ${G`<rect x="${q}" y="${Z}"
+                    width="${Y}" height="${J}"
+                    rx="${K}" ry="${X}"
+                    class="${dt}"
                     fill="#ff6644"
                     pointer-events="none"></rect>`}
 
               <!-- Inner glow layer - size based on config -->
-              ${G`<rect x="${K}" y="${X}"
-                    width="${tt}" height="${et}"
-                    rx="${it}" ry="${ot}"
-                    class="${ht}"
+              ${G`<rect x="${tt}" y="${et}"
+                    width="${it}" height="${ot}"
+                    rx="${at}" ry="${rt}"
+                    class="${ct}"
                     fill="#ff8855"
                     pointer-events="none"></rect>`}
 
               <!-- Main heated cylinder body (centered at x=254) -->
-              ${G`<rect x="${D}" y="${O}" width="${N}" height="${16}" rx="2" ry="2"
-                    class="${dt}"
-                    fill="${E}"
+              ${G`<rect x="${N}" y="${W}" width="${V}" height="${16}" rx="2" ry="2"
+                    class="${pt}"
+                    fill="${D}"
                     stroke="#7f8c8d"
                     stroke-width="1.5"></rect>`}
 
@@ -1262,20 +1262,20 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             ${this.renderTemperatureIndicator(615,220,this.config.temperature_status?.points?.hvac_return?.entity||this.config.hvac?.return_temp_entity,i.returnTemp,this.config.temperature_status?.points?.hvac_return,p)}
 
             <!-- DHW Tank Inlet (on pipe outside tank) -->
-            ${this.renderTemperatureIndicator(385,370,this.config.temperature_status?.points?.dhw_inlet?.entity||this.config.dhw_tank?.inlet_temp_entity,o.inletTemp,this.config.temperature_status?.points?.dhw_inlet,f)}
+            ${this.renderTemperatureIndicator(385,370,this.config.temperature_status?.points?.dhw_inlet?.entity||this.config.dhw_tank?.inlet_temp_entity,o.inletTemp,this.config.temperature_status?.points?.dhw_inlet,g)}
 
             <!-- DHW Tank Outlet (on pipe outside tank) -->
-            ${this.renderTemperatureIndicator(385,470,this.config.temperature_status?.points?.dhw_outlet?.entity||this.config.dhw_tank?.outlet_temp_entity,o.outletTemp,this.config.temperature_status?.points?.dhw_outlet,u)}
+            ${this.renderTemperatureIndicator(385,470,this.config.temperature_status?.points?.dhw_outlet?.entity||this.config.dhw_tank?.outlet_temp_entity,o.outletTemp,this.config.temperature_status?.points?.dhw_outlet,m)}
 
             <!-- DHW Tank Street Water Inlet (cold water supply) -->
-            ${this.renderTemperatureIndicator(370,420,this.config.temperature_status?.points?.dhw_tank_inlet?.entity||this.config.dhw_tank?.tank_inlet_temp_entity,o.tankInletTemp??0,this.config.temperature_status?.points?.dhw_tank_inlet,g)}
+            ${this.renderTemperatureIndicator(370,420,this.config.temperature_status?.points?.dhw_tank_inlet?.entity||this.config.dhw_tank?.tank_inlet_temp_entity,o.tankInletTemp??0,this.config.temperature_status?.points?.dhw_tank_inlet,w)}
 
             <!-- DHW Tank Hot Water Outlet (to house or to tank 2) -->
-            ${this.renderTemperatureIndicator(510,380,this.config.temperature_status?.points?.dhw_tank_outlet?.entity||this.config.dhw_tank?.tank_outlet_temp_entity,o.tankOutletTemp??0,this.config.temperature_status?.points?.dhw_tank_outlet,m)}
+            ${this.renderTemperatureIndicator(510,380,this.config.temperature_status?.points?.dhw_tank_outlet?.entity||this.config.dhw_tank?.tank_outlet_temp_entity,o.tankOutletTemp??0,this.config.temperature_status?.points?.dhw_tank_outlet,y)}
 
             <!-- DHW Tank 2 Temperature Indicator (only when tank 2 is enabled) -->
             <!-- DHW Tank 2 Outlet (to house) -->
-            ${a.enabled?this.renderTemperatureIndicator(670,380,this.config.temperature_status?.points?.dhw_tank_2_outlet?.entity||this.config.dhw_tank_2?.outlet_temp_entity,a.outletTemp,this.config.temperature_status?.points?.dhw_tank_2_outlet,w):""}
+            ${a.enabled?this.renderTemperatureIndicator(670,380,this.config.temperature_status?.points?.dhw_tank_2_outlet?.entity||this.config.dhw_tank_2?.outlet_temp_entity,a.outletTemp,this.config.temperature_status?.points?.dhw_tank_2_outlet,_):""}
           </svg>
         </div>
       </ha-card>
