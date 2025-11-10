@@ -236,6 +236,19 @@ export class HeatPumpFlowCard extends LitElement {
       outdoorCoilTemp: this.getStateValue(cfg.outdoor_coil_temp_entity),
       suctionTemp: this.getStateValue(cfg.suction_temp_entity),
       heatExchangerTemp: this.getStateValue(cfg.heat_exchanger_temp_entity),
+      plateExchangeTemp: this.getStateValue(cfg.plate_exchange_temp_entity),
+      // Additional detailed metrics
+      ecFanMotor1Speed: this.getStateValue(cfg.ec_fan_motor_1_speed_entity),
+      ecFanMotor2Speed: this.getStateValue(cfg.ec_fan_motor_2_speed_entity),
+      busLineVoltage: this.getStateValue(cfg.bus_line_voltage_entity),
+      fanShutdownCode: this.getStateValue(cfg.fan_shutdown_code_entity),
+      ipmTemp: this.getStateValue(cfg.ipm_temp_entity),
+      compressorRunningTime: this.getStateValue(cfg.compressor_running_time_entity),
+      eHeaterPower: this.getStateValue(cfg.e_heater_power_entity),
+      din6ModeSwitch: this.getStateValue(cfg.din6_mode_switch_entity),
+      din7ModeSwitch: this.getStateValue(cfg.din7_mode_switch_entity),
+      pumpEnabled: this.getStateString(cfg.pump_enabled_entity) === 'on',
+      compressorMaxPercentage: this.getStateValue(cfg.compressor_max_percentage_entity),
     };
   }
 
@@ -1509,6 +1522,13 @@ export class HeatPumpFlowCard extends LitElement {
 
                 return svg`
                   <g id="hp-setpoints" transform="translate(0, 115)">
+                    <!-- Setpoints label above circles -->
+                    <text x="60" y="-18" text-anchor="middle"
+                          fill="${hpTextColor}" font-size="5.5" opacity="0.5"
+                          letter-spacing="0.3" font-family="Arial, sans-serif">
+                      SETPOINTS
+                    </text>
+
                     <!-- Heating Target Temperature (red circle, left position) -->
                     ${hpState.heatingTargetTemp !== undefined ? svg`
                       <circle cx="24" cy="0" r="${radius}"
@@ -1521,7 +1541,7 @@ export class HeatPumpFlowCard extends LitElement {
                             opacity="${heatingOpacity}">
                         ${this.formatValue(hpState.heatingTargetTemp, 0)}°
                       </text>
-                      <text x="24" y="16" text-anchor="middle"
+                      <text x="24" y="19" text-anchor="middle"
                             fill="${hpTextColor}" font-size="6" opacity="${heatingOpacity * 0.7}">
                         HEAT
                       </text>
@@ -1539,7 +1559,7 @@ export class HeatPumpFlowCard extends LitElement {
                             opacity="${dhwOpacity}">
                         ${this.formatValue(hpState.dhwTargetTemp, 0)}°
                       </text>
-                      <text x="60" y="16" text-anchor="middle"
+                      <text x="60" y="19" text-anchor="middle"
                             fill="${hpTextColor}" font-size="6" opacity="${dhwOpacity * 0.7}">
                         DHW
                       </text>
@@ -1557,7 +1577,7 @@ export class HeatPumpFlowCard extends LitElement {
                             opacity="${coolingOpacity}">
                         ${this.formatValue(hpState.coolingTargetTemp, 0)}°
                       </text>
-                      <text x="96" y="16" text-anchor="middle"
+                      <text x="96" y="19" text-anchor="middle"
                             fill="${hpTextColor}" font-size="6" opacity="${coolingOpacity * 0.7}">
                         COOL
                       </text>
@@ -1658,11 +1678,91 @@ export class HeatPumpFlowCard extends LitElement {
                     </text>
                   ` : ''}
 
-                  <!-- Detailed Row 3: Heat Exchanger -->
+                  <!-- Detailed Row 3: Heat Exchanger, Plate Exchange -->
                   ${hpState.heatExchangerTemp !== undefined ? svg`
                     <text x="8" y="86" fill="${hpTextColor}" font-size="7" opacity="0.7">HX</text>
                     <text x="8" y="93" fill="${hpTextColor}" font-size="8" font-weight="bold">
                       ${this.formatValue(hpState.heatExchangerTemp, 0)}°
+                    </text>
+                  ` : ''}
+
+                  ${hpState.plateExchangeTemp !== undefined ? svg`
+                    <text x="42" y="86" fill="${hpTextColor}" font-size="7" opacity="0.7">Plate</text>
+                    <text x="42" y="93" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${this.formatValue(hpState.plateExchangeTemp, 0)}°
+                    </text>
+                  ` : ''}
+
+                  ${hpState.ipmTemp !== undefined ? svg`
+                    <text x="76" y="86" fill="${hpTextColor}" font-size="7" opacity="0.7">IPM</text>
+                    <text x="76" y="93" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${this.formatValue(hpState.ipmTemp, 0)}°
+                    </text>
+                  ` : ''}
+
+                  <!-- Detailed Row 4: Fan Motors -->
+                  ${hpState.ecFanMotor1Speed !== undefined ? svg`
+                    <text x="8" y="104" fill="${hpTextColor}" font-size="7" opacity="0.7">Fan1</text>
+                    <text x="8" y="111" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${this.formatValue(hpState.ecFanMotor1Speed, 0)}
+                    </text>
+                  ` : ''}
+
+                  ${hpState.ecFanMotor2Speed !== undefined ? svg`
+                    <text x="42" y="104" fill="${hpTextColor}" font-size="7" opacity="0.7">Fan2</text>
+                    <text x="42" y="111" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${this.formatValue(hpState.ecFanMotor2Speed, 0)}
+                    </text>
+                  ` : ''}
+
+                  ${hpState.busLineVoltage !== undefined ? svg`
+                    <text x="76" y="104" fill="${hpTextColor}" font-size="7" opacity="0.7">Bus V</text>
+                    <text x="76" y="111" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${this.formatValue(hpState.busLineVoltage, 0)}V
+                    </text>
+                  ` : ''}
+
+                  <!-- Detailed Row 5: Additional metrics -->
+                  ${hpState.eHeaterPower !== undefined ? svg`
+                    <text x="8" y="122" fill="${hpTextColor}" font-size="7" opacity="0.7">E-Htr</text>
+                    <text x="8" y="129" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${this.formatValue(hpState.eHeaterPower, 0)}W
+                    </text>
+                  ` : ''}
+
+                  ${hpState.compressorRunningTime !== undefined ? svg`
+                    <text x="42" y="122" fill="${hpTextColor}" font-size="7" opacity="0.7">Comp H</text>
+                    <text x="42" y="129" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${this.formatValue(hpState.compressorRunningTime, 0)}h
+                    </text>
+                  ` : ''}
+
+                  ${hpState.compressorMaxPercentage !== undefined ? svg`
+                    <text x="76" y="122" fill="${hpTextColor}" font-size="7" opacity="0.7">MaxC%</text>
+                    <text x="76" y="129" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${this.formatValue(hpState.compressorMaxPercentage, 0)}%
+                    </text>
+                  ` : ''}
+
+                  <!-- Detailed Row 6: Status indicators -->
+                  ${hpState.pumpEnabled !== undefined ? svg`
+                    <text x="8" y="140" fill="${hpTextColor}" font-size="7" opacity="0.7">Pump</text>
+                    <text x="8" y="147" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${hpState.pumpEnabled ? 'ON' : 'OFF'}
+                    </text>
+                  ` : ''}
+
+                  ${hpState.fanShutdownCode !== undefined && hpState.fanShutdownCode !== 0 ? svg`
+                    <text x="42" y="140" fill="${hpTextColor}" font-size="7" opacity="0.7">F-Code</text>
+                    <text x="42" y="147" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${this.formatValue(hpState.fanShutdownCode, 0)}
+                    </text>
+                  ` : ''}
+
+                  ${hpState.din6ModeSwitch !== undefined ? svg`
+                    <text x="76" y="140" fill="${hpTextColor}" font-size="7" opacity="0.7">DIN6</text>
+                    <text x="76" y="147" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${this.formatValue(hpState.din6ModeSwitch, 0)}
                     </text>
                   ` : ''}
                 ` : ''}
