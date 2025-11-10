@@ -213,6 +213,7 @@ dhw_tank:
   tank_inlet_flow_entity: sensor.street_water_flow        # Street water flow rate (optional)
   tank_inlet_temp_entity: sensor.street_water_temp        # Street water temperature
   tank_inlet_color: "#3498db"                             # Cold inlet color (default: light blue)
+  tank_inlet_icon_url: "/local/water_source.png"          # Water source icon (default: water tower)
   tank_outlet_temp_entity: sensor.dhw_hot_outlet_temp     # Hot water outlet temperature
   tank_outlet_color: "#e74c3c"                            # Hot outlet color (default: red)
   name: "HOT WATER"                                       # Custom tank label
