@@ -354,14 +354,14 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- DHW TANK INLET/OUTLET PIPES (street water in, hot water out) -->
             <!-- Pipe: Street water inlet to DHW tank (cold water supply to vertical center) -->
             <path id="dhw-tank-inlet-path"
-                  d="M 360 420 L 435 420"
+                  d="M 305 420 L 435 420"
                   stroke="${u}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"/>
 
-            <!-- Water source icon (e.g., water tower) at inlet start with gap -->
-            <image x="295" y="395" width="50" height="50"
+            <!-- Water source icon (e.g., water tower) at inlet start - rendered after pipe for z-order -->
+            <image x="250" y="395" width="50" height="50"
                    href="${this.config.dhw_tank?.tank_inlet_icon_url||"https://cdn-icons-png.flaticon.com/512/764/764408.png"}"
                    opacity="0.8"/>
 
@@ -1169,7 +1169,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             ${this.renderTemperatureIndicator(385,470,this.config.temperature_status?.points?.dhw_outlet?.entity||this.config.dhw_tank?.outlet_temp_entity,o.outletTemp,this.config.temperature_status?.points?.dhw_outlet,f)}
 
             <!-- DHW Tank Street Water Inlet (cold water supply) -->
-            ${this.renderTemperatureIndicator(398,420,this.config.temperature_status?.points?.dhw_tank_inlet?.entity||this.config.dhw_tank?.tank_inlet_temp_entity,o.tankInletTemp??0,this.config.temperature_status?.points?.dhw_tank_inlet,u)}
+            ${this.renderTemperatureIndicator(370,420,this.config.temperature_status?.points?.dhw_tank_inlet?.entity||this.config.dhw_tank?.tank_inlet_temp_entity,o.tankInletTemp??0,this.config.temperature_status?.points?.dhw_tank_inlet,u)}
 
             <!-- DHW Tank Hot Water Outlet (to house) -->
             ${this.renderTemperatureIndicator(510,380,this.config.temperature_status?.points?.dhw_tank_outlet?.entity||this.config.dhw_tank?.tank_outlet_temp_entity,o.tankOutletTemp??0,this.config.temperature_status?.points?.dhw_tank_outlet,g)}
