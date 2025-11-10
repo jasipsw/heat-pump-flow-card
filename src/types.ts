@@ -272,10 +272,6 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
         enabled?: boolean;            // Enable indicator at DHW tank hot outlet (default: true)
         entity?: string;              // Entity override (uses dhw_tank.tank_outlet_temp_entity if not set)
       };
-      dhw_tank_2_inlet?: {
-        enabled?: boolean;            // Enable indicator at DHW tank 2 inlet (default: true)
-        entity?: string;              // Entity override (uses dhw_tank_2.inlet_temp_entity if not set)
-      };
       dhw_tank_2_outlet?: {
         enabled?: boolean;            // Enable indicator at DHW tank 2 outlet (default: true)
         entity?: string;              // Entity override (uses dhw_tank_2.outlet_temp_entity if not set)
