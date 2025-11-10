@@ -369,7 +369,7 @@ export class HeatPumpFlowCard extends LitElement {
           stroke="${pipeColor}"
           stroke-width="2"
           opacity="0.95"
-          filter="url(#entity-shadow)" />
+          filter="url(#circle-shadow)" />
 
         <!-- Temperature text with condensed spacing -->
         <text
@@ -657,11 +657,21 @@ export class HeatPumpFlowCard extends LitElement {
   private renderIcon(iconOrUrl: string, x: number, y: number, width: number, height: number, opacity: number = 0.8) {
     if (iconOrUrl.startsWith('mdi:')) {
       // Render MDI icon using Home Assistant's ha-icon component
+      // Add padding to foreignObject to prevent clipping
+      const padding = 5;
       return svg`
-        <foreignObject x="${x}" y="${y}" width="${width}" height="${height}">
+        <foreignObject x="${x - padding}" y="${y - padding}" width="${width + padding * 2}" height="${height + padding * 2}">
           <ha-icon
             icon="${iconOrUrl}"
-            style="width: ${width}px; height: ${height}px; color: var(--primary-text-color); opacity: ${opacity};"
+            style="
+              --mdc-icon-size: ${width}px;
+              width: ${width}px;
+              height: ${height}px;
+              display: block;
+              color: var(--primary-text-color);
+              opacity: ${opacity};
+              padding: ${padding}px;
+            "
           ></ha-icon>
         </foreignObject>
       `;
@@ -843,6 +853,11 @@ export class HeatPumpFlowCard extends LitElement {
                 <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.6"/>
               </filter>
 
+              <!-- Subtle shadow filter for temperature indicators (softer, more circular) -->
+              <filter id="circle-shadow" x="-50%" y="-50%" width="200%" height="200%">
+                <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.3"/>
+              </filter>
+
               <!-- Blur filters for aux heater glow layers -->
               <filter id="aux-glow-outer">
                 <feGaussianBlur in="SourceGraphic" stdDeviation="12"/>
@@ -954,7 +969,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Water source icon (e.g., water tower) at inlet start - rendered after pipe for z-order -->
             ${this.renderIcon(
               this.config.dhw_tank?.tank_inlet_icon_url || 'mdi:water-pump',
-              250, 395, 50, 50, 0.8
+              245, 390, 60, 60, 0.9
             )}
 
             <!-- Pipe: DHW tank outlet (hot water) -->
@@ -988,13 +1003,13 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Faucet icon at final outlet -->
               ${this.renderIcon(
                 this.config.dhw_tank_2?.tank_outlet_icon_url || 'mdi:faucet-variant',
-                710, 355, 50, 50, 0.8
+                705, 350, 60, 60, 0.9
               )}
             ` : svg`
               <!-- Faucet icon at DHW tank 1 outlet (when tank 2 is disabled) -->
               ${this.renderIcon(
                 this.config.dhw_tank?.tank_outlet_icon_url || 'mdi:faucet-variant',
-                550, 355, 50, 50, 0.8
+                545, 350, 60, 60, 0.9
               )}
             `}
 
@@ -1575,15 +1590,6 @@ export class HeatPumpFlowCard extends LitElement {
               `}
 
               <!-- Tank label centered in top cap -->
-              ${this.config.buffer_tank?.logo_url ? svg`
-                <image
-                  x="20"
-                  y="${24 - (this.config.buffer_tank?.label_font_size || 12) / 2}"
-                  width="${this.config.buffer_tank?.label_font_size || 12}"
-                  height="${this.config.buffer_tank?.label_font_size || 12}"
-                  href="${this.config.buffer_tank.logo_url}"
-                  preserveAspectRatio="xMidYMid meet" />
-              ` : ''}
               <text x="45" y="24" text-anchor="middle" dominant-baseline="middle"
                     fill="${this.config.buffer_tank?.label_color || 'white'}"
                     font-size="${this.config.buffer_tank?.label_font_size || 12}"
@@ -1595,6 +1601,18 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="45" y="165" text-anchor="middle" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="11" font-weight="bold">
                 ${bufferFillPercentage}%
               </text>
+
+              <!-- Brand logo centered at bottom -->
+              ${this.config.buffer_tank?.logo_url ? svg`
+                <image
+                  x="${45 - 10}"
+                  y="178"
+                  width="20"
+                  height="20"
+                  href="${this.config.buffer_tank.logo_url}"
+                  opacity="0.9"
+                  preserveAspectRatio="xMidYMid meet" />
+              ` : ''}
             </g>
 
             <!-- DHW (Domestic Hot Water) Tank with Coil (center-bottom) -->
@@ -1645,15 +1663,6 @@ export class HeatPumpFlowCard extends LitElement {
               <line x1="10" y1="125" x2="80" y2="125" stroke="#2c3e50" stroke-width="2"/>
 
               <!-- Tank label centered in top cap -->
-              ${this.config.dhw_tank?.logo_url ? svg`
-                <image
-                  x="20"
-                  y="${24 - (this.config.dhw_tank?.label_font_size || 12) / 2}"
-                  width="${this.config.dhw_tank?.label_font_size || 12}"
-                  height="${this.config.dhw_tank?.label_font_size || 12}"
-                  href="${this.config.dhw_tank.logo_url}"
-                  preserveAspectRatio="xMidYMid meet" />
-              ` : ''}
               <text x="45" y="24" text-anchor="middle" dominant-baseline="middle"
                     fill="${this.config.dhw_tank?.label_color || 'white'}"
                     font-size="${this.config.dhw_tank?.label_font_size || 12}"
@@ -1665,6 +1674,18 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="45" y="165" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
                 ${dhwFillPercentage}%
               </text>
+
+              <!-- Brand logo centered at bottom -->
+              ${this.config.dhw_tank?.logo_url ? svg`
+                <image
+                  x="${45 - 10}"
+                  y="178"
+                  width="20"
+                  height="20"
+                  href="${this.config.dhw_tank.logo_url}"
+                  opacity="0.9"
+                  preserveAspectRatio="xMidYMid meet" />
+              ` : ''}
             </g>
 
             <!-- DHW Tank 2 (Secondary/Finishing Heater) - Optional -->
@@ -1690,15 +1711,6 @@ export class HeatPumpFlowCard extends LitElement {
               <line x1="10" y1="125" x2="80" y2="125" stroke="#2c3e50" stroke-width="2"/>
 
               <!-- Tank label centered in top cap -->
-              ${this.config.dhw_tank_2?.logo_url ? svg`
-                <image
-                  x="20"
-                  y="${24 - (this.config.dhw_tank_2?.label_font_size || 12) / 2}"
-                  width="${this.config.dhw_tank_2?.label_font_size || 12}"
-                  height="${this.config.dhw_tank_2?.label_font_size || 12}"
-                  href="${this.config.dhw_tank_2.logo_url}"
-                  preserveAspectRatio="xMidYMid meet" />
-              ` : ''}
               <text x="45" y="24" text-anchor="middle" dominant-baseline="middle"
                     fill="${this.config.dhw_tank_2?.label_color || 'white'}"
                     font-size="${this.config.dhw_tank_2?.label_font_size || 12}"
@@ -1710,6 +1722,18 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="45" y="165" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
                 ${dhwTank2FillPercentage}%
               </text>
+
+              <!-- Brand logo centered at bottom -->
+              ${this.config.dhw_tank_2?.logo_url ? svg`
+                <image
+                  x="${45 - 10}"
+                  y="178"
+                  width="20"
+                  height="20"
+                  href="${this.config.dhw_tank_2.logo_url}"
+                  opacity="0.9"
+                  preserveAspectRatio="xMidYMid meet" />
+              ` : ''}
             </g>
             ` : ''}
 
