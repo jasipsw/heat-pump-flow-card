@@ -195,6 +195,7 @@ buffer_tank:
   supply_temp_entity: sensor.hvac_buffer_tank_supply_temperature
   return_temp_entity: sensor.hvac_buffer_tank_return_temperature
   name: "BUFFER TANK"                        # Custom tank label
+  logo_url: "/local/chiltrix-logo.png"       # Brand logo next to label
   label_color: "#ffffff"                     # White label text
   label_font_size: 12                        # Font size in pixels
   gradient:
@@ -216,7 +217,9 @@ dhw_tank:
   tank_inlet_icon_url: "/local/water_source.png"          # Water source icon (default: water tower)
   tank_outlet_temp_entity: sensor.dhw_hot_outlet_temp     # Hot water outlet temperature
   tank_outlet_color: "#e74c3c"                            # Hot outlet color (default: red)
+  tank_outlet_icon_url: "/local/faucet.png"               # Hot water outlet icon (when tank 2 disabled)
   name: "HOT WATER"                                       # Custom tank label
+  logo_url: "/local/chiltrix-logo.png"                    # Brand logo next to label
   label_color: "#ffffff"                                  # White label text
   label_font_size: 12                                     # Font size in pixels
   gradient:
@@ -394,6 +397,7 @@ heat_pump_visual:
 | `return_temp_entity` | string | - | Buffer tank return (cold) temperature |
 | `level_entity` | string | - | Tank level sensor (optional) |
 | `name` | string | BUFFER | Tank display name/label |
+| `logo_url` | string | - | Logo URL displayed left of label |
 | `label_color` | string | white | Tank label text color |
 | `label_font_size` | number | 12 | Tank label font size in pixels |
 | `gradient` | object | - | Gradient visualization configuration (see below) |
@@ -428,12 +432,20 @@ Domestic Hot Water tank with heating coil visualization.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `inlet_temp_entity` | string | - | DHW coil inlet temperature |
-| `outlet_temp_entity` | string | - | DHW coil outlet temperature |
+| `inlet_temp_entity` | string | - | DHW coil inlet temperature (hot from HP) |
+| `outlet_temp_entity` | string | - | DHW coil outlet temperature (return to HP) |
 | `tank_temp_entity` | string | - | DHW tank temperature (optional) |
 | `name` | string | DHW | Tank display name/label |
+| `logo_url` | string | - | Logo URL displayed left of label |
 | `label_color` | string | white | Tank label text color |
 | `label_font_size` | number | 12 | Tank label font size in pixels |
+| `tank_inlet_flow_entity` | string | - | Street water flow rate (L/min) - optional, no animation if not provided |
+| `tank_inlet_temp_entity` | string | - | Street water temperature |
+| `tank_inlet_color` | string | #3498db | Street water pipe color (light blue for cold) |
+| `tank_inlet_icon_url` | string | water tower icon | Icon URL for water source |
+| `tank_outlet_temp_entity` | string | - | Hot water outlet temperature (to house or tank 2) |
+| `tank_outlet_color` | string | #e74c3c | Hot water outlet pipe color (red for hot) |
+| `tank_outlet_icon_url` | string | faucet icon | Hot water outlet icon URL (shown when tank 2 is disabled) |
 | `gradient` | object | - | Gradient visualization configuration |
 
 **Gradient Configuration:**
@@ -450,6 +462,47 @@ Domestic Hot Water tank with heating coil visualization.
 | `max_temp_fallback` | number | 130 | **DEPRECATED** - Use `max_temp` with number instead |
 | `bottom_color` | string | neutral_color | Bottom color |
 | `top_color` | string | hot_color | Top color |
+
+### DHW Tank 2 Options (`dhw_tank_2`)
+
+**Optional** second DHW tank for pre-heat/finishing heater configurations. When enabled, the first tank (`dhw_tank`) acts as a pre-heat tank using excess heat from the heat pump, and the second tank (`dhw_tank_2`) brings the water up to final temperature using conventional heating (electric/gas).
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `enabled` | boolean | false | Enable second DHW tank |
+| `inlet_temp_entity` | string | - | Inlet temperature (from first tank outlet) |
+| `outlet_temp_entity` | string | - | Final outlet temperature (to house) |
+| `tank_temp_entity` | string | - | Tank temperature (optional) |
+| `name` | string | DHW 2 | Tank display name/label |
+| `logo_url` | string | - | Logo URL displayed left of label |
+| `label_color` | string | white | Tank label text color |
+| `label_font_size` | number | 12 | Tank label font size in pixels |
+| `tank_outlet_icon_url` | string | faucet icon | Final outlet icon URL (e.g., faucet) |
+| `tank_outlet_color` | string | #e74c3c | Final outlet pipe color (red for hot) |
+| `gradient` | object | - | Gradient visualization configuration (same as dhw_tank) |
+
+**Gradient Configuration:** Same options as `dhw_tank` gradient configuration above.
+
+**Example Configuration:**
+
+```yaml
+dhw_tank:
+  inlet_temp_entity: sensor.dhw_preheat_inlet_temp
+  outlet_temp_entity: sensor.dhw_preheat_outlet_temp
+  tank_temp_entity: sensor.dhw_preheat_tank_temp
+  name: "PRE-HEAT"
+  tank_inlet_temp_entity: sensor.street_water_temp
+  tank_outlet_temp_entity: sensor.preheat_to_main_temp
+
+dhw_tank_2:
+  enabled: true
+  inlet_temp_entity: sensor.main_dhw_inlet_temp
+  outlet_temp_entity: sensor.main_dhw_outlet_temp
+  tank_temp_entity: sensor.main_dhw_tank_temp
+  name: "MAIN DHW"
+  logo_url: "/local/rheem-logo.png"
+  tank_outlet_icon_url: "/local/faucet.png"  # Optional custom faucet icon
+```
 
 ### G2 Valve Options (`g2_valve`)
 
