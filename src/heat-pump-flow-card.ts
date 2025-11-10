@@ -1371,11 +1371,11 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- DHW Tank percentage display (outside filtered group to avoid shadow filter affecting text color) -->
             <g transform="translate(390, 330)">
-              ${dhwState.tankTemp ? html`
+              ${dhwState.tankTemp ? svg`
                 <text x="45" y="180" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
                   ${dhwFillPercentage}% | ${this.formatValue(dhwState.tankTemp, 1)}°${this.config.temperature?.unit || 'C'}
                 </text>
-              ` : html`
+              ` : svg`
                 <text x="45" y="180" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
                   ${dhwFillPercentage}%
                 </text>
