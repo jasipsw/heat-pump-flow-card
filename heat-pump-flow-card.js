@@ -1014,10 +1014,10 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <!-- Brand logo centered above tank -->
               ${this.config.buffer_tank?.logo_url?G`
                 <image
-                  x="${30}"
-                  y="-10"
-                  width="30"
-                  height="30"
+                  x="${35}"
+                  y="-25"
+                  width="20"
+                  height="20"
                   href="${this.config.buffer_tank.logo_url}"
                   opacity="0.9"
                   preserveAspectRatio="xMidYMid meet" />
@@ -1087,10 +1087,10 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <!-- Brand logo centered above tank -->
               ${this.config.dhw_tank?.logo_url?G`
                 <image
-                  x="${30}"
-                  y="-10"
-                  width="30"
-                  height="30"
+                  x="${35}"
+                  y="-25"
+                  width="20"
+                  height="20"
                   href="${this.config.dhw_tank.logo_url}"
                   opacity="0.9"
                   preserveAspectRatio="xMidYMid meet" />
@@ -1135,10 +1135,10 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <!-- Brand logo centered above tank -->
               ${this.config.dhw_tank_2?.logo_url?G`
                 <image
-                  x="${30}"
-                  y="-10"
-                  width="30"
-                  height="30"
+                  x="${35}"
+                  y="-25"
+                  width="20"
+                  height="20"
                   href="${this.config.dhw_tank_2.logo_url}"
                   opacity="0.9"
                   preserveAspectRatio="xMidYMid meet" />

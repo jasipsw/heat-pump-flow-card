@@ -1600,10 +1600,10 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Brand logo centered above tank -->
               ${this.config.buffer_tank?.logo_url ? svg`
                 <image
-                  x="${45 - 15}"
-                  y="-10"
-                  width="30"
-                  height="30"
+                  x="${45 - 10}"
+                  y="-25"
+                  width="20"
+                  height="20"
                   href="${this.config.buffer_tank.logo_url}"
                   opacity="0.9"
                   preserveAspectRatio="xMidYMid meet" />
@@ -1673,10 +1673,10 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Brand logo centered above tank -->
               ${this.config.dhw_tank?.logo_url ? svg`
                 <image
-                  x="${45 - 15}"
-                  y="-10"
-                  width="30"
-                  height="30"
+                  x="${45 - 10}"
+                  y="-25"
+                  width="20"
+                  height="20"
                   href="${this.config.dhw_tank.logo_url}"
                   opacity="0.9"
                   preserveAspectRatio="xMidYMid meet" />
@@ -1721,10 +1721,10 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Brand logo centered above tank -->
               ${this.config.dhw_tank_2?.logo_url ? svg`
                 <image
-                  x="${45 - 15}"
-                  y="-10"
-                  width="30"
-                  height="30"
+                  x="${45 - 10}"
+                  y="-25"
+                  width="20"
+                  height="20"
                   href="${this.config.dhw_tank_2.logo_url}"
                   opacity="0.9"
                   preserveAspectRatio="xMidYMid meet" />
