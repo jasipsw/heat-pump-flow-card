@@ -887,9 +887,9 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               ${(()=>{const e=this.getDisplayMode(t,r).toLowerCase(),i=e.includes("heat"),o=e.includes("dhw"),a=e.includes("cool"),n="off"===e||"defrost"===e,s=i||n?.95:.3,l=o||n?.95:.3,h=a||n?.95:.3,d=this.config.temperature_status?.circle_radius||12,c="#e74c3c",p="#e74c3c",f="#3498db";return G`
                   <g id="hp-setpoints" transform="translate(0, 115)">
                     <!-- Setpoints label above circles -->
-                    <text x="60" y="-18" text-anchor="middle"
-                          fill="${E}" font-size="5.5" opacity="0.5"
-                          letter-spacing="0.3" font-family="Arial, sans-serif">
+                    <text x="60" y="-8" text-anchor="middle"
+                          fill="${E}" font-size="5" opacity="0.5"
+                          letter-spacing="0.5" font-family="Arial, sans-serif">
                       SETPOINTS
                     </text>
 

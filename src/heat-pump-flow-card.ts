@@ -1523,9 +1523,9 @@ export class HeatPumpFlowCard extends LitElement {
                 return svg`
                   <g id="hp-setpoints" transform="translate(0, 115)">
                     <!-- Setpoints label above circles -->
-                    <text x="60" y="-18" text-anchor="middle"
-                          fill="${hpTextColor}" font-size="5.5" opacity="0.5"
-                          letter-spacing="0.3" font-family="Arial, sans-serif">
+                    <text x="60" y="-8" text-anchor="middle"
+                          fill="${hpTextColor}" font-size="5" opacity="0.5"
+                          letter-spacing="0.5" font-family="Arial, sans-serif">
                       SETPOINTS
                     </text>
 
