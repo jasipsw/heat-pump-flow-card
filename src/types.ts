@@ -47,6 +47,8 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     name?: string;                 // Tank display name (default: BUFFER)
     icon?: string;
     logo_url?: string;             // Logo URL (displayed left of label)
+    logo_background_color?: string; // Background color behind logo (e.g., "white", "#ffffff")
+    logo_drop_shadow?: string;     // Drop shadow color (e.g., "rgba(0,0,0,0.5)")
     label_color?: string;          // Label text color (default: white)
     label_font_size?: number;      // Label font size in pixels (default: 12)
     gradient?: {
@@ -72,6 +74,8 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     name?: string;                 // Tank display name (default: DHW)
     icon?: string;
     logo_url?: string;             // Logo URL (displayed left of label)
+    logo_background_color?: string; // Background color behind logo (e.g., "white", "#ffffff")
+    logo_drop_shadow?: string;     // Drop shadow color (e.g., "rgba(0,0,0,0.5)")
     label_color?: string;          // Label text color (default: white)
     label_font_size?: number;      // Label font size in pixels (default: 12)
     // Street water inlet (cold water supply to tank)
@@ -105,6 +109,8 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     tank_temp_entity?: string;        // Tank temperature (optional)
     name?: string;                    // Tank display name (default: DHW 2)
     logo_url?: string;                // Logo URL (displayed left of label)
+    logo_background_color?: string;   // Background color behind logo (e.g., "white", "#ffffff")
+    logo_drop_shadow?: string;        // Drop shadow color (e.g., "rgba(0,0,0,0.5)")
     label_color?: string;             // Label text color (default: white)
     label_font_size?: number;         // Label font size in pixels (default: 12)
     tank_outlet_icon_url?: string;    // Final outlet icon URL (default: faucet icon)
