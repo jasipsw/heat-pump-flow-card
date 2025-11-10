@@ -114,7 +114,6 @@ export class HeatPumpFlowCard extends LitElement {
           dhw_outlet: { enabled: true },
           dhw_tank_inlet: { enabled: true },
           dhw_tank_outlet: { enabled: true },
-          dhw_tank_2_inlet: { enabled: true },
           dhw_tank_2_outlet: { enabled: true },
           ...temperature_status?.points,
         },
@@ -408,12 +407,14 @@ export class HeatPumpFlowCard extends LitElement {
    * Returns object with gradient levels array and fill percentage
    */
   private generateTankGradient(
-    tankType: 'buffer' | 'dhw',
+    tankType: 'buffer' | 'dhw' | 'dhw_tank_2',
     currentTemp: number,
     isHeating: boolean
   ): { levels: Array<{ y: number; height: number; color: string; opacity: number }>; fillPercentage: number } {
     const gradientConfig = tankType === 'buffer'
       ? this.config.buffer_tank?.gradient
+      : tankType === 'dhw_tank_2'
+      ? this.config.dhw_tank_2?.gradient
       : this.config.dhw_tank?.gradient;
 
     // Get min/max temperature values with new flexible configuration
@@ -700,7 +701,7 @@ export class HeatPumpFlowCard extends LitElement {
     let dhwTank2FillPercentage = 0;
     if (dhwTank2State.enabled) {
       const dhw2CurrentTemp = dhwTank2State.tankTemp ?? dhwTank2State.inletTemp;
-      const dhw2GradientData = this.generateTankGradient('dhw', dhw2CurrentTemp, true);
+      const dhw2GradientData = this.generateTankGradient('dhw_tank_2', dhw2CurrentTemp, true);
       dhwTank2Gradient = dhw2GradientData.levels;
       dhwTank2FillPercentage = dhw2GradientData.fillPercentage;
     }
@@ -1526,14 +1527,14 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Tank label centered in top cap -->
               ${this.config.buffer_tank?.logo_url ? svg`
                 <image
-                  x="${35 - (this.config.buffer_tank?.label_font_size || 12) / 2 - 2}"
+                  x="20"
                   y="${24 - (this.config.buffer_tank?.label_font_size || 12) / 2}"
                   width="${this.config.buffer_tank?.label_font_size || 12}"
                   height="${this.config.buffer_tank?.label_font_size || 12}"
                   href="${this.config.buffer_tank.logo_url}"
                   preserveAspectRatio="xMidYMid meet" />
               ` : ''}
-              <text x="45" y="24" text-anchor="middle"
+              <text x="45" y="24" text-anchor="middle" dominant-baseline="middle"
                     fill="${this.config.buffer_tank?.label_color || 'white'}"
                     font-size="${this.config.buffer_tank?.label_font_size || 12}"
                     font-weight="bold">
@@ -1596,14 +1597,14 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Tank label centered in top cap -->
               ${this.config.dhw_tank?.logo_url ? svg`
                 <image
-                  x="${35 - (this.config.dhw_tank?.label_font_size || 12) / 2 - 2}"
+                  x="20"
                   y="${24 - (this.config.dhw_tank?.label_font_size || 12) / 2}"
                   width="${this.config.dhw_tank?.label_font_size || 12}"
                   height="${this.config.dhw_tank?.label_font_size || 12}"
                   href="${this.config.dhw_tank.logo_url}"
                   preserveAspectRatio="xMidYMid meet" />
               ` : ''}
-              <text x="45" y="24" text-anchor="middle"
+              <text x="45" y="24" text-anchor="middle" dominant-baseline="middle"
                     fill="${this.config.dhw_tank?.label_color || 'white'}"
                     font-size="${this.config.dhw_tank?.label_font_size || 12}"
                     font-weight="bold">
@@ -1641,14 +1642,14 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Tank label centered in top cap -->
               ${this.config.dhw_tank_2?.logo_url ? svg`
                 <image
-                  x="${35 - (this.config.dhw_tank_2?.label_font_size || 12) / 2 - 2}"
+                  x="20"
                   y="${24 - (this.config.dhw_tank_2?.label_font_size || 12) / 2}"
                   width="${this.config.dhw_tank_2?.label_font_size || 12}"
                   height="${this.config.dhw_tank_2?.label_font_size || 12}"
                   href="${this.config.dhw_tank_2.logo_url}"
                   preserveAspectRatio="xMidYMid meet" />
               ` : ''}
-              <text x="45" y="24" text-anchor="middle"
+              <text x="45" y="24" text-anchor="middle" dominant-baseline="middle"
                     fill="${this.config.dhw_tank_2?.label_color || 'white'}"
                     font-size="${this.config.dhw_tank_2?.label_font_size || 12}"
                     font-weight="bold">
@@ -1854,28 +1855,16 @@ export class HeatPumpFlowCard extends LitElement {
               dhwTankOutletColor
             )}
 
-            <!-- DHW Tank 2 Temperature Indicators (only when tank 2 is enabled) -->
-            ${dhwTank2State.enabled ? html`
-              <!-- DHW Tank 2 Inlet (from tank 1) -->
-              ${this.renderTemperatureIndicator(
-                595,
-                380,
-                this.config.temperature_status?.points?.dhw_tank_2_inlet?.entity || this.config.dhw_tank_2?.inlet_temp_entity,
-                dhwTank2State.inletTemp,
-                this.config.temperature_status?.points?.dhw_tank_2_inlet,
-                dhwTank2ConnectionColor
-              )}
-
-              <!-- DHW Tank 2 Outlet (to house) -->
-              ${this.renderTemperatureIndicator(
-                670,
-                380,
-                this.config.temperature_status?.points?.dhw_tank_2_outlet?.entity || this.config.dhw_tank_2?.outlet_temp_entity,
-                dhwTank2State.outletTemp,
-                this.config.temperature_status?.points?.dhw_tank_2_outlet,
-                dhwTank2OutletColor
-              )}
-            ` : ''}
+            <!-- DHW Tank 2 Temperature Indicator (only when tank 2 is enabled) -->
+            <!-- DHW Tank 2 Outlet (to house) -->
+            ${dhwTank2State.enabled ? this.renderTemperatureIndicator(
+              670,
+              380,
+              this.config.temperature_status?.points?.dhw_tank_2_outlet?.entity || this.config.dhw_tank_2?.outlet_temp_entity,
+              dhwTank2State.outletTemp,
+              this.config.temperature_status?.points?.dhw_tank_2_outlet,
+              dhwTank2OutletColor
+            ) : ''}
           </svg>
         </div>
       </ha-card>
