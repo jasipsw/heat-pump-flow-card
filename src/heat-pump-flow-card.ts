@@ -1821,6 +1821,25 @@ export class HeatPumpFlowCard extends LitElement {
                       </text>
                     </g>
                   ` : ''}
+
+                  <!-- Detailed Row 7: Defrost and Error Status -->
+                  ${hpState.defrost !== undefined && this.config.heat_pump?.defrost_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.defrost_entity!)}">
+                      <text x="8" y="158" fill="${hpTextColor}" font-size="7" opacity="0.7">Defrost</text>
+                      <text x="8" y="165" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${hpState.defrost ? 'ON' : 'OFF'}
+                      </text>
+                    </g>
+                  ` : ''}
+
+                  ${hpState.error && this.config.heat_pump?.error_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.error_entity!)}">
+                      <text x="42" y="158" fill="#e74c3c" font-size="7" opacity="0.7">Error</text>
+                      <text x="42" y="165" fill="#e74c3c" font-size="8" font-weight="bold">
+                        ${hpState.error}
+                      </text>
+                    </g>
+                  ` : ''}
                 ` : ''}
               </g>
 
