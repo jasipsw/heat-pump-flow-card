@@ -876,8 +876,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <line x1="10" y1="125" x2="80" y2="125" stroke="#2c3e50" stroke-width="2"/>
               `}
 
-              <!-- Tank label inside top section -->
-              <text x="45" y="42" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
+              <!-- Tank label centered in top cap -->
+              <text x="45" y="24" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
                 ${this.config.labels.buffer_tank}
               </text>
 
@@ -934,8 +934,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <line x1="10" y1="90" x2="80" y2="90" stroke="#2c3e50" stroke-width="2"/>
               <line x1="10" y1="125" x2="80" y2="125" stroke="#2c3e50" stroke-width="2"/>
 
-              <!-- Tank label inside top section -->
-              <text x="45" y="42" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
+              <!-- Tank label centered in top cap -->
+              <text x="45" y="24" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
                 ${this.config.labels.dhw_tank}
               </text>
             </g>
@@ -943,11 +943,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- DHW Tank percentage display (outside filtered group to avoid shadow filter affecting text color) -->
             <g transform="translate(390, 330)">
               ${o.tankTemp?Q`
-                <text x="45" y="180" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
+                <text x="45" y="162" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
                   ${x}% | ${this.formatValue(o.tankTemp,1)}°${this.config.temperature?.unit||"C"}
                 </text>
               `:Q`
-                <text x="45" y="180" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
+                <text x="45" y="162" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
                   ${x}%
                 </text>
               `}
