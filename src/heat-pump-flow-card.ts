@@ -1,7 +1,7 @@
 import { LitElement, html, css, PropertyValues, svg } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { HomeAssistant, LovelaceCardEditor } from 'custom-card-helpers';
-import { HeatPumpFlowCardConfig, HeatPumpState, BufferTankState, HVACState, DHWTankState, G2ValveState, AuxHeaterState, HousePerformanceState, TemperatureHistoryPoint, TemperatureTrend, TemperatureStatus } from './types';
+import { HeatPumpFlowCardConfig, HeatPumpState, BufferTankState, HVACState, DHWTankState, G2ValveState, AuxHeaterState, HousePerformanceState } from './types';
 import { CARD_VERSION, BUILD_TIMESTAMP } from './const';
 import { cardStyles } from './styles';
 
@@ -16,9 +16,6 @@ console.info(
 export class HeatPumpFlowCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @state() private config!: HeatPumpFlowCardConfig;
-
-  // Temperature history tracking for trend detection
-  private temperatureHistory: Map<string, TemperatureHistoryPoint[]> = new Map();
 
   @query('#hp-to-buffer-flow') hpToBufferFlow?: SVGGElement;
   @query('#buffer-to-hp-flow') bufferToHpFlow?: SVGGElement;
@@ -104,13 +101,7 @@ export class HeatPumpFlowCard extends LitElement {
       },
       temperature_status: {
         enabled: false,
-        change_threshold: 0.5,
-        time_interval: 60,
         circle_radius: 12,
-        increasing_color: '#e74c3c',
-        decreasing_color: '#3498db',
-        steady_color: '#2c3e50',
-        show_caret: true,
         points: {
           hp_outlet: { enabled: true },
           hp_inlet: { enabled: true },
@@ -293,79 +284,6 @@ export class HeatPumpFlowCard extends LitElement {
   }
 
   /**
-   * Track temperature for an entity and maintain history
-   */
-  private trackTemperature(entityId: string, temperature: number): void {
-    if (!entityId) return;
-
-    const now = Date.now();
-    const history = this.temperatureHistory.get(entityId) || [];
-
-    // Add current temperature to history
-    history.push({ temperature, timestamp: now });
-
-    // Keep only the history within the configured time window (plus some buffer)
-    const timeWindow = (this.config.temperature_status?.time_interval || 60) * 1000;
-    const cutoffTime = now - (timeWindow * 2); // Keep 2x the window for better accuracy
-    const filteredHistory = history.filter(point => point.timestamp > cutoffTime);
-
-    this.temperatureHistory.set(entityId, filteredHistory);
-  }
-
-  /**
-   * Calculate temperature trend (increasing, decreasing, or steady)
-   */
-  private getTemperatureTrend(entityId: string | undefined): TemperatureTrend {
-    if (!entityId) return 'steady';
-
-    const history = this.temperatureHistory.get(entityId);
-    if (!history || history.length < 2) return 'steady';
-
-    const now = Date.now();
-    const timeInterval = (this.config.temperature_status?.time_interval || 60) * 1000;
-    const threshold = this.config.temperature_status?.change_threshold || 0.5;
-
-    // Get current temperature (most recent)
-    const currentPoint = history[history.length - 1];
-
-    // Find the oldest point within the time interval
-    const oldestValidTime = now - timeInterval;
-    const oldPoint = history.find(point => point.timestamp >= oldestValidTime);
-
-    if (!oldPoint || oldPoint === currentPoint) return 'steady';
-
-    // Calculate temperature change
-    const tempChange = currentPoint.temperature - oldPoint.temperature;
-
-    // Determine trend based on threshold
-    if (tempChange > threshold) {
-      return 'increasing';
-    } else if (tempChange < -threshold) {
-      return 'decreasing';
-    }
-    return 'steady';
-  }
-
-  /**
-   * Get temperature status for a specific point
-   */
-  private getTemperatureStatus(entityId: string | undefined, temperature: number): TemperatureStatus | undefined {
-    if (!entityId || !this.config.temperature_status?.enabled) return undefined;
-
-    // Track the temperature
-    this.trackTemperature(entityId, temperature);
-
-    // Get the trend
-    const trend = this.getTemperatureTrend(entityId);
-
-    return {
-      current: temperature,
-      trend,
-      entity: entityId,
-    };
-  }
-
-  /**
    * Handle click on temperature indicator to show history graph
    */
   private handleTemperatureClick(event: Event, entityId: string): void {
@@ -389,79 +307,48 @@ export class HeatPumpFlowCard extends LitElement {
     y: number,
     entityId: string | undefined,
     temperature: number,
-    pointConfig: { enabled?: boolean } | undefined
+    pointConfig: { enabled?: boolean } | undefined,
+    pipeColor: string
   ) {
     // Check if temperature status is enabled globally and for this point
     if (!this.config.temperature_status?.enabled || !pointConfig?.enabled || !entityId) {
       return svg``;
     }
 
-    const status = this.getTemperatureStatus(entityId, temperature);
-    if (!status || status.current === undefined) {
+    if (temperature === undefined || isNaN(temperature)) {
       return svg``;
     }
 
     const cfg = this.config.temperature_status!;
     const radius = cfg.circle_radius || 12;
-    const showCaret = cfg.show_caret !== false;
-
-    // Determine border color based on trend
-    let borderColor: string;
-    switch (status.trend) {
-      case 'increasing':
-        borderColor = cfg.increasing_color || '#e74c3c';
-        break;
-      case 'decreasing':
-        borderColor = cfg.decreasing_color || '#3498db';
-        break;
-      default:
-        borderColor = cfg.steady_color || '#2c3e50';
-    }
-
-    // Position caret inside the circle (above/below the temperature text)
-    const caretSize = 3;
-    const caretYOffset = 6; // Distance from center to caret
 
     return svg`
       <g class="temp-status-indicator"
          style="cursor: pointer;"
          @click="${(e: Event) => this.handleTemperatureClick(e, entityId)}">
-        <!-- Circle with white fill and colored border -->
+        <!-- Circle with white fill and pipe-colored border -->
         <circle
           cx="${x}"
           cy="${y}"
           r="${radius}"
           fill="white"
-          stroke="${borderColor}"
+          stroke="${pipeColor}"
           stroke-width="2"
           opacity="0.95"
           filter="url(#entity-shadow)" />
 
-        <!-- Caret indicator (inside circle, above temperature for increasing) -->
-        ${showCaret && status.trend === 'increasing' ? svg`
-          <path
-            d="M ${x - caretSize} ${y - caretYOffset + caretSize} L ${x} ${y - caretYOffset} L ${x + caretSize} ${y - caretYOffset + caretSize} Z"
-            fill="${borderColor}" />
-        ` : ''}
-
-        <!-- Caret indicator (inside circle, below temperature for decreasing) -->
-        ${showCaret && status.trend === 'decreasing' ? svg`
-          <path
-            d="M ${x - caretSize} ${y + caretYOffset - caretSize} L ${x} ${y + caretYOffset} L ${x + caretSize} ${y + caretYOffset - caretSize} Z"
-            fill="${borderColor}" />
-        ` : ''}
-
-        <!-- Temperature text -->
+        <!-- Temperature text with condensed spacing -->
         <text
           x="${x}"
           y="${y + 1}"
           text-anchor="middle"
           dominant-baseline="middle"
-          fill="${borderColor}"
-          font-size="9"
+          fill="${pipeColor}"
+          font-size="7.5"
           font-weight="bold"
-          font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}">
-          ${this.formatValue(status.current, 1)}°
+          letter-spacing="-0.5"
+          font-family="Arial, sans-serif">
+          ${this.formatValue(temperature, 1)}°
         </text>
       </g>
     `;
@@ -968,7 +855,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 180 180 L 283.5 180 L 283.5 180.01 L 390 180"
                   stroke="${hpOutletColor}"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -987,7 +874,7 @@ export class HeatPumpFlowCard extends LitElement {
             <path class="flow-gradient"
                   d="M 180 180 L 283.5 180 L 283.5 180.01 L 390 180"
                   stroke="url(#flow-grad-hp-to-buffer)"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -996,7 +883,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 180 180 L 254 180 L 254 180.01 L 328 180"
                   stroke="${hpOutletColor}"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1015,7 +902,7 @@ export class HeatPumpFlowCard extends LitElement {
             <path class="flow-gradient"
                   d="M 180 180 L 254 180 L 254 180.01 L 328 180"
                   stroke="url(#flow-grad-hp-to-g2)"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1025,7 +912,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 480 180 L 550 180 L 550 180.01 L 620 180"
                   stroke="${bufferSupplyColor}"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${hvacState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1044,7 +931,7 @@ export class HeatPumpFlowCard extends LitElement {
             <path class="flow-gradient"
                   d="M 480 180 L 550 180 L 550 180.01 L 620 180"
                   stroke="url(#flow-grad-4)"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${hvacState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1053,7 +940,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 390 220 L 285 220 L 285 220.01 L 180 220"
                   stroke="${hpInletColor}"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1072,7 +959,7 @@ export class HeatPumpFlowCard extends LitElement {
             <path class="flow-gradient"
                   d="M 390 220 L 285 220 L 285 220.01 L 180 220"
                   stroke="url(#flow-grad-5)"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1081,7 +968,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 620 220 L 550 220 L 550 220.01 L 480 220"
                   stroke="${hvacReturnColor}"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${hvacState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1100,7 +987,7 @@ export class HeatPumpFlowCard extends LitElement {
             <path class="flow-gradient"
                   d="M 620 220 L 550 220 L 550 220.01 L 480 220"
                   stroke="url(#flow-grad-6)"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${hvacState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1111,7 +998,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 418 470 L 394 470 L 394 470.01 L 370 470"
                   stroke="${dhwReturnColor}"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1130,7 +1017,7 @@ export class HeatPumpFlowCard extends LitElement {
             <path class="flow-gradient"
                   d="M 418 470 L 394 470 L 394 470.01 L 370 470"
                   stroke="url(#flow-grad-9a)"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1139,7 +1026,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 370 470 L 370 345 L 370 345.01 L 370 220"
                   stroke="${dhwReturnColor}"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1158,7 +1045,7 @@ export class HeatPumpFlowCard extends LitElement {
             <path class="flow-gradient"
                   d="M 370 470 L 370 345 L 370 345.01 L 370 220"
                   stroke="url(#flow-grad-9b)"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1167,7 +1054,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 370 220 L 275 220 L 275 220.01 L 180 220"
                   stroke="${dhwReturnColor}"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1186,7 +1073,7 @@ export class HeatPumpFlowCard extends LitElement {
             <path class="flow-gradient"
                   d="M 370 220 L 275 220 L 275 220.01 L 180 220"
                   stroke="url(#flow-grad-9c)"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1195,7 +1082,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 348 195 L 348 282.5 L 348 282.51 L 348 370"
                   stroke="${dhwCoilColor}"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1214,7 +1101,7 @@ export class HeatPumpFlowCard extends LitElement {
             <path class="flow-gradient"
                   d="M 348 195 L 348 282.5 L 348 282.51 L 348 370"
                   stroke="url(#flow-grad-7a)"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1223,7 +1110,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 348 370 L 383 370 L 383 370.01 L 418 370"
                   stroke="${dhwCoilColor}"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1242,7 +1129,7 @@ export class HeatPumpFlowCard extends LitElement {
             <path class="flow-gradient"
                   d="M 348 370 L 383 370 L 383 370.01 L 418 370"
                   stroke="url(#flow-grad-7b)"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1251,7 +1138,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 418 370 Q 438 378, 458 370 Q 438 390, 418 390 Q 438 406, 458 390 Q 438 422, 418 422 Q 438 438, 458 422 Q 438 454, 418 454 Q 438 470, 458 454 Q 438 478, 418 470"
                   stroke="${dhwCoilColor}"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1270,7 +1157,7 @@ export class HeatPumpFlowCard extends LitElement {
             <path class="flow-gradient"
                   d="M 418 370 Q 438 378, 458 370 Q 438 390, 418 390 Q 438 406, 458 390 Q 438 422, 418 422 Q 438 438, 458 422 Q 438 454, 418 454 Q 438 470, 458 454 Q 438 478, 418 470"
                   stroke="url(#flow-grad-8)"
-                  stroke-width="14"
+                  stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1294,15 +1181,7 @@ export class HeatPumpFlowCard extends LitElement {
                   fill="${this.config.temperature?.neutral_color || '#95a5a6'}"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></rect>
 
-            <!-- Temperature and flow rate labels (configurable styling) -->
-            <!-- Top row: supply temperatures and flow rate -->
-            <text x="260" y="170" text-anchor="middle" fill="${hpOutletColor}"
-                  font-size="${this.config.text_style?.font_size || 11}"
-                  font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
-                  font-weight="${this.config.text_style?.font_weight || 'bold'}">
-              ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_supply}: ` : ''}${this.formatValue(hpState.outletTemp, 1)}°${this.getStateUnit(this.config.heat_pump?.outlet_temp_entity) || 'C'}
-            </text>
-
+            <!-- Flow rate labels (configurable styling) -->
             <!-- Flow rate between pipes (HP to G2/Buffer) -->
             <text x="277" y="205" text-anchor="middle" fill="#95a5a6"
                   font-size="${(this.config.text_style?.font_size || 11) - 1}"
@@ -1311,35 +1190,12 @@ export class HeatPumpFlowCard extends LitElement {
               ${this.formatValue(hpState.flowRate, 1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}
             </text>
 
-            <text x="260" y="240" text-anchor="middle" fill="${hpInletColor}"
-                  font-size="${this.config.text_style?.font_size || 11}"
-                  font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
-                  font-weight="${this.config.text_style?.font_weight || 'bold'}">
-              ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_return}: ` : ''}${this.formatValue(hpState.inletTemp, 1)}°${this.getStateUnit(this.config.heat_pump?.inlet_temp_entity) || 'C'}
-            </text>
-
-            <!-- Supply temp (top) - above supply pipe, centered horizontally -->
-            <text x="550" y="170" text-anchor="middle" fill="${bufferSupplyColor}"
-                  font-size="${this.config.text_style?.font_size || 11}"
-                  font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
-                  font-weight="${this.config.text_style?.font_weight || 'bold'}">
-              ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_supply}: ` : ''}${this.formatValue(bufferState.supplyTemp, 1)}°${this.getStateUnit(this.config.buffer_tank?.supply_temp_entity) || 'C'}
-            </text>
-
             <!-- Flow rate - centered vertically between pipes, centered horizontally -->
             <text x="550" y="205" text-anchor="middle" fill="#95a5a6"
                   font-size="${(this.config.text_style?.font_size || 11) - 1}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="normal">
               ${this.formatValue(hvacState.flowRate, 1)} ${this.getStateUnit(this.config.hvac?.flow_rate_entity) || 'L/m'}
-            </text>
-
-            <!-- Return temp (bottom) - below return pipe, centered horizontally -->
-            <text x="550" y="240" text-anchor="middle" fill="${hvacReturnColor}"
-                  font-size="${this.config.text_style?.font_size || 11}"
-                  font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
-                  font-weight="${this.config.text_style?.font_weight || 'bold'}">
-              ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_return}: ` : ''}${this.formatValue(hvacState.returnTemp, 1)}°${this.getStateUnit(this.config.hvac?.return_temp_entity) || 'C'}
             </text>
 
             <!-- Heat Pump (left side) -->
@@ -1536,7 +1392,7 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Outer glow layer - pulsing when active -->
               <path d="M 28 40 Q 45 48, 62 40 Q 45 60, 28 60 Q 45 76, 62 60 Q 45 92, 28 92 Q 45 108, 62 92 Q 45 124, 28 124 Q 45 132, 62 124 Q 45 140, 28 140"
                     stroke="${dhwCoilColor}"
-                    stroke-width="14"
+                    stroke-width="10"
                     fill="none"
                     class="${g2ValveState.isActive ? 'dhw-coil-glow-outer' : 'dhw-coil-glow-layer'}"
                     pointer-events="none"/>
@@ -1676,7 +1532,8 @@ export class HeatPumpFlowCard extends LitElement {
               180,
               this.config.temperature_status?.points?.hp_outlet?.entity || this.config.heat_pump?.outlet_temp_entity,
               hpState.outletTemp,
-              this.config.temperature_status?.points?.hp_outlet
+              this.config.temperature_status?.points?.hp_outlet,
+              hpOutletColor
             )}
 
             <!-- HP inlet (on return pipe at y=220) -->
@@ -1685,61 +1542,68 @@ export class HeatPumpFlowCard extends LitElement {
               220,
               this.config.temperature_status?.points?.hp_inlet?.entity || this.config.heat_pump?.inlet_temp_entity,
               hpState.inletTemp,
-              this.config.temperature_status?.points?.hp_inlet
+              this.config.temperature_status?.points?.hp_inlet,
+              hpInletColor
             )}
 
-            <!-- Buffer supply (on supply pipe at y=180, buffer side) -->
+            <!-- Buffer supply (on supply pipe at y=180, just before buffer tank) -->
             ${this.renderTemperatureIndicator(
-              475,
+              365,
               180,
               this.config.temperature_status?.points?.buffer_supply?.entity || this.config.buffer_tank?.supply_temp_entity,
               bufferState.supplyTemp,
-              this.config.temperature_status?.points?.buffer_supply
+              this.config.temperature_status?.points?.buffer_supply,
+              bufferSupplyColor
             )}
 
-            <!-- HVAC supply (on supply pipe at y=180, HVAC side) -->
+            <!-- HVAC supply (on supply pipe at y=180, just after buffer tank) -->
             ${this.renderTemperatureIndicator(
-              625,
+              505,
               180,
               this.config.temperature_status?.points?.hvac_supply?.entity || this.config.hvac?.supply_temp_entity,
               hvacState.supplyTemp,
-              this.config.temperature_status?.points?.hvac_supply
+              this.config.temperature_status?.points?.hvac_supply,
+              bufferSupplyColor
             )}
 
-            <!-- Buffer return (on return pipe at y=220, HP side) -->
+            <!-- Buffer return (on return pipe at y=220, just before buffer tank) -->
             ${this.renderTemperatureIndicator(
-              475,
+              365,
               220,
               this.config.temperature_status?.points?.buffer_return?.entity || this.config.buffer_tank?.return_temp_entity,
               bufferState.returnTemp,
-              this.config.temperature_status?.points?.buffer_return
+              this.config.temperature_status?.points?.buffer_return,
+              hvacReturnColor
             )}
 
-            <!-- HVAC return (on return pipe at y=220, HVAC side) -->
+            <!-- HVAC return (on return pipe at y=220, just after buffer tank) -->
             ${this.renderTemperatureIndicator(
-              625,
+              505,
               220,
               this.config.temperature_status?.points?.hvac_return?.entity || this.config.hvac?.return_temp_entity,
               hvacState.returnTemp,
-              this.config.temperature_status?.points?.hvac_return
+              this.config.temperature_status?.points?.hvac_return,
+              hvacReturnColor
             )}
 
-            <!-- DHW Tank Inlet (in tank coordinates, top of coil at y=370 global) -->
+            <!-- DHW Tank Inlet (on pipe before tank, top of coil connection) -->
             ${this.renderTemperatureIndicator(
-              400,
+              365,
               370,
               this.config.temperature_status?.points?.dhw_inlet?.entity || this.config.dhw_tank?.inlet_temp_entity,
               dhwState.inletTemp,
-              this.config.temperature_status?.points?.dhw_inlet
+              this.config.temperature_status?.points?.dhw_inlet,
+              dhwCoilColor
             )}
 
-            <!-- DHW Tank Outlet (in tank coordinates, bottom of coil at y=470 global) -->
+            <!-- DHW Tank Outlet (on pipe before tank, bottom of coil connection) -->
             ${this.renderTemperatureIndicator(
-              400,
+              365,
               470,
               this.config.temperature_status?.points?.dhw_outlet?.entity || this.config.dhw_tank?.outlet_temp_entity,
               dhwState.outletTemp,
-              this.config.temperature_status?.points?.dhw_outlet
+              this.config.temperature_status?.points?.dhw_outlet,
+              dhwReturnColor
             )}
           </svg>
         </div>
