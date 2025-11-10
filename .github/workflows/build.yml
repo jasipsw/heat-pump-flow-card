@@ -50,8 +50,8 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          # Stash the built files
-          git add dist/*.js dist/*.map heat-pump-flow-card.js heat-pump-flow-card.js.map
+          # Stash the built files (force add since they're in .gitignore)
+          git add -f dist/*.js dist/*.map heat-pump-flow-card.js heat-pump-flow-card.js.map
           git stash push -m "Built files"
 
           # Fetch and rebase on latest remote changes
@@ -62,9 +62,9 @@ jobs:
             git reset --hard origin/${{ github.ref_name }}
           }
 
-          # Apply the built files (will overwrite)
+          # Apply the built files (will overwrite, force add since they're in .gitignore)
           git stash pop || true
-          git add dist/*.js dist/*.map heat-pump-flow-card.js heat-pump-flow-card.js.map
+          git add -f dist/*.js dist/*.map heat-pump-flow-card.js heat-pump-flow-card.js.map
           git commit -m "Auto-build: Update compiled JS files [skip ci]" || {
             echo "No changes to commit after rebase"
             exit 0
