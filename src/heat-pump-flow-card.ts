@@ -1590,20 +1590,20 @@ export class HeatPumpFlowCard extends LitElement {
               `}
 
               <!-- Tank label centered in top cap -->
-              <text x="45" y="24" text-anchor="middle" dominant-baseline="middle"
+              <text x="45" y="20" text-anchor="middle" dominant-baseline="middle"
                     fill="${this.config.buffer_tank?.label_color || 'white'}"
                     font-size="${this.config.buffer_tank?.label_font_size || 12}"
                     font-weight="bold">
                 ${this.config.buffer_tank?.name || 'BUFFER'}
               </text>
 
-              <!-- Brand logo centered above percentage -->
+              <!-- Brand logo centered above tank -->
               ${this.config.buffer_tank?.logo_url ? svg`
                 <image
-                  x="${45 - 10}"
-                  y="145"
-                  width="20"
-                  height="20"
+                  x="${45 - 15}"
+                  y="-10"
+                  width="30"
+                  height="30"
                   href="${this.config.buffer_tank.logo_url}"
                   opacity="0.9"
                   preserveAspectRatio="xMidYMid meet" />
@@ -1663,20 +1663,20 @@ export class HeatPumpFlowCard extends LitElement {
               <line x1="10" y1="125" x2="80" y2="125" stroke="#2c3e50" stroke-width="2"/>
 
               <!-- Tank label centered in top cap -->
-              <text x="45" y="24" text-anchor="middle" dominant-baseline="middle"
+              <text x="45" y="20" text-anchor="middle" dominant-baseline="middle"
                     fill="${this.config.dhw_tank?.label_color || 'white'}"
                     font-size="${this.config.dhw_tank?.label_font_size || 12}"
                     font-weight="bold">
                 ${this.config.dhw_tank?.name || 'DHW'}
               </text>
 
-              <!-- Brand logo centered above percentage -->
+              <!-- Brand logo centered above tank -->
               ${this.config.dhw_tank?.logo_url ? svg`
                 <image
-                  x="${45 - 10}"
-                  y="145"
-                  width="20"
-                  height="20"
+                  x="${45 - 15}"
+                  y="-10"
+                  width="30"
+                  height="30"
                   href="${this.config.dhw_tank.logo_url}"
                   opacity="0.9"
                   preserveAspectRatio="xMidYMid meet" />
@@ -1711,20 +1711,20 @@ export class HeatPumpFlowCard extends LitElement {
               <line x1="10" y1="125" x2="80" y2="125" stroke="#2c3e50" stroke-width="2"/>
 
               <!-- Tank label centered in top cap -->
-              <text x="45" y="24" text-anchor="middle" dominant-baseline="middle"
+              <text x="45" y="20" text-anchor="middle" dominant-baseline="middle"
                     fill="${this.config.dhw_tank_2?.label_color || 'white'}"
                     font-size="${this.config.dhw_tank_2?.label_font_size || 12}"
                     font-weight="bold">
                 ${this.config.dhw_tank_2?.name || 'DHW 2'}
               </text>
 
-              <!-- Brand logo centered above percentage -->
+              <!-- Brand logo centered above tank -->
               ${this.config.dhw_tank_2?.logo_url ? svg`
                 <image
-                  x="${45 - 10}"
-                  y="145"
-                  width="20"
-                  height="20"
+                  x="${45 - 15}"
+                  y="-10"
+                  width="30"
+                  height="30"
                   href="${this.config.dhw_tank_2.logo_url}"
                   opacity="0.9"
                   preserveAspectRatio="xMidYMid meet" />
