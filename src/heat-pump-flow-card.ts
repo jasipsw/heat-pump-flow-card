@@ -1300,7 +1300,7 @@ export class HeatPumpFlowCard extends LitElement {
                   font-size="${this.config.text_style?.font_size || 11}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
-              ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_supply}: ` : ''}${this.formatValue(hpState.outletTemp, 1)}°${this.config.temperature?.unit || 'C'}
+              ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_supply}: ` : ''}${this.formatValue(hpState.outletTemp, 1)}°${this.getStateUnit(this.config.heat_pump?.outlet_temp_entity) || 'C'}
             </text>
 
             <!-- Flow rate between pipes (HP to G2/Buffer) -->
@@ -1308,14 +1308,14 @@ export class HeatPumpFlowCard extends LitElement {
                   font-size="${(this.config.text_style?.font_size || 11) - 1}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="normal">
-              ${this.formatValue(hpState.flowRate, 1)} L/m
+              ${this.formatValue(hpState.flowRate, 1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}
             </text>
 
             <text x="260" y="240" text-anchor="middle" fill="${hpInletColor}"
                   font-size="${this.config.text_style?.font_size || 11}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
-              ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_return}: ` : ''}${this.formatValue(hpState.inletTemp, 1)}°${this.config.temperature?.unit || 'C'}
+              ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_return}: ` : ''}${this.formatValue(hpState.inletTemp, 1)}°${this.getStateUnit(this.config.heat_pump?.inlet_temp_entity) || 'C'}
             </text>
 
             <!-- Supply temp (top) - above supply pipe, centered horizontally -->
@@ -1323,7 +1323,7 @@ export class HeatPumpFlowCard extends LitElement {
                   font-size="${this.config.text_style?.font_size || 11}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
-              ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_supply}: ` : ''}${this.formatValue(bufferState.supplyTemp, 1)}°${this.config.temperature?.unit || 'C'}
+              ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_supply}: ` : ''}${this.formatValue(bufferState.supplyTemp, 1)}°${this.getStateUnit(this.config.buffer_tank?.supply_temp_entity) || 'C'}
             </text>
 
             <!-- Flow rate - centered vertically between pipes, centered horizontally -->
@@ -1331,7 +1331,7 @@ export class HeatPumpFlowCard extends LitElement {
                   font-size="${(this.config.text_style?.font_size || 11) - 1}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="normal">
-              ${this.formatValue(hvacState.flowRate, 1)} L/m
+              ${this.formatValue(hvacState.flowRate, 1)} ${this.getStateUnit(this.config.hvac?.flow_rate_entity) || 'L/m'}
             </text>
 
             <!-- Return temp (bottom) - below return pipe, centered horizontally -->
@@ -1339,7 +1339,7 @@ export class HeatPumpFlowCard extends LitElement {
                   font-size="${this.config.text_style?.font_size || 11}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
-              ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_return}: ` : ''}${this.formatValue(hvacState.returnTemp, 1)}°${this.config.temperature?.unit || 'C'}
+              ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_return}: ` : ''}${this.formatValue(hvacState.returnTemp, 1)}°${this.getStateUnit(this.config.hvac?.return_temp_entity) || 'C'}
             </text>
 
             <!-- Heat Pump (left side) -->
@@ -1415,7 +1415,7 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="0" y="88" fill="#f1c40f" font-size="12">${this.formatValue(hpState.cop, 2)}</text>
 
               <text x="0" y="108" fill="#95a5a6" font-size="11" font-weight="bold">${this.config.labels!.flow}:</text>
-              <text x="0" y="124" fill="#9b59b6" font-size="12">${this.formatValue(hpState.flowRate, 1)} L/min</text>
+              <text x="0" y="124" fill="#9b59b6" font-size="12">${this.formatValue(hpState.flowRate, 1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/min'}</text>
 
               <!-- Right column -->
               ${hpState.energy !== undefined ? html`
@@ -1573,7 +1573,7 @@ export class HeatPumpFlowCard extends LitElement {
             <g transform="translate(390, 330)">
               ${dhwState.tankTemp ? svg`
                 <text x="45" y="162" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
-                  ${dhwFillPercentage}% | ${this.formatValue(dhwState.tankTemp, 1)}°${this.config.temperature?.unit || 'C'}
+                  ${dhwFillPercentage}% | ${this.formatValue(dhwState.tankTemp, 1)}°${this.getStateUnit(this.config.dhw_tank?.tank_temp_entity) || 'C'}
                 </text>
               ` : svg`
                 <text x="45" y="162" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
