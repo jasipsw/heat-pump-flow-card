@@ -654,7 +654,7 @@ export class HeatPumpFlowCard extends LitElement {
    * Renders an icon that supports both URLs and MDI icons (mdi:icon-name format)
    * Uses foreignObject to embed ha-icon for MDI icons, or image tag for URLs
    */
-  private renderIcon(iconOrUrl: string, x: number, y: number, width: number, height: number, opacity: number = 0.8) {
+  private renderIcon(iconOrUrl: string, x: number, y: number, width: number, height: number, opacity: number = 0.8, color?: string) {
     if (iconOrUrl.startsWith('mdi:')) {
       // Render MDI icon using Home Assistant's ha-icon component
       // Add padding to foreignObject to prevent clipping
@@ -668,7 +668,7 @@ export class HeatPumpFlowCard extends LitElement {
               width: ${width}px;
               height: ${height}px;
               display: block;
-              color: var(--primary-text-color);
+              color: ${color || 'var(--primary-text-color)'};
               opacity: ${opacity};
               padding: ${padding}px;
             "
@@ -973,7 +973,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Water source icon (e.g., water tower) at inlet start - rendered after pipe for z-order -->
             ${this.renderIcon(
               this.config.dhw_tank?.tank_inlet_icon_url || 'mdi:water-pump',
-              245, 390, 60, 60, 0.9
+              245, 390, 60, 60, 0.9, this.config.dhw_tank?.tank_inlet_icon_color
             )}
 
             <!-- Pipe: DHW tank outlet (hot water) -->
@@ -1007,13 +1007,13 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Faucet icon at final outlet -->
               ${this.renderIcon(
                 this.config.dhw_tank_2?.tank_outlet_icon_url || 'mdi:faucet-variant',
-                705, 350, 60, 60, 0.9
+                705, 350, 60, 60, 0.9, this.config.dhw_tank_2?.tank_outlet_icon_color
               )}
             ` : svg`
               <!-- Faucet icon at DHW tank 1 outlet (when tank 2 is disabled) -->
               ${this.renderIcon(
                 this.config.dhw_tank?.tank_outlet_icon_url || 'mdi:faucet-variant',
-                545, 350, 60, 60, 0.9
+                545, 350, 60, 60, 0.9, this.config.dhw_tank?.tank_outlet_icon_color
               )}
             `}
 
@@ -1476,13 +1476,13 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Critical metrics inside HP box (2-column: Input | Output) -->
               <!-- Left column: INPUT parameters -->
               <text x="8" y="${metricsY}" fill="${hpTextColor}" font-size="10" font-weight="bold">IN</text>
-              <text x="8" y="${metricsY + 14}" fill="${hpTextColor}" font-size="10">${this.formatValue(hpState.power/1000, 1)} kW</text>
+              <text x="8" y="${metricsY + 12}" fill="${hpTextColor}" font-size="10">${this.formatValue(hpState.power/1000, 1)} kW</text>
 
               <!-- Right column: OUTPUT parameters -->
               <text x="62" y="${metricsY}" fill="${hpTextColor}" font-size="10" font-weight="bold">OUT</text>
-              <text x="62" y="${metricsY + 14}" fill="${hpTextColor}" font-size="10">${this.formatValue(hpState.thermal/1000, 1)} kW</text>
-              <text x="62" y="${metricsY + 28}" fill="${hpTextColor}" font-size="9">COP ${this.formatValue(hpState.cop, 2)}</text>
-              <text x="62" y="${metricsY + 42}" fill="${hpTextColor}" font-size="9">${this.formatValue(hpState.flowRate, 1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}</text>
+              <text x="62" y="${metricsY + 12}" fill="${hpTextColor}" font-size="10">${this.formatValue(hpState.thermal/1000, 1)} kW</text>
+              <text x="62" y="${metricsY + 24}" fill="${hpTextColor}" font-size="9">COP ${this.formatValue(hpState.cop, 2)}</text>
+              <text x="62" y="${metricsY + 36}" fill="${hpTextColor}" font-size="9">${this.formatValue(hpState.flowRate, 1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}</text>
             </g>
 
             <!-- Heat Pump Metrics (legacy - now moved inside HP box, keeping for optional extra data) -->
@@ -1739,6 +1739,18 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- HVAC Load (right side) -->
             <g id="hvac-load" transform="translate(630, 150)" filter="url(#entity-shadow)">
+              <!-- Logo centered above HVAC box -->
+              ${this.config.hvac?.logo_url ? svg`
+                <image
+                  x="${60 - 10}"
+                  y="-25"
+                  width="20"
+                  height="20"
+                  href="${this.config.hvac.logo_url}"
+                  opacity="0.9"
+                  preserveAspectRatio="xMidYMid meet" />
+              ` : ''}
+
               <rect width="120" height="100" rx="10" fill="#2c3e50" stroke="#34495e" stroke-width="2"/>
               <text x="60" y="30" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
                 HVAC LOAD

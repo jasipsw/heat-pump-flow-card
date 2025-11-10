@@ -86,10 +86,12 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     tank_inlet_temp_entity?: string;  // Street water temperature
     tank_inlet_color?: string;        // Street water pipe color (default: #3498db light blue)
     tank_inlet_icon_url?: string;     // Icon URL for water source (default: water tower icon)
+    tank_inlet_icon_color?: string;   // Icon color for MDI icons (default: var(--primary-text-color))
     // Hot water outlet (heated water from tank to house)
     tank_outlet_temp_entity?: string; // Hot water outlet temperature
     tank_outlet_color?: string;       // Hot water outlet pipe color (default: #e74c3c red)
     tank_outlet_icon_url?: string;    // Hot water outlet icon URL (default: faucet icon)
+    tank_outlet_icon_color?: string;  // Icon color for MDI icons (default: var(--primary-text-color))
     gradient?: {
       enabled?: boolean;            // Enable gradient visualization (default: true)
       levels?: number;              // Number of gradient steps (default: 10)
@@ -118,6 +120,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     label_font_size?: number;         // Label font size in pixels (default: 12)
     tank_outlet_icon_url?: string;    // Final outlet icon URL (default: faucet icon)
     tank_outlet_color?: string;       // Final outlet pipe color (default: #e74c3c red)
+    tank_outlet_icon_color?: string;  // Icon color for MDI icons (default: var(--primary-text-color))
     gradient?: {
       enabled?: boolean;              // Enable gradient visualization (default: true)
       levels?: number;                // Number of gradient steps (default: 10)
@@ -161,6 +164,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     return_temp_entity?: string;  // Return temperature
     name?: string;
     icon?: string;
+    logo_url?: string;            // Logo URL (displayed above HVAC load box)
   };
 
   // House/Building Performance Configuration
