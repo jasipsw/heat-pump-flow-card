@@ -1476,13 +1476,13 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Critical metrics inside HP box (2-column: Input | Output) -->
               <!-- Left column: INPUT parameters -->
               <text x="8" y="${metricsY}" fill="${hpTextColor}" font-size="10" font-weight="bold">IN</text>
-              <text x="8" y="${metricsY + 14}" fill="${hpTextColor}" font-size="10">${this.formatValue(hpState.power/1000, 1)} kW</text>
+              <text x="8" y="${metricsY + 12}" fill="${hpTextColor}" font-size="10">${this.formatValue(hpState.power/1000, 1)} kW</text>
 
               <!-- Right column: OUTPUT parameters -->
               <text x="62" y="${metricsY}" fill="${hpTextColor}" font-size="10" font-weight="bold">OUT</text>
-              <text x="62" y="${metricsY + 14}" fill="${hpTextColor}" font-size="10">${this.formatValue(hpState.thermal/1000, 1)} kW</text>
-              <text x="62" y="${metricsY + 28}" fill="${hpTextColor}" font-size="9">COP ${this.formatValue(hpState.cop, 2)}</text>
-              <text x="62" y="${metricsY + 42}" fill="${hpTextColor}" font-size="9">${this.formatValue(hpState.flowRate, 1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}</text>
+              <text x="62" y="${metricsY + 12}" fill="${hpTextColor}" font-size="10">${this.formatValue(hpState.thermal/1000, 1)} kW</text>
+              <text x="62" y="${metricsY + 24}" fill="${hpTextColor}" font-size="9">COP ${this.formatValue(hpState.cop, 2)}</text>
+              <text x="62" y="${metricsY + 36}" fill="${hpTextColor}" font-size="9">${this.formatValue(hpState.flowRate, 1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}</text>
             </g>
 
             <!-- Heat Pump Metrics (legacy - now moved inside HP box, keeping for optional extra data) -->
