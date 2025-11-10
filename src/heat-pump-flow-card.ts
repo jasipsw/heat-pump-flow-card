@@ -1590,9 +1590,9 @@ export class HeatPumpFlowCard extends LitElement {
               hvacReturnColor
             )}
 
-            <!-- DHW Tank Inlet (on pipe closer to tank coil connection) -->
+            <!-- DHW Tank Inlet (on pipe outside tank) -->
             ${this.renderTemperatureIndicator(
-              405,
+              385,
               370,
               this.config.temperature_status?.points?.dhw_inlet?.entity || this.config.dhw_tank?.inlet_temp_entity,
               dhwState.inletTemp,
@@ -1600,9 +1600,9 @@ export class HeatPumpFlowCard extends LitElement {
               dhwCoilColor
             )}
 
-            <!-- DHW Tank Outlet (on pipe closer to tank coil connection) -->
+            <!-- DHW Tank Outlet (on pipe outside tank) -->
             ${this.renderTemperatureIndicator(
-              405,
+              385,
               470,
               this.config.temperature_status?.points?.dhw_outlet?.entity || this.config.dhw_tank?.outlet_temp_entity,
               dhwState.outletTemp,
