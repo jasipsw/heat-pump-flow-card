@@ -871,7 +871,7 @@ export class HeatPumpFlowCard extends LitElement {
             <path id="dhw-tank-inlet-path"
                   d="M 305 420 L 435 420"
                   stroke="${dhwTankInletColor}"
-                  stroke-width="12"
+                  stroke-width="8"
                   fill="none"
                   stroke-linecap="butt"/>
 
@@ -884,7 +884,7 @@ export class HeatPumpFlowCard extends LitElement {
             <path id="dhw-tank-outlet-path"
                   d="M 470 380 L 550 380"
                   stroke="${dhwTankOutletColor}"
-                  stroke-width="12"
+                  stroke-width="8"
                   fill="none"
                   stroke-linecap="butt"/>
 
@@ -1253,7 +1253,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 360 420 L 397.5 420 L 397.5 420.01 L 435 420"
                   stroke="${dhwTankInletColor}"
-                  stroke-width="10"
+                  stroke-width="6"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${(dhwState.tankInletFlow ?? 0) > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1272,7 +1272,7 @@ export class HeatPumpFlowCard extends LitElement {
             <path class="flow-gradient"
                   d="M 360 420 L 397.5 420 L 397.5 420.01 L 435 420"
                   stroke="url(#flow-grad-dhw-inlet)"
-                  stroke-width="10"
+                  stroke-width="6"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${(dhwState.tankInletFlow ?? 0) > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1281,7 +1281,7 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 470 380 L 510 380 L 510 380.01 L 550 380"
                   stroke="${dhwTankOutletColor}"
-                  stroke-width="10"
+                  stroke-width="6"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${(dhwState.tankInletFlow ?? 0) > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1300,7 +1300,7 @@ export class HeatPumpFlowCard extends LitElement {
             <path class="flow-gradient"
                   d="M 470 380 L 510 380 L 510 380.01 L 550 380"
                   stroke="url(#flow-grad-dhw-outlet)"
-                  stroke-width="10"
+                  stroke-width="6"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${(dhwState.tankInletFlow ?? 0) > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
@@ -1493,6 +1493,15 @@ export class HeatPumpFlowCard extends LitElement {
               `}
 
               <!-- Tank label centered in top cap -->
+              ${this.config.buffer_tank?.brand_icon ? svg`
+                <image
+                  x="${35 - (this.config.buffer_tank?.label_font_size || 12) / 2 - 2}"
+                  y="${24 - (this.config.buffer_tank?.label_font_size || 12) / 2}"
+                  width="${this.config.buffer_tank?.label_font_size || 12}"
+                  height="${this.config.buffer_tank?.label_font_size || 12}"
+                  href="${this.config.buffer_tank.brand_icon}"
+                  preserveAspectRatio="xMidYMid meet" />
+              ` : ''}
               <text x="45" y="24" text-anchor="middle"
                     fill="${this.config.buffer_tank?.label_color || 'white'}"
                     font-size="${this.config.buffer_tank?.label_font_size || 12}"
@@ -1554,6 +1563,15 @@ export class HeatPumpFlowCard extends LitElement {
               <line x1="10" y1="125" x2="80" y2="125" stroke="#2c3e50" stroke-width="2"/>
 
               <!-- Tank label centered in top cap -->
+              ${this.config.dhw_tank?.brand_icon ? svg`
+                <image
+                  x="${35 - (this.config.dhw_tank?.label_font_size || 12) / 2 - 2}"
+                  y="${24 - (this.config.dhw_tank?.label_font_size || 12) / 2}"
+                  width="${this.config.dhw_tank?.label_font_size || 12}"
+                  height="${this.config.dhw_tank?.label_font_size || 12}"
+                  href="${this.config.dhw_tank.brand_icon}"
+                  preserveAspectRatio="xMidYMid meet" />
+              ` : ''}
               <text x="45" y="24" text-anchor="middle"
                     fill="${this.config.dhw_tank?.label_color || 'white'}"
                     font-size="${this.config.dhw_tank?.label_font_size || 12}"

@@ -234,7 +234,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
           ${this.formatValue(o,1)}°
         </text>
       </g>
-    `}getPipeColors(t,e,i){const o=this.config.temperature,a=Math.abs(t-e);return i<=this.config.animation.idle_threshold||a<o.delta_threshold?{hotPipe:o.neutral_color,coldPipe:o.neutral_color}:t>e?{hotPipe:o.hot_color,coldPipe:o.cold_color}:{hotPipe:o.cold_color,coldPipe:o.hot_color}}generateTankGradient(t,e,i){const o="buffer"===t?this.config.buffer_tank?.gradient:this.config.dhw_tank?.gradient;let a,r;if(void 0!==o?.min_temp){a=("number"==typeof o.min_temp?o.min_temp:this.getStateValue(o.min_temp))??60}else a=this.getStateValue(o?.min_temp_entity)??o?.min_temp_fallback??60;if(void 0!==o?.max_temp){r=("number"==typeof o.max_temp?o.max_temp:this.getStateValue(o.max_temp))??130}else r=this.getStateValue(o?.max_temp_entity)??o?.max_temp_fallback??130;const n=r-a,s=n>0?Math.max(0,Math.min(1,(e-a)/n)):0,l=Math.round(100*s);if(!1===o?.enabled)return{levels:[],fillPercentage:l};const h=Math.max(2,o?.levels??10),d=o?.bottom_color??this.config.temperature?.neutral_color??"#95a5a6";let c;c="buffer"===t?i?o?.heating_top_color??this.config.temperature?.hot_color??"#e74c3c":o?.cooling_top_color??this.config.temperature?.cold_color??"#3498db":o?.top_color??this.config.temperature?.hot_color??"#e74c3c";const p=130/h,f=[];for(let t=0;t<h;t++){const e=t/(h-1),i=155-(t+1)*p,o=this.interpolateColor(d,c,e),a=(t/h+(t+1)/h)/2<=s?.95:.05;f.push({y:i,height:p,color:o,opacity:a})}return{levels:f,fillPercentage:l}}renderGradientRects(t){const e=[];for(let i=0;i<t.length;i++){const o=t[i];e.push(G`<rect x="15" y="${o.y}" width="60" height="${o.height}" fill="${o.color}" opacity="${o.opacity}"></rect>`)}return e}hexToRgb(t){const e={black:"#000000",white:"#FFFFFF",red:"#FF0000",green:"#008000",blue:"#0000FF",yellow:"#FFFF00",cyan:"#00FFFF",magenta:"#FF00FF",orange:"#FFA500",purple:"#800080",pink:"#FFC0CB",brown:"#A52A2A",gray:"#808080",grey:"#808080"}[t.toLowerCase()]||t,i=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(e);return i?{r:parseInt(i[1],16),g:parseInt(i[2],16),b:parseInt(i[3],16)}:{r:0,g:0,b:0}}interpolateColor(t,e,i){i=Math.max(0,Math.min(1,i));const o=this.hexToRgb(t),a=this.hexToRgb(e),r=Math.round(o.r+(a.r-o.r)*i),n=Math.round(o.g+(a.g-o.g)*i),s=Math.round(o.b+(a.b-o.b)*i);return`#${r.toString(16).padStart(2,"0")}${n.toString(16).padStart(2,"0")}${s.toString(16).padStart(2,"0")}`}getHeatPumpColor(t){const e=this.config.heat_pump_visual;if(t.defrost)return e.defrost_color;if(t.power<=0)return e.off_color;const i=(t.mode||t.modeDisplay)?.toLowerCase();return i?.includes("heat")?e.heating_color:i?.includes("cool")?e.cooling_color:i?.includes("dhw")||i?.includes("hot water")?e.dhw_color:e.off_color}getDisplayMode(t,e){return t.mode?t.mode.toUpperCase():t.modeDisplay?t.modeDisplay.toUpperCase():t.defrost?"DEFROST":t.power<=0&&t.thermal<=0?"OFF":t.power>0?e.isActive?"DHW":"HEATING":"OFF"}getContrastTextColor(t){const e=t.replace("#","");return(.299*parseInt(e.substr(0,2),16)+.587*parseInt(e.substr(2,2),16)+.114*parseInt(e.substr(4,2),16))/255>.35?"#2c3e50":"#ffffff"}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return I``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getG2ValveState(),r=this.getAuxHeaterState(),n=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),s=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),l=n.hotPipe,h=n.coldPipe,d=s.hotPipe,c=s.coldPipe,p=this.config.temperature.hot_color,f=this.config.temperature.cold_color,u=this.config.dhw_tank?.tank_inlet_color||"#3498db",g=this.config.dhw_tank?.tank_outlet_color||"#e74c3c",m=e.supplyTemp>e.returnTemp,y=e.supplyTemp,w=this.generateTankGradient("buffer",y,m),b=w.levels,_=w.fillPercentage,$=o.tankTemp??o.inletTemp,x=this.generateTankGradient("dhw",$,!0),v=x.levels,k=x.fillPercentage,A=this.getHeatPumpColor(t),S=this.getContrastTextColor(A),C=t.error?126:111,H=r.intensity;let P="#bdc3c7";if(H>0){const t=189,e=195,i=199,o=255,a=68,r=34;P=`rgb(${Math.round(t+(o-t)*H)}, ${Math.round(e+(a-e)*H)}, ${Math.round(i+(r-i)*H)})`}const T=this.config.aux_heater?.glow_size??8,L=224,E=172,M=60,R=L,D=E-T,N=M,O=16+2*T,V=2,F=2,z=L,W=E-.75*T,U=M,Q=16+2*T*.75,B=2,j=2,q=L,Z=E-.5*T,J=M,K=16+2*T*.5,X=2,Y=2,tt=H>0?2-1.4*H:2,et=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),it=this.config.aux_heater?.shadow_blur??1,ot=H>0?"aux-glow-outer":"aux-heater-layer",at=H>0?"aux-glow-middle":"aux-heater-layer",rt=H>0?"aux-glow-inner":"aux-heater-layer",nt=H>0?"aux-cylinder-pulse":"";return I`
+    `}getPipeColors(t,e,i){const o=this.config.temperature,a=Math.abs(t-e);return i<=this.config.animation.idle_threshold||a<o.delta_threshold?{hotPipe:o.neutral_color,coldPipe:o.neutral_color}:t>e?{hotPipe:o.hot_color,coldPipe:o.cold_color}:{hotPipe:o.cold_color,coldPipe:o.hot_color}}generateTankGradient(t,e,i){const o="buffer"===t?this.config.buffer_tank?.gradient:this.config.dhw_tank?.gradient;let a,r;if(void 0!==o?.min_temp){a=("number"==typeof o.min_temp?o.min_temp:this.getStateValue(o.min_temp))??60}else a=this.getStateValue(o?.min_temp_entity)??o?.min_temp_fallback??60;if(void 0!==o?.max_temp){r=("number"==typeof o.max_temp?o.max_temp:this.getStateValue(o.max_temp))??130}else r=this.getStateValue(o?.max_temp_entity)??o?.max_temp_fallback??130;const n=r-a,s=n>0?Math.max(0,Math.min(1,(e-a)/n)):0,l=Math.round(100*s);if(!1===o?.enabled)return{levels:[],fillPercentage:l};const h=Math.max(2,o?.levels??10),d=o?.bottom_color??this.config.temperature?.neutral_color??"#95a5a6";let c;c="buffer"===t?i?o?.heating_top_color??this.config.temperature?.hot_color??"#e74c3c":o?.cooling_top_color??this.config.temperature?.cold_color??"#3498db":o?.top_color??this.config.temperature?.hot_color??"#e74c3c";const p=130/h,f=[];for(let t=0;t<h;t++){const e=t/(h-1),i=155-(t+1)*p,o=this.interpolateColor(d,c,e),a=(t/h+(t+1)/h)/2<=s?.95:.05;f.push({y:i,height:p,color:o,opacity:a})}return{levels:f,fillPercentage:l}}renderGradientRects(t){const e=[];for(let i=0;i<t.length;i++){const o=t[i];e.push(G`<rect x="15" y="${o.y}" width="60" height="${o.height}" fill="${o.color}" opacity="${o.opacity}"></rect>`)}return e}hexToRgb(t){const e={black:"#000000",white:"#FFFFFF",red:"#FF0000",green:"#008000",blue:"#0000FF",yellow:"#FFFF00",cyan:"#00FFFF",magenta:"#FF00FF",orange:"#FFA500",purple:"#800080",pink:"#FFC0CB",brown:"#A52A2A",gray:"#808080",grey:"#808080"}[t.toLowerCase()]||t,i=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(e);return i?{r:parseInt(i[1],16),g:parseInt(i[2],16),b:parseInt(i[3],16)}:{r:0,g:0,b:0}}interpolateColor(t,e,i){i=Math.max(0,Math.min(1,i));const o=this.hexToRgb(t),a=this.hexToRgb(e),r=Math.round(o.r+(a.r-o.r)*i),n=Math.round(o.g+(a.g-o.g)*i),s=Math.round(o.b+(a.b-o.b)*i);return`#${r.toString(16).padStart(2,"0")}${n.toString(16).padStart(2,"0")}${s.toString(16).padStart(2,"0")}`}getHeatPumpColor(t){const e=this.config.heat_pump_visual;if(t.defrost)return e.defrost_color;if(t.power<=0)return e.off_color;const i=(t.mode||t.modeDisplay)?.toLowerCase();return i?.includes("heat")?e.heating_color:i?.includes("cool")?e.cooling_color:i?.includes("dhw")||i?.includes("hot water")?e.dhw_color:e.off_color}getDisplayMode(t,e){return t.mode?t.mode.toUpperCase():t.modeDisplay?t.modeDisplay.toUpperCase():t.defrost?"DEFROST":t.power<=0&&t.thermal<=0?"OFF":t.power>0?e.isActive?"DHW":"HEATING":"OFF"}getContrastTextColor(t){const e=t.replace("#","");return(.299*parseInt(e.substr(0,2),16)+.587*parseInt(e.substr(2,2),16)+.114*parseInt(e.substr(4,2),16))/255>.35?"#2c3e50":"#ffffff"}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return I``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getG2ValveState(),r=this.getAuxHeaterState(),n=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),s=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),l=n.hotPipe,h=n.coldPipe,d=s.hotPipe,c=s.coldPipe,p=this.config.temperature.hot_color,f=this.config.temperature.cold_color,u=this.config.dhw_tank?.tank_inlet_color||"#3498db",g=this.config.dhw_tank?.tank_outlet_color||"#e74c3c",m=e.supplyTemp>e.returnTemp,y=e.supplyTemp,w=this.generateTankGradient("buffer",y,m),_=w.levels,b=w.fillPercentage,$=o.tankTemp??o.inletTemp,x=this.generateTankGradient("dhw",$,!0),v=x.levels,k=x.fillPercentage,A=this.getHeatPumpColor(t),S=this.getContrastTextColor(A),C=t.error?126:111,H=r.intensity;let P="#bdc3c7";if(H>0){const t=189,e=195,i=199,o=255,a=68,r=34;P=`rgb(${Math.round(t+(o-t)*H)}, ${Math.round(e+(a-e)*H)}, ${Math.round(i+(r-i)*H)})`}const T=this.config.aux_heater?.glow_size??8,L=224,E=172,M=60,R=L,D=E-T,N=M,O=16+2*T,z=2,V=2,F=L,W=E-.75*T,U=M,Q=16+2*T*.75,B=2,j=2,q=L,Z=E-.5*T,J=M,K=16+2*T*.5,X=2,Y=2,tt=H>0?2-1.4*H:2,et=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),it=this.config.aux_heater?.shadow_blur??1,ot=H>0?"aux-glow-outer":"aux-heater-layer",at=H>0?"aux-glow-middle":"aux-heater-layer",rt=H>0?"aux-glow-inner":"aux-heater-layer",nt=H>0?"aux-cylinder-pulse":"";return I`
       <ha-card>
         ${this.config.title?I`<h1 class="card-header">${this.config.title}</h1>`:""}
 
@@ -356,7 +356,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <path id="dhw-tank-inlet-path"
                   d="M 305 420 L 435 420"
                   stroke="${u}"
-                  stroke-width="12"
+                  stroke-width="8"
                   fill="none"
                   stroke-linecap="butt"/>
 
@@ -369,7 +369,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <path id="dhw-tank-outlet-path"
                   d="M 470 380 L 550 380"
                   stroke="${g}"
-                  stroke-width="12"
+                  stroke-width="8"
                   fill="none"
                   stroke-linecap="butt"/>
 
@@ -738,7 +738,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 360 420 L 397.5 420 L 397.5 420.01 L 435 420"
                   stroke="${u}"
-                  stroke-width="10"
+                  stroke-width="6"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${(o.tankInletFlow??0)>this.config.animation.idle_threshold?"1":"0"}"></path>
@@ -757,7 +757,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <path class="flow-gradient"
                   d="M 360 420 L 397.5 420 L 397.5 420.01 L 435 420"
                   stroke="url(#flow-grad-dhw-inlet)"
-                  stroke-width="10"
+                  stroke-width="6"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${(o.tankInletFlow??0)>this.config.animation.idle_threshold?"1":"0"}"></path>
@@ -766,7 +766,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 470 380 L 510 380 L 510 380.01 L 550 380"
                   stroke="${g}"
-                  stroke-width="10"
+                  stroke-width="6"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${(o.tankInletFlow??0)>this.config.animation.idle_threshold?"1":"0"}"></path>
@@ -785,7 +785,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <path class="flow-gradient"
                   d="M 470 380 L 510 380 L 510 380.01 L 550 380"
                   stroke="url(#flow-grad-dhw-outlet)"
-                  stroke-width="10"
+                  stroke-width="6"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${(o.tankInletFlow??0)>this.config.animation.idle_threshold?"1":"0"}"></path>
@@ -964,7 +964,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <!-- Bottom rounded cap -->
               <ellipse cx="45" cy="160" rx="35" ry="15" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
 
-              ${b.length>0?this.renderGradientRects(b):I`
+              ${_.length>0?this.renderGradientRects(_):I`
                 <!-- Thermal stratification (fallback - 4 zones) -->
                 <rect x="15" y="25" width="60" height="30" fill="${d}" opacity="0.9"/>
                 <rect x="15" y="55" width="60" height="35" fill="${d}" opacity="0.7"/>
@@ -978,6 +978,15 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               `}
 
               <!-- Tank label centered in top cap -->
+              ${this.config.buffer_tank?.brand_icon?G`
+                <image
+                  x="${35-(this.config.buffer_tank?.label_font_size||12)/2-2}"
+                  y="${24-(this.config.buffer_tank?.label_font_size||12)/2}"
+                  width="${this.config.buffer_tank?.label_font_size||12}"
+                  height="${this.config.buffer_tank?.label_font_size||12}"
+                  href="${this.config.buffer_tank.brand_icon}"
+                  preserveAspectRatio="xMidYMid meet" />
+              `:""}
               <text x="45" y="24" text-anchor="middle"
                     fill="${this.config.buffer_tank?.label_color||"white"}"
                     font-size="${this.config.buffer_tank?.label_font_size||12}"
@@ -987,7 +996,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
               <!-- Fill percentage display (always shown) -->
               <text x="45" y="165" text-anchor="middle" fill="${m?"#e74c3c":"#3498db"}" font-size="11" font-weight="bold">
-                ${_}%
+                ${b}%
               </text>
             </g>
 
@@ -1039,6 +1048,15 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <line x1="10" y1="125" x2="80" y2="125" stroke="#2c3e50" stroke-width="2"/>
 
               <!-- Tank label centered in top cap -->
+              ${this.config.dhw_tank?.brand_icon?G`
+                <image
+                  x="${35-(this.config.dhw_tank?.label_font_size||12)/2-2}"
+                  y="${24-(this.config.dhw_tank?.label_font_size||12)/2}"
+                  width="${this.config.dhw_tank?.label_font_size||12}"
+                  height="${this.config.dhw_tank?.label_font_size||12}"
+                  href="${this.config.dhw_tank.brand_icon}"
+                  preserveAspectRatio="xMidYMid meet" />
+              `:""}
               <text x="45" y="24" text-anchor="middle"
                     fill="${this.config.dhw_tank?.label_color||"white"}"
                     font-size="${this.config.dhw_tank?.label_font_size||12}"
@@ -1079,13 +1097,13 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <!-- Outermost glow layer - size based on config -->
               ${G`<rect x="${R}" y="${D}"
                     width="${N}" height="${O}"
-                    rx="${V}" ry="${F}"
+                    rx="${z}" ry="${V}"
                     class="${ot}"
                     fill="#ff4422"
                     pointer-events="none"></rect>`}
 
               <!-- Middle glow layer - size based on config -->
-              ${G`<rect x="${z}" y="${W}"
+              ${G`<rect x="${F}" y="${W}"
                     width="${U}" height="${Q}"
                     rx="${B}" ry="${j}"
                     class="${at}"
