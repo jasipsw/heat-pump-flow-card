@@ -72,6 +72,13 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     icon?: string;
     label_color?: string;          // Label text color (default: white)
     label_font_size?: number;      // Label font size in pixels (default: 12)
+    // Street water inlet (cold water supply to tank)
+    tank_inlet_flow_entity?: string;  // Street water flow rate (L/min) - optional, no animation if not provided
+    tank_inlet_temp_entity?: string;  // Street water temperature
+    tank_inlet_color?: string;        // Street water pipe color (default: #3498db light blue)
+    // Hot water outlet (heated water from tank to house)
+    tank_outlet_temp_entity?: string; // Hot water outlet temperature
+    tank_outlet_color?: string;       // Hot water outlet pipe color (default: #e74c3c red)
     gradient?: {
       enabled?: boolean;            // Enable gradient visualization (default: true)
       levels?: number;              // Number of gradient steps (default: 10)
@@ -227,6 +234,14 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
         enabled?: boolean;            // Enable indicator at DHW outlet (default: true)
         entity?: string;              // Entity override (uses dhw_tank.outlet_temp_entity if not set)
       };
+      dhw_tank_inlet?: {
+        enabled?: boolean;            // Enable indicator at DHW tank cold inlet (default: true)
+        entity?: string;              // Entity override (uses dhw_tank.tank_inlet_temp_entity if not set)
+      };
+      dhw_tank_outlet?: {
+        enabled?: boolean;            // Enable indicator at DHW tank hot outlet (default: true)
+        entity?: string;              // Entity override (uses dhw_tank.tank_outlet_temp_entity if not set)
+      };
     };
   };
 }
@@ -262,9 +277,12 @@ export interface HVACState {
 }
 
 export interface DHWTankState {
-  inletTemp: number;
-  outletTemp: number;
-  tankTemp?: number;
+  inletTemp: number;         // DHW coil inlet (hot from HP)
+  outletTemp: number;        // DHW coil outlet (return to HP)
+  tankTemp?: number;         // Tank water temperature
+  tankInletFlow?: number;    // Street water flow rate (L/min)
+  tankInletTemp?: number;    // Street water temperature
+  tankOutletTemp?: number;   // Hot water outlet temperature
 }
 
 export interface G2ValveState {
