@@ -78,6 +78,9 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     logo_drop_shadow?: string;     // Drop shadow color (e.g., "rgba(0,0,0,0.5)")
     label_color?: string;          // Label text color (default: white)
     label_font_size?: number;      // Label font size in pixels (default: 12)
+    // DHW coil circuit (heat exchanger inside tank)
+    inlet_color?: string;             // DHW coil inlet temperature indicator color (default: #3498db blue)
+    outlet_color?: string;            // DHW coil outlet temperature indicator color (default: #e74c3c red)
     // Street water inlet (cold water supply to tank)
     tank_inlet_flow_entity?: string;  // Street water flow rate (L/min) - optional, no animation if not provided
     tank_inlet_temp_entity?: string;  // Street water temperature

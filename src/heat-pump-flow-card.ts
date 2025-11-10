@@ -733,6 +733,10 @@ export class HeatPumpFlowCard extends LitElement {
     const dhwCoilColor = this.config.temperature!.hot_color!;
     const dhwReturnColor = this.config.temperature!.cold_color!;
 
+    // DHW coil inlet/outlet temperature indicator colors (heat exchanger circuit)
+    const dhwInletColor = this.config.dhw_tank?.inlet_color || this.config.temperature!.cold_color!;  // Blue for inlet (hot from HP, but labeled as inlet)
+    const dhwOutletColor = this.config.dhw_tank?.outlet_color || this.config.temperature!.hot_color!; // Red for outlet (return to HP, but labeled as outlet)
+
     // DHW tank inlet/outlet colors (street water and house hot water)
     const dhwTankInletColor = this.config.dhw_tank?.tank_inlet_color || '#3498db';  // Light blue for cold street water
     const dhwTankOutletColor = this.config.dhw_tank?.tank_outlet_color || '#e74c3c'; // Red for hot output
@@ -1896,7 +1900,7 @@ export class HeatPumpFlowCard extends LitElement {
               this.config.temperature_status?.points?.dhw_inlet?.entity || this.config.dhw_tank?.inlet_temp_entity,
               dhwState.inletTemp,
               this.config.temperature_status?.points?.dhw_inlet,
-              dhwCoilColor
+              dhwInletColor
             )}
 
             <!-- DHW Tank Outlet (on pipe outside tank) -->
@@ -1906,7 +1910,7 @@ export class HeatPumpFlowCard extends LitElement {
               this.config.temperature_status?.points?.dhw_outlet?.entity || this.config.dhw_tank?.outlet_temp_entity,
               dhwState.outletTemp,
               this.config.temperature_status?.points?.dhw_outlet,
-              dhwReturnColor
+              dhwOutletColor
             )}
 
             <!-- DHW Tank Street Water Inlet (cold water supply) -->
