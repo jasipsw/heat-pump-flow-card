@@ -1597,22 +1597,23 @@ export class HeatPumpFlowCard extends LitElement {
                 ${this.config.buffer_tank?.name || 'BUFFER'}
               </text>
 
-              <!-- Fill percentage display (always shown) -->
-              <text x="45" y="165" text-anchor="middle" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="11" font-weight="bold">
-                ${bufferFillPercentage}%
-              </text>
-
-              <!-- Brand logo centered at bottom -->
+              <!-- Brand logo centered above percentage -->
               ${this.config.buffer_tank?.logo_url ? svg`
                 <image
                   x="${45 - 10}"
-                  y="178"
+                  y="145"
                   width="20"
                   height="20"
                   href="${this.config.buffer_tank.logo_url}"
                   opacity="0.9"
-                  preserveAspectRatio="xMidYMid meet" />
+                  preserveAspectRatio="xMidYMid meet"
+                  style="background: none;" />
               ` : ''}
+
+              <!-- Fill percentage display (always shown) -->
+              <text x="45" y="173" text-anchor="middle" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="11" font-weight="bold">
+                ${bufferFillPercentage}%
+              </text>
             </g>
 
             <!-- DHW (Domestic Hot Water) Tank with Coil (center-bottom) -->
@@ -1670,22 +1671,23 @@ export class HeatPumpFlowCard extends LitElement {
                 ${this.config.dhw_tank?.name || 'DHW'}
               </text>
 
-              <!-- Fill percentage display (always shown) -->
-              <text x="45" y="165" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
-                ${dhwFillPercentage}%
-              </text>
-
-              <!-- Brand logo centered at bottom -->
+              <!-- Brand logo centered above percentage -->
               ${this.config.dhw_tank?.logo_url ? svg`
                 <image
                   x="${45 - 10}"
-                  y="178"
+                  y="145"
                   width="20"
                   height="20"
                   href="${this.config.dhw_tank.logo_url}"
                   opacity="0.9"
-                  preserveAspectRatio="xMidYMid meet" />
+                  preserveAspectRatio="xMidYMid meet"
+                  style="background: none;" />
               ` : ''}
+
+              <!-- Fill percentage display (always shown) -->
+              <text x="45" y="173" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
+                ${dhwFillPercentage}%
+              </text>
             </g>
 
             <!-- DHW Tank 2 (Secondary/Finishing Heater) - Optional -->
@@ -1718,22 +1720,23 @@ export class HeatPumpFlowCard extends LitElement {
                 ${this.config.dhw_tank_2?.name || 'DHW 2'}
               </text>
 
-              <!-- Fill percentage display (always shown) -->
-              <text x="45" y="165" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
-                ${dhwTank2FillPercentage}%
-              </text>
-
-              <!-- Brand logo centered at bottom -->
+              <!-- Brand logo centered above percentage -->
               ${this.config.dhw_tank_2?.logo_url ? svg`
                 <image
                   x="${45 - 10}"
-                  y="178"
+                  y="145"
                   width="20"
                   height="20"
                   href="${this.config.dhw_tank_2.logo_url}"
                   opacity="0.9"
-                  preserveAspectRatio="xMidYMid meet" />
+                  preserveAspectRatio="xMidYMid meet"
+                  style="background: none;" />
               ` : ''}
+
+              <!-- Fill percentage display (always shown) -->
+              <text x="45" y="173" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
+                ${dhwTank2FillPercentage}%
+              </text>
             </g>
             ` : ''}
 
