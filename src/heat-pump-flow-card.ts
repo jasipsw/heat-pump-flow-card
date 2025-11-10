@@ -1493,6 +1493,15 @@ export class HeatPumpFlowCard extends LitElement {
               `}
 
               <!-- Tank label centered in top cap -->
+              ${this.config.buffer_tank?.brand_icon ? svg`
+                <image
+                  x="${35 - (this.config.buffer_tank?.label_font_size || 12) / 2 - 2}"
+                  y="${24 - (this.config.buffer_tank?.label_font_size || 12) / 2}"
+                  width="${this.config.buffer_tank?.label_font_size || 12}"
+                  height="${this.config.buffer_tank?.label_font_size || 12}"
+                  href="${this.config.buffer_tank.brand_icon}"
+                  preserveAspectRatio="xMidYMid meet" />
+              ` : ''}
               <text x="45" y="24" text-anchor="middle"
                     fill="${this.config.buffer_tank?.label_color || 'white'}"
                     font-size="${this.config.buffer_tank?.label_font_size || 12}"
@@ -1554,6 +1563,15 @@ export class HeatPumpFlowCard extends LitElement {
               <line x1="10" y1="125" x2="80" y2="125" stroke="#2c3e50" stroke-width="2"/>
 
               <!-- Tank label centered in top cap -->
+              ${this.config.dhw_tank?.brand_icon ? svg`
+                <image
+                  x="${35 - (this.config.dhw_tank?.label_font_size || 12) / 2 - 2}"
+                  y="${24 - (this.config.dhw_tank?.label_font_size || 12) / 2}"
+                  width="${this.config.dhw_tank?.label_font_size || 12}"
+                  height="${this.config.dhw_tank?.label_font_size || 12}"
+                  href="${this.config.dhw_tank.brand_icon}"
+                  preserveAspectRatio="xMidYMid meet" />
+              ` : ''}
               <text x="45" y="24" text-anchor="middle"
                     fill="${this.config.dhw_tank?.label_color || 'white'}"
                     font-size="${this.config.dhw_tank?.label_font_size || 12}"
