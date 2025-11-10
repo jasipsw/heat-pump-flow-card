@@ -1042,11 +1042,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- HVAC return (on return pipe at y=220, near HVAC load) -->
             ${this.renderTemperatureIndicator(615,220,this.config.temperature_status?.points?.hvac_return?.entity||this.config.hvac?.return_temp_entity,i.returnTemp,this.config.temperature_status?.points?.hvac_return,c)}
 
-            <!-- DHW Tank Inlet (on pipe closer to tank coil connection) -->
-            ${this.renderTemperatureIndicator(405,370,this.config.temperature_status?.points?.dhw_inlet?.entity||this.config.dhw_tank?.inlet_temp_entity,o.inletTemp,this.config.temperature_status?.points?.dhw_inlet,p)}
+            <!-- DHW Tank Inlet (on pipe outside tank) -->
+            ${this.renderTemperatureIndicator(385,370,this.config.temperature_status?.points?.dhw_inlet?.entity||this.config.dhw_tank?.inlet_temp_entity,o.inletTemp,this.config.temperature_status?.points?.dhw_inlet,p)}
 
-            <!-- DHW Tank Outlet (on pipe closer to tank coil connection) -->
-            ${this.renderTemperatureIndicator(405,470,this.config.temperature_status?.points?.dhw_outlet?.entity||this.config.dhw_tank?.outlet_temp_entity,o.outletTemp,this.config.temperature_status?.points?.dhw_outlet,f)}
+            <!-- DHW Tank Outlet (on pipe outside tank) -->
+            ${this.renderTemperatureIndicator(385,470,this.config.temperature_status?.points?.dhw_outlet?.entity||this.config.dhw_tank?.outlet_temp_entity,o.outletTemp,this.config.temperature_status?.points?.dhw_outlet,f)}
           </svg>
         </div>
       </ha-card>
