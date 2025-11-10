@@ -1688,16 +1688,34 @@ export class HeatPumpFlowCard extends LitElement {
               this.config.temperature_status?.points?.hp_inlet
             )}
 
-            <!-- Buffer/HVAC supply (on supply pipe at y=180) -->
+            <!-- Buffer supply (on supply pipe at y=180, buffer side) -->
             ${this.renderTemperatureIndicator(
-              625,
+              475,
               180,
               this.config.temperature_status?.points?.buffer_supply?.entity || this.config.buffer_tank?.supply_temp_entity,
               bufferState.supplyTemp,
               this.config.temperature_status?.points?.buffer_supply
             )}
 
-            <!-- HVAC/Buffer return (on return pipe at y=220) -->
+            <!-- HVAC supply (on supply pipe at y=180, HVAC side) -->
+            ${this.renderTemperatureIndicator(
+              625,
+              180,
+              this.config.temperature_status?.points?.hvac_supply?.entity || this.config.hvac?.supply_temp_entity,
+              hvacState.supplyTemp,
+              this.config.temperature_status?.points?.hvac_supply
+            )}
+
+            <!-- Buffer return (on return pipe at y=220, HP side) -->
+            ${this.renderTemperatureIndicator(
+              475,
+              220,
+              this.config.temperature_status?.points?.buffer_return?.entity || this.config.buffer_tank?.return_temp_entity,
+              bufferState.returnTemp,
+              this.config.temperature_status?.points?.buffer_return
+            )}
+
+            <!-- HVAC return (on return pipe at y=220, HVAC side) -->
             ${this.renderTemperatureIndicator(
               625,
               220,

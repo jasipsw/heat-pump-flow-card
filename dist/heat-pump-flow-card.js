@@ -1089,10 +1089,16 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var r,a=argume
             <!-- HP inlet (on return pipe at y=220) -->
             ${this.renderTemperatureIndicator(185,220,this.config.temperature_status?.points?.hp_inlet?.entity||this.config.heat_pump?.inlet_temp_entity,t.inletTemp,this.config.temperature_status?.points?.hp_inlet)}
 
-            <!-- Buffer/HVAC supply (on supply pipe at y=180) -->
-            ${this.renderTemperatureIndicator(625,180,this.config.temperature_status?.points?.buffer_supply?.entity||this.config.buffer_tank?.supply_temp_entity,e.supplyTemp,this.config.temperature_status?.points?.buffer_supply)}
+            <!-- Buffer supply (on supply pipe at y=180, buffer side) -->
+            ${this.renderTemperatureIndicator(475,180,this.config.temperature_status?.points?.buffer_supply?.entity||this.config.buffer_tank?.supply_temp_entity,e.supplyTemp,this.config.temperature_status?.points?.buffer_supply)}
 
-            <!-- HVAC/Buffer return (on return pipe at y=220) -->
+            <!-- HVAC supply (on supply pipe at y=180, HVAC side) -->
+            ${this.renderTemperatureIndicator(625,180,this.config.temperature_status?.points?.hvac_supply?.entity||this.config.hvac?.supply_temp_entity,i.supplyTemp,this.config.temperature_status?.points?.hvac_supply)}
+
+            <!-- Buffer return (on return pipe at y=220, HP side) -->
+            ${this.renderTemperatureIndicator(475,220,this.config.temperature_status?.points?.buffer_return?.entity||this.config.buffer_tank?.return_temp_entity,e.returnTemp,this.config.temperature_status?.points?.buffer_return)}
+
+            <!-- HVAC return (on return pipe at y=220, HVAC side) -->
             ${this.renderTemperatureIndicator(625,220,this.config.temperature_status?.points?.hvac_return?.entity||this.config.hvac?.return_temp_entity,i.returnTemp,this.config.temperature_status?.points?.hvac_return)}
 
             <!-- DHW Tank Inlet (in tank coordinates, top of coil at y=370 global) -->
