@@ -876,8 +876,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <line x1="10" y1="125" x2="80" y2="125" stroke="#2c3e50" stroke-width="2"/>
               `}
 
-              <!-- Tank label inside top section -->
-              <text x="45" y="42" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
+              <!-- Tank label centered in top cap -->
+              <text x="45" y="24" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
                 ${this.config.labels.buffer_tank}
               </text>
 
@@ -934,8 +934,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <line x1="10" y1="90" x2="80" y2="90" stroke="#2c3e50" stroke-width="2"/>
               <line x1="10" y1="125" x2="80" y2="125" stroke="#2c3e50" stroke-width="2"/>
 
-              <!-- Tank label inside top section -->
-              <text x="45" y="42" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
+              <!-- Tank label centered in top cap -->
+              <text x="45" y="24" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
                 ${this.config.labels.dhw_tank}
               </text>
             </g>
