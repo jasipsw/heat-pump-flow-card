@@ -733,6 +733,10 @@ export class HeatPumpFlowCard extends LitElement {
     const dhwCoilColor = this.config.temperature!.hot_color!;
     const dhwReturnColor = this.config.temperature!.cold_color!;
 
+    // DHW coil inlet/outlet temperature indicator colors (heat exchanger circuit)
+    const dhwInletColor = this.config.dhw_tank?.inlet_color || this.config.temperature!.cold_color!;  // Blue for inlet (hot from HP, but labeled as inlet)
+    const dhwOutletColor = this.config.dhw_tank?.outlet_color || this.config.temperature!.hot_color!; // Red for outlet (return to HP, but labeled as outlet)
+
     // DHW tank inlet/outlet colors (street water and house hot water)
     const dhwTankInletColor = this.config.dhw_tank?.tank_inlet_color || '#3498db';  // Light blue for cold street water
     const dhwTankOutletColor = this.config.dhw_tank?.tank_outlet_color || '#e74c3c'; // Red for hot output
@@ -1478,11 +1482,7 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="62" y="${metricsY}" fill="${hpTextColor}" font-size="10" font-weight="bold">OUT</text>
               <text x="62" y="${metricsY + 14}" fill="${hpTextColor}" font-size="10">${this.formatValue(hpState.thermal/1000, 1)} kW</text>
               <text x="62" y="${metricsY + 28}" fill="${hpTextColor}" font-size="9">COP ${this.formatValue(hpState.cop, 2)}</text>
-
-              <!-- Flow rate display at bottom -->
-              <text x="60" y="${metricsY + 42}" text-anchor="middle" fill="${hpTextColor}" font-size="9">
-                ${this.formatValue(hpState.flowRate, 1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}
-              </text>
+              <text x="62" y="${metricsY + 42}" fill="${hpTextColor}" font-size="9">${this.formatValue(hpState.flowRate, 1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}</text>
             </g>
 
             <!-- Heat Pump Metrics (legacy - now moved inside HP box, keeping for optional extra data) -->
@@ -1600,10 +1600,10 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Brand logo centered above tank -->
               ${this.config.buffer_tank?.logo_url ? svg`
                 <image
-                  x="${45 - 15}"
-                  y="-10"
-                  width="30"
-                  height="30"
+                  x="${45 - 10}"
+                  y="-25"
+                  width="20"
+                  height="20"
                   href="${this.config.buffer_tank.logo_url}"
                   opacity="0.9"
                   preserveAspectRatio="xMidYMid meet" />
@@ -1673,10 +1673,10 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Brand logo centered above tank -->
               ${this.config.dhw_tank?.logo_url ? svg`
                 <image
-                  x="${45 - 15}"
-                  y="-10"
-                  width="30"
-                  height="30"
+                  x="${45 - 10}"
+                  y="-25"
+                  width="20"
+                  height="20"
                   href="${this.config.dhw_tank.logo_url}"
                   opacity="0.9"
                   preserveAspectRatio="xMidYMid meet" />
@@ -1721,10 +1721,10 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Brand logo centered above tank -->
               ${this.config.dhw_tank_2?.logo_url ? svg`
                 <image
-                  x="${45 - 15}"
-                  y="-10"
-                  width="30"
-                  height="30"
+                  x="${45 - 10}"
+                  y="-25"
+                  width="20"
+                  height="20"
                   href="${this.config.dhw_tank_2.logo_url}"
                   opacity="0.9"
                   preserveAspectRatio="xMidYMid meet" />
@@ -1896,7 +1896,7 @@ export class HeatPumpFlowCard extends LitElement {
               this.config.temperature_status?.points?.dhw_inlet?.entity || this.config.dhw_tank?.inlet_temp_entity,
               dhwState.inletTemp,
               this.config.temperature_status?.points?.dhw_inlet,
-              dhwCoilColor
+              dhwInletColor
             )}
 
             <!-- DHW Tank Outlet (on pipe outside tank) -->
@@ -1906,7 +1906,7 @@ export class HeatPumpFlowCard extends LitElement {
               this.config.temperature_status?.points?.dhw_outlet?.entity || this.config.dhw_tank?.outlet_temp_entity,
               dhwState.outletTemp,
               this.config.temperature_status?.points?.dhw_outlet,
-              dhwReturnColor
+              dhwOutletColor
             )}
 
             <!-- DHW Tank Street Water Inlet (cold water supply) -->
