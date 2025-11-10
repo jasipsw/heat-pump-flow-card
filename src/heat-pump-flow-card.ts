@@ -1594,39 +1594,59 @@ export class HeatPumpFlowCard extends LitElement {
                 <line x1="8" y1="0" x2="112" y2="0" stroke="${hpTextColor}" stroke-width="0.5" opacity="0.3"/>
 
                 <!-- Core Metrics Row 1: Power In, Thermal Out, COP -->
-                <text x="8" y="8" fill="${hpTextColor}" font-size="7" opacity="0.7">IN</text>
-                <text x="8" y="15" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                  ${this.formatValue(hpState.power/1000, 1)}kW
-                </text>
-
-                <text x="42" y="8" fill="${hpTextColor}" font-size="7" opacity="0.7">OUT</text>
-                <text x="42" y="15" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                  ${this.formatValue(hpState.thermal/1000, 1)}kW
-                </text>
-
-                <text x="76" y="8" fill="${hpTextColor}" font-size="7" opacity="0.7">COP</text>
-                <text x="76" y="15" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                  ${this.formatValue(hpState.cop, 2)}
-                </text>
-
-                <!-- Core Metrics Row 2: Flow Rate, Amps, Volts -->
-                <text x="8" y="26" fill="${hpTextColor}" font-size="7" opacity="0.7">Flow</text>
-                <text x="8" y="33" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                  ${this.formatValue(hpState.flowRate, 1)}${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}
-                </text>
-
-                ${hpState.amps !== undefined ? svg`
-                  <text x="42" y="26" fill="${hpTextColor}" font-size="7" opacity="0.7">Amps</text>
-                  <text x="42" y="33" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                    ${this.formatValue(hpState.amps, 1)}A
-                  </text>
+                ${this.config.heat_pump?.power_entity ? svg`
+                  <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.power_entity!)}">
+                    <text x="8" y="8" fill="${hpTextColor}" font-size="7" opacity="0.7">IN</text>
+                    <text x="8" y="15" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${this.formatValue(hpState.power/1000, 1)}kW
+                    </text>
+                  </g>
                 ` : ''}
 
-                ${hpState.volts !== undefined ? svg`
-                  <text x="76" y="26" fill="${hpTextColor}" font-size="7" opacity="0.7">Volts</text>
-                  <text x="76" y="33" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                    ${this.formatValue(hpState.volts, 0)}V
-                  </text>
+                ${this.config.heat_pump?.thermal_entity ? svg`
+                  <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.thermal_entity!)}">
+                    <text x="42" y="8" fill="${hpTextColor}" font-size="7" opacity="0.7">OUT</text>
+                    <text x="42" y="15" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${this.formatValue(hpState.thermal/1000, 1)}kW
+                    </text>
+                  </g>
+                ` : ''}
+
+                ${this.config.heat_pump?.cop_entity ? svg`
+                  <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.cop_entity!)}">
+                    <text x="76" y="8" fill="${hpTextColor}" font-size="7" opacity="0.7">COP</text>
+                    <text x="76" y="15" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${this.formatValue(hpState.cop, 2)}
+                    </text>
+                  </g>
+                ` : ''}
+
+                <!-- Core Metrics Row 2: Flow Rate, Amps, Volts -->
+                ${this.config.heat_pump?.flow_rate_entity ? svg`
+                  <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.flow_rate_entity!)}">
+                    <text x="8" y="26" fill="${hpTextColor}" font-size="7" opacity="0.7">Flow</text>
+                    <text x="8" y="33" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${this.formatValue(hpState.flowRate, 1)}${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}
+                    </text>
+                  </g>
+                ` : ''}
+
+                ${hpState.amps !== undefined && this.config.heat_pump?.amps_entity ? svg`
+                  <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.amps_entity!)}">
+                    <text x="42" y="26" fill="${hpTextColor}" font-size="7" opacity="0.7">Amps</text>
+                    <text x="42" y="33" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${this.formatValue(hpState.amps, 1)}A
+                    </text>
+                  </g>
+                ` : ''}
+
+                ${hpState.volts !== undefined && this.config.heat_pump?.volts_entity ? svg`
+                  <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.volts_entity!)}">
+                    <text x="76" y="26" fill="${hpTextColor}" font-size="7" opacity="0.7">Volts</text>
+                    <text x="76" y="33" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      ${this.formatValue(hpState.volts, 0)}V
+                    </text>
+                  </g>
                 ` : ''}
 
                 <!-- Optional Detailed Metrics (shown only if enabled) -->
@@ -1635,135 +1655,171 @@ export class HeatPumpFlowCard extends LitElement {
                   <line x1="8" y1="42" x2="112" y2="42" stroke="${hpTextColor}" stroke-width="0.5" opacity="0.3"/>
 
                   <!-- Detailed Row 1: Compressor, Discharge, Ambient -->
-                  ${hpState.compressorFrequency !== undefined ? svg`
-                    <text x="8" y="50" fill="${hpTextColor}" font-size="7" opacity="0.7">Comp</text>
-                    <text x="8" y="57" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.compressorFrequency, 0)}Hz
-                    </text>
+                  ${hpState.compressorFrequency !== undefined && this.config.heat_pump?.compressor_frequency_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.compressor_frequency_entity!)}">
+                      <text x="8" y="50" fill="${hpTextColor}" font-size="7" opacity="0.7">Comp</text>
+                      <text x="8" y="57" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.compressorFrequency, 0)}Hz
+                      </text>
+                    </g>
                   ` : ''}
 
-                  ${hpState.dischargeTemp !== undefined ? svg`
-                    <text x="42" y="50" fill="${hpTextColor}" font-size="7" opacity="0.7">Disch</text>
-                    <text x="42" y="57" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.dischargeTemp, 0)}°
-                    </text>
+                  ${hpState.dischargeTemp !== undefined && this.config.heat_pump?.discharge_temp_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.discharge_temp_entity!)}">
+                      <text x="42" y="50" fill="${hpTextColor}" font-size="7" opacity="0.7">Disch</text>
+                      <text x="42" y="57" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.dischargeTemp, 0)}°
+                      </text>
+                    </g>
                   ` : ''}
 
-                  ${hpState.ambientTemp !== undefined ? svg`
-                    <text x="76" y="50" fill="${hpTextColor}" font-size="7" opacity="0.7">Amb</text>
-                    <text x="76" y="57" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.ambientTemp, 0)}°
-                    </text>
+                  ${hpState.ambientTemp !== undefined && this.config.heat_pump?.ambient_temp_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.ambient_temp_entity!)}">
+                      <text x="76" y="50" fill="${hpTextColor}" font-size="7" opacity="0.7">Amb</text>
+                      <text x="76" y="57" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.ambientTemp, 0)}°
+                      </text>
+                    </g>
                   ` : ''}
 
                   <!-- Detailed Row 2: DHW, Outdoor Coil, Suction -->
-                  ${hpState.dhwTemp !== undefined ? svg`
-                    <text x="8" y="68" fill="${hpTextColor}" font-size="7" opacity="0.7">DHW</text>
-                    <text x="8" y="75" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.dhwTemp, 0)}°
-                    </text>
+                  ${hpState.dhwTemp !== undefined && this.config.heat_pump?.dhw_temp_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.dhw_temp_entity!)}">
+                      <text x="8" y="68" fill="${hpTextColor}" font-size="7" opacity="0.7">DHW</text>
+                      <text x="8" y="75" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.dhwTemp, 0)}°
+                      </text>
+                    </g>
                   ` : ''}
 
-                  ${hpState.outdoorCoilTemp !== undefined ? svg`
-                    <text x="42" y="68" fill="${hpTextColor}" font-size="7" opacity="0.7">O-Coil</text>
-                    <text x="42" y="75" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.outdoorCoilTemp, 0)}°
-                    </text>
+                  ${hpState.outdoorCoilTemp !== undefined && this.config.heat_pump?.outdoor_coil_temp_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.outdoor_coil_temp_entity!)}">
+                      <text x="42" y="68" fill="${hpTextColor}" font-size="7" opacity="0.7">O-Coil</text>
+                      <text x="42" y="75" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.outdoorCoilTemp, 0)}°
+                      </text>
+                    </g>
                   ` : ''}
 
-                  ${hpState.suctionTemp !== undefined ? svg`
-                    <text x="76" y="68" fill="${hpTextColor}" font-size="7" opacity="0.7">Suct</text>
-                    <text x="76" y="75" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.suctionTemp, 0)}°
-                    </text>
+                  ${hpState.suctionTemp !== undefined && this.config.heat_pump?.suction_temp_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.suction_temp_entity!)}">
+                      <text x="76" y="68" fill="${hpTextColor}" font-size="7" opacity="0.7">Suct</text>
+                      <text x="76" y="75" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.suctionTemp, 0)}°
+                      </text>
+                    </g>
                   ` : ''}
 
                   <!-- Detailed Row 3: Heat Exchanger, Plate Exchange -->
-                  ${hpState.heatExchangerTemp !== undefined ? svg`
-                    <text x="8" y="86" fill="${hpTextColor}" font-size="7" opacity="0.7">HX</text>
-                    <text x="8" y="93" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.heatExchangerTemp, 0)}°
-                    </text>
+                  ${hpState.heatExchangerTemp !== undefined && this.config.heat_pump?.heat_exchanger_temp_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.heat_exchanger_temp_entity!)}">
+                      <text x="8" y="86" fill="${hpTextColor}" font-size="7" opacity="0.7">HX</text>
+                      <text x="8" y="93" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.heatExchangerTemp, 0)}°
+                      </text>
+                    </g>
                   ` : ''}
 
-                  ${hpState.plateExchangeTemp !== undefined ? svg`
-                    <text x="42" y="86" fill="${hpTextColor}" font-size="7" opacity="0.7">Plate</text>
-                    <text x="42" y="93" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.plateExchangeTemp, 0)}°
-                    </text>
+                  ${hpState.plateExchangeTemp !== undefined && this.config.heat_pump?.plate_exchange_temp_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.plate_exchange_temp_entity!)}">
+                      <text x="42" y="86" fill="${hpTextColor}" font-size="7" opacity="0.7">Plate</text>
+                      <text x="42" y="93" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.plateExchangeTemp, 0)}°
+                      </text>
+                    </g>
                   ` : ''}
 
-                  ${hpState.ipmTemp !== undefined ? svg`
-                    <text x="76" y="86" fill="${hpTextColor}" font-size="7" opacity="0.7">IPM</text>
-                    <text x="76" y="93" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.ipmTemp, 0)}°
-                    </text>
+                  ${hpState.ipmTemp !== undefined && this.config.heat_pump?.ipm_temp_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.ipm_temp_entity!)}">
+                      <text x="76" y="86" fill="${hpTextColor}" font-size="7" opacity="0.7">IPM</text>
+                      <text x="76" y="93" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.ipmTemp, 0)}°
+                      </text>
+                    </g>
                   ` : ''}
 
                   <!-- Detailed Row 4: Fan Motors -->
-                  ${hpState.ecFanMotor1Speed !== undefined ? svg`
-                    <text x="8" y="104" fill="${hpTextColor}" font-size="7" opacity="0.7">Fan1</text>
-                    <text x="8" y="111" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.ecFanMotor1Speed, 0)}
-                    </text>
+                  ${hpState.ecFanMotor1Speed !== undefined && this.config.heat_pump?.ec_fan_motor_1_speed_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.ec_fan_motor_1_speed_entity!)}">
+                      <text x="8" y="104" fill="${hpTextColor}" font-size="7" opacity="0.7">Fan1</text>
+                      <text x="8" y="111" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.ecFanMotor1Speed, 0)}
+                      </text>
+                    </g>
                   ` : ''}
 
-                  ${hpState.ecFanMotor2Speed !== undefined ? svg`
-                    <text x="42" y="104" fill="${hpTextColor}" font-size="7" opacity="0.7">Fan2</text>
-                    <text x="42" y="111" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.ecFanMotor2Speed, 0)}
-                    </text>
+                  ${hpState.ecFanMotor2Speed !== undefined && this.config.heat_pump?.ec_fan_motor_2_speed_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.ec_fan_motor_2_speed_entity!)}">
+                      <text x="42" y="104" fill="${hpTextColor}" font-size="7" opacity="0.7">Fan2</text>
+                      <text x="42" y="111" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.ecFanMotor2Speed, 0)}
+                      </text>
+                    </g>
                   ` : ''}
 
-                  ${hpState.busLineVoltage !== undefined ? svg`
-                    <text x="76" y="104" fill="${hpTextColor}" font-size="7" opacity="0.7">Bus V</text>
-                    <text x="76" y="111" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.busLineVoltage, 0)}V
-                    </text>
+                  ${hpState.busLineVoltage !== undefined && this.config.heat_pump?.bus_line_voltage_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.bus_line_voltage_entity!)}">
+                      <text x="76" y="104" fill="${hpTextColor}" font-size="7" opacity="0.7">Bus V</text>
+                      <text x="76" y="111" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.busLineVoltage, 0)}V
+                      </text>
+                    </g>
                   ` : ''}
 
                   <!-- Detailed Row 5: Additional metrics -->
-                  ${hpState.eHeaterPower !== undefined ? svg`
-                    <text x="8" y="122" fill="${hpTextColor}" font-size="7" opacity="0.7">E-Htr</text>
-                    <text x="8" y="129" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.eHeaterPower, 0)}W
-                    </text>
+                  ${hpState.eHeaterPower !== undefined && this.config.heat_pump?.e_heater_power_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.e_heater_power_entity!)}">
+                      <text x="8" y="122" fill="${hpTextColor}" font-size="7" opacity="0.7">E-Htr</text>
+                      <text x="8" y="129" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.eHeaterPower, 0)}W
+                      </text>
+                    </g>
                   ` : ''}
 
-                  ${hpState.compressorRunningTime !== undefined ? svg`
-                    <text x="42" y="122" fill="${hpTextColor}" font-size="7" opacity="0.7">Comp H</text>
-                    <text x="42" y="129" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.compressorRunningTime, 0)}h
-                    </text>
+                  ${hpState.compressorRunningTime !== undefined && this.config.heat_pump?.compressor_running_time_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.compressor_running_time_entity!)}">
+                      <text x="42" y="122" fill="${hpTextColor}" font-size="7" opacity="0.7">Comp H</text>
+                      <text x="42" y="129" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.compressorRunningTime, 0)}h
+                      </text>
+                    </g>
                   ` : ''}
 
-                  ${hpState.compressorMaxPercentage !== undefined ? svg`
-                    <text x="76" y="122" fill="${hpTextColor}" font-size="7" opacity="0.7">MaxC%</text>
-                    <text x="76" y="129" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.compressorMaxPercentage, 0)}%
-                    </text>
+                  ${hpState.compressorMaxPercentage !== undefined && this.config.heat_pump?.compressor_max_percentage_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.compressor_max_percentage_entity!)}">
+                      <text x="76" y="122" fill="${hpTextColor}" font-size="7" opacity="0.7">MaxC%</text>
+                      <text x="76" y="129" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.compressorMaxPercentage, 0)}%
+                      </text>
+                    </g>
                   ` : ''}
 
                   <!-- Detailed Row 6: Status indicators -->
-                  ${hpState.pumpEnabled !== undefined ? svg`
-                    <text x="8" y="140" fill="${hpTextColor}" font-size="7" opacity="0.7">Pump</text>
-                    <text x="8" y="147" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${hpState.pumpEnabled ? 'ON' : 'OFF'}
-                    </text>
+                  ${hpState.pumpEnabled !== undefined && this.config.heat_pump?.pump_enabled_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.pump_enabled_entity!)}">
+                      <text x="8" y="140" fill="${hpTextColor}" font-size="7" opacity="0.7">Pump</text>
+                      <text x="8" y="147" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${hpState.pumpEnabled ? 'ON' : 'OFF'}
+                      </text>
+                    </g>
                   ` : ''}
 
-                  ${hpState.fanShutdownCode !== undefined && hpState.fanShutdownCode !== 0 ? svg`
-                    <text x="42" y="140" fill="${hpTextColor}" font-size="7" opacity="0.7">F-Code</text>
-                    <text x="42" y="147" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.fanShutdownCode, 0)}
-                    </text>
+                  ${hpState.fanShutdownCode !== undefined && hpState.fanShutdownCode !== 0 && this.config.heat_pump?.fan_shutdown_code_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.fan_shutdown_code_entity!)}">
+                      <text x="42" y="140" fill="${hpTextColor}" font-size="7" opacity="0.7">F-Code</text>
+                      <text x="42" y="147" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.fanShutdownCode, 0)}
+                      </text>
+                    </g>
                   ` : ''}
 
-                  ${hpState.din6ModeSwitch !== undefined ? svg`
-                    <text x="76" y="140" fill="${hpTextColor}" font-size="7" opacity="0.7">DIN6</text>
-                    <text x="76" y="147" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.din6ModeSwitch, 0)}
-                    </text>
+                  ${hpState.din6ModeSwitch !== undefined && this.config.heat_pump?.din6_mode_switch_entity ? svg`
+                    <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.din6_mode_switch_entity!)}">
+                      <text x="76" y="140" fill="${hpTextColor}" font-size="7" opacity="0.7">DIN6</text>
+                      <text x="76" y="147" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                        ${this.formatValue(hpState.din6ModeSwitch, 0)}
+                      </text>
+                    </g>
                   ` : ''}
                 ` : ''}
               </g>
