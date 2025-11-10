@@ -46,6 +46,8 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     level_entity?: string;         // Tank level (optional)
     name?: string;
     icon?: string;
+    label_color?: string;          // Label text color (default: white)
+    label_font_size?: number;      // Label font size in pixels (default: 12)
     gradient?: {
       enabled?: boolean;            // Enable gradient visualization (default: true)
       levels?: number;              // Number of gradient steps (default: 10)
@@ -68,6 +70,8 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     tank_temp_entity?: string;     // DHW tank temperature (optional)
     name?: string;
     icon?: string;
+    label_color?: string;          // Label text color (default: white)
+    label_font_size?: number;      // Label font size in pixels (default: 12)
     gradient?: {
       enabled?: boolean;            // Enable gradient visualization (default: true)
       levels?: number;              // Number of gradient steps (default: 10)

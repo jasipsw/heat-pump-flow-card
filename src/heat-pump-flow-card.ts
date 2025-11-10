@@ -1369,7 +1369,10 @@ export class HeatPumpFlowCard extends LitElement {
               `}
 
               <!-- Tank label centered in top cap -->
-              <text x="45" y="24" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
+              <text x="45" y="24" text-anchor="middle"
+                    fill="${this.config.buffer_tank?.label_color || 'white'}"
+                    font-size="${this.config.buffer_tank?.label_font_size || 12}"
+                    font-weight="bold">
                 ${this.config.labels!.buffer_tank}
               </text>
 
@@ -1427,7 +1430,10 @@ export class HeatPumpFlowCard extends LitElement {
               <line x1="10" y1="125" x2="80" y2="125" stroke="#2c3e50" stroke-width="2"/>
 
               <!-- Tank label centered in top cap -->
-              <text x="45" y="24" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
+              <text x="45" y="24" text-anchor="middle"
+                    fill="${this.config.dhw_tank?.label_color || 'white'}"
+                    font-size="${this.config.dhw_tank?.label_font_size || 12}"
+                    font-weight="bold">
                 ${this.config.labels!.dhw_tank}
               </text>
             </g>

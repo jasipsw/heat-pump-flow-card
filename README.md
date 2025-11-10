@@ -194,6 +194,8 @@ heat_pump_visual:
 buffer_tank:
   supply_temp_entity: sensor.hvac_buffer_tank_supply_temperature
   return_temp_entity: sensor.hvac_buffer_tank_return_temperature
+  label_color: "#ffffff"                     # White label text
+  label_font_size: 12                        # Font size in pixels
   gradient:
     enabled: true
     levels: 10
@@ -207,6 +209,8 @@ dhw_tank:
   inlet_temp_entity: sensor.dhw_inlet_temperature
   outlet_temp_entity: sensor.dhw_outlet_temperature
   tank_temp_entity: sensor.dhw_tank_temperature
+  label_color: "#ffffff"                     # White label text
+  label_font_size: 12                        # Font size in pixels
   gradient:
     enabled: true
     levels: 10
@@ -376,12 +380,14 @@ heat_pump_visual:
 
 ### Buffer Tank Options (`buffer_tank`)
 
-| Name | Type | Description |
-|------|------|-------------|
-| `supply_temp_entity` | string | Buffer tank supply (hot) temperature |
-| `return_temp_entity` | string | Buffer tank return (cold) temperature |
-| `level_entity` | string | Tank level sensor (optional) |
-| `gradient` | object | Gradient visualization configuration (see below) |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `supply_temp_entity` | string | - | Buffer tank supply (hot) temperature |
+| `return_temp_entity` | string | - | Buffer tank return (cold) temperature |
+| `level_entity` | string | - | Tank level sensor (optional) |
+| `label_color` | string | white | Tank label text color |
+| `label_font_size` | number | 12 | Tank label font size in pixels |
+| `gradient` | object | - | Gradient visualization configuration (see below) |
 
 **Gradient Configuration (`gradient`):**
 
@@ -411,12 +417,14 @@ heat_pump_visual:
 
 Domestic Hot Water tank with heating coil visualization.
 
-| Name | Type | Description |
-|------|------|-------------|
-| `inlet_temp_entity` | string | DHW coil inlet temperature |
-| `outlet_temp_entity` | string | DHW coil outlet temperature |
-| `tank_temp_entity` | string | DHW tank temperature (optional) |
-| `gradient` | object | Gradient visualization configuration |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `inlet_temp_entity` | string | - | DHW coil inlet temperature |
+| `outlet_temp_entity` | string | - | DHW coil outlet temperature |
+| `tank_temp_entity` | string | - | DHW tank temperature (optional) |
+| `label_color` | string | white | Tank label text color |
+| `label_font_size` | number | 12 | Tank label font size in pixels |
+| `gradient` | object | - | Gradient visualization configuration |
 
 **Gradient Configuration:**
 
