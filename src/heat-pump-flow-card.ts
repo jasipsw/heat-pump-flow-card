@@ -650,6 +650,36 @@ export class HeatPumpFlowCard extends LitElement {
     return luminance > 0.35 ? '#2c3e50' : '#ffffff';
   }
 
+  /**
+   * Renders an icon that supports both URLs and MDI icons (mdi:icon-name format)
+   * Uses foreignObject to embed ha-icon for MDI icons, or image tag for URLs
+   */
+  private renderIcon(iconOrUrl: string, x: number, y: number, width: number, height: number, opacity: number = 0.8) {
+    if (iconOrUrl.startsWith('mdi:')) {
+      // Render MDI icon using Home Assistant's ha-icon component
+      return svg`
+        <foreignObject x="${x}" y="${y}" width="${width}" height="${height}">
+          <ha-icon
+            icon="${iconOrUrl}"
+            style="width: ${width}px; height: ${height}px; color: var(--primary-text-color); opacity: ${opacity};"
+          ></ha-icon>
+        </foreignObject>
+      `;
+    } else {
+      // Render regular image URL
+      return svg`
+        <image
+          x="${x}"
+          y="${y}"
+          width="${width}"
+          height="${height}"
+          href="${iconOrUrl}"
+          opacity="${opacity}"
+        />
+      `;
+    }
+  }
+
   private getAnimationDuration(flowRate: number): number {
     const cfg = this.config.animation!;
     if (flowRate <= 0) return cfg.min_flow_rate!;  // No flow = slowest (longest duration)
@@ -922,9 +952,10 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-linecap="butt"/>
 
             <!-- Water source icon (e.g., water tower) at inlet start - rendered after pipe for z-order -->
-            <image x="250" y="395" width="50" height="50"
-                   href="${this.config.dhw_tank?.tank_inlet_icon_url || 'https://cdn-icons-png.flaticon.com/512/764/764408.png'}"
-                   opacity="0.8"/>
+            ${this.renderIcon(
+              this.config.dhw_tank?.tank_inlet_icon_url || 'mdi:water-pump',
+              250, 395, 50, 50, 0.8
+            )}
 
             <!-- Pipe: DHW tank outlet (hot water) -->
             ${dhwTank2State.enabled ? svg`
@@ -955,14 +986,16 @@ export class HeatPumpFlowCard extends LitElement {
                     stroke-linecap="butt"/>
 
               <!-- Faucet icon at final outlet -->
-              <image x="710" y="355" width="50" height="50"
-                     href="${this.config.dhw_tank_2?.tank_outlet_icon_url || 'https://cdn-icons-png.flaticon.com/512/2917/2917995.png'}"
-                     opacity="0.8"/>
+              ${this.renderIcon(
+                this.config.dhw_tank_2?.tank_outlet_icon_url || 'mdi:faucet-variant',
+                710, 355, 50, 50, 0.8
+              )}
             ` : svg`
               <!-- Faucet icon at DHW tank 1 outlet (when tank 2 is disabled) -->
-              <image x="550" y="355" width="50" height="50"
-                     href="${this.config.dhw_tank?.tank_outlet_icon_url || 'https://cdn-icons-png.flaticon.com/512/2917/2917995.png'}"
-                     opacity="0.8"/>
+              ${this.renderIcon(
+                this.config.dhw_tank?.tank_outlet_icon_url || 'mdi:faucet-variant',
+                550, 355, 50, 50, 0.8
+              )}
             `}
 
             <!-- Z-ORDER: Return first (behind), supply on top -->
