@@ -780,14 +780,23 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- HEATING MODE PIPES (shown when G2 valve is OFF - heating mode) -->
             <!-- Z-ORDER: Return pipes first (behind), then supply pipes (on top) -->
 
-            <!-- Pipe: Buffer to HP (cold return) - BOTTOM - 10px gap from HP - BEHIND -->
+            <!-- Pipe: Buffer to HP (cold return) - BOTTOM - Connects to DHW return junction at x=330 - BEHIND -->
             <path id="buffer-to-hp-path"
-                  d="M 390 220 L 180 220"
+                  d="M 390 220 L 330 220"
                   stroke="${g2ValveState.isActive ? (this.config.temperature?.neutral_color || '#95a5a6') : hpInletColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
                   opacity="${g2ValveState.isActive ? '0.3' : '1'}"/>
+
+            <!-- Pipe: Junction to HP (cold return continuation) - heating mode only -->
+            <path id="junction-to-hp-path"
+                  d="M 330 220 L 180 220"
+                  stroke="${hpInletColor}"
+                  stroke-width="12"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${g2ValveState.isActive ? '0' : '1'}"/>
 
             <!-- Pipe: HP to aux heater (first segment) -->
             <!-- Shows water at HP outlet temperature before aux heater boost -->
@@ -955,9 +964,9 @@ export class HeatPumpFlowCard extends LitElement {
                   stroke-linecap="butt"
                   opacity="${hvacState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
 
-            <!-- Buffer to HP return (horizontal cold) - heating mode only -->
+            <!-- Buffer to junction return (horizontal cold) - heating mode only -->
             <!-- Solid backing to prevent color bleeding through gradient -->
-            <path d="M 390 220 L 285 220 L 285 220.01 L 180 220"
+            <path d="M 390 220 L 360 220 L 360 220.01 L 330 220"
                   stroke="${hpInletColor}"
                   stroke-width="10"
                   fill="none"
@@ -976,8 +985,36 @@ export class HeatPumpFlowCard extends LitElement {
               </linearGradient>
             </defs>
             <path class="flow-gradient"
-                  d="M 390 220 L 285 220 L 285 220.01 L 180 220"
+                  d="M 390 220 L 360 220 L 360 220.01 L 330 220"
                   stroke="url(#flow-grad-5)"
+                  stroke-width="10"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+
+            <!-- Junction to HP return (horizontal cold) - heating mode only -->
+            <!-- Solid backing to prevent color bleeding through gradient -->
+            <path d="M 330 220 L 255 220 L 255 220.01 L 180 220"
+                  stroke="${hpInletColor}"
+                  stroke-width="10"
+                  fill="none"
+                  stroke-linecap="butt"
+                  opacity="${!g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></path>
+            <!-- Animated gradient overlay -->
+            <defs>
+              <linearGradient id="flow-grad-5b" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="rgba(50, 100, 180, 0.6)" />
+                <stop offset="40%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
+                <stop offset="60%" stop-color="rgba(80, 140, 220, 0.9)" />
+                <stop offset="100%" stop-color="rgba(50, 100, 180, 0.6)" />
+                <animate attributeName="x1" values="50%;-50%" dur="${flowAnimSpeed}s" begin="1.2s" repeatCount="indefinite" />
+                <animate attributeName="x2" values="150%;50%" dur="${flowAnimSpeed}s" begin="1.2s" repeatCount="indefinite" />
+              </linearGradient>
+            </defs>
+            <path class="flow-gradient"
+                  d="M 330 220 L 255 220 L 255 220.01 L 180 220"
+                  stroke="url(#flow-grad-5b)"
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
@@ -1188,14 +1225,14 @@ export class HeatPumpFlowCard extends LitElement {
                   fill="${this.config.temperature?.neutral_color || '#95a5a6'}"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></rect>
 
-            <!-- Corner at DHW to HP return first turn (370, 470) - horizontal to vertical -->
-            <rect x="363" y="463"
+            <!-- Corner at DHW to HP return first turn (330, 470) - horizontal to vertical -->
+            <rect x="323" y="463"
                   width="14" height="14"
                   fill="${this.config.temperature?.neutral_color || '#95a5a6'}"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></rect>
 
-            <!-- Corner at DHW to HP return second turn (370, 220) - vertical to horizontal -->
-            <rect x="363" y="213"
+            <!-- Corner at DHW to HP return second turn (330, 220) - vertical to horizontal -->
+            <rect x="323" y="213"
                   width="14" height="14"
                   fill="${this.config.temperature?.neutral_color || '#95a5a6'}"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></rect>
