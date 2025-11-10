@@ -352,13 +352,18 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   opacity="0"/>
 
             <!-- DHW TANK INLET/OUTLET PIPES (street water in, hot water out) -->
-            <!-- Pipe: Street water inlet to DHW tank (cold water supply from left) -->
+            <!-- Pipe: Street water inlet to DHW tank (cold water supply to center bottom) -->
             <path id="dhw-tank-inlet-path"
-                  d="M 320 480 L 400 480"
+                  d="M 320 490 L 435 490"
                   stroke="${u}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"/>
+
+            <!-- Water source icon (e.g., water tower) at inlet start -->
+            <image x="295" y="465" width="50" height="50"
+                   href="${this.config.dhw_tank?.tank_inlet_icon_url||"https://cdn-icons-png.flaticon.com/512/764/764408.png"}"
+                   opacity="0.8"/>
 
             <!-- Pipe: DHW tank outlet to house (hot water output to right) -->
             <path id="dhw-tank-outlet-path"
@@ -731,7 +736,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
             <!-- DHW Tank Inlet (street water) - horizontal cold -->
             <!-- Solid backing to prevent color bleeding through gradient -->
-            <path d="M 320 480 L 360 480 L 360 480.01 L 400 480"
+            <path d="M 320 490 L 377.5 490 L 377.5 490.01 L 435 490"
                   stroke="${u}"
                   stroke-width="10"
                   fill="none"
@@ -750,7 +755,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               </linearGradient>
             </defs>
             <path class="flow-gradient"
-                  d="M 320 480 L 360 480 L 360 480.01 L 400 480"
+                  d="M 320 490 L 377.5 490 L 377.5 490.01 L 435 490"
                   stroke="url(#flow-grad-dhw-inlet)"
                   stroke-width="10"
                   fill="none"
@@ -1164,7 +1169,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             ${this.renderTemperatureIndicator(385,470,this.config.temperature_status?.points?.dhw_outlet?.entity||this.config.dhw_tank?.outlet_temp_entity,o.outletTemp,this.config.temperature_status?.points?.dhw_outlet,f)}
 
             <!-- DHW Tank Street Water Inlet (cold water supply) -->
-            ${this.renderTemperatureIndicator(360,480,this.config.temperature_status?.points?.dhw_tank_inlet?.entity||this.config.dhw_tank?.tank_inlet_temp_entity,o.tankInletTemp??0,this.config.temperature_status?.points?.dhw_tank_inlet,u)}
+            ${this.renderTemperatureIndicator(400,490,this.config.temperature_status?.points?.dhw_tank_inlet?.entity||this.config.dhw_tank?.tank_inlet_temp_entity,o.tankInletTemp??0,this.config.temperature_status?.points?.dhw_tank_inlet,u)}
 
             <!-- DHW Tank Hot Water Outlet (to house) -->
             ${this.renderTemperatureIndicator(510,380,this.config.temperature_status?.points?.dhw_tank_outlet?.entity||this.config.dhw_tank?.tank_outlet_temp_entity,o.tankOutletTemp??0,this.config.temperature_status?.points?.dhw_tank_outlet,g)}

@@ -76,6 +76,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     tank_inlet_flow_entity?: string;  // Street water flow rate (L/min) - optional, no animation if not provided
     tank_inlet_temp_entity?: string;  // Street water temperature
     tank_inlet_color?: string;        // Street water pipe color (default: #3498db light blue)
+    tank_inlet_icon_url?: string;     // Icon URL for water source (default: water tower icon)
     // Hot water outlet (heated water from tank to house)
     tank_outlet_temp_entity?: string; // Hot water outlet temperature
     tank_outlet_color?: string;       // Hot water outlet pipe color (default: #e74c3c red)
