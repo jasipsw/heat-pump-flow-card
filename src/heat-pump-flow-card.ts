@@ -822,10 +822,10 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- DHW MODE PIPES (shown when G2 valve is ON - DHW mode) -->
             <!-- Z-ORDER: Return pipes first (behind), then supply pipes (on top) -->
 
-            <!-- Pipe: DHW outlet to HP return (BOTTOM) - Separated horizontally at x=370 - BEHIND -->
+            <!-- Pipe: DHW outlet to HP return (BOTTOM) - Separated horizontally at x=330 (left of G2 pipe) - BEHIND -->
             <!-- Always visible: gray when inactive, colored when active -->
             <path id="dhw-to-hp-return-path"
-                  d="M 418 470 L 370 470 L 370 220 L 180 220"
+                  d="M 418 470 L 330 470 L 330 220 L 180 220"
                   stroke="${g2ValveState.isActive ? dhwReturnColor : (this.config.temperature?.neutral_color || '#95a5a6')}"
                   stroke-width="12"
                   fill="none"
@@ -1590,9 +1590,9 @@ export class HeatPumpFlowCard extends LitElement {
               hvacReturnColor
             )}
 
-            <!-- DHW Tank Inlet (on pipe closer to tank coil connection) -->
+            <!-- DHW Tank Inlet (on pipe outside tank) -->
             ${this.renderTemperatureIndicator(
-              405,
+              385,
               370,
               this.config.temperature_status?.points?.dhw_inlet?.entity || this.config.dhw_tank?.inlet_temp_entity,
               dhwState.inletTemp,
@@ -1600,9 +1600,9 @@ export class HeatPumpFlowCard extends LitElement {
               dhwCoilColor
             )}
 
-            <!-- DHW Tank Outlet (on pipe closer to tank coil connection) -->
+            <!-- DHW Tank Outlet (on pipe outside tank) -->
             ${this.renderTemperatureIndicator(
-              405,
+              385,
               470,
               this.config.temperature_status?.points?.dhw_outlet?.entity || this.config.dhw_tank?.outlet_temp_entity,
               dhwState.outletTemp,
