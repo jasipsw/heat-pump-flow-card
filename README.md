@@ -55,7 +55,7 @@ A beautiful, animated Home Assistant card that visualizes heat pump water flow b
 
 🛢️ **Dual Tank Support** - Buffer tank and DHW (Domestic Hot Water) tank with gradient temperature visualization
 
-📊 **Real-Time Data** - Shows thermal power, COP, temperatures, flow rates, energy consumption, costs, and runtime
+📊 **Real-Time Data** - Shows thermal power, COP, temperatures, flow rates, energy consumption, costs, and runtime. All metrics are clickable to view history graphs.
 
 🌈 **Tank Gradient Visualization** - Tanks fill with color gradients representing temperature stratification from bottom to top
 
@@ -375,7 +375,7 @@ labels:
 
 #### Detailed Metrics Panel
 
-Enable a detailed metrics panel below the heat pump showing compressor frequency, temperatures, fan speeds, and more.
+Enable a detailed metrics panel below the heat pump showing compressor frequency, temperatures, fan speeds, and more. **All metrics are clickable** - click any metric to view its history graph in Home Assistant.
 
 | Name | Type | Description |
 |------|------|-------------|
