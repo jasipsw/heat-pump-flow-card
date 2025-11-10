@@ -181,6 +181,52 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     energy?: string;          // Energy label (default: "Energy")
     cost?: string;            // Cost label (default: "Cost")
   };
+
+  // Temperature Status Indicators Configuration
+  temperature_status?: {
+    enabled?: boolean;                // Enable temperature status indicators (default: false)
+    change_threshold?: number;        // Temperature change threshold for trend detection (default: 0.5)
+    time_interval?: number;           // Time interval for trend detection in seconds (default: 60)
+    circle_radius?: number;           // Radius of status circles in pixels (default: 12)
+    increasing_color?: string;        // Color for increasing temperature (default: #e74c3c red)
+    decreasing_color?: string;        // Color for decreasing temperature (default: #3498db blue)
+    steady_color?: string;            // Color for steady temperature (default: #2c3e50 dark gray)
+    show_caret?: boolean;             // Show up/down caret indicator (default: true)
+    points?: {
+      hp_outlet?: {
+        enabled?: boolean;            // Enable indicator at heat pump outlet (default: true)
+        entity?: string;              // Entity override (uses heat_pump.outlet_temp_entity if not set)
+      };
+      hp_inlet?: {
+        enabled?: boolean;            // Enable indicator at heat pump inlet (default: true)
+        entity?: string;              // Entity override (uses heat_pump.inlet_temp_entity if not set)
+      };
+      buffer_supply?: {
+        enabled?: boolean;            // Enable indicator at buffer supply (default: true)
+        entity?: string;              // Entity override (uses buffer_tank.supply_temp_entity if not set)
+      };
+      buffer_return?: {
+        enabled?: boolean;            // Enable indicator at buffer return (default: true)
+        entity?: string;              // Entity override (uses buffer_tank.return_temp_entity if not set)
+      };
+      hvac_supply?: {
+        enabled?: boolean;            // Enable indicator at HVAC supply (default: true)
+        entity?: string;              // Entity override (uses hvac.supply_temp_entity if not set)
+      };
+      hvac_return?: {
+        enabled?: boolean;            // Enable indicator at HVAC return (default: true)
+        entity?: string;              // Entity override (uses hvac.return_temp_entity if not set)
+      };
+      dhw_inlet?: {
+        enabled?: boolean;            // Enable indicator at DHW inlet (default: true)
+        entity?: string;              // Entity override (uses dhw_tank.inlet_temp_entity if not set)
+      };
+      dhw_outlet?: {
+        enabled?: boolean;            // Enable indicator at DHW outlet (default: true)
+        entity?: string;              // Entity override (uses dhw_tank.outlet_temp_entity if not set)
+      };
+    };
+  };
 }
 
 export interface HeatPumpState {
@@ -244,4 +290,17 @@ export interface HousePerformanceState {
   deltaT24hMean?: number;             // 24-hour mean delta-T
   thermalEnergyUsedDaily?: number;    // Daily HVAC energy used
   thermalEnergyProducedDaily?: number; // Daily HP energy produced
+}
+
+export interface TemperatureHistoryPoint {
+  temperature: number;
+  timestamp: number; // milliseconds since epoch
+}
+
+export type TemperatureTrend = 'increasing' | 'decreasing' | 'steady';
+
+export interface TemperatureStatus {
+  current: number;
+  trend: TemperatureTrend;
+  entity: string;
 }
