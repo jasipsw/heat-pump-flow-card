@@ -159,6 +159,23 @@ export class HeatPumpFlowCard extends LitElement {
         this.updateAnimationVariables();
       }, 100);
     }
+
+    // Debug helper: expose card instance globally
+    (window as any).debugCard = () => {
+      const card = document.querySelector('heat-pump-flow-card');
+      if (card) {
+        console.log('Card found:', card);
+        console.log('Shadow root:', card.shadowRoot);
+        return {
+          card,
+          shadowRoot: card.shadowRoot,
+          config: this.config,
+          dhwTank2State: this.getDHWTank2State(),
+          querySelector: (selector: string) => card.shadowRoot?.querySelector(selector)
+        };
+      }
+      return null;
+    };
   }
 
   // Flow animation now uses animated gradient overlays (SVG SMIL animations)
