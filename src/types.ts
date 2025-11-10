@@ -82,6 +82,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     // Hot water outlet (heated water from tank to house)
     tank_outlet_temp_entity?: string; // Hot water outlet temperature
     tank_outlet_color?: string;       // Hot water outlet pipe color (default: #e74c3c red)
+    tank_outlet_icon_url?: string;    // Hot water outlet icon URL (default: faucet icon)
     gradient?: {
       enabled?: boolean;            // Enable gradient visualization (default: true)
       levels?: number;              // Number of gradient steps (default: 10)
@@ -93,6 +94,32 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
       max_temp_fallback?: number;   // DEPRECATED: Use max_temp with number instead
       bottom_color?: string;        // Bottom color (default: neutral_color)
       top_color?: string;           // Top color (default: hot_color)
+    };
+  };
+
+  // DHW Tank 2 (Secondary/Finishing Heater) - Optional
+  dhw_tank_2?: {
+    enabled?: boolean;                // Enable second DHW tank (default: false)
+    inlet_temp_entity?: string;       // Inlet temperature (from first tank outlet)
+    outlet_temp_entity?: string;      // Final outlet temperature (to house)
+    tank_temp_entity?: string;        // Tank temperature (optional)
+    name?: string;                    // Tank display name (default: DHW 2)
+    logo_url?: string;                // Logo URL (displayed left of label)
+    label_color?: string;             // Label text color (default: white)
+    label_font_size?: number;         // Label font size in pixels (default: 12)
+    tank_outlet_icon_url?: string;    // Final outlet icon URL (default: faucet icon)
+    tank_outlet_color?: string;       // Final outlet pipe color (default: #e74c3c red)
+    gradient?: {
+      enabled?: boolean;              // Enable gradient visualization (default: true)
+      levels?: number;                // Number of gradient steps (default: 10)
+      min_temp?: number | string;     // Min temp: hard-coded number or entity
+      max_temp?: number | string;     // Max temp: hard-coded number or entity
+      min_temp_entity?: string;       // DEPRECATED: Use min_temp with entity string instead
+      max_temp_entity?: string;       // DEPRECATED: Use max_temp with entity string instead
+      min_temp_fallback?: number;     // DEPRECATED: Use min_temp with number instead
+      max_temp_fallback?: number;     // DEPRECATED: Use max_temp with number instead
+      bottom_color?: string;          // Bottom color (default: neutral_color)
+      top_color?: string;             // Top color (default: hot_color)
     };
   };
 
@@ -245,6 +272,14 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
         enabled?: boolean;            // Enable indicator at DHW tank hot outlet (default: true)
         entity?: string;              // Entity override (uses dhw_tank.tank_outlet_temp_entity if not set)
       };
+      dhw_tank_2_inlet?: {
+        enabled?: boolean;            // Enable indicator at DHW tank 2 inlet (default: true)
+        entity?: string;              // Entity override (uses dhw_tank_2.inlet_temp_entity if not set)
+      };
+      dhw_tank_2_outlet?: {
+        enabled?: boolean;            // Enable indicator at DHW tank 2 outlet (default: true)
+        entity?: string;              // Entity override (uses dhw_tank_2.outlet_temp_entity if not set)
+      };
     };
   };
 }
@@ -286,6 +321,13 @@ export interface DHWTankState {
   tankInletFlow?: number;    // Street water flow rate (L/min)
   tankInletTemp?: number;    // Street water temperature
   tankOutletTemp?: number;   // Hot water outlet temperature
+}
+
+export interface DHWTank2State {
+  enabled: boolean;          // Is second tank enabled
+  inletTemp: number;         // Inlet temperature (from first tank)
+  outletTemp: number;        // Final outlet temperature (to house)
+  tankTemp?: number;         // Tank water temperature
 }
 
 export interface G2ValveState {
