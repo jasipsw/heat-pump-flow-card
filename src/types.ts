@@ -49,10 +49,12 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     gradient?: {
       enabled?: boolean;            // Enable gradient visualization (default: true)
       levels?: number;              // Number of gradient steps (default: 10)
-      min_temp_entity?: string;     // Min temperature sensor (e.g., indoor temp)
-      max_temp_entity?: string;     // Max temperature sensor (e.g., heating setpoint)
-      min_temp_fallback?: number;   // Fallback min temp (default: 60°F)
-      max_temp_fallback?: number;   // Fallback max temp (default: 130°F)
+      min_temp?: number | string;   // Min temp: hard-coded number or entity (e.g., sensor.indoor_temp or 60)
+      max_temp?: number | string;   // Max temp: hard-coded number or entity (e.g., sensor.heating_setpoint or 130)
+      min_temp_entity?: string;     // DEPRECATED: Use min_temp with entity string instead
+      max_temp_entity?: string;     // DEPRECATED: Use max_temp with entity string instead
+      min_temp_fallback?: number;   // DEPRECATED: Use min_temp with number instead
+      max_temp_fallback?: number;   // DEPRECATED: Use max_temp with number instead
       bottom_color?: string;        // Bottom color (default: neutral_color)
       heating_top_color?: string;   // Top color for heating (default: hot_color)
       cooling_top_color?: string;   // Top color for cooling (default: cold_color)
@@ -69,10 +71,12 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     gradient?: {
       enabled?: boolean;            // Enable gradient visualization (default: true)
       levels?: number;              // Number of gradient steps (default: 10)
-      min_temp_entity?: string;     // Min temperature sensor (e.g., street water temp)
-      max_temp_entity?: string;     // Max temperature sensor (e.g., DHW setpoint)
-      min_temp_fallback?: number;   // Fallback min temp (default: 60°F)
-      max_temp_fallback?: number;   // Fallback max temp (default: 130°F)
+      min_temp?: number | string;   // Min temp: hard-coded number or entity (e.g., sensor.street_water_temp or 60)
+      max_temp?: number | string;   // Max temp: hard-coded number or entity (e.g., sensor.dhw_setpoint or 130)
+      min_temp_entity?: string;     // DEPRECATED: Use min_temp with entity string instead
+      max_temp_entity?: string;     // DEPRECATED: Use max_temp with entity string instead
+      min_temp_fallback?: number;   // DEPRECATED: Use min_temp with number instead
+      max_temp_fallback?: number;   // DEPRECATED: Use max_temp with number instead
       bottom_color?: string;        // Bottom color (default: neutral_color)
       top_color?: string;           // Top color (default: hot_color)
     };

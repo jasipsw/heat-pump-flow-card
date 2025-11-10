@@ -142,8 +142,8 @@ buffer_tank:
   return_temp_entity: sensor.hvac_buffer_tank_return_temperature
   gradient:
     enabled: true
-    min_temp_entity: sensor.indoor_temperature
-    max_temp_entity: sensor.heating_setpoint
+    min_temp: sensor.indoor_temperature
+    max_temp: sensor.heating_setpoint
 hvac:
   thermal_entity: sensor.hvac_thermal_power_used
   flow_rate_entity: sensor.hydronic_flow_flow_rate
@@ -197,10 +197,8 @@ buffer_tank:
   gradient:
     enabled: true
     levels: 10
-    min_temp_entity: sensor.indoor_temperature
-    max_temp_entity: sensor.heating_setpoint
-    min_temp_fallback: 60
-    max_temp_fallback: 130
+    min_temp: sensor.indoor_temperature       # Can use entity
+    max_temp: sensor.heating_setpoint          # Can use entity
     bottom_color: "#95a5a6"
     heating_top_color: "#e74c3c"
     cooling_top_color: "#3498db"
@@ -212,8 +210,8 @@ dhw_tank:
   gradient:
     enabled: true
     levels: 10
-    min_temp_entity: sensor.street_water_temperature
-    max_temp_entity: sensor.dhw_setpoint
+    min_temp: 60                               # Can use hard-coded number
+    max_temp: sensor.dhw_setpoint              # Or mix both approaches
     bottom_color: "#95a5a6"
     top_color: "#e74c3c"
 
@@ -391,10 +389,12 @@ heat_pump_visual:
 |------|------|---------|-------------|
 | `enabled` | boolean | true | Enable gradient visualization |
 | `levels` | number | 10 | Number of gradient steps |
-| `min_temp_entity` | string | - | Min temperature sensor (e.g., indoor temp) |
-| `max_temp_entity` | string | - | Max temperature sensor (e.g., heating setpoint) |
-| `min_temp_fallback` | number | 60 | Fallback min temp if sensor unavailable |
-| `max_temp_fallback` | number | 130 | Fallback max temp if sensor unavailable |
+| `min_temp` | number or string | 60 | Min temp for gradient: hard-coded number (e.g., `60`) or entity (e.g., `sensor.indoor_temp`) |
+| `max_temp` | number or string | 130 | Max temp for gradient: hard-coded number (e.g., `130`) or entity (e.g., `sensor.heating_setpoint`) |
+| `min_temp_entity` | string | - | **DEPRECATED** - Use `min_temp` with entity string instead |
+| `max_temp_entity` | string | - | **DEPRECATED** - Use `max_temp` with entity string instead |
+| `min_temp_fallback` | number | 60 | **DEPRECATED** - Use `min_temp` with number instead |
+| `max_temp_fallback` | number | 130 | **DEPRECATED** - Use `max_temp` with number instead |
 | `bottom_color` | string | neutral_color | Bottom color (coldest) |
 | `heating_top_color` | string | hot_color | Top color for heating mode (hottest) |
 | `cooling_top_color` | string | cold_color | Top color for cooling mode |
@@ -424,10 +424,12 @@ Domestic Hot Water tank with heating coil visualization.
 |------|------|---------|-------------|
 | `enabled` | boolean | true | Enable gradient visualization |
 | `levels` | number | 10 | Number of gradient steps |
-| `min_temp_entity` | string | - | Min temperature sensor (e.g., street water temp) |
-| `max_temp_entity` | string | - | Max temperature sensor (e.g., DHW setpoint) |
-| `min_temp_fallback` | number | 60 | Fallback min temp |
-| `max_temp_fallback` | number | 130 | Fallback max temp |
+| `min_temp` | number or string | 60 | Min temp for gradient: hard-coded number (e.g., `60`) or entity (e.g., `sensor.street_water_temp`) |
+| `max_temp` | number or string | 130 | Max temp for gradient: hard-coded number (e.g., `130`) or entity (e.g., `sensor.dhw_setpoint`) |
+| `min_temp_entity` | string | - | **DEPRECATED** - Use `min_temp` with entity string instead |
+| `max_temp_entity` | string | - | **DEPRECATED** - Use `max_temp` with entity string instead |
+| `min_temp_fallback` | number | 60 | **DEPRECATED** - Use `min_temp` with number instead |
+| `max_temp_fallback` | number | 130 | **DEPRECATED** - Use `max_temp` with number instead |
 | `bottom_color` | string | neutral_color | Bottom color |
 | `top_color` | string | hot_color | Top color |
 

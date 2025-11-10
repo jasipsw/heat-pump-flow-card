@@ -398,15 +398,34 @@ export class HeatPumpFlowCard extends LitElement {
       ? this.config.buffer_tank?.gradient
       : this.config.dhw_tank?.gradient;
 
-    // Get configuration with defaults for fill percentage calculation
-    const minTempEntity = gradientConfig?.min_temp_entity;
-    const maxTempEntity = gradientConfig?.max_temp_entity;
-    const minTempFallback = gradientConfig?.min_temp_fallback ?? 60;  // 60°F
-    const maxTempFallback = gradientConfig?.max_temp_fallback ?? 130; // 130°F
+    // Get min/max temperature values with new flexible configuration
+    // Priority: min_temp/max_temp (new) > min_temp_entity/max_temp_entity (deprecated) > defaults
+    let minTemp: number;
+    let maxTemp: number;
 
-    // Get min/max temperature values
-    const minTemp = this.getStateValue(minTempEntity) ?? minTempFallback;
-    const maxTemp = this.getStateValue(maxTempEntity) ?? maxTempFallback;
+    // Get min temperature
+    if (gradientConfig?.min_temp !== undefined) {
+      // New config: can be number or entity
+      const tempValue = typeof gradientConfig.min_temp === 'number'
+        ? gradientConfig.min_temp
+        : this.getStateValue(gradientConfig.min_temp);
+      minTemp = tempValue ?? 60;
+    } else {
+      // Fallback to deprecated config
+      minTemp = this.getStateValue(gradientConfig?.min_temp_entity) ?? gradientConfig?.min_temp_fallback ?? 60;
+    }
+
+    // Get max temperature
+    if (gradientConfig?.max_temp !== undefined) {
+      // New config: can be number or entity
+      const tempValue = typeof gradientConfig.max_temp === 'number'
+        ? gradientConfig.max_temp
+        : this.getStateValue(gradientConfig.max_temp);
+      maxTemp = tempValue ?? 130;
+    } else {
+      // Fallback to deprecated config
+      maxTemp = this.getStateValue(gradientConfig?.max_temp_entity) ?? gradientConfig?.max_temp_fallback ?? 130;
+    }
 
     // Calculate fill ratio (how full the tank is with hot water)
     const tempRange = maxTemp - minTemp;
