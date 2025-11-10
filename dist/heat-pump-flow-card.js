@@ -234,8 +234,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
           ${this.formatValue(o,1)}°
         </text>
       </g>
-    `}getPipeColors(t,e,i){const o=this.config.temperature,a=Math.abs(t-e);return i<=this.config.animation.idle_threshold||a<o.delta_threshold?{hotPipe:o.neutral_color,coldPipe:o.neutral_color}:t>e?{hotPipe:o.hot_color,coldPipe:o.cold_color}:{hotPipe:o.cold_color,coldPipe:o.hot_color}}generateTankGradient(t,e,i){const o="buffer"===t?this.config.buffer_tank?.gradient:"dhw_tank_2"===t?this.config.dhw_tank_2?.gradient:this.config.dhw_tank?.gradient;let a,r;if(void 0!==o?.min_temp){a=("number"==typeof o.min_temp?o.min_temp:this.getStateValue(o.min_temp))??60}else a=this.getStateValue(o?.min_temp_entity)??o?.min_temp_fallback??60;if(void 0!==o?.max_temp){r=("number"==typeof o.max_temp?o.max_temp:this.getStateValue(o.max_temp))??130}else r=this.getStateValue(o?.max_temp_entity)??o?.max_temp_fallback??130;const n=r-a,s=n>0?Math.max(0,Math.min(1,(e-a)/n)):0,l=Math.round(100*s);if(!1===o?.enabled)return{levels:[],fillPercentage:l};const h=Math.max(2,o?.levels??10),d=o?.bottom_color??this.config.temperature?.neutral_color??"#95a5a6";let c;c="buffer"===t?i?o?.heating_top_color??this.config.temperature?.hot_color??"#e74c3c":o?.cooling_top_color??this.config.temperature?.cold_color??"#3498db":o?.top_color??this.config.temperature?.hot_color??"#e74c3c";const p=130/h,f=[];for(let t=0;t<h;t++){const e=t/(h-1),i=155-(t+1)*p,o=this.interpolateColor(d,c,e),a=(t/h+(t+1)/h)/2<=s?.95:.05;f.push({y:i,height:p,color:o,opacity:a})}return{levels:f,fillPercentage:l}}renderGradientRects(t){const e=[];for(let i=0;i<t.length;i++){const o=t[i];e.push(G`<rect x="15" y="${o.y}" width="60" height="${o.height}" fill="${o.color}" opacity="${o.opacity}"></rect>`)}return e}hexToRgb(t){const e={black:"#000000",white:"#FFFFFF",red:"#FF0000",green:"#008000",blue:"#0000FF",yellow:"#FFFF00",cyan:"#00FFFF",magenta:"#FF00FF",orange:"#FFA500",purple:"#800080",pink:"#FFC0CB",brown:"#A52A2A",gray:"#808080",grey:"#808080"}[t.toLowerCase()]||t,i=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(e);return i?{r:parseInt(i[1],16),g:parseInt(i[2],16),b:parseInt(i[3],16)}:{r:0,g:0,b:0}}interpolateColor(t,e,i){i=Math.max(0,Math.min(1,i));const o=this.hexToRgb(t),a=this.hexToRgb(e),r=Math.round(o.r+(a.r-o.r)*i),n=Math.round(o.g+(a.g-o.g)*i),s=Math.round(o.b+(a.b-o.b)*i);return`#${r.toString(16).padStart(2,"0")}${n.toString(16).padStart(2,"0")}${s.toString(16).padStart(2,"0")}`}getHeatPumpColor(t){const e=this.config.heat_pump_visual;if(t.defrost)return e.defrost_color;if(t.power<=0)return e.off_color;const i=(t.mode||t.modeDisplay)?.toLowerCase();return i?.includes("heat")?e.heating_color:i?.includes("cool")?e.cooling_color:i?.includes("dhw")||i?.includes("hot water")?e.dhw_color:e.off_color}getDisplayMode(t,e){return t.mode?t.mode.toUpperCase():t.modeDisplay?t.modeDisplay.toUpperCase():t.defrost?"DEFROST":t.power<=0&&t.thermal<=0?"OFF":t.power>0?e.isActive?"DHW":"HEATING":"OFF"}getContrastTextColor(t){const e=t.replace("#","");return(.299*parseInt(e.substr(0,2),16)+.587*parseInt(e.substr(2,2),16)+.114*parseInt(e.substr(4,2),16))/255>.35?"#2c3e50":"#ffffff"}renderIcon(t,e,i,o,a,r=.8){if(t.startsWith("mdi:")){const n=5;return G`
-        <foreignObject x="${e-n}" y="${i-n}" width="${o+2*n}" height="${a+2*n}">
+    `}getPipeColors(t,e,i){const o=this.config.temperature,a=Math.abs(t-e);return i<=this.config.animation.idle_threshold||a<o.delta_threshold?{hotPipe:o.neutral_color,coldPipe:o.neutral_color}:t>e?{hotPipe:o.hot_color,coldPipe:o.cold_color}:{hotPipe:o.cold_color,coldPipe:o.hot_color}}generateTankGradient(t,e,i){const o="buffer"===t?this.config.buffer_tank?.gradient:"dhw_tank_2"===t?this.config.dhw_tank_2?.gradient:this.config.dhw_tank?.gradient;let a,r;if(void 0!==o?.min_temp){a=("number"==typeof o.min_temp?o.min_temp:this.getStateValue(o.min_temp))??60}else a=this.getStateValue(o?.min_temp_entity)??o?.min_temp_fallback??60;if(void 0!==o?.max_temp){r=("number"==typeof o.max_temp?o.max_temp:this.getStateValue(o.max_temp))??130}else r=this.getStateValue(o?.max_temp_entity)??o?.max_temp_fallback??130;const n=r-a,s=n>0?Math.max(0,Math.min(1,(e-a)/n)):0,l=Math.round(100*s);if(!1===o?.enabled)return{levels:[],fillPercentage:l};const h=Math.max(2,o?.levels??10),d=o?.bottom_color??this.config.temperature?.neutral_color??"#95a5a6";let c;c="buffer"===t?i?o?.heating_top_color??this.config.temperature?.hot_color??"#e74c3c":o?.cooling_top_color??this.config.temperature?.cold_color??"#3498db":o?.top_color??this.config.temperature?.hot_color??"#e74c3c";const p=130/h,f=[];for(let t=0;t<h;t++){const e=t/(h-1),i=155-(t+1)*p,o=this.interpolateColor(d,c,e),a=(t/h+(t+1)/h)/2<=s?.95:.05;f.push({y:i,height:p,color:o,opacity:a})}return{levels:f,fillPercentage:l}}renderGradientRects(t){const e=[];for(let i=0;i<t.length;i++){const o=t[i];e.push(G`<rect x="15" y="${o.y}" width="60" height="${o.height}" fill="${o.color}" opacity="${o.opacity}"></rect>`)}return e}hexToRgb(t){const e={black:"#000000",white:"#FFFFFF",red:"#FF0000",green:"#008000",blue:"#0000FF",yellow:"#FFFF00",cyan:"#00FFFF",magenta:"#FF00FF",orange:"#FFA500",purple:"#800080",pink:"#FFC0CB",brown:"#A52A2A",gray:"#808080",grey:"#808080"}[t.toLowerCase()]||t,i=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(e);return i?{r:parseInt(i[1],16),g:parseInt(i[2],16),b:parseInt(i[3],16)}:{r:0,g:0,b:0}}interpolateColor(t,e,i){i=Math.max(0,Math.min(1,i));const o=this.hexToRgb(t),a=this.hexToRgb(e),r=Math.round(o.r+(a.r-o.r)*i),n=Math.round(o.g+(a.g-o.g)*i),s=Math.round(o.b+(a.b-o.b)*i);return`#${r.toString(16).padStart(2,"0")}${n.toString(16).padStart(2,"0")}${s.toString(16).padStart(2,"0")}`}getHeatPumpColor(t){const e=this.config.heat_pump_visual;if(t.defrost)return e.defrost_color;if(t.power<=0)return e.off_color;const i=(t.mode||t.modeDisplay)?.toLowerCase();return i?.includes("heat")?e.heating_color:i?.includes("cool")?e.cooling_color:i?.includes("dhw")||i?.includes("hot water")?e.dhw_color:e.off_color}getDisplayMode(t,e){return t.mode?t.mode.toUpperCase():t.modeDisplay?t.modeDisplay.toUpperCase():t.defrost?"DEFROST":t.power<=0&&t.thermal<=0?"OFF":t.power>0?e.isActive?"DHW":"HEATING":"OFF"}getContrastTextColor(t){const e=t.replace("#","");return(.299*parseInt(e.substr(0,2),16)+.587*parseInt(e.substr(2,2),16)+.114*parseInt(e.substr(4,2),16))/255>.35?"#2c3e50":"#ffffff"}renderIcon(t,e,i,o,a,r=.8,n){if(t.startsWith("mdi:")){const s=5;return G`
+        <foreignObject x="${e-s}" y="${i-s}" width="${o+2*s}" height="${a+2*s}">
           <ha-icon
             icon="${t}"
             style="
@@ -243,9 +243,9 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               width: ${o}px;
               height: ${a}px;
               display: block;
-              color: var(--primary-text-color);
+              color: ${n||"var(--primary-text-color)"};
               opacity: ${r};
-              padding: ${n}px;
+              padding: ${s}px;
             "
           ></ha-icon>
         </foreignObject>
@@ -390,7 +390,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-linecap="butt"/>
 
             <!-- Water source icon (e.g., water tower) at inlet start - rendered after pipe for z-order -->
-            ${this.renderIcon(this.config.dhw_tank?.tank_inlet_icon_url||"mdi:water-pump",245,390,60,60,.9)}
+            ${this.renderIcon(this.config.dhw_tank?.tank_inlet_icon_url||"mdi:water-pump",245,390,60,60,.9,this.config.dhw_tank?.tank_inlet_icon_color)}
 
             <!-- Pipe: DHW tank outlet (hot water) -->
             ${a.enabled?G`
@@ -421,10 +421,10 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                     stroke-linecap="butt"/>
 
               <!-- Faucet icon at final outlet -->
-              ${this.renderIcon(this.config.dhw_tank_2?.tank_outlet_icon_url||"mdi:faucet-variant",705,350,60,60,.9)}
+              ${this.renderIcon(this.config.dhw_tank_2?.tank_outlet_icon_url||"mdi:faucet-variant",705,350,60,60,.9,this.config.dhw_tank_2?.tank_outlet_icon_color)}
             `:G`
               <!-- Faucet icon at DHW tank 1 outlet (when tank 2 is disabled) -->
-              ${this.renderIcon(this.config.dhw_tank?.tank_outlet_icon_url||"mdi:faucet-variant",545,350,60,60,.9)}
+              ${this.renderIcon(this.config.dhw_tank?.tank_outlet_icon_url||"mdi:faucet-variant",545,350,60,60,.9,this.config.dhw_tank?.tank_outlet_icon_color)}
             `}
 
             <!-- Z-ORDER: Return first (behind), supply on top -->
