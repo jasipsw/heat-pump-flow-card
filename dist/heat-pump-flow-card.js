@@ -896,7 +896,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
               <!-- Target and Max Temperature Indicators (prominent circles) -->
               ${void 0!==t.targetTemp?G`
-                ${(()=>{const e=this.config.heat_pump?.hysteresis||5,i=t.targetTemp+e;return G`
+                ${(()=>{const e=this.config.heat_pump?.hysteresis;let i=5;"string"==typeof e?i=this.getStateValue(e)||5:"number"==typeof e&&(i=e);const o=t.targetTemp+i;return G`
                     <!-- Target Temperature (left side) -->
                     <circle cx="20" cy="${82}" r="10" fill="${this.getHeatPumpColor(t)}" fill-opacity="0.3" stroke="${L}" stroke-width="1.5"/>
                     <text x="20" y="${83}" text-anchor="middle" dominant-baseline="middle" fill="${L}" font-size="7" font-weight="bold">TGT</text>
@@ -908,7 +908,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                     <circle cx="100" cy="${82}" r="10" fill="${this.getHeatPumpColor(t)}" fill-opacity="0.3" stroke="${L}" stroke-width="1.5"/>
                     <text x="100" y="${83}" text-anchor="middle" dominant-baseline="middle" fill="${L}" font-size="7" font-weight="bold">MAX</text>
                     <text x="100" y="${97}" text-anchor="middle" fill="${L}" font-size="8" font-weight="bold">
-                      ${this.formatValue(i,0)}°
+                      ${this.formatValue(o,0)}°
                     </text>
                   `})()}
               `:""}
