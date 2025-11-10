@@ -418,9 +418,9 @@ export class HeatPumpFlowCard extends LitElement {
         borderColor = cfg.steady_color || '#2c3e50';
     }
 
-    // Position caret based on trend
-    const caretOffset = radius + 3;
-    const caretSize = 5;
+    // Position caret inside the circle (above/below the temperature text)
+    const caretSize = 3;
+    const caretYOffset = 6; // Distance from center to caret
 
     return svg`
       <g class="temp-status-indicator"
@@ -437,6 +437,20 @@ export class HeatPumpFlowCard extends LitElement {
           opacity="0.95"
           filter="url(#entity-shadow)" />
 
+        <!-- Caret indicator (inside circle, above temperature for increasing) -->
+        ${showCaret && status.trend === 'increasing' ? svg`
+          <path
+            d="M ${x - caretSize} ${y - caretYOffset + caretSize} L ${x} ${y - caretYOffset} L ${x + caretSize} ${y - caretYOffset + caretSize} Z"
+            fill="${borderColor}" />
+        ` : ''}
+
+        <!-- Caret indicator (inside circle, below temperature for decreasing) -->
+        ${showCaret && status.trend === 'decreasing' ? svg`
+          <path
+            d="M ${x - caretSize} ${y + caretYOffset - caretSize} L ${x} ${y + caretYOffset} L ${x + caretSize} ${y + caretYOffset - caretSize} Z"
+            fill="${borderColor}" />
+        ` : ''}
+
         <!-- Temperature text -->
         <text
           x="${x}"
@@ -449,19 +463,6 @@ export class HeatPumpFlowCard extends LitElement {
           font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}">
           ${this.formatValue(status.current, 1)}°
         </text>
-
-        <!-- Caret indicator -->
-        ${showCaret && status.trend === 'increasing' ? svg`
-          <path
-            d="M ${x - caretSize} ${y - caretOffset} L ${x} ${y - caretOffset - caretSize} L ${x + caretSize} ${y - caretOffset} Z"
-            fill="${borderColor}" />
-        ` : ''}
-
-        ${showCaret && status.trend === 'decreasing' ? svg`
-          <path
-            d="M ${x - caretSize} ${y + caretOffset} L ${x} ${y + caretOffset + caretSize} L ${x + caretSize} ${y + caretOffset} Z"
-            fill="${borderColor}" />
-        ` : ''}
       </g>
     `;
   }
@@ -1299,65 +1300,38 @@ export class HeatPumpFlowCard extends LitElement {
                   font-size="${this.config.text_style?.font_size || 11}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
-              ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_supply}: ` : ''}${this.formatValue(hpState.outletTemp, 1)}°${this.config.temperature?.unit || 'C'}
+              ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_supply}: ` : ''}${this.formatValue(hpState.outletTemp, 1)}°${this.getStateUnit(this.config.heat_pump?.outlet_temp_entity) || 'C'}
             </text>
-
-            <!-- Temperature status indicator for HP outlet -->
-            ${this.renderTemperatureIndicator(
-              185,
-              180,
-              this.config.temperature_status?.points?.hp_outlet?.entity || this.config.heat_pump?.outlet_temp_entity,
-              hpState.outletTemp,
-              this.config.temperature_status?.points?.hp_outlet
-            )}
 
             <!-- Flow rate between pipes (HP to G2/Buffer) -->
             <text x="277" y="205" text-anchor="middle" fill="#95a5a6"
                   font-size="${(this.config.text_style?.font_size || 11) - 1}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="normal">
-              ${this.formatValue(hpState.flowRate, 1)} L/m
+              ${this.formatValue(hpState.flowRate, 1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}
             </text>
 
             <text x="260" y="240" text-anchor="middle" fill="${hpInletColor}"
                   font-size="${this.config.text_style?.font_size || 11}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
-              ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_return}: ` : ''}${this.formatValue(hpState.inletTemp, 1)}°${this.config.temperature?.unit || 'C'}
+              ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_return}: ` : ''}${this.formatValue(hpState.inletTemp, 1)}°${this.getStateUnit(this.config.heat_pump?.inlet_temp_entity) || 'C'}
             </text>
-
-            <!-- Temperature status indicator for HP inlet -->
-            ${this.renderTemperatureIndicator(
-              185,
-              230,
-              this.config.temperature_status?.points?.hp_inlet?.entity || this.config.heat_pump?.inlet_temp_entity,
-              hpState.inletTemp,
-              this.config.temperature_status?.points?.hp_inlet
-            )}
 
             <!-- Supply temp (top) - above supply pipe, centered horizontally -->
             <text x="550" y="170" text-anchor="middle" fill="${bufferSupplyColor}"
                   font-size="${this.config.text_style?.font_size || 11}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
-              ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_supply}: ` : ''}${this.formatValue(bufferState.supplyTemp, 1)}°${this.config.temperature?.unit || 'C'}
+              ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_supply}: ` : ''}${this.formatValue(bufferState.supplyTemp, 1)}°${this.getStateUnit(this.config.buffer_tank?.supply_temp_entity) || 'C'}
             </text>
-
-            <!-- Temperature status indicator for Buffer/HVAC supply -->
-            ${this.renderTemperatureIndicator(
-              625,
-              180,
-              this.config.temperature_status?.points?.buffer_supply?.entity || this.config.buffer_tank?.supply_temp_entity,
-              bufferState.supplyTemp,
-              this.config.temperature_status?.points?.buffer_supply
-            )}
 
             <!-- Flow rate - centered vertically between pipes, centered horizontally -->
             <text x="550" y="205" text-anchor="middle" fill="#95a5a6"
                   font-size="${(this.config.text_style?.font_size || 11) - 1}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="normal">
-              ${this.formatValue(hvacState.flowRate, 1)} L/m
+              ${this.formatValue(hvacState.flowRate, 1)} ${this.getStateUnit(this.config.hvac?.flow_rate_entity) || 'L/m'}
             </text>
 
             <!-- Return temp (bottom) - below return pipe, centered horizontally -->
@@ -1365,17 +1339,8 @@ export class HeatPumpFlowCard extends LitElement {
                   font-size="${this.config.text_style?.font_size || 11}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
-              ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_return}: ` : ''}${this.formatValue(hvacState.returnTemp, 1)}°${this.config.temperature?.unit || 'C'}
+              ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_return}: ` : ''}${this.formatValue(hvacState.returnTemp, 1)}°${this.getStateUnit(this.config.hvac?.return_temp_entity) || 'C'}
             </text>
-
-            <!-- Temperature status indicator for HVAC/Buffer return -->
-            ${this.renderTemperatureIndicator(
-              625,
-              230,
-              this.config.temperature_status?.points?.hvac_return?.entity || this.config.hvac?.return_temp_entity,
-              hvacState.returnTemp,
-              this.config.temperature_status?.points?.hvac_return
-            )}
 
             <!-- Heat Pump (left side) -->
             <g id="heat-pump" transform="translate(50, 100)" filter="url(#entity-shadow)">
@@ -1450,7 +1415,7 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="0" y="88" fill="#f1c40f" font-size="12">${this.formatValue(hpState.cop, 2)}</text>
 
               <text x="0" y="108" fill="#95a5a6" font-size="11" font-weight="bold">${this.config.labels!.flow}:</text>
-              <text x="0" y="124" fill="#9b59b6" font-size="12">${this.formatValue(hpState.flowRate, 1)} L/min</text>
+              <text x="0" y="124" fill="#9b59b6" font-size="12">${this.formatValue(hpState.flowRate, 1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/min'}</text>
 
               <!-- Right column -->
               ${hpState.energy !== undefined ? html`
@@ -1602,32 +1567,13 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="45" y="24" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
                 ${this.config.labels!.dhw_tank}
               </text>
-
-              <!-- Temperature status indicators for DHW coil inlet and outlet -->
-              <!-- DHW Inlet (top of coil) -->
-              ${this.renderTemperatureIndicator(
-                10,
-                40,
-                this.config.temperature_status?.points?.dhw_inlet?.entity || this.config.dhw_tank?.inlet_temp_entity,
-                dhwState.inletTemp,
-                this.config.temperature_status?.points?.dhw_inlet
-              )}
-
-              <!-- DHW Outlet (bottom of coil) -->
-              ${this.renderTemperatureIndicator(
-                10,
-                140,
-                this.config.temperature_status?.points?.dhw_outlet?.entity || this.config.dhw_tank?.outlet_temp_entity,
-                dhwState.outletTemp,
-                this.config.temperature_status?.points?.dhw_outlet
-              )}
             </g>
 
             <!-- DHW Tank percentage display (outside filtered group to avoid shadow filter affecting text color) -->
             <g transform="translate(390, 330)">
               ${dhwState.tankTemp ? svg`
                 <text x="45" y="162" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
-                  ${dhwFillPercentage}% | ${this.formatValue(dhwState.tankTemp, 1)}°${this.config.temperature?.unit || 'C'}
+                  ${dhwFillPercentage}% | ${this.formatValue(dhwState.tankTemp, 1)}°${this.getStateUnit(this.config.dhw_tank?.tank_temp_entity) || 'C'}
                 </text>
               ` : svg`
                 <text x="45" y="162" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
@@ -1722,6 +1668,61 @@ export class HeatPumpFlowCard extends LitElement {
             <text x="790" y="15" text-anchor="end" fill="#95a5a6" font-size="10" opacity="0.7">
               v${CARD_VERSION}
             </text>
+
+            <!-- Temperature Status Indicators - Rendered last to appear on top -->
+            <!-- HP outlet (on supply pipe at y=180) -->
+            ${this.renderTemperatureIndicator(
+              185,
+              180,
+              this.config.temperature_status?.points?.hp_outlet?.entity || this.config.heat_pump?.outlet_temp_entity,
+              hpState.outletTemp,
+              this.config.temperature_status?.points?.hp_outlet
+            )}
+
+            <!-- HP inlet (on return pipe at y=220) -->
+            ${this.renderTemperatureIndicator(
+              185,
+              220,
+              this.config.temperature_status?.points?.hp_inlet?.entity || this.config.heat_pump?.inlet_temp_entity,
+              hpState.inletTemp,
+              this.config.temperature_status?.points?.hp_inlet
+            )}
+
+            <!-- Buffer/HVAC supply (on supply pipe at y=180) -->
+            ${this.renderTemperatureIndicator(
+              625,
+              180,
+              this.config.temperature_status?.points?.buffer_supply?.entity || this.config.buffer_tank?.supply_temp_entity,
+              bufferState.supplyTemp,
+              this.config.temperature_status?.points?.buffer_supply
+            )}
+
+            <!-- HVAC/Buffer return (on return pipe at y=220) -->
+            ${this.renderTemperatureIndicator(
+              625,
+              220,
+              this.config.temperature_status?.points?.hvac_return?.entity || this.config.hvac?.return_temp_entity,
+              hvacState.returnTemp,
+              this.config.temperature_status?.points?.hvac_return
+            )}
+
+            <!-- DHW Tank Inlet (in tank coordinates, top of coil at y=370 global) -->
+            ${this.renderTemperatureIndicator(
+              400,
+              370,
+              this.config.temperature_status?.points?.dhw_inlet?.entity || this.config.dhw_tank?.inlet_temp_entity,
+              dhwState.inletTemp,
+              this.config.temperature_status?.points?.dhw_inlet
+            )}
+
+            <!-- DHW Tank Outlet (in tank coordinates, bottom of coil at y=470 global) -->
+            ${this.renderTemperatureIndicator(
+              400,
+              470,
+              this.config.temperature_status?.points?.dhw_outlet?.entity || this.config.dhw_tank?.outlet_temp_entity,
+              dhwState.outletTemp,
+              this.config.temperature_status?.points?.dhw_outlet
+            )}
           </svg>
         </div>
       </ha-card>
