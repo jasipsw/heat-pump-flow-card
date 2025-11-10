@@ -1606,8 +1606,7 @@ export class HeatPumpFlowCard extends LitElement {
                   height="20"
                   href="${this.config.buffer_tank.logo_url}"
                   opacity="0.9"
-                  preserveAspectRatio="xMidYMid meet"
-                  style="background: none;" />
+                  preserveAspectRatio="xMidYMid meet" />
               ` : ''}
 
               <!-- Fill percentage display (always shown) -->
@@ -1680,8 +1679,7 @@ export class HeatPumpFlowCard extends LitElement {
                   height="20"
                   href="${this.config.dhw_tank.logo_url}"
                   opacity="0.9"
-                  preserveAspectRatio="xMidYMid meet"
-                  style="background: none;" />
+                  preserveAspectRatio="xMidYMid meet" />
               ` : ''}
 
               <!-- Fill percentage display (always shown) -->
@@ -1729,8 +1727,7 @@ export class HeatPumpFlowCard extends LitElement {
                   height="20"
                   href="${this.config.dhw_tank_2.logo_url}"
                   opacity="0.9"
-                  preserveAspectRatio="xMidYMid meet"
-                  style="background: none;" />
+                  preserveAspectRatio="xMidYMid meet" />
               ` : ''}
 
               <!-- Fill percentage display (always shown) -->
