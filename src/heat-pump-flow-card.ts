@@ -1489,7 +1489,7 @@ export class HeatPumpFlowCard extends LitElement {
               ` : ''}
 
               <!-- Temperature Setpoint Indicators (3 circles below mode text, styled like pipe temp sensors) -->
-              <g id="hp-setpoints" transform="translate(0, ${metricsY})">
+              <g id="hp-setpoints" transform="translate(0, 108)">
                 <!-- Heating Target Temperature (red circle, left position) -->
                 ${hpState.heatingTargetTemp !== undefined ? svg`
                   <circle cx="24" cy="0" r="${this.config.temperature_status?.circle_radius || 12}"
@@ -1520,9 +1520,11 @@ export class HeatPumpFlowCard extends LitElement {
                   </text>
                 ` : ''}
               </g>
+            </g>
 
-              <!-- Detailed Metrics Panel (always shown, includes core metrics + optional detailed metrics) -->
-              <g id="hp-detailed-metrics" transform="translate(0, ${metricsY + 20})">
+            <!-- Detailed Metrics Panel (always shown, includes core metrics + optional detailed metrics) -->
+            <!-- Position below the heat pump box (box is 150px tall, so start at y=255) -->
+            <g id="hp-detailed-metrics" transform="translate(50, 255)">
                 <!-- Divider line -->
                 <line x1="8" y1="0" x2="112" y2="0" stroke="${hpTextColor}" stroke-width="0.5" opacity="0.3"/>
 
@@ -1620,7 +1622,6 @@ export class HeatPumpFlowCard extends LitElement {
                   ` : ''}
                 ` : ''}
               </g>
-            </g>
 
             <!-- Heat Pump Metrics (legacy - now moved inside HP box, keeping for optional extra data) -->
             <g id="hp-metrics-external" transform="translate(50, 265)" opacity="0">
