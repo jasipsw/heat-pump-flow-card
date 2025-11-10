@@ -432,6 +432,25 @@ heat_pump:
   error_entity: sensor.cx50_error_status
 ```
 
+**Detailed Metrics Display Order:**
+
+The metrics panel displays data in a 3-column grid layout below the heat pump. All metrics are clickable to view history graphs.
+
+**Core Metrics (Always Shown):**
+- **Row 1:** IN (Power Input) | OUT (Thermal Output) | COP
+- **Row 2:** Flow (Flow Rate) | Amps (Current) | Volts (Voltage)
+
+**Detailed Metrics (When `show_detailed_metrics: true`):**
+- **Row 3:** Comp (Compressor Frequency) | Disch (Discharge Temp) | Amb (Ambient Temp)
+- **Row 4:** DHW (DHW Temp) | O-Coil (Outdoor Coil Temp) | Suct (Suction Temp)
+- **Row 5:** HX (Heat Exchanger Temp) | Plate (Plate Exchange Temp) | IPM (IPM Temp)
+- **Row 6:** Fan1 (EC Fan Motor 1) | Fan2 (EC Fan Motor 2) | Bus V (Bus Line Voltage)
+- **Row 7:** E-Htr (E-Heater Power) | Comp H (Compressor Hours) | MaxC% (Max Compressor %)
+- **Row 8:** Pump (Pump Status) | F-Code (Fan Shutdown Code*) | DIN6 (DIN6 Mode Switch)
+- **Row 9:** Defrost (Defrost Status) | Error (Error Status*) | —
+
+*Only shown when active/non-zero
+
 ### Heat Pump Visual Options (`heat_pump_visual`)
 
 Configure the appearance and behavior of the animated heat pump visualization.
