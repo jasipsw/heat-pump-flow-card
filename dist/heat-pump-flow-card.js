@@ -886,13 +886,13 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <!-- Critical metrics inside HP box (2-column: Input | Output) -->
               <!-- Left column: INPUT parameters -->
               <text x="8" y="${E}" fill="${M}" font-size="10" font-weight="bold">IN</text>
-              <text x="8" y="${E+14}" fill="${M}" font-size="10">${this.formatValue(t.power/1e3,1)} kW</text>
+              <text x="8" y="${E+12}" fill="${M}" font-size="10">${this.formatValue(t.power/1e3,1)} kW</text>
 
               <!-- Right column: OUTPUT parameters -->
               <text x="62" y="${E}" fill="${M}" font-size="10" font-weight="bold">OUT</text>
-              <text x="62" y="${E+14}" fill="${M}" font-size="10">${this.formatValue(t.thermal/1e3,1)} kW</text>
-              <text x="62" y="${E+28}" fill="${M}" font-size="9">COP ${this.formatValue(t.cop,2)}</text>
-              <text x="62" y="${E+42}" fill="${M}" font-size="9">${this.formatValue(t.flowRate,1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity)||"L/m"}</text>
+              <text x="62" y="${E+12}" fill="${M}" font-size="10">${this.formatValue(t.thermal/1e3,1)} kW</text>
+              <text x="62" y="${E+24}" fill="${M}" font-size="9">COP ${this.formatValue(t.cop,2)}</text>
+              <text x="62" y="${E+36}" fill="${M}" font-size="9">${this.formatValue(t.flowRate,1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity)||"L/m"}</text>
             </g>
 
             <!-- Heat Pump Metrics (legacy - now moved inside HP box, keeping for optional extra data) -->
@@ -1149,6 +1149,18 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
             <!-- HVAC Load (right side) -->
             <g id="hvac-load" transform="translate(630, 150)" filter="url(#entity-shadow)">
+              <!-- Logo centered above HVAC box -->
+              ${this.config.hvac?.logo_url?G`
+                <image
+                  x="${50}"
+                  y="-25"
+                  width="20"
+                  height="20"
+                  href="${this.config.hvac.logo_url}"
+                  opacity="0.9"
+                  preserveAspectRatio="xMidYMid meet" />
+              `:""}
+
               <rect width="120" height="100" rx="10" fill="#2c3e50" stroke="#34495e" stroke-width="2"/>
               <text x="60" y="30" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
                 HVAC LOAD
