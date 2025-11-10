@@ -1370,11 +1370,11 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- Tank status display (always shown) -->
               ${dhwState.tankTemp ? html`
-                <text x="45" y="185" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
+                <text x="45" y="165" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
                   ${dhwFillPercentage}% | ${this.formatValue(dhwState.tankTemp, 1)}°${this.config.temperature?.unit || 'C'}
                 </text>
               ` : html`
-                <text x="45" y="185" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
+                <text x="45" y="165" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
                   ${dhwFillPercentage}%
                 </text>
               `}
