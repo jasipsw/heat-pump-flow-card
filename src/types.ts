@@ -20,6 +20,13 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     energy_entity?: string;      // Total energy consumed (kWh)
     cost_entity?: string;        // Energy cost
     runtime_entity?: string;     // Runtime sensor (optional)
+    // Temperature setpoints for target indicators
+    heating_target_temp_entity?: string;  // Heating target temperature
+    dhw_target_temp_entity?: string;      // DHW target temperature
+    cooling_target_temp_entity?: string;  // Cooling target temperature
+    // Electrical metrics
+    amps_entity?: string;                 // Current (amps)
+    volts_entity?: string;                // Voltage (volts)
     // Detailed metrics (optional)
     compressor_frequency_entity?: string; // Compressor frequency (Hz)
     discharge_temp_entity?: string;       // Compressor discharge temperature
@@ -29,9 +36,6 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     suction_temp_entity?: string;         // Suction line temperature
     heat_exchanger_temp_entity?: string;  // Heat exchanger temperature
     show_detailed_metrics?: boolean;      // Show detailed metrics panel (default: false)
-    // Target temperature and hysteresis
-    target_temp_entity?: string;          // Target temperature setpoint
-    hysteresis?: number | string;         // Hysteresis value: hard-coded number or entity (e.g., sensor.hysteresis or 5, default: 5)
     name?: string;               // Generic name (deprecated, use display_name)
     icon?: string;               // Generic icon (deprecated, use logo_url)
     display_name?: string;       // Display name (e.g., "Chiltrix CX50-2")
@@ -320,6 +324,13 @@ export interface HeatPumpState {
   energy?: number;             // Total energy (kWh)
   cost?: number;               // Energy cost
   runtime?: number;            // Runtime in seconds
+  // Temperature setpoints
+  heatingTargetTemp?: number;  // Heating target temperature
+  dhwTargetTemp?: number;      // DHW target temperature
+  coolingTargetTemp?: number;  // Cooling target temperature
+  // Electrical metrics
+  amps?: number;               // Current (amps)
+  volts?: number;              // Voltage (volts)
   // Detailed metrics (optional)
   compressorFrequency?: number;  // Compressor frequency (Hz)
   dischargeTemp?: number;        // Compressor discharge temperature
@@ -328,7 +339,6 @@ export interface HeatPumpState {
   outdoorCoilTemp?: number;      // Outdoor coil temperature
   suctionTemp?: number;          // Suction line temperature
   heatExchangerTemp?: number;    // Heat exchanger temperature
-  targetTemp?: number;           // Target temperature setpoint
 }
 
 export interface BufferTankState {

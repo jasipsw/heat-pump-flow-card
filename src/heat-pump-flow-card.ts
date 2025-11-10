@@ -221,6 +221,13 @@ export class HeatPumpFlowCard extends LitElement {
       energy: this.getStateValue(cfg.energy_entity),
       cost: this.getStateValue(cfg.cost_entity),
       runtime: this.getStateValue(cfg.runtime_entity),
+      // Temperature setpoints
+      heatingTargetTemp: this.getStateValue(cfg.heating_target_temp_entity),
+      dhwTargetTemp: this.getStateValue(cfg.dhw_target_temp_entity),
+      coolingTargetTemp: this.getStateValue(cfg.cooling_target_temp_entity),
+      // Electrical metrics
+      amps: this.getStateValue(cfg.amps_entity),
+      volts: this.getStateValue(cfg.volts_entity),
       // Detailed metrics
       compressorFrequency: this.getStateValue(cfg.compressor_frequency_entity),
       dischargeTemp: this.getStateValue(cfg.discharge_temp_entity),
@@ -229,7 +236,6 @@ export class HeatPumpFlowCard extends LitElement {
       outdoorCoilTemp: this.getStateValue(cfg.outdoor_coil_temp_entity),
       suctionTemp: this.getStateValue(cfg.suction_temp_entity),
       heatExchangerTemp: this.getStateValue(cfg.heat_exchanger_temp_entity),
-      targetTemp: this.getStateValue(cfg.target_temp_entity),
     };
   }
 
@@ -1482,113 +1488,138 @@ export class HeatPumpFlowCard extends LitElement {
                 </text>
               ` : ''}
 
-              <!-- Critical metrics inside HP box (2-column: Input | Output) -->
-              <!-- Left column: INPUT parameters -->
-              <text x="8" y="${metricsY}" fill="${hpTextColor}" font-size="10" font-weight="bold">IN</text>
-              <text x="8" y="${metricsY + 12}" fill="${hpTextColor}" font-size="10">${this.formatValue(hpState.power/1000, 1)} kW</text>
+              <!-- Temperature Setpoint Indicators (3 circles below mode text, styled like pipe temp sensors) -->
+              <g id="hp-setpoints" transform="translate(0, ${metricsY})">
+                <!-- Heating Target Temperature (red circle, left position) -->
+                ${hpState.heatingTargetTemp !== undefined ? svg`
+                  <circle cx="24" cy="0" r="${this.config.temperature_status?.circle_radius || 12}"
+                          fill="#e74c3c" stroke="#2c3e50" stroke-width="2" opacity="0.9"/>
+                  <text x="24" y="4" text-anchor="middle" dominant-baseline="middle"
+                        fill="white" font-size="10" font-weight="bold">
+                    ${this.formatValue(hpState.heatingTargetTemp, 0)}°
+                  </text>
+                ` : ''}
 
-              <!-- Right column: OUTPUT parameters -->
-              <text x="62" y="${metricsY}" fill="${hpTextColor}" font-size="10" font-weight="bold">OUT</text>
-              <text x="62" y="${metricsY + 12}" fill="${hpTextColor}" font-size="10">${this.formatValue(hpState.thermal/1000, 1)} kW</text>
-              <text x="62" y="${metricsY + 24}" fill="${hpTextColor}" font-size="9">COP ${this.formatValue(hpState.cop, 2)}</text>
-              <text x="62" y="${metricsY + 36}" fill="${hpTextColor}" font-size="9">${this.formatValue(hpState.flowRate, 1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}</text>
+                <!-- DHW Target Temperature (red circle, center position) -->
+                ${hpState.dhwTargetTemp !== undefined ? svg`
+                  <circle cx="60" cy="0" r="${this.config.temperature_status?.circle_radius || 12}"
+                          fill="#e74c3c" stroke="#2c3e50" stroke-width="2" opacity="0.9"/>
+                  <text x="60" y="4" text-anchor="middle" dominant-baseline="middle"
+                        fill="white" font-size="10" font-weight="bold">
+                    ${this.formatValue(hpState.dhwTargetTemp, 0)}°
+                  </text>
+                ` : ''}
 
-              <!-- Target and Max Temperature Indicators (prominent circles) -->
-              ${hpState.targetTemp !== undefined ? svg`
-                ${(() => {
-                  // Get hysteresis from sensor or use configured/default value
-                  const hysteresisConfig = this.config.heat_pump?.hysteresis;
-                  let hysteresis = 5; // Default
-                  if (typeof hysteresisConfig === 'string') {
-                    // It's an entity - read from sensor
-                    hysteresis = this.getStateValue(hysteresisConfig) || 5;
-                  } else if (typeof hysteresisConfig === 'number') {
-                    // It's a hard-coded number
-                    hysteresis = hysteresisConfig;
-                  }
-                  const maxTemp = hpState.targetTemp! + hysteresis;
-                  const targetY = 82;
-                  const maxY = 82;
+                <!-- Cooling Target Temperature (blue circle, right position) -->
+                ${hpState.coolingTargetTemp !== undefined ? svg`
+                  <circle cx="96" cy="0" r="${this.config.temperature_status?.circle_radius || 12}"
+                          fill="#3498db" stroke="#2c3e50" stroke-width="2" opacity="0.9"/>
+                  <text x="96" y="4" text-anchor="middle" dominant-baseline="middle"
+                        fill="white" font-size="10" font-weight="bold">
+                    ${this.formatValue(hpState.coolingTargetTemp, 0)}°
+                  </text>
+                ` : ''}
+              </g>
 
-                  return svg`
-                    <!-- Target Temperature (left side) -->
-                    <circle cx="20" cy="${targetY}" r="10" fill="${this.getHeatPumpColor(hpState)}" fill-opacity="0.3" stroke="${hpTextColor}" stroke-width="1.5"/>
-                    <text x="20" y="${targetY + 1}" text-anchor="middle" dominant-baseline="middle" fill="${hpTextColor}" font-size="7" font-weight="bold">TGT</text>
-                    <text x="20" y="${targetY + 15}" text-anchor="middle" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(hpState.targetTemp, 0)}°
-                    </text>
+              <!-- Detailed Metrics Panel (always shown, includes core metrics + optional detailed metrics) -->
+              <g id="hp-detailed-metrics" transform="translate(0, ${metricsY + 20})">
+                <!-- Divider line -->
+                <line x1="8" y1="0" x2="112" y2="0" stroke="${hpTextColor}" stroke-width="0.5" opacity="0.3"/>
 
-                    <!-- Max Temperature (right side) -->
-                    <circle cx="100" cy="${maxY}" r="10" fill="${this.getHeatPumpColor(hpState)}" fill-opacity="0.3" stroke="${hpTextColor}" stroke-width="1.5"/>
-                    <text x="100" y="${maxY + 1}" text-anchor="middle" dominant-baseline="middle" fill="${hpTextColor}" font-size="7" font-weight="bold">MAX</text>
-                    <text x="100" y="${maxY + 15}" text-anchor="middle" fill="${hpTextColor}" font-size="8" font-weight="bold">
-                      ${this.formatValue(maxTemp, 0)}°
-                    </text>
-                  `;
-                })()}
-              ` : ''}
+                <!-- Core Metrics Row 1: Power In, Thermal Out, COP -->
+                <text x="8" y="8" fill="${hpTextColor}" font-size="7" opacity="0.7">IN</text>
+                <text x="8" y="15" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                  ${this.formatValue(hpState.power/1000, 1)}kW
+                </text>
 
-              <!-- Detailed Metrics Panel (compact 3-column layout) -->
-              ${this.config.heat_pump?.show_detailed_metrics ? svg`
-                <g id="hp-detailed-metrics" transform="translate(0, ${metricsY + 52})">
-                  <!-- Divider line -->
-                  <line x1="8" y1="0" x2="112" y2="0" stroke="${hpTextColor}" stroke-width="0.5" opacity="0.3"/>
+                <text x="42" y="8" fill="${hpTextColor}" font-size="7" opacity="0.7">OUT</text>
+                <text x="42" y="15" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                  ${this.formatValue(hpState.thermal/1000, 1)}kW
+                </text>
 
-                  <!-- Column 1: Operational -->
+                <text x="76" y="8" fill="${hpTextColor}" font-size="7" opacity="0.7">COP</text>
+                <text x="76" y="15" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                  ${this.formatValue(hpState.cop, 2)}
+                </text>
+
+                <!-- Core Metrics Row 2: Flow Rate, Amps, Volts -->
+                <text x="8" y="26" fill="${hpTextColor}" font-size="7" opacity="0.7">Flow</text>
+                <text x="8" y="33" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                  ${this.formatValue(hpState.flowRate, 1)}${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}
+                </text>
+
+                ${hpState.amps !== undefined ? svg`
+                  <text x="42" y="26" fill="${hpTextColor}" font-size="7" opacity="0.7">Amps</text>
+                  <text x="42" y="33" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                    ${this.formatValue(hpState.amps, 1)}A
+                  </text>
+                ` : ''}
+
+                ${hpState.volts !== undefined ? svg`
+                  <text x="76" y="26" fill="${hpTextColor}" font-size="7" opacity="0.7">Volts</text>
+                  <text x="76" y="33" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                    ${this.formatValue(hpState.volts, 0)}V
+                  </text>
+                ` : ''}
+
+                <!-- Optional Detailed Metrics (shown only if enabled) -->
+                ${this.config.heat_pump?.show_detailed_metrics ? svg`
+                  <!-- Divider line before detailed metrics -->
+                  <line x1="8" y1="42" x2="112" y2="42" stroke="${hpTextColor}" stroke-width="0.5" opacity="0.3"/>
+
+                  <!-- Detailed Row 1: Compressor, Discharge, Ambient -->
                   ${hpState.compressorFrequency !== undefined ? svg`
-                    <text x="8" y="8" fill="${hpTextColor}" font-size="7" opacity="0.7">Comp</text>
-                    <text x="8" y="15" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                    <text x="8" y="50" fill="${hpTextColor}" font-size="7" opacity="0.7">Comp</text>
+                    <text x="8" y="57" fill="${hpTextColor}" font-size="8" font-weight="bold">
                       ${this.formatValue(hpState.compressorFrequency, 0)}Hz
                     </text>
                   ` : ''}
 
-                  <!-- Column 2: Temperature Group 1 -->
                   ${hpState.dischargeTemp !== undefined ? svg`
-                    <text x="42" y="8" fill="${hpTextColor}" font-size="7" opacity="0.7">Disch</text>
-                    <text x="42" y="15" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                    <text x="42" y="50" fill="${hpTextColor}" font-size="7" opacity="0.7">Disch</text>
+                    <text x="42" y="57" fill="${hpTextColor}" font-size="8" font-weight="bold">
                       ${this.formatValue(hpState.dischargeTemp, 0)}°
                     </text>
                   ` : ''}
 
-                  <!-- Column 3: Temperature Group 2 -->
                   ${hpState.ambientTemp !== undefined ? svg`
-                    <text x="76" y="8" fill="${hpTextColor}" font-size="7" opacity="0.7">Amb</text>
-                    <text x="76" y="15" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                    <text x="76" y="50" fill="${hpTextColor}" font-size="7" opacity="0.7">Amb</text>
+                    <text x="76" y="57" fill="${hpTextColor}" font-size="8" font-weight="bold">
                       ${this.formatValue(hpState.ambientTemp, 0)}°
                     </text>
                   ` : ''}
 
-                  <!-- Row 2 -->
+                  <!-- Detailed Row 2: DHW, Outdoor Coil, Suction -->
                   ${hpState.dhwTemp !== undefined ? svg`
-                    <text x="8" y="26" fill="${hpTextColor}" font-size="7" opacity="0.7">DHW</text>
-                    <text x="8" y="33" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                    <text x="8" y="68" fill="${hpTextColor}" font-size="7" opacity="0.7">DHW</text>
+                    <text x="8" y="75" fill="${hpTextColor}" font-size="8" font-weight="bold">
                       ${this.formatValue(hpState.dhwTemp, 0)}°
                     </text>
                   ` : ''}
 
                   ${hpState.outdoorCoilTemp !== undefined ? svg`
-                    <text x="42" y="26" fill="${hpTextColor}" font-size="7" opacity="0.7">O-Coil</text>
-                    <text x="42" y="33" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                    <text x="42" y="68" fill="${hpTextColor}" font-size="7" opacity="0.7">O-Coil</text>
+                    <text x="42" y="75" fill="${hpTextColor}" font-size="8" font-weight="bold">
                       ${this.formatValue(hpState.outdoorCoilTemp, 0)}°
                     </text>
                   ` : ''}
 
                   ${hpState.suctionTemp !== undefined ? svg`
-                    <text x="76" y="26" fill="${hpTextColor}" font-size="7" opacity="0.7">Suct</text>
-                    <text x="76" y="33" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                    <text x="76" y="68" fill="${hpTextColor}" font-size="7" opacity="0.7">Suct</text>
+                    <text x="76" y="75" fill="${hpTextColor}" font-size="8" font-weight="bold">
                       ${this.formatValue(hpState.suctionTemp, 0)}°
                     </text>
                   ` : ''}
 
-                  <!-- Row 3 (if heat exchanger temp provided) -->
+                  <!-- Detailed Row 3: Heat Exchanger -->
                   ${hpState.heatExchangerTemp !== undefined ? svg`
-                    <text x="8" y="44" fill="${hpTextColor}" font-size="7" opacity="0.7">HX</text>
-                    <text x="8" y="51" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                    <text x="8" y="86" fill="${hpTextColor}" font-size="7" opacity="0.7">HX</text>
+                    <text x="8" y="93" fill="${hpTextColor}" font-size="8" font-weight="bold">
                       ${this.formatValue(hpState.heatExchangerTemp, 0)}°
                     </text>
                   ` : ''}
-                </g>
-              ` : ''}
+                ` : ''}
+              </g>
             </g>
 
             <!-- Heat Pump Metrics (legacy - now moved inside HP box, keeping for optional extra data) -->
