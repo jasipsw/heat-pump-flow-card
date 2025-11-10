@@ -399,6 +399,8 @@ Enable a detailed metrics panel below the heat pump showing compressor frequency
 | `din7_mode_switch_entity` | string | DIN7 AC/heating mode switch |
 | `pump_enabled_entity` | string | Pump enabled status |
 | `compressor_max_percentage_entity` | string | Compressor max percentage |
+| `defrost_entity` | string | Defrost status (shown in detailed metrics when active) |
+| `error_entity` | string | Error status (shown in detailed metrics when present) |
 
 **Example:**
 ```yaml
@@ -426,6 +428,8 @@ heat_pump:
   e_heater_power_entity: sensor.cx50_c62_e_heater_compensation_power
   pump_enabled_entity: binary_sensor.cx_pump_enabled
   compressor_max_percentage_entity: number.cx50_compressor_max_percentage
+  defrost_entity: binary_sensor.cx_defrost_active
+  error_entity: sensor.cx50_error_status
 ```
 
 ### Heat Pump Visual Options (`heat_pump_visual`)
