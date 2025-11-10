@@ -509,7 +509,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
             <!-- DHW to HP return - horizontal segment 1 (cold) - DHW mode only -->
             <!-- Solid backing to prevent color bleeding through gradient -->
-            <path d="M 418 470 L 394 470 L 394 470.01 L 370 470"
+            <path d="M 418 470 L 374 470 L 374 470.01 L 330 470"
                   stroke="${f}"
                   stroke-width="10"
                   fill="none"
@@ -528,7 +528,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               </linearGradient>
             </defs>
             <path class="flow-gradient"
-                  d="M 418 470 L 394 470 L 394 470.01 L 370 470"
+                  d="M 418 470 L 374 470 L 374 470.01 L 330 470"
                   stroke="url(#flow-grad-9a)"
                   stroke-width="10"
                   fill="none"
@@ -537,7 +537,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
             <!-- DHW to HP return - vertical segment (cold) - DHW mode only -->
             <!-- Solid backing to prevent color bleeding through gradient -->
-            <path d="M 370 470 L 370 345 L 370 345.01 L 370 220"
+            <path d="M 330 470 L 330 345 L 330 345.01 L 330 220"
                   stroke="${f}"
                   stroke-width="10"
                   fill="none"
@@ -545,7 +545,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   opacity="${a.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
             <!-- Animated gradient overlay -->
             <defs>
-              <linearGradient id="flow-grad-9b" x1="370" y1="470" x2="370" y2="220" gradientUnits="userSpaceOnUse">
+              <linearGradient id="flow-grad-9b" x1="330" y1="470" x2="330" y2="220" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stop-color="rgba(50, 100, 180, 0.6)" />
                 <stop offset="40%" stop-color="rgba(80, 140, 220, 0.9)" />
                 <stop offset="50%" stop-color="rgba(110, 170, 255, 1.0)" />
@@ -556,7 +556,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               </linearGradient>
             </defs>
             <path class="flow-gradient"
-                  d="M 370 470 L 370 345 L 370 345.01 L 370 220"
+                  d="M 330 470 L 330 345 L 330 345.01 L 330 220"
                   stroke="url(#flow-grad-9b)"
                   stroke-width="10"
                   fill="none"
@@ -565,7 +565,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
             <!-- DHW to HP return - horizontal segment 2 (cold) - DHW mode only -->
             <!-- Solid backing to prevent color bleeding through gradient -->
-            <path d="M 370 220 L 275 220 L 275 220.01 L 180 220"
+            <path d="M 330 220 L 255 220 L 255 220.01 L 180 220"
                   stroke="${f}"
                   stroke-width="10"
                   fill="none"
@@ -584,7 +584,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               </linearGradient>
             </defs>
             <path class="flow-gradient"
-                  d="M 370 220 L 275 220 L 275 220.01 L 180 220"
+                  d="M 330 220 L 255 220 L 255 220.01 L 180 220"
                   stroke="url(#flow-grad-9c)"
                   stroke-width="10"
                   fill="none"
