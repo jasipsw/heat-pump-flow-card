@@ -1531,17 +1531,17 @@ export class HeatPumpFlowCard extends LitElement {
 
                     <!-- Heating Target Temperature (red circle, left position) -->
                     ${hpState.heatingTargetTemp !== undefined ? svg`
-                      <circle cx="24" cy="0" r="${radius}"
+                      <circle cx="24" cy="8" r="${radius}"
                               fill="white" stroke="${heatingColor}" stroke-width="2"
                               opacity="${heatingOpacity}"
                               filter="url(#circle-shadow)"/>
-                      <text x="24" y="1" text-anchor="middle" dominant-baseline="middle"
+                      <text x="24" y="9" text-anchor="middle" dominant-baseline="middle"
                             fill="${heatingColor}" font-size="7.5" font-weight="bold"
                             letter-spacing="-0.5" font-family="Arial, sans-serif"
                             opacity="${heatingOpacity}">
                         ${this.formatValue(hpState.heatingTargetTemp, 0)}°
                       </text>
-                      <text x="24" y="19" text-anchor="middle"
+                      <text x="24" y="27" text-anchor="middle"
                             fill="${hpTextColor}" font-size="6" opacity="${heatingOpacity * 0.7}">
                         HEAT
                       </text>
@@ -1549,17 +1549,17 @@ export class HeatPumpFlowCard extends LitElement {
 
                     <!-- DHW Target Temperature (red circle, center position) -->
                     ${hpState.dhwTargetTemp !== undefined ? svg`
-                      <circle cx="60" cy="0" r="${radius}"
+                      <circle cx="60" cy="8" r="${radius}"
                               fill="white" stroke="${dhwColor}" stroke-width="2"
                               opacity="${dhwOpacity}"
                               filter="url(#circle-shadow)"/>
-                      <text x="60" y="1" text-anchor="middle" dominant-baseline="middle"
+                      <text x="60" y="9" text-anchor="middle" dominant-baseline="middle"
                             fill="${dhwColor}" font-size="7.5" font-weight="bold"
                             letter-spacing="-0.5" font-family="Arial, sans-serif"
                             opacity="${dhwOpacity}">
                         ${this.formatValue(hpState.dhwTargetTemp, 0)}°
                       </text>
-                      <text x="60" y="19" text-anchor="middle"
+                      <text x="60" y="27" text-anchor="middle"
                             fill="${hpTextColor}" font-size="6" opacity="${dhwOpacity * 0.7}">
                         DHW
                       </text>
@@ -1567,17 +1567,17 @@ export class HeatPumpFlowCard extends LitElement {
 
                     <!-- Cooling Target Temperature (blue circle, right position) -->
                     ${hpState.coolingTargetTemp !== undefined ? svg`
-                      <circle cx="96" cy="0" r="${radius}"
+                      <circle cx="96" cy="8" r="${radius}"
                               fill="white" stroke="${coolingColor}" stroke-width="2"
                               opacity="${coolingOpacity}"
                               filter="url(#circle-shadow)"/>
-                      <text x="96" y="1" text-anchor="middle" dominant-baseline="middle"
+                      <text x="96" y="9" text-anchor="middle" dominant-baseline="middle"
                             fill="${coolingColor}" font-size="7.5" font-weight="bold"
                             letter-spacing="-0.5" font-family="Arial, sans-serif"
                             opacity="${coolingOpacity}">
                         ${this.formatValue(hpState.coolingTargetTemp, 0)}°
                       </text>
-                      <text x="96" y="19" text-anchor="middle"
+                      <text x="96" y="27" text-anchor="middle"
                             fill="${hpTextColor}" font-size="6" opacity="${coolingOpacity * 0.7}">
                         COOL
                       </text>

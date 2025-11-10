@@ -895,17 +895,17 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                     <!-- Heating Target Temperature (red circle, left position) -->
                     ${void 0!==t.heatingTargetTemp?G`
-                      <circle cx="24" cy="0" r="${c}"
+                      <circle cx="24" cy="8" r="${c}"
                               fill="white" stroke="${d}" stroke-width="2"
                               opacity="${s}"
                               filter="url(#circle-shadow)"/>
-                      <text x="24" y="1" text-anchor="middle" dominant-baseline="middle"
+                      <text x="24" y="9" text-anchor="middle" dominant-baseline="middle"
                             fill="${d}" font-size="7.5" font-weight="bold"
                             letter-spacing="-0.5" font-family="Arial, sans-serif"
                             opacity="${s}">
                         ${this.formatValue(t.heatingTargetTemp,0)}°
                       </text>
-                      <text x="24" y="19" text-anchor="middle"
+                      <text x="24" y="27" text-anchor="middle"
                             fill="${E}" font-size="6" opacity="${.7*s}">
                         HEAT
                       </text>
@@ -913,17 +913,17 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                     <!-- DHW Target Temperature (red circle, center position) -->
                     ${void 0!==t.dhwTargetTemp?G`
-                      <circle cx="60" cy="0" r="${c}"
+                      <circle cx="60" cy="8" r="${c}"
                               fill="white" stroke="${p}" stroke-width="2"
                               opacity="${l}"
                               filter="url(#circle-shadow)"/>
-                      <text x="60" y="1" text-anchor="middle" dominant-baseline="middle"
+                      <text x="60" y="9" text-anchor="middle" dominant-baseline="middle"
                             fill="${p}" font-size="7.5" font-weight="bold"
                             letter-spacing="-0.5" font-family="Arial, sans-serif"
                             opacity="${l}">
                         ${this.formatValue(t.dhwTargetTemp,0)}°
                       </text>
-                      <text x="60" y="19" text-anchor="middle"
+                      <text x="60" y="27" text-anchor="middle"
                             fill="${E}" font-size="6" opacity="${.7*l}">
                         DHW
                       </text>
@@ -931,17 +931,17 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                     <!-- Cooling Target Temperature (blue circle, right position) -->
                     ${void 0!==t.coolingTargetTemp?G`
-                      <circle cx="96" cy="0" r="${c}"
+                      <circle cx="96" cy="8" r="${c}"
                               fill="white" stroke="${f}" stroke-width="2"
                               opacity="${h}"
                               filter="url(#circle-shadow)"/>
-                      <text x="96" y="1" text-anchor="middle" dominant-baseline="middle"
+                      <text x="96" y="9" text-anchor="middle" dominant-baseline="middle"
                             fill="${f}" font-size="7.5" font-weight="bold"
                             letter-spacing="-0.5" font-family="Arial, sans-serif"
                             opacity="${h}">
                         ${this.formatValue(t.coolingTargetTemp,0)}°
                       </text>
-                      <text x="96" y="19" text-anchor="middle"
+                      <text x="96" y="27" text-anchor="middle"
                             fill="${E}" font-size="6" opacity="${.7*h}">
                         COOL
                       </text>
