@@ -1181,15 +1181,7 @@ export class HeatPumpFlowCard extends LitElement {
                   fill="${this.config.temperature?.neutral_color || '#95a5a6'}"
                   opacity="${g2ValveState.isActive && hpState.flowRate > this.config.animation!.idle_threshold ? '1' : '0'}"></rect>
 
-            <!-- Temperature and flow rate labels (configurable styling) -->
-            <!-- Top row: supply temperatures and flow rate -->
-            <text x="260" y="170" text-anchor="middle" fill="${hpOutletColor}"
-                  font-size="${this.config.text_style?.font_size || 11}"
-                  font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
-                  font-weight="${this.config.text_style?.font_weight || 'bold'}">
-              ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_supply}: ` : ''}${this.formatValue(hpState.outletTemp, 1)}°${this.getStateUnit(this.config.heat_pump?.outlet_temp_entity) || 'C'}
-            </text>
-
+            <!-- Flow rate labels (configurable styling) -->
             <!-- Flow rate between pipes (HP to G2/Buffer) -->
             <text x="277" y="205" text-anchor="middle" fill="#95a5a6"
                   font-size="${(this.config.text_style?.font_size || 11) - 1}"
@@ -1198,35 +1190,12 @@ export class HeatPumpFlowCard extends LitElement {
               ${this.formatValue(hpState.flowRate, 1)} ${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}
             </text>
 
-            <text x="260" y="240" text-anchor="middle" fill="${hpInletColor}"
-                  font-size="${this.config.text_style?.font_size || 11}"
-                  font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
-                  font-weight="${this.config.text_style?.font_weight || 'bold'}">
-              ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_return}: ` : ''}${this.formatValue(hpState.inletTemp, 1)}°${this.getStateUnit(this.config.heat_pump?.inlet_temp_entity) || 'C'}
-            </text>
-
-            <!-- Supply temp (top) - above supply pipe, centered horizontally -->
-            <text x="550" y="170" text-anchor="middle" fill="${bufferSupplyColor}"
-                  font-size="${this.config.text_style?.font_size || 11}"
-                  font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
-                  font-weight="${this.config.text_style?.font_weight || 'bold'}">
-              ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_supply}: ` : ''}${this.formatValue(bufferState.supplyTemp, 1)}°${this.getStateUnit(this.config.buffer_tank?.supply_temp_entity) || 'C'}
-            </text>
-
             <!-- Flow rate - centered vertically between pipes, centered horizontally -->
             <text x="550" y="205" text-anchor="middle" fill="#95a5a6"
                   font-size="${(this.config.text_style?.font_size || 11) - 1}"
                   font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
                   font-weight="normal">
               ${this.formatValue(hvacState.flowRate, 1)} ${this.getStateUnit(this.config.hvac?.flow_rate_entity) || 'L/m'}
-            </text>
-
-            <!-- Return temp (bottom) - below return pipe, centered horizontally -->
-            <text x="550" y="240" text-anchor="middle" fill="${hvacReturnColor}"
-                  font-size="${this.config.text_style?.font_size || 11}"
-                  font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}"
-                  font-weight="${this.config.text_style?.font_weight || 'bold'}">
-              ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_return}: ` : ''}${this.formatValue(hvacState.returnTemp, 1)}°${this.getStateUnit(this.config.hvac?.return_temp_entity) || 'C'}
             </text>
 
             <!-- Heat Pump (left side) -->
