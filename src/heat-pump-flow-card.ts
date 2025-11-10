@@ -677,18 +677,6 @@ export class HeatPumpFlowCard extends LitElement {
     const dhwGradient = dhwGradientData.levels;
     const dhwFillPercentage = dhwGradientData.fillPercentage;
 
-    // Debug logging for DHW gradient
-    console.log('DHW Gradient Debug:', {
-      tankTemp: dhwState.tankTemp,
-      inletTemp: dhwState.inletTemp,
-      outletTemp: dhwState.outletTemp,
-      currentTemp: dhwCurrentTemp,
-      minTemp: this.config.dhw_tank?.gradient?.min_temp,
-      maxTemp: this.config.dhw_tank?.gradient?.max_temp,
-      fillPercentage: dhwFillPercentage,
-      gradientLevels: dhwGradient.length
-    });
-
     // Calculate metrics text colors and positioning
     const hpBgColor = this.getHeatPumpColor(hpState);
     const hpTextColor = this.getContrastTextColor(hpBgColor);
