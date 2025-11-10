@@ -943,11 +943,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- DHW Tank percentage display (outside filtered group to avoid shadow filter affecting text color) -->
             <g transform="translate(390, 330)">
               ${o.tankTemp?Q`
-                <text x="45" y="180" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
+                <text x="45" y="162" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
                   ${x}% | ${this.formatValue(o.tankTemp,1)}°${this.config.temperature?.unit||"C"}
                 </text>
               `:Q`
-                <text x="45" y="180" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
+                <text x="45" y="162" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
                   ${x}%
                 </text>
               `}
