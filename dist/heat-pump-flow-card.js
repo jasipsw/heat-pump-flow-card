@@ -863,8 +863,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               `}
 
               <!-- Tank label centered in top cap -->
-              <text x="45" y="24" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
-                ${this.config.labels.buffer_tank}
+              <text x="45" y="24" text-anchor="middle"
+                    fill="${this.config.buffer_tank?.label_color||"white"}"
+                    font-size="${this.config.buffer_tank?.label_font_size||12}"
+                    font-weight="bold">
+                ${this.config.buffer_tank?.name||"BUFFER"}
               </text>
 
               <!-- Fill percentage display (always shown) -->
@@ -921,8 +924,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <line x1="10" y1="125" x2="80" y2="125" stroke="#2c3e50" stroke-width="2"/>
 
               <!-- Tank label centered in top cap -->
-              <text x="45" y="24" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
-                ${this.config.labels.dhw_tank}
+              <text x="45" y="24" text-anchor="middle"
+                    fill="${this.config.dhw_tank?.label_color||"white"}"
+                    font-size="${this.config.dhw_tank?.label_font_size||12}"
+                    font-weight="bold">
+                ${this.config.dhw_tank?.name||"DHW"}
               </text>
             </g>
 
