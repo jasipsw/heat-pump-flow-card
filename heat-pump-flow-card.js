@@ -258,7 +258,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
           href="${t}"
           opacity="${r}"
         />
-      `}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return U``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getDHWTank2State(),r=this.getG2ValveState(),n=this.getAuxHeaterState(),s=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),l=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),h=s.hotPipe,d=s.coldPipe,c=l.hotPipe,p=l.coldPipe,f=this.config.temperature.hot_color,u=this.config.temperature.cold_color,g=this.config.dhw_tank?.tank_inlet_color||"#3498db",m=this.config.dhw_tank?.tank_outlet_color||"#e74c3c",w=this.config.dhw_tank_2?.tank_outlet_color||"#e74c3c",y=e.supplyTemp>e.returnTemp,_=e.supplyTemp,b=this.generateTankGradient("buffer",_,y),$=b.levels,x=b.fillPercentage,k=o.tankTemp??o.inletTemp,v=this.generateTankGradient("dhw",k,!0),A=v.levels,S=v.fillPercentage;let H=[],C=0;if(a.enabled){const t=a.tankTemp??a.inletTemp,e=this.generateTankGradient("dhw_tank_2",t,!0);H=e.levels,C=e.fillPercentage}const P=this.getHeatPumpColor(t),T=this.getContrastTextColor(P),L=t.error?126:111,M=n.intensity;let E="#bdc3c7";if(M>0){const t=189,e=195,i=199,o=255,a=68,r=34;E=`rgb(${Math.round(t+(o-t)*M)}, ${Math.round(e+(a-e)*M)}, ${Math.round(i+(r-i)*M)})`}const R=this.config.aux_heater?.glow_size??8,D=224,O=172,N=60,W=D,V=O-R,F=N,z=16+2*R,I=2,Q=2,B=D,j=O-.75*R,q=N,Z=16+2*R*.75,Y=2,J=2,K=D,X=O-.5*R,tt=N,et=16+2*R*.5,it=2,ot=2,at=M>0?2-1.4*M:2,rt=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),nt=this.config.aux_heater?.shadow_blur??1,st=M>0?"aux-glow-outer":"aux-heater-layer",lt=M>0?"aux-glow-middle":"aux-heater-layer",ht=M>0?"aux-glow-inner":"aux-heater-layer",dt=M>0?"aux-cylinder-pulse":"";return U`
+      `}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return U``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getDHWTank2State(),r=this.getG2ValveState(),n=this.getAuxHeaterState(),s=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),l=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),h=s.hotPipe,d=s.coldPipe,c=l.hotPipe,p=l.coldPipe,f=this.config.temperature.hot_color,u=this.config.temperature.cold_color,g=this.config.dhw_tank?.tank_inlet_color||"#3498db",m=this.config.dhw_tank?.tank_outlet_color||"#e74c3c",y=this.config.dhw_tank_2?.tank_outlet_color||"#e74c3c",w=e.supplyTemp>e.returnTemp,_=e.supplyTemp,b=this.generateTankGradient("buffer",_,w),$=b.levels,x=b.fillPercentage,k=o.tankTemp??o.inletTemp,v=this.generateTankGradient("dhw",k,!0),A=v.levels,S=v.fillPercentage;let H=[],C=0;if(a.enabled){const t=a.tankTemp??a.inletTemp,e=this.generateTankGradient("dhw_tank_2",t,!0);H=e.levels,C=e.fillPercentage}const P=this.getHeatPumpColor(t),T=this.getContrastTextColor(P),L=t.error?126:111,M=n.intensity;let E="#bdc3c7";if(M>0){const t=189,e=195,i=199,o=255,a=68,r=34;E=`rgb(${Math.round(t+(o-t)*M)}, ${Math.round(e+(a-e)*M)}, ${Math.round(i+(r-i)*M)})`}const R=this.config.aux_heater?.glow_size??8,D=224,O=172,N=60,W=D,V=O-R,F=N,z=16+2*R,I=2,Q=2,B=D,j=O-.75*R,q=N,Z=16+2*R*.75,Y=2,J=2,K=D,X=O-.5*R,tt=N,et=16+2*R*.5,it=2,ot=2,at=M>0?2-1.4*M:2,rt=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),nt=this.config.aux_heater?.shadow_blur??1,st=M>0?"aux-glow-outer":"aux-heater-layer",lt=M>0?"aux-glow-middle":"aux-heater-layer",ht=M>0?"aux-glow-inner":"aux-heater-layer",dt=M>0?"aux-cylinder-pulse":"";return U`
       <ha-card>
         ${this.config.title?U`<h1 class="card-header">${this.config.title}</h1>`:""}
 
@@ -415,7 +415,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             ${a.enabled?G`
               <path id="dhw-tank-2-outlet-path"
                     d="M 630 380 L 710 380"
-                    stroke="${w}"
+                    stroke="${y}"
                     stroke-width="8"
                     fill="none"
                     stroke-linecap="butt"/>
@@ -1011,22 +1011,23 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 ${this.config.buffer_tank?.name||"BUFFER"}
               </text>
 
-              <!-- Fill percentage display (always shown) -->
-              <text x="45" y="165" text-anchor="middle" fill="${y?"#e74c3c":"#3498db"}" font-size="11" font-weight="bold">
-                ${x}%
-              </text>
-
-              <!-- Brand logo centered at bottom -->
+              <!-- Brand logo centered above percentage -->
               ${this.config.buffer_tank?.logo_url?G`
                 <image
                   x="${35}"
-                  y="178"
+                  y="145"
                   width="20"
                   height="20"
                   href="${this.config.buffer_tank.logo_url}"
                   opacity="0.9"
-                  preserveAspectRatio="xMidYMid meet" />
+                  preserveAspectRatio="xMidYMid meet"
+                  style="background: none;" />
               `:""}
+
+              <!-- Fill percentage display (always shown) -->
+              <text x="45" y="173" text-anchor="middle" fill="${w?"#e74c3c":"#3498db"}" font-size="11" font-weight="bold">
+                ${x}%
+              </text>
             </g>
 
             <!-- DHW (Domestic Hot Water) Tank with Coil (center-bottom) -->
@@ -1084,22 +1085,23 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 ${this.config.dhw_tank?.name||"DHW"}
               </text>
 
-              <!-- Fill percentage display (always shown) -->
-              <text x="45" y="165" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
-                ${S}%
-              </text>
-
-              <!-- Brand logo centered at bottom -->
+              <!-- Brand logo centered above percentage -->
               ${this.config.dhw_tank?.logo_url?G`
                 <image
                   x="${35}"
-                  y="178"
+                  y="145"
                   width="20"
                   height="20"
                   href="${this.config.dhw_tank.logo_url}"
                   opacity="0.9"
-                  preserveAspectRatio="xMidYMid meet" />
+                  preserveAspectRatio="xMidYMid meet"
+                  style="background: none;" />
               `:""}
+
+              <!-- Fill percentage display (always shown) -->
+              <text x="45" y="173" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
+                ${S}%
+              </text>
             </g>
 
             <!-- DHW Tank 2 (Secondary/Finishing Heater) - Optional -->
@@ -1132,22 +1134,23 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 ${this.config.dhw_tank_2?.name||"DHW 2"}
               </text>
 
-              <!-- Fill percentage display (always shown) -->
-              <text x="45" y="165" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
-                ${C}%
-              </text>
-
-              <!-- Brand logo centered at bottom -->
+              <!-- Brand logo centered above percentage -->
               ${this.config.dhw_tank_2?.logo_url?G`
                 <image
                   x="${35}"
-                  y="178"
+                  y="145"
                   width="20"
                   height="20"
                   href="${this.config.dhw_tank_2.logo_url}"
                   opacity="0.9"
-                  preserveAspectRatio="xMidYMid meet" />
+                  preserveAspectRatio="xMidYMid meet"
+                  style="background: none;" />
               `:""}
+
+              <!-- Fill percentage display (always shown) -->
+              <text x="45" y="173" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
+                ${C}%
+              </text>
             </g>
             `:""}
 
@@ -1275,7 +1278,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
             <!-- DHW Tank 2 Temperature Indicator (only when tank 2 is enabled) -->
             <!-- DHW Tank 2 Outlet (to house) -->
-            ${a.enabled?this.renderTemperatureIndicator(670,380,this.config.temperature_status?.points?.dhw_tank_2_outlet?.entity||this.config.dhw_tank_2?.outlet_temp_entity,a.outletTemp,this.config.temperature_status?.points?.dhw_tank_2_outlet,w):""}
+            ${a.enabled?this.renderTemperatureIndicator(670,380,this.config.temperature_status?.points?.dhw_tank_2_outlet?.entity||this.config.dhw_tank_2?.outlet_temp_entity,a.outletTemp,this.config.temperature_status?.points?.dhw_tank_2_outlet,y):""}
           </svg>
         </div>
       </ha-card>
