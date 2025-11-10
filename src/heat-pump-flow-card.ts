@@ -869,14 +869,14 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- DHW TANK INLET/OUTLET PIPES (street water in, hot water out) -->
             <!-- Pipe: Street water inlet to DHW tank (cold water supply to vertical center) -->
             <path id="dhw-tank-inlet-path"
-                  d="M 360 420 L 435 420"
+                  d="M 305 420 L 435 420"
                   stroke="${dhwTankInletColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"/>
 
-            <!-- Water source icon (e.g., water tower) at inlet start with gap -->
-            <image x="295" y="395" width="50" height="50"
+            <!-- Water source icon (e.g., water tower) at inlet start - rendered after pipe for z-order -->
+            <image x="250" y="395" width="50" height="50"
                    href="${this.config.dhw_tank?.tank_inlet_icon_url || 'https://cdn-icons-png.flaticon.com/512/764/764408.png'}"
                    opacity="0.8"/>
 
@@ -1741,7 +1741,7 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- DHW Tank Street Water Inlet (cold water supply) -->
             ${this.renderTemperatureIndicator(
-              398,
+              370,
               420,
               this.config.temperature_status?.points?.dhw_tank_inlet?.entity || this.config.dhw_tank?.tank_inlet_temp_entity,
               dhwState.tankInletTemp ?? 0,
