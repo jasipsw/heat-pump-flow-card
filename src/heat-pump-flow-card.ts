@@ -677,18 +677,6 @@ export class HeatPumpFlowCard extends LitElement {
     const dhwGradient = dhwGradientData.levels;
     const dhwFillPercentage = dhwGradientData.fillPercentage;
 
-    // Debug logging for DHW gradient
-    console.log('DHW Gradient Debug:', {
-      tankTemp: dhwState.tankTemp,
-      inletTemp: dhwState.inletTemp,
-      outletTemp: dhwState.outletTemp,
-      currentTemp: dhwCurrentTemp,
-      minTemp: this.config.dhw_tank?.gradient?.min_temp,
-      maxTemp: this.config.dhw_tank?.gradient?.max_temp,
-      fillPercentage: dhwFillPercentage,
-      gradientLevels: dhwGradient.length
-    });
-
     // Calculate metrics text colors and positioning
     const hpBgColor = this.getHeatPumpColor(hpState);
     const hpTextColor = this.getContrastTextColor(hpBgColor);
@@ -879,16 +867,16 @@ export class HeatPumpFlowCard extends LitElement {
                   opacity="0"/>
 
             <!-- DHW TANK INLET/OUTLET PIPES (street water in, hot water out) -->
-            <!-- Pipe: Street water inlet to DHW tank (cold water supply to center bottom) -->
+            <!-- Pipe: Street water inlet to DHW tank (cold water supply to vertical center) -->
             <path id="dhw-tank-inlet-path"
-                  d="M 320 490 L 435 490"
+                  d="M 360 420 L 435 420"
                   stroke="${dhwTankInletColor}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"/>
 
-            <!-- Water source icon (e.g., water tower) at inlet start -->
-            <image x="295" y="465" width="50" height="50"
+            <!-- Water source icon (e.g., water tower) at inlet start with gap -->
+            <image x="295" y="395" width="50" height="50"
                    href="${this.config.dhw_tank?.tank_inlet_icon_url || 'https://cdn-icons-png.flaticon.com/512/764/764408.png'}"
                    opacity="0.8"/>
 
@@ -1263,7 +1251,7 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- DHW Tank Inlet (street water) - horizontal cold -->
             <!-- Solid backing to prevent color bleeding through gradient -->
-            <path d="M 320 490 L 377.5 490 L 377.5 490.01 L 435 490"
+            <path d="M 360 420 L 397.5 420 L 397.5 420.01 L 435 420"
                   stroke="${dhwTankInletColor}"
                   stroke-width="10"
                   fill="none"
@@ -1282,7 +1270,7 @@ export class HeatPumpFlowCard extends LitElement {
               </linearGradient>
             </defs>
             <path class="flow-gradient"
-                  d="M 320 490 L 377.5 490 L 377.5 490.01 L 435 490"
+                  d="M 360 420 L 397.5 420 L 397.5 420.01 L 435 420"
                   stroke="url(#flow-grad-dhw-inlet)"
                   stroke-width="10"
                   fill="none"
@@ -1574,7 +1562,7 @@ export class HeatPumpFlowCard extends LitElement {
               </text>
 
               <!-- Fill percentage display (always shown) -->
-              <text x="45" y="175" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
+              <text x="45" y="165" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
                 ${dhwFillPercentage}%
               </text>
             </g>
@@ -1753,8 +1741,8 @@ export class HeatPumpFlowCard extends LitElement {
 
             <!-- DHW Tank Street Water Inlet (cold water supply) -->
             ${this.renderTemperatureIndicator(
-              400,
-              490,
+              398,
+              420,
               this.config.temperature_status?.points?.dhw_tank_inlet?.entity || this.config.dhw_tank?.tank_inlet_temp_entity,
               dhwState.tankInletTemp ?? 0,
               this.config.temperature_status?.points?.dhw_tank_inlet,
