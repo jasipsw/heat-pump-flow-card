@@ -1367,13 +1367,15 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="45" y="42" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
                 ${this.config.labels!.dhw_tank}
               </text>
+            </g>
 
-              <!-- Tank status display (always shown) -->
-              ${dhwState.tankTemp ? html`
+            <!-- DHW Tank percentage display (outside filtered group to avoid shadow filter affecting text color) -->
+            <g transform="translate(390, 330)">
+              ${dhwState.tankTemp ? svg`
                 <text x="45" y="180" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
                   ${dhwFillPercentage}% | ${this.formatValue(dhwState.tankTemp, 1)}°${this.config.temperature?.unit || 'C'}
                 </text>
-              ` : html`
+              ` : svg`
                 <text x="45" y="180" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">
                   ${dhwFillPercentage}%
                 </text>
