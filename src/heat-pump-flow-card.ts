@@ -716,11 +716,15 @@ export class HeatPumpFlowCard extends LitElement {
     // DHW Tank 2 gradient (if enabled)
     let dhwTank2Gradient: Array<{ y: number; height: number; color: string; opacity: number }> = [];
     let dhwTank2FillPercentage = 0;
+    console.log('DHW Tank 2 State in render():', dhwTank2State);
     if (dhwTank2State.enabled) {
+      console.log('DHW Tank 2 is enabled - generating gradient');
       const dhw2CurrentTemp = dhwTank2State.tankTemp ?? dhwTank2State.inletTemp;
       const dhw2GradientData = this.generateTankGradient('dhw_tank_2', dhw2CurrentTemp, true);
       dhwTank2Gradient = dhw2GradientData.levels;
       dhwTank2FillPercentage = dhw2GradientData.fillPercentage;
+    } else {
+      console.log('DHW Tank 2 is NOT enabled');
     }
 
     // Calculate metrics text colors and positioning
