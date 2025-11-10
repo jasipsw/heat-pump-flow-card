@@ -1,7 +1,7 @@
 import { LitElement, html, css, PropertyValues, svg } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { HomeAssistant, LovelaceCardEditor } from 'custom-card-helpers';
-import { HeatPumpFlowCardConfig, HeatPumpState, BufferTankState, HVACState, DHWTankState, G2ValveState, AuxHeaterState, HousePerformanceState } from './types';
+import { HeatPumpFlowCardConfig, HeatPumpState, BufferTankState, HVACState, DHWTankState, G2ValveState, AuxHeaterState, HousePerformanceState, TemperatureHistoryPoint, TemperatureTrend, TemperatureStatus } from './types';
 import { CARD_VERSION, BUILD_TIMESTAMP } from './const';
 import { cardStyles } from './styles';
 
@@ -16,6 +16,9 @@ console.info(
 export class HeatPumpFlowCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @state() private config!: HeatPumpFlowCardConfig;
+
+  // Temperature history tracking for trend detection
+  private temperatureHistory: Map<string, TemperatureHistoryPoint[]> = new Map();
 
   @query('#hp-to-buffer-flow') hpToBufferFlow?: SVGGElement;
   @query('#buffer-to-hp-flow') bufferToHpFlow?: SVGGElement;
@@ -40,7 +43,7 @@ export class HeatPumpFlowCard extends LitElement {
     }
 
     // Merge config with defaults, preserving nested object defaults
-    const { animation, temperature, display, heat_pump_visual, labels, ...restConfig } = config;
+    const { animation, temperature, display, heat_pump_visual, labels, temperature_status, ...restConfig } = config;
 
     this.config = {
       ...restConfig,
@@ -98,6 +101,28 @@ export class HeatPumpFlowCard extends LitElement {
         energy: 'Energy',
         cost: 'Cost',
         ...labels,
+      },
+      temperature_status: {
+        enabled: false,
+        change_threshold: 0.5,
+        time_interval: 60,
+        circle_radius: 12,
+        increasing_color: '#e74c3c',
+        decreasing_color: '#3498db',
+        steady_color: '#2c3e50',
+        show_caret: true,
+        points: {
+          hp_outlet: { enabled: true },
+          hp_inlet: { enabled: true },
+          buffer_supply: { enabled: true },
+          buffer_return: { enabled: true },
+          hvac_supply: { enabled: true },
+          hvac_return: { enabled: true },
+          dhw_inlet: { enabled: true },
+          dhw_outlet: { enabled: true },
+          ...temperature_status?.points,
+        },
+        ...temperature_status,
       },
     };
   }
@@ -265,6 +290,180 @@ export class HeatPumpFlowCard extends LitElement {
   private formatValue(value: number | undefined, decimals: number = 1): string {
     if (value === undefined) return 'N/A';
     return value.toFixed(decimals);
+  }
+
+  /**
+   * Track temperature for an entity and maintain history
+   */
+  private trackTemperature(entityId: string, temperature: number): void {
+    if (!entityId) return;
+
+    const now = Date.now();
+    const history = this.temperatureHistory.get(entityId) || [];
+
+    // Add current temperature to history
+    history.push({ temperature, timestamp: now });
+
+    // Keep only the history within the configured time window (plus some buffer)
+    const timeWindow = (this.config.temperature_status?.time_interval || 60) * 1000;
+    const cutoffTime = now - (timeWindow * 2); // Keep 2x the window for better accuracy
+    const filteredHistory = history.filter(point => point.timestamp > cutoffTime);
+
+    this.temperatureHistory.set(entityId, filteredHistory);
+  }
+
+  /**
+   * Calculate temperature trend (increasing, decreasing, or steady)
+   */
+  private getTemperatureTrend(entityId: string | undefined): TemperatureTrend {
+    if (!entityId) return 'steady';
+
+    const history = this.temperatureHistory.get(entityId);
+    if (!history || history.length < 2) return 'steady';
+
+    const now = Date.now();
+    const timeInterval = (this.config.temperature_status?.time_interval || 60) * 1000;
+    const threshold = this.config.temperature_status?.change_threshold || 0.5;
+
+    // Get current temperature (most recent)
+    const currentPoint = history[history.length - 1];
+
+    // Find the oldest point within the time interval
+    const oldestValidTime = now - timeInterval;
+    const oldPoint = history.find(point => point.timestamp >= oldestValidTime);
+
+    if (!oldPoint || oldPoint === currentPoint) return 'steady';
+
+    // Calculate temperature change
+    const tempChange = currentPoint.temperature - oldPoint.temperature;
+
+    // Determine trend based on threshold
+    if (tempChange > threshold) {
+      return 'increasing';
+    } else if (tempChange < -threshold) {
+      return 'decreasing';
+    }
+    return 'steady';
+  }
+
+  /**
+   * Get temperature status for a specific point
+   */
+  private getTemperatureStatus(entityId: string | undefined, temperature: number): TemperatureStatus | undefined {
+    if (!entityId || !this.config.temperature_status?.enabled) return undefined;
+
+    // Track the temperature
+    this.trackTemperature(entityId, temperature);
+
+    // Get the trend
+    const trend = this.getTemperatureTrend(entityId);
+
+    return {
+      current: temperature,
+      trend,
+      entity: entityId,
+    };
+  }
+
+  /**
+   * Handle click on temperature indicator to show history graph
+   */
+  private handleTemperatureClick(event: Event, entityId: string): void {
+    event.stopPropagation();
+    if (!entityId || !this.hass) return;
+
+    // Fire Home Assistant event to show more-info dialog
+    const customEvent = new CustomEvent('hass-more-info', {
+      bubbles: true,
+      composed: true,
+      detail: { entityId },
+    });
+    this.dispatchEvent(customEvent);
+  }
+
+  /**
+   * Render temperature status indicator circle
+   */
+  private renderTemperatureIndicator(
+    x: number,
+    y: number,
+    entityId: string | undefined,
+    temperature: number,
+    pointConfig: { enabled?: boolean } | undefined
+  ) {
+    // Check if temperature status is enabled globally and for this point
+    if (!this.config.temperature_status?.enabled || !pointConfig?.enabled || !entityId) {
+      return svg``;
+    }
+
+    const status = this.getTemperatureStatus(entityId, temperature);
+    if (!status || status.current === undefined) {
+      return svg``;
+    }
+
+    const cfg = this.config.temperature_status!;
+    const radius = cfg.circle_radius || 12;
+    const showCaret = cfg.show_caret !== false;
+
+    // Determine border color based on trend
+    let borderColor: string;
+    switch (status.trend) {
+      case 'increasing':
+        borderColor = cfg.increasing_color || '#e74c3c';
+        break;
+      case 'decreasing':
+        borderColor = cfg.decreasing_color || '#3498db';
+        break;
+      default:
+        borderColor = cfg.steady_color || '#2c3e50';
+    }
+
+    // Position caret based on trend
+    const caretOffset = radius + 3;
+    const caretSize = 5;
+
+    return svg`
+      <g class="temp-status-indicator"
+         style="cursor: pointer;"
+         @click="${(e: Event) => this.handleTemperatureClick(e, entityId)}">
+        <!-- Circle with white fill and colored border -->
+        <circle
+          cx="${x}"
+          cy="${y}"
+          r="${radius}"
+          fill="white"
+          stroke="${borderColor}"
+          stroke-width="2"
+          opacity="0.95"
+          filter="url(#entity-shadow)" />
+
+        <!-- Temperature text -->
+        <text
+          x="${x}"
+          y="${y + 1}"
+          text-anchor="middle"
+          dominant-baseline="middle"
+          fill="${borderColor}"
+          font-size="9"
+          font-weight="bold"
+          font-family="${this.config.text_style?.font_family || 'Courier New, monospace'}">
+          ${this.formatValue(status.current, 1)}°
+        </text>
+
+        <!-- Caret indicator -->
+        ${showCaret && status.trend === 'increasing' ? svg`
+          <path
+            d="M ${x - caretSize} ${y - caretOffset} L ${x} ${y - caretOffset - caretSize} L ${x + caretSize} ${y - caretOffset} Z"
+            fill="${borderColor}" />
+        ` : ''}
+
+        ${showCaret && status.trend === 'decreasing' ? svg`
+          <path
+            d="M ${x - caretSize} ${y + caretOffset} L ${x} ${y + caretOffset + caretSize} L ${x + caretSize} ${y + caretOffset} Z"
+            fill="${borderColor}" />
+        ` : ''}
+      </g>
+    `;
   }
 
   /**
@@ -1103,6 +1302,15 @@ export class HeatPumpFlowCard extends LitElement {
               ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_supply}: ` : ''}${this.formatValue(hpState.outletTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
+            <!-- Temperature status indicator for HP outlet -->
+            ${this.renderTemperatureIndicator(
+              185,
+              180,
+              this.config.temperature_status?.points?.hp_outlet?.entity || this.config.heat_pump?.outlet_temp_entity,
+              hpState.outletTemp,
+              this.config.temperature_status?.points?.hp_outlet
+            )}
+
             <!-- Flow rate between pipes (HP to G2/Buffer) -->
             <text x="277" y="205" text-anchor="middle" fill="#95a5a6"
                   font-size="${(this.config.text_style?.font_size || 11) - 1}"
@@ -1118,6 +1326,15 @@ export class HeatPumpFlowCard extends LitElement {
               ${this.config.text_style?.show_labels ? `${this.config.labels!.hp_return}: ` : ''}${this.formatValue(hpState.inletTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
 
+            <!-- Temperature status indicator for HP inlet -->
+            ${this.renderTemperatureIndicator(
+              185,
+              230,
+              this.config.temperature_status?.points?.hp_inlet?.entity || this.config.heat_pump?.inlet_temp_entity,
+              hpState.inletTemp,
+              this.config.temperature_status?.points?.hp_inlet
+            )}
+
             <!-- Supply temp (top) - above supply pipe, centered horizontally -->
             <text x="550" y="170" text-anchor="middle" fill="${bufferSupplyColor}"
                   font-size="${this.config.text_style?.font_size || 11}"
@@ -1125,6 +1342,15 @@ export class HeatPumpFlowCard extends LitElement {
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
               ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_supply}: ` : ''}${this.formatValue(bufferState.supplyTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
+
+            <!-- Temperature status indicator for Buffer/HVAC supply -->
+            ${this.renderTemperatureIndicator(
+              625,
+              180,
+              this.config.temperature_status?.points?.buffer_supply?.entity || this.config.buffer_tank?.supply_temp_entity,
+              bufferState.supplyTemp,
+              this.config.temperature_status?.points?.buffer_supply
+            )}
 
             <!-- Flow rate - centered vertically between pipes, centered horizontally -->
             <text x="550" y="205" text-anchor="middle" fill="#95a5a6"
@@ -1141,6 +1367,15 @@ export class HeatPumpFlowCard extends LitElement {
                   font-weight="${this.config.text_style?.font_weight || 'bold'}">
               ${this.config.text_style?.show_labels ? `${this.config.labels!.hvac_return}: ` : ''}${this.formatValue(hvacState.returnTemp, 1)}°${this.config.temperature?.unit || 'C'}
             </text>
+
+            <!-- Temperature status indicator for HVAC/Buffer return -->
+            ${this.renderTemperatureIndicator(
+              625,
+              230,
+              this.config.temperature_status?.points?.hvac_return?.entity || this.config.hvac?.return_temp_entity,
+              hvacState.returnTemp,
+              this.config.temperature_status?.points?.hvac_return
+            )}
 
             <!-- Heat Pump (left side) -->
             <g id="heat-pump" transform="translate(50, 100)" filter="url(#entity-shadow)">
@@ -1367,6 +1602,25 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="45" y="24" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
                 ${this.config.labels!.dhw_tank}
               </text>
+
+              <!-- Temperature status indicators for DHW coil inlet and outlet -->
+              <!-- DHW Inlet (top of coil) -->
+              ${this.renderTemperatureIndicator(
+                10,
+                40,
+                this.config.temperature_status?.points?.dhw_inlet?.entity || this.config.dhw_tank?.inlet_temp_entity,
+                dhwState.inletTemp,
+                this.config.temperature_status?.points?.dhw_inlet
+              )}
+
+              <!-- DHW Outlet (bottom of coil) -->
+              ${this.renderTemperatureIndicator(
+                10,
+                140,
+                this.config.temperature_status?.points?.dhw_outlet?.entity || this.config.dhw_tank?.outlet_temp_entity,
+                dhwState.outletTemp,
+                this.config.temperature_status?.points?.dhw_outlet
+              )}
             </g>
 
             <!-- DHW Tank percentage display (outside filtered group to avoid shadow filter affecting text color) -->
