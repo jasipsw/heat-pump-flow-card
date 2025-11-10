@@ -35,6 +35,19 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     outdoor_coil_temp_entity?: string;    // Outdoor coil temperature
     suction_temp_entity?: string;         // Suction line temperature
     heat_exchanger_temp_entity?: string;  // Heat exchanger temperature
+    plate_exchange_temp_entity?: string;  // Plate heat exchanger temperature
+    // Additional detailed metrics
+    ec_fan_motor_1_speed_entity?: string; // EC fan motor 1 speed
+    ec_fan_motor_2_speed_entity?: string; // EC fan motor 2 speed
+    bus_line_voltage_entity?: string;     // Bus line voltage (V)
+    fan_shutdown_code_entity?: string;    // Fan shutdown code
+    ipm_temp_entity?: string;             // IPM temperature
+    compressor_running_time_entity?: string; // Compressor total running time
+    e_heater_power_entity?: string;       // E-heater compensation power
+    din6_mode_switch_entity?: string;     // DIN6 AC/heating mode switch
+    din7_mode_switch_entity?: string;     // DIN7 AC/heating mode switch
+    pump_enabled_entity?: string;         // Pump enabled status
+    compressor_max_percentage_entity?: string; // Compressor max percentage
     show_detailed_metrics?: boolean;      // Show detailed metrics panel (default: false)
     name?: string;               // Generic name (deprecated, use display_name)
     icon?: string;               // Generic icon (deprecated, use logo_url)
@@ -339,6 +352,19 @@ export interface HeatPumpState {
   outdoorCoilTemp?: number;      // Outdoor coil temperature
   suctionTemp?: number;          // Suction line temperature
   heatExchangerTemp?: number;    // Heat exchanger temperature
+  plateExchangeTemp?: number;    // Plate heat exchanger temperature
+  // Additional detailed metrics
+  ecFanMotor1Speed?: number;     // EC fan motor 1 speed
+  ecFanMotor2Speed?: number;     // EC fan motor 2 speed
+  busLineVoltage?: number;       // Bus line voltage (V)
+  fanShutdownCode?: number;      // Fan shutdown code
+  ipmTemp?: number;              // IPM temperature
+  compressorRunningTime?: number; // Compressor total running time
+  eHeaterPower?: number;         // E-heater compensation power
+  din6ModeSwitch?: number;       // DIN6 AC/heating mode switch
+  din7ModeSwitch?: number;       // DIN7 AC/heating mode switch
+  pumpEnabled?: boolean;         // Pump enabled status
+  compressorMaxPercentage?: number; // Compressor max percentage
 }
 
 export interface BufferTankState {
