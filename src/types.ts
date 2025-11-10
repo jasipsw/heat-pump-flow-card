@@ -31,7 +31,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     show_detailed_metrics?: boolean;      // Show detailed metrics panel (default: false)
     // Target temperature and hysteresis
     target_temp_entity?: string;          // Target temperature setpoint
-    hysteresis?: number;                  // Hysteresis value (degrees) for max temp calculation (default: 5)
+    hysteresis?: number | string;         // Hysteresis value: hard-coded number or entity (e.g., sensor.hysteresis or 5, default: 5)
     name?: string;               // Generic name (deprecated, use display_name)
     icon?: string;               // Generic icon (deprecated, use logo_url)
     display_name?: string;       // Display name (e.g., "Chiltrix CX50-2")

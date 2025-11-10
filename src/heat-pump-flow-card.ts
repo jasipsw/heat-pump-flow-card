@@ -1496,7 +1496,16 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Target and Max Temperature Indicators (prominent circles) -->
               ${hpState.targetTemp !== undefined ? svg`
                 ${(() => {
-                  const hysteresis = this.config.heat_pump?.hysteresis || 5;
+                  // Get hysteresis from sensor or use configured/default value
+                  const hysteresisConfig = this.config.heat_pump?.hysteresis;
+                  let hysteresis = 5; // Default
+                  if (typeof hysteresisConfig === 'string') {
+                    // It's an entity - read from sensor
+                    hysteresis = this.getStateValue(hysteresisConfig) || 5;
+                  } else if (typeof hysteresisConfig === 'number') {
+                    // It's a hard-coded number
+                    hysteresis = hysteresisConfig;
+                  }
                   const maxTemp = hpState.targetTemp! + hysteresis;
                   const targetY = 82;
                   const maxY = 82;
