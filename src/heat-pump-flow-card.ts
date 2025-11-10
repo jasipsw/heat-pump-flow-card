@@ -1489,37 +1489,82 @@ export class HeatPumpFlowCard extends LitElement {
               ` : ''}
 
               <!-- Temperature Setpoint Indicators (3 circles below mode text, styled like pipe temp sensors) -->
-              <g id="hp-setpoints" transform="translate(0, 108)">
-                <!-- Heating Target Temperature (red circle, left position) -->
-                ${hpState.heatingTargetTemp !== undefined ? svg`
-                  <circle cx="24" cy="0" r="${this.config.temperature_status?.circle_radius || 12}"
-                          fill="#e74c3c" stroke="#2c3e50" stroke-width="2" opacity="0.9"/>
-                  <text x="24" y="4" text-anchor="middle" dominant-baseline="middle"
-                        fill="white" font-size="10" font-weight="bold">
-                    ${this.formatValue(hpState.heatingTargetTemp, 0)}°
-                  </text>
-                ` : ''}
+              ${(() => {
+                // Determine which setpoints are active based on current mode
+                const displayMode = this.getDisplayMode(hpState, g2ValveState).toLowerCase();
+                const isHeating = displayMode.includes('heat');
+                const isDhw = displayMode.includes('dhw');
+                const isCooling = displayMode.includes('cool');
+                const isOff = displayMode === 'off' || displayMode === 'defrost';
 
-                <!-- DHW Target Temperature (red circle, center position) -->
-                ${hpState.dhwTargetTemp !== undefined ? svg`
-                  <circle cx="60" cy="0" r="${this.config.temperature_status?.circle_radius || 12}"
-                          fill="#e74c3c" stroke="#2c3e50" stroke-width="2" opacity="0.9"/>
-                  <text x="60" y="4" text-anchor="middle" dominant-baseline="middle"
-                        fill="white" font-size="10" font-weight="bold">
-                    ${this.formatValue(hpState.dhwTargetTemp, 0)}°
-                  </text>
-                ` : ''}
+                // Gray out inactive setpoints (opacity 0.3 for grayed, 0.95 for active)
+                const heatingOpacity = (isHeating || isOff) ? 0.95 : 0.3;
+                const dhwOpacity = (isDhw || isOff) ? 0.95 : 0.3;
+                const coolingOpacity = (isCooling || isOff) ? 0.95 : 0.3;
 
-                <!-- Cooling Target Temperature (blue circle, right position) -->
-                ${hpState.coolingTargetTemp !== undefined ? svg`
-                  <circle cx="96" cy="0" r="${this.config.temperature_status?.circle_radius || 12}"
-                          fill="#3498db" stroke="#2c3e50" stroke-width="2" opacity="0.9"/>
-                  <text x="96" y="4" text-anchor="middle" dominant-baseline="middle"
-                        fill="white" font-size="10" font-weight="bold">
-                    ${this.formatValue(hpState.coolingTargetTemp, 0)}°
-                  </text>
-                ` : ''}
-              </g>
+                const radius = this.config.temperature_status?.circle_radius || 12;
+                const heatingColor = '#e74c3c';
+                const dhwColor = '#e74c3c';
+                const coolingColor = '#3498db';
+
+                return svg`
+                  <g id="hp-setpoints" transform="translate(0, 115)">
+                    <!-- Heating Target Temperature (red circle, left position) -->
+                    ${hpState.heatingTargetTemp !== undefined ? svg`
+                      <circle cx="24" cy="0" r="${radius}"
+                              fill="white" stroke="${heatingColor}" stroke-width="2"
+                              opacity="${heatingOpacity}"
+                              filter="url(#circle-shadow)"/>
+                      <text x="24" y="1" text-anchor="middle" dominant-baseline="middle"
+                            fill="${heatingColor}" font-size="7.5" font-weight="bold"
+                            letter-spacing="-0.5" font-family="Arial, sans-serif"
+                            opacity="${heatingOpacity}">
+                        ${this.formatValue(hpState.heatingTargetTemp, 0)}°
+                      </text>
+                      <text x="24" y="16" text-anchor="middle"
+                            fill="${hpTextColor}" font-size="6" opacity="${heatingOpacity * 0.7}">
+                        HEAT
+                      </text>
+                    ` : ''}
+
+                    <!-- DHW Target Temperature (red circle, center position) -->
+                    ${hpState.dhwTargetTemp !== undefined ? svg`
+                      <circle cx="60" cy="0" r="${radius}"
+                              fill="white" stroke="${dhwColor}" stroke-width="2"
+                              opacity="${dhwOpacity}"
+                              filter="url(#circle-shadow)"/>
+                      <text x="60" y="1" text-anchor="middle" dominant-baseline="middle"
+                            fill="${dhwColor}" font-size="7.5" font-weight="bold"
+                            letter-spacing="-0.5" font-family="Arial, sans-serif"
+                            opacity="${dhwOpacity}">
+                        ${this.formatValue(hpState.dhwTargetTemp, 0)}°
+                      </text>
+                      <text x="60" y="16" text-anchor="middle"
+                            fill="${hpTextColor}" font-size="6" opacity="${dhwOpacity * 0.7}">
+                        DHW
+                      </text>
+                    ` : ''}
+
+                    <!-- Cooling Target Temperature (blue circle, right position) -->
+                    ${hpState.coolingTargetTemp !== undefined ? svg`
+                      <circle cx="96" cy="0" r="${radius}"
+                              fill="white" stroke="${coolingColor}" stroke-width="2"
+                              opacity="${coolingOpacity}"
+                              filter="url(#circle-shadow)"/>
+                      <text x="96" y="1" text-anchor="middle" dominant-baseline="middle"
+                            fill="${coolingColor}" font-size="7.5" font-weight="bold"
+                            letter-spacing="-0.5" font-family="Arial, sans-serif"
+                            opacity="${coolingOpacity}">
+                        ${this.formatValue(hpState.coolingTargetTemp, 0)}°
+                      </text>
+                      <text x="96" y="16" text-anchor="middle"
+                            fill="${hpTextColor}" font-size="6" opacity="${coolingOpacity * 0.7}">
+                        COOL
+                      </text>
+                    ` : ''}
+                  </g>
+                `;
+              })()}
             </g>
 
             <!-- Detailed Metrics Panel (always shown, includes core metrics + optional detailed metrics) -->
