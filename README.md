@@ -358,6 +358,76 @@ labels:
 | `logo_background_color` | string | Background color for logo area (default: transparent, e.g., "white", "#ffffff") |
 | `logo_text_color` | string | Text color for brand name (default: dynamic based on HP state) |
 
+#### Temperature Setpoint Entities
+
+| Name | Type | Description |
+|------|------|-------------|
+| `heating_target_temp_entity` | string | Heating target temperature setpoint |
+| `dhw_target_temp_entity` | string | DHW target temperature setpoint |
+| `cooling_target_temp_entity` | string | Cooling target temperature setpoint |
+
+#### Electrical Metrics
+
+| Name | Type | Description |
+|------|------|-------------|
+| `amps_entity` | string | Current draw (amps) |
+| `volts_entity` | string | Voltage (volts) |
+
+#### Detailed Metrics Panel
+
+Enable a detailed metrics panel below the heat pump showing compressor frequency, temperatures, fan speeds, and more.
+
+| Name | Type | Description |
+|------|------|-------------|
+| `show_detailed_metrics` | boolean | Enable detailed metrics panel (default: false) |
+| `compressor_frequency_entity` | string | Compressor frequency (Hz) |
+| `discharge_temp_entity` | string | Compressor discharge temperature |
+| `ambient_temp_entity` | string | Ambient air temperature |
+| `dhw_temp_entity` | string | DHW temperature |
+| `outdoor_coil_temp_entity` | string | Outdoor coil temperature |
+| `suction_temp_entity` | string | Suction line temperature |
+| `heat_exchanger_temp_entity` | string | Heat exchanger temperature |
+| `plate_exchange_temp_entity` | string | Plate heat exchanger temperature |
+| `ec_fan_motor_1_speed_entity` | string | EC fan motor 1 speed |
+| `ec_fan_motor_2_speed_entity` | string | EC fan motor 2 speed |
+| `bus_line_voltage_entity` | string | Bus line voltage (V) |
+| `fan_shutdown_code_entity` | string | Fan shutdown code |
+| `ipm_temp_entity` | string | IPM temperature |
+| `compressor_running_time_entity` | string | Compressor total running time |
+| `e_heater_power_entity` | string | E-heater compensation power |
+| `din6_mode_switch_entity` | string | DIN6 AC/heating mode switch |
+| `din7_mode_switch_entity` | string | DIN7 AC/heating mode switch |
+| `pump_enabled_entity` | string | Pump enabled status |
+| `compressor_max_percentage_entity` | string | Compressor max percentage |
+
+**Example:**
+```yaml
+heat_pump:
+  # Basic required entities
+  power_entity: sensor.heat_pump_power
+  thermal_entity: sensor.heat_pump_thermal
+  cop_entity: sensor.heat_pump_cop
+  # ... other basic entities ...
+
+  # Enable detailed metrics panel
+  show_detailed_metrics: true
+
+  # Detailed metrics entities
+  compressor_frequency_entity: sensor.cx50_compressor_frequency
+  discharge_temp_entity: sensor.cx50_discharge_temp
+  ambient_temp_entity: sensor.cx50_ambient_temp
+  suction_temp_entity: sensor.cx50_suction_temp
+  plate_exchange_temp_entity: sensor.cx50_plate_exchange_temp
+  ec_fan_motor_1_speed_entity: sensor.cx50_c45_ec_fan_motor_1_speed
+  ec_fan_motor_2_speed_entity: sensor.cx50_c46_ec_fan_motor_2_speed
+  bus_line_voltage_entity: sensor.cx50_bus_line_voltage
+  ipm_temp_entity: sensor.cx50_c60_ipm_temp
+  compressor_running_time_entity: sensor.cx50_c61_compressor_total_running_time
+  e_heater_power_entity: sensor.cx50_c62_e_heater_compensation_power
+  pump_enabled_entity: binary_sensor.cx_pump_enabled
+  compressor_max_percentage_entity: number.cx50_compressor_max_percentage
+```
+
 ### Heat Pump Visual Options (`heat_pump_visual`)
 
 Configure the appearance and behavior of the animated heat pump visualization.
