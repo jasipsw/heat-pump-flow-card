@@ -1,4 +1,4 @@
-export const CARD_VERSION = '0.30.9';
+export const CARD_VERSION = '0.30.10';
 export const CARD_NAME = 'heat-pump-flow-card';
 export const BUILD_TIMESTAMP = new Date().toISOString();
 
