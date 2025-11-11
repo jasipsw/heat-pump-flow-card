@@ -76,6 +76,15 @@ jobs:
           # Update const.ts
           sed -i "s/CARD_VERSION = '.*'/CARD_VERSION = '$NEW_VERSION'/" src/const.ts
 
+          # Update hacs.json with version field (add if doesn't exist)
+          if grep -q '"version"' hacs.json; then
+            # Version field exists, update it
+            sed -i "s/\"version\": \".*\"/\"version\": \"$NEW_VERSION\"/" hacs.json
+          else
+            # Version field doesn't exist, add it after name field
+            sed -i "/\"name\":/a\  \"version\": \"$NEW_VERSION\"," hacs.json
+          fi
+
       - name: Build project
         if: steps.check.outputs.already_bumped == 'false'
         run: |
@@ -87,7 +96,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add package.json package-lock.json src/const.ts
+          git add package.json package-lock.json src/const.ts hacs.json
           git add -f dist/ *.js *.map
           git commit -m "chore: bump version to ${{ steps.version.outputs.version }} [skip ci]" || echo "No changes to commit"
 
