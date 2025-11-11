@@ -939,6 +939,7 @@ For issues, feature requests, or questions:
 Inspired by:
 - [Sunsynk Power Flow Card](https://github.com/slipx06/sunsynk-power-flow-card)
 - [Power Flow Card Plus](https://github.com/flixlix/power-flow-card-plus)
+- [Chiltrix CX34 Heat Pump Control](https://github.com/gonzojive/heatpump) by gonzojive - Tools for communicating with the Chiltrix CX34 heat pump
 
 ## License
 
