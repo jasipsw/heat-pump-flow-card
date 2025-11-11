@@ -19,16 +19,16 @@
     "custom-card",
     "hacs"
   ],
-  "author": "Your Name",
+  "author": "jasipsw",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YOUR_USERNAME/heat-pump-flow-card.git"
+    "url": "git+https://github.com/jasipsw/heat-pump-flow-card.git"
   },
   "bugs": {
-    "url": "https://github.com/YOUR_USERNAME/heat-pump-flow-card/issues"
+    "url": "https://github.com/jasipsw/heat-pump-flow-card/issues"
   },
-  "homepage": "https://github.com/YOUR_USERNAME/heat-pump-flow-card#readme",
+  "homepage": "https://github.com/jasipsw/heat-pump-flow-card#readme",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-json": "^6.1.0",
