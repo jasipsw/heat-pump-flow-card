@@ -118,6 +118,12 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.event_name == 'workflow_dispatch' && github.ref_name || github.event.pull_request.base.ref }}
 
+      - name: Verify files exist for release
+        run: |
+          echo "Checking for release files..."
+          ls -lh heat-pump-flow-card.js heat-pump-flow-card.js.map
+          echo "Files found and ready for release"
+
       - name: Create Pre-Release
         uses: softprops/action-gh-release@v2
         with:
