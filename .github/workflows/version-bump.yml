@@ -110,11 +110,46 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add package.json package-lock.json src/const.ts hacs.json
           git add -f dist/ *.js *.map
-          git commit -m "chore: bump version to ${{ steps.version.outputs.version }} [skip ci]" || echo "No changes to commit"
+          git commit -m "chore: bump version to ${{ steps.version.outputs.version }}" || echo "No changes to commit"
 
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.event_name == 'workflow_dispatch' && github.ref_name || github.event.pull_request.base.ref }}
+
+      - name: Create Pre-Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }} (Beta)
+          body: |
+            ## Heat Pump Flow Card v${{ steps.version.outputs.version }} - Beta Release
+
+            ⚠️ **This is a pre-release for testing purposes.**
+
+            ### For Beta Testers
+            - This version is automatically published after merging to the main branch
+            - Enable "Show beta versions" in HACS to receive these updates
+            - Report any issues on [GitHub Issues](https://github.com/jasipsw/heat-pump-flow-card/issues)
+
+            ### Installation
+            This pre-release is compatible with HACS beta testing.
+
+            For manual installation:
+            1. Download `heat-pump-flow-card.js` from the assets below
+            2. Copy it to your `config/www` folder
+            3. Add the resource in your Lovelace configuration
+
+            ### Changes
+            See the [commit history](https://github.com/jasipsw/heat-pump-flow-card/commits/v${{ steps.version.outputs.version }}) for detailed changes.
+
+            ### Full Documentation
+            For configuration options and examples, see the [README](https://github.com/jasipsw/heat-pump-flow-card/blob/main/README.md).
+          files: |
+            heat-pump-flow-card.js
+            heat-pump-flow-card.js.map
+          draft: false
+          prerelease: true
+          generate_release_notes: true
 

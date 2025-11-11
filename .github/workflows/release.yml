@@ -1,12 +1,12 @@
-name: Create Release
+name: Create Stable Release
 
 on:
-  push:
-    branches:
-      - main
-      - master
-    paths:
-      - 'package.json'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (leave empty to use package.json version)'
+        required: false
+        type: string
 
 jobs:
   release:
@@ -23,9 +23,14 @@ jobs:
       - name: Get version from package.json
         id: version
         run: |
-          VERSION=$(node -p "require('./package.json').version")
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ inputs.version }}" ]; then
+            VERSION="${{ inputs.version }}"
+            echo "Using manually specified version: $VERSION"
+          else
+            VERSION=$(node -p "require('./package.json').version")
+            echo "Using version from package.json: $VERSION"
+          fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Version: $VERSION"
 
       - name: Check if version tag exists
         id: check_tag
@@ -38,14 +43,16 @@ jobs:
             echo "Tag v${{ steps.version.outputs.version }} does not exist"
           fi
 
-      - name: Create Release
+      - name: Create Stable Release
         if: steps.check_tag.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.version }}
           name: Release v${{ steps.version.outputs.version }}
           body: |
-            ## Heat Pump Flow Card v${{ steps.version.outputs.version }}
+            ## Heat Pump Flow Card v${{ steps.version.outputs.version }} - Stable Release
+
+            ✅ **This is a stable release ready for production use.**
 
             ### Installation
 
@@ -69,3 +76,12 @@ jobs:
           draft: false
           prerelease: false
           generate_release_notes: true
+
+      - name: Update Pre-Release to Stable
+        if: steps.check_tag.outputs.exists == 'true'
+        run: |
+          echo "::notice::Tag v${{ steps.version.outputs.version }} already exists. Promoting pre-release to stable."
+          gh release edit v${{ steps.version.outputs.version }} --prerelease=false --latest
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
