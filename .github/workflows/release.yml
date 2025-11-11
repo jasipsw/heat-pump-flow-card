@@ -7,6 +7,12 @@ on:
       - master
     paths:
       - 'package.json'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (leave empty to use package.json version)'
+        required: false
+        type: string
 
 jobs:
   release:
@@ -23,9 +29,14 @@ jobs:
       - name: Get version from package.json
         id: version
         run: |
-          VERSION=$(node -p "require('./package.json').version")
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ inputs.version }}" ]; then
+            VERSION="${{ inputs.version }}"
+            echo "Using manually specified version: $VERSION"
+          else
+            VERSION=$(node -p "require('./package.json').version")
+            echo "Using version from package.json: $VERSION"
+          fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Version: $VERSION"
 
       - name: Check if version tag exists
         id: check_tag
@@ -69,3 +80,9 @@ jobs:
           draft: false
           prerelease: false
           generate_release_notes: true
+
+      - name: Release already exists
+        if: steps.check_tag.outputs.exists == 'true'
+        run: |
+          echo "::notice::Release v${{ steps.version.outputs.version }} already exists. Skipping release creation."
+
