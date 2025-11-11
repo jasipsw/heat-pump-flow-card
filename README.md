@@ -948,7 +948,7 @@ For issues, feature requests, or questions:
 
 If you find this card helpful and want to say thanks, please consider making a small donation to our local food pantry:
 
-**[The Open Door's Ipswich Pantry](https://giving.foodpantry.org/-/XJXTMZGZ?amount=20)** (suggested $20)
+**[The Open Door's Ipswich Pantry](https://giving.foodpantry.org/page/holiday?amount=20)** (suggested $20)
 
 Every contribution helps families in our community access fresh, nutritious food.
 
