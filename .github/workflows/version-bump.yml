@@ -1,4 +1,4 @@
-name: Auto Version Bump
+name: Create Pre-Release on Merge
 
 on:
   pull_request:
@@ -41,70 +41,72 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Bump version
+      - name: Get or bump version
         id: version
         run: |
           # Read current version
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           echo "Current version: $CURRENT_VERSION"
 
-          # Parse version
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
-
-          # Determine bump type
+          # Only bump if manually triggered (PR merges use existing version from branch)
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            # Parse version
+            IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+
             BUMP_TYPE="${{ inputs.bump_type }}"
+            echo "Manual trigger - bump type: $BUMP_TYPE"
+
+            # Bump version based on type
+            case $BUMP_TYPE in
+              major)
+                MAJOR=$((MAJOR + 1))
+                MINOR=0
+                PATCH=0
+                echo "Bumping major version"
+                ;;
+              minor)
+                MINOR=$((MINOR + 1))
+                PATCH=0
+                echo "Bumping minor version"
+                ;;
+              patch)
+                PATCH=$((PATCH + 1))
+                echo "Bumping patch version"
+                ;;
+            esac
+
+            NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+            echo "New version: $NEW_VERSION"
+            echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+            echo "should_bump=true" >> $GITHUB_OUTPUT
+
+            # Update package.json
+            npm version $NEW_VERSION --no-git-tag-version
+
+            # Update const.ts
+            sed -i "s/CARD_VERSION = '.*'/CARD_VERSION = '$NEW_VERSION'/" src/const.ts
+
+            # Update hacs.json
+            if grep -q '"version"' hacs.json; then
+              sed -i "s/\"version\": \".*\"/\"version\": \"$NEW_VERSION\"/" hacs.json
+            else
+              sed -i "/\"name\":/a\  \"version\": \"$NEW_VERSION\"," hacs.json
+            fi
           else
-            # Default to patch for automatic PR merges
-            BUMP_TYPE="patch"
-          fi
-
-          echo "Bump type: $BUMP_TYPE"
-
-          # Bump version based on type
-          case $BUMP_TYPE in
-            major)
-              MAJOR=$((MAJOR + 1))
-              MINOR=0
-              PATCH=0
-              echo "Bumping major version"
-              ;;
-            minor)
-              MINOR=$((MINOR + 1))
-              PATCH=0
-              echo "Bumping minor version"
-              ;;
-            patch)
-              PATCH=$((PATCH + 1))
-              echo "Bumping patch version"
-              ;;
-          esac
-
-          NEW_VERSION="$MAJOR.$MINOR.$PATCH"
-          echo "New version: $NEW_VERSION"
-          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
-
-          # Update package.json
-          npm version $NEW_VERSION --no-git-tag-version
-
-          # Update const.ts
-          sed -i "s/CARD_VERSION = '.*'/CARD_VERSION = '$NEW_VERSION'/" src/const.ts
-
-          # Update hacs.json with version field (add if doesn't exist)
-          if grep -q '"version"' hacs.json; then
-            # Version field exists, update it
-            sed -i "s/\"version\": \".*\"/\"version\": \"$NEW_VERSION\"/" hacs.json
-          else
-            # Version field doesn't exist, add it after name field
-            sed -i "/\"name\":/a\  \"version\": \"$NEW_VERSION\"," hacs.json
+            # PR merge - use existing version (already bumped on branch push)
+            echo "PR merge - using existing version from branch: $CURRENT_VERSION"
+            echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+            echo "should_bump=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Build project
+        if: steps.version.outputs.should_bump == 'true'
         run: |
           npm ci
           npm run build
 
       - name: Commit version bump
+        if: steps.version.outputs.should_bump == 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -113,6 +115,7 @@ jobs:
           git commit -m "chore: bump version to ${{ steps.version.outputs.version }}" || echo "No changes to commit"
 
       - name: Push changes
+        if: steps.version.outputs.should_bump == 'true'
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

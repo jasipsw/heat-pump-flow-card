@@ -13,34 +13,41 @@ This allows beta testers to receive updates immediately while giving you control
 
 ## How It Works
 
-### 1. Development & Testing
+### 1. Create Feature Branch
 
-**Developers** work on feature branches and create pull requests.
+**Developers** create a new branch from main using standard prefixes: `feature/`, `fix/`, or `claude/`
 
-### 2. Pull Request Review
+### 2. First Push → Auto Version Bump
 
-When a PR is opened or updated:
-- The **Version Bump in PR** workflow automatically:
-  - Bumps the version number (patch by default)
+When you push your first commit to a new branch:
+- The **Auto Version Bump on Push** workflow:
+  - Detects that your branch version matches main
+  - Bumps the patch version (e.g., `v0.30.8` → `v0.30.9`)
   - Updates `package.json`, `src/const.ts`, and `hacs.json`
   - Builds the project
-  - Commits changes to the PR branch
+  - Commits version bump to your branch
 
-This allows reviewers to see the version-bumped code before merging.
+**Subsequent pushes**: Version stays the same (no repeated bumps)
 
-### 3. Merge to Main → Pre-Release (Automatic)
+### 3. Continue Development
 
-When a PR is merged to main:
-- The **Auto Version Bump** workflow:
-  - Verifies/bumps the version number
-  - Builds the project
-  - Commits the built files
-  - **Creates a pre-release tag** (e.g., `v0.30.7`)
+Continue working on your branch with the bumped version. All commits use the same version number.
+
+### 4. Merge to Main → Pre-Release (Automatic)
+
+When your PR is merged to main:
+- The **Create Pre-Release on Merge** workflow:
+  - Uses the existing version from your branch (no additional bump)
+  - **Creates a pre-release tag** (e.g., `v0.30.9`)
   - Uploads `heat-pump-flow-card.js` and `.js.map` files
 
 **Beta testers** who enable "Show beta versions" in HACS will receive this update automatically.
 
-### 4. Production Release → Stable (Manual)
+**Benefits**: No orphaned commits, cleaner git history, branches stay in sync with main.
+
+> 📖 For detailed workflow documentation, see [WORKFLOW.md](WORKFLOW.md)
+
+### 5. Production Release → Stable (Manual)
 
 When you're confident the pre-release is stable:
 
