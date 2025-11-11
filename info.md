@@ -16,7 +16,7 @@ A beautiful, animated Home Assistant card that visualizes heat pump water flow b
 
 🔥 **Auxiliary Heater Visualization** - Inline electric heater with dynamic glow animations
 
-🔀 **G2 Diverter Valve** - Visual indicator showing flow direction
+🔀 **DHW Heating Diverter Valve** - Visual indicator showing flow direction
 
 🛢️ **Dual Tank Support** - Buffer tank and DHW tank with gradient temperature visualization
 

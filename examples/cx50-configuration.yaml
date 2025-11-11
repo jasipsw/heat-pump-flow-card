@@ -56,14 +56,14 @@ hvac:
   name: "Radiant Floor"
   icon: mdi:floor-plan
 
-# G2 Diverter Valve Configuration (Optional)
-# Uncomment if you have a valve that diverts between heating and DHW
+# DHW Heating Diverter Valve Configuration (Optional)
+# Uncomment if you have a 3-way valve that diverts between heating and DHW
 # g2_valve:
-#   state_entity: binary_sensor.g2_valve_dhw_mode  # on = DHW mode, off = heating mode
-#   name: "G2 Diverter Valve"
+#   state_entity: binary_sensor.dhw_diverter_valve  # on = DHW mode, off = heating mode
+#   name: "DHW Heating Diverter Valve"
 
 # Auxiliary Heater Configuration (Optional)
-# Uncomment if you have an inline electric heater between HP and G2 valve
+# Uncomment if you have an inline electric heater between HP and DHW diverter valve
 # aux_heater:
 #   enabled: true                          # Show the auxiliary heater visualization
 #   power_entity: sensor.aux_heater_power  # Power consumption sensor (W)

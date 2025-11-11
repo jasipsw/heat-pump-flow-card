@@ -22,7 +22,7 @@ A beautiful, animated Home Assistant card that visualizes heat pump water flow b
   - [Heat Pump Visual Options](#heat-pump-visual-options-heat_pump_visual)
   - [Buffer Tank Options](#buffer-tank-options-buffer_tank)
   - [DHW Tank Options](#dhw-tank-options-dhw_tank)
-  - [G2 Valve Options](#g2-valve-options-g2_valve)
+  - [DHW Heating Diverter Valve Options](#dhw-heating-diverter-valve-options-g2_valve)
   - [Auxiliary Heater Options](#auxiliary-heater-options-aux_heater)
   - [HVAC Options](#hvac-options-hvac)
   - [House Performance Options](#house-performance-options-house)
@@ -52,7 +52,7 @@ A beautiful, animated Home Assistant card that visualizes heat pump water flow b
 
 🔥 **Auxiliary Heater Visualization** - Inline electric heater with dynamic glow animations based on power consumption, configurable brand logos
 
-🔀 **G2 Diverter Valve** - Visual indicator showing flow direction (buffer tank or DHW tank mode)
+🔀 **DHW Heating Diverter Valve** - Visual indicator showing flow direction (buffer tank or DHW tank mode)
 
 🛢️ **Dual Tank Support** - Buffer tank and DHW (Domestic Hot Water) tank with gradient temperature visualization
 
@@ -667,9 +667,9 @@ dhw_tank_2:
   tank_outlet_icon_url: "mdi:faucet-variant"  # MDI icon or custom image URL
 ```
 
-### G2 Valve Options (`g2_valve`)
+### DHW Heating Diverter Valve Options (`g2_valve`)
 
-Diverter valve between buffer tank and DHW tank.
+3-way diverter valve that directs flow between buffer tank (heating mode) and DHW tank (DHW mode).
 
 | Name | Type | Description |
 |------|------|-------------|
@@ -677,7 +677,7 @@ Diverter valve between buffer tank and DHW tank.
 
 ### Auxiliary Heater Options (`aux_heater`)
 
-Inline electric heater between heat pump and G2 valve.
+Inline electric heater between heat pump and DHW heating diverter valve.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
@@ -857,7 +857,7 @@ The card visualizes your heat pump system in real-time:
 
 1. **Heat Pump** (left) - Shows electrical power input, thermal output, COP, and operating state with animated fan
 2. **Auxiliary Heater** (optional) - Inline electric heater with dynamic glow based on power consumption
-3. **G2 Valve** (optional) - Diverter valve showing flow direction (buffer or DHW mode)
+3. **DHW Heating Diverter Valve** (optional) - 3-way valve showing flow direction (buffer or DHW mode)
 4. **Buffer Tank** (center-top) - Stores heated water with gradient visualization showing temperature stratification
 5. **DHW Tank** (center-bottom) - Domestic hot water with heating coil and gradient visualization
 6. **HVAC Load** (right) - Shows thermal power consumed by radiant floors, radiators, or other heating/cooling
@@ -882,7 +882,7 @@ The card visualizes your heat pump system in real-time:
 <!-- SCREENSHOT PLACEHOLDER: Operating Modes - Show the heat pump in different states:
   - Heating mode: Heat pump colored red, hot pipes red, flow animations active
   - Cooling mode: Heat pump colored blue, cold pipes blue
-  - DHW mode: Heat pump colored orange, G2 valve directing to DHW tank
+  - DHW mode: Heat pump colored orange, diverter valve directing to DHW tank
   - Defrost mode: Heat pump colored yellow (if applicable)
   - Idle/Off mode: Everything gray, no animations
   Consider a grid layout showing 3-4 different modes side by side

@@ -1915,7 +1915,7 @@ export class HeatPumpFlowCard extends LitElement {
               ` : ''}
             </g>
 
-            <!-- G2 Diverter Valve (3-way valve between HP and tanks) -->
+            <!-- DHW Heating Diverter Valve (3-way valve between HP and tanks) -->
             <g id="g2-valve" transform="translate(360, 180) scale(0.7)">
               <!-- Valve body - cylindrical with flanges (matching valve idea graphic) -->
               <!-- Left inlet flange -->
@@ -1963,7 +1963,7 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- Valve label -->
               <text x="-17" y="-20" text-anchor="middle" fill="#2c3e50" font-size="10" font-weight="bold">
-                G2
+                DHW Valve
               </text>
             </g>
 

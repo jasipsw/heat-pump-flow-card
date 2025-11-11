@@ -173,13 +173,13 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     };
   };
 
-  // G2 Valve Configuration (diverter valve between buffer and DHW)
+  // DHW Heating Diverter Valve Configuration (3-way valve between buffer and DHW)
   g2_valve?: {
     state_entity?: string;         // Entity indicating valve state (on=DHW mode, off=heating mode)
     name?: string;
   };
 
-  // Auxiliary Heater Configuration (inline heater between HP and G2)
+  // Auxiliary Heater Configuration (inline heater between HP and DHW diverter valve)
   aux_heater?: {
     enabled?: boolean;             // Show auxiliary heater visualization (default: false)
     power_entity?: string;         // Power consumption entity (W)
