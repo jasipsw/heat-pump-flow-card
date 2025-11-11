@@ -18,12 +18,24 @@ export const cardStyles = css`
     justify-content: space-between;
   }
 
+  .card-logo-link {
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .card-logo-link:hover {
+    transform: scale(1.05);
+  }
+
   .card-logo {
     height: var(--logo-size, 40px);
     width: auto;
     opacity: 0.9;
     transition: opacity 0.3s ease;
     border-radius: 8px;
+    display: block;
   }
 
   .card-logo:hover {
