@@ -1,6 +1,6 @@
 {
   "name": "Heat Pump Flow Card",
-  "version": "0.30.8",
+  "version": "0.30.9",
   "content_in_root": true,
   "render_readme": true,
   "filename": "heat-pump-flow-card.js",
