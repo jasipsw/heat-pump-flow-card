@@ -84,14 +84,36 @@ If you need to bump the version without a PR:
 
 This will bump the version and create a pre-release automatically.
 
-## Manual Stable Release (Optional)
+## Manual Stable Release (with Optional Version Bump)
 
-To create a stable release for a specific version:
+To create a stable release, with optional version bumping:
 
 1. Go to **Actions** → **Create Stable Release**
 2. Click **Run workflow**
-3. Enter the version (e.g., `0.31.0`) or leave empty for `package.json` version
-4. The workflow creates a stable release
+3. Choose your version strategy:
+
+   **Option A: Bump Version Automatically**
+   - Select bump type: `major`, `minor`, or `patch`
+   - The workflow will:
+     - Increment the version (e.g., `0.30.8` → `0.31.0` for minor)
+     - Reset lesser version numbers to 0 (e.g., minor bump resets patch to 0)
+     - Update `package.json`, `src/const.ts`, and `hacs.json`
+     - Build the project
+     - Commit and push changes
+     - Create the stable release with the new version
+
+   **Option B: Use Specific Version**
+   - Enter a specific version (e.g., `1.0.0`)
+   - Leave bump type as `none`
+   - The workflow will update files, build, and create the release
+
+   **Option C: Promote Existing Pre-Release**
+   - Leave both fields empty or select bump type `none`
+   - The workflow will use the current `package.json` version
+   - If a pre-release exists for that version, it will be promoted to stable
+     - If no pre-release exists, a new stable release will be created
+
+4. The workflow creates or promotes the stable release
 
 ## Release Checklist
 

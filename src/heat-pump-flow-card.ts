@@ -868,9 +868,18 @@ export class HeatPumpFlowCard extends LitElement {
     // Main cylinder always visible (just gray when off), only animates when active
     const cylinderClass = auxIntensity > 0 ? 'aux-cylinder-pulse' : '';
 
+    const logoSize = this.config.logo_size || 40;
+    const showLogo = this.config.show_logo !== false; // Default to true
+    const logoPath = this.config.logo_path || '/local/heat-pump-flow.png';
+
     return html`
-      <ha-card>
-        ${this.config.title ? html`<h1 class="card-header">${this.config.title}</h1>` : ''}
+      <ha-card style="--logo-size: ${logoSize}px">
+        ${this.config.title || showLogo ? html`
+          <h1 class="card-header">
+            <span>${this.config.title || ''}</span>
+            ${showLogo ? html`<img src="${logoPath}" class="card-logo" alt="Heat Pump Flow Card" />` : ''}
+          </h1>
+        ` : ''}
 
         <div class="card-content">
           <svg viewBox="0 0 800 700" xmlns="http://www.w3.org/2000/svg">

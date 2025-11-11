@@ -13,6 +13,21 @@ export const cardStyles = css`
     font-weight: 500;
     margin: 0 0 16px 0;
     color: var(--primary-text-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-logo {
+    height: var(--logo-size, 40px);
+    width: auto;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+    border-radius: 8px;
+  }
+
+  .card-logo:hover {
+    opacity: 1;
   }
 
   .card-content {
