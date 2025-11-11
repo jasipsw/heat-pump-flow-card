@@ -1841,6 +1841,50 @@ export class HeatPumpFlowCard extends LitElement {
                     </g>
                   ` : ''}
                 ` : ''}
+
+                <!-- Custom Metrics Section -->
+                ${this.config.metrics && this.config.metrics.length > 0 ? (() => {
+                  // Calculate starting Y position based on whether detailed metrics are shown
+                  const baseY = this.config.heat_pump?.show_detailed_metrics ? 176 : 44;
+                  const dividerY = this.config.heat_pump?.show_detailed_metrics ? 168 : 36;
+
+                  // Organize metrics into rows of 3 columns
+                  const rows: Array<Array<{entity: string, label: string, unit?: string, decimals?: number}>> = [];
+                  for (let i = 0; i < this.config.metrics.length; i += 3) {
+                    rows.push(this.config.metrics.slice(i, i + 3));
+                  }
+
+                  return svg`
+                    <!-- Divider line before custom metrics -->
+                    <line x1="8" y1="${dividerY}" x2="112" y2="${dividerY}" stroke="${hpTextColor}" stroke-width="0.5" opacity="0.3"/>
+
+                    ${rows.map((row, rowIndex) => {
+                      const labelY = baseY + (rowIndex * 18);
+                      const valueY = labelY + 7;
+                      const columns = [8, 42, 76]; // Three column x-positions
+
+                      return svg`
+                        ${row.map((metric, colIndex) => {
+                          const value = this.getStateValue(metric.entity);
+                          if (value === undefined) return '';
+
+                          const x = columns[colIndex];
+                          const decimals = metric.decimals !== undefined ? metric.decimals : 1;
+                          const unit = metric.unit || this.getStateUnit(metric.entity) || '';
+
+                          return svg`
+                            <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, metric.entity)}">
+                              <text x="${x}" y="${labelY}" fill="${hpTextColor}" font-size="7" opacity="0.7">${metric.label}</text>
+                              <text x="${x}" y="${valueY}" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                                ${this.formatValue(value, decimals)}${unit}
+                              </text>
+                            </g>
+                          `;
+                        })}
+                      `;
+                    })}
+                  `;
+                })() : ''}
               </g>
 
             <!-- Heat Pump Metrics (legacy - now moved inside HP box, keeping for optional extra data) -->
@@ -1871,7 +1915,7 @@ export class HeatPumpFlowCard extends LitElement {
               ` : ''}
             </g>
 
-            <!-- G2 Diverter Valve (3-way valve between HP and tanks) -->
+            <!-- DHW Heating Diverter Valve (3-way valve between HP and tanks) -->
             <g id="g2-valve" transform="translate(360, 180) scale(0.7)">
               <!-- Valve body - cylindrical with flanges (matching valve idea graphic) -->
               <!-- Left inlet flange -->
@@ -1882,6 +1926,30 @@ export class HeatPumpFlowCard extends LitElement {
               <rect x="0" y="-8" width="10" height="16" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
               <!-- Bottom outlet flange (to DHW) - adjusted for better alignment -->
               <rect x="-25" y="12" width="16" height="10" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
+
+              <!-- 3-Way Valve Symbol (three triangles pointing to center with ball) -->
+              <g id="valve-symbol" opacity="0.8">
+                <!-- Left triangle (from HP inlet) -->
+                <path d="M -28 0 L -20 -4 L -20 4 Z"
+                      fill="#2c3e50"
+                      stroke="#2c3e50"
+                      stroke-width="0.5"/>
+                <!-- Right triangle (to buffer/heating) -->
+                <path d="M -6 0 L -14 -4 L -14 4 Z"
+                      fill="#2c3e50"
+                      stroke="#2c3e50"
+                      stroke-width="0.5"/>
+                <!-- Bottom triangle (to DHW) -->
+                <path d="M -17 8 L -21 4 L -13 4 Z"
+                      fill="#2c3e50"
+                      stroke="#2c3e50"
+                      stroke-width="0.5"/>
+                <!-- Center circle (ball/switching mechanism) -->
+                <circle cx="-17" cy="0" r="2.5"
+                        fill="#34495e"
+                        stroke="#2c3e50"
+                        stroke-width="0.5"/>
+              </g>
 
               <!-- Internal flow path visualization with animations -->
               ${g2ValveState.isActive ? html`
@@ -1919,7 +1987,7 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- Valve label -->
               <text x="-17" y="-20" text-anchor="middle" fill="#2c3e50" font-size="10" font-weight="bold">
-                G2
+                DHW Valve
               </text>
             </g>
 

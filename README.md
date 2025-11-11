@@ -18,10 +18,11 @@ A beautiful, animated Home Assistant card that visualizes heat pump water flow b
 - [Configuration Options](#configuration-options)
   - [Main Options](#main-options)
   - [Heat Pump Options](#heat-pump-options-heat_pump)
+  - [Custom Metrics](#custom-metrics-metrics)
   - [Heat Pump Visual Options](#heat-pump-visual-options-heat_pump_visual)
   - [Buffer Tank Options](#buffer-tank-options-buffer_tank)
   - [DHW Tank Options](#dhw-tank-options-dhw_tank)
-  - [G2 Valve Options](#g2-valve-options-g2_valve)
+  - [DHW Heating Diverter Valve Options](#dhw-heating-diverter-valve-options-g2_valve)
   - [Auxiliary Heater Options](#auxiliary-heater-options-aux_heater)
   - [HVAC Options](#hvac-options-hvac)
   - [House Performance Options](#house-performance-options-house)
@@ -51,11 +52,13 @@ A beautiful, animated Home Assistant card that visualizes heat pump water flow b
 
 🔥 **Auxiliary Heater Visualization** - Inline electric heater with dynamic glow animations based on power consumption, configurable brand logos
 
-🔀 **G2 Diverter Valve** - Visual indicator showing flow direction (buffer tank or DHW tank mode)
+🔀 **DHW Heating Diverter Valve** - Visual indicator showing flow direction (buffer tank or DHW tank mode)
 
 🛢️ **Dual Tank Support** - Buffer tank and DHW (Domestic Hot Water) tank with gradient temperature visualization
 
 📊 **Real-Time Data** - Shows thermal power, COP, temperatures, flow rates, energy consumption, costs, and runtime. All metrics are clickable to view history graphs.
+
+📈 **Custom Metrics** - Add your own sensors with custom labels below the core metrics in the same 3-column grid format.
 
 🌈 **Tank Gradient Visualization** - Tanks fill with color gradients representing temperature stratification from bottom to top
 
@@ -190,6 +193,19 @@ heat_pump_visual:
   defrost_color: "#f1c40f"
   show_metrics: true
   animate_fan: true
+
+# Custom metrics - add your own sensors below the core metrics
+metrics:
+  - entity: sensor.heat_pump_oil_temp
+    label: "Oil T"
+    unit: "°C"
+    decimals: 1
+  - entity: sensor.heat_pump_pressure
+    label: "Press"
+    unit: "PSI"
+    decimals: 0
+  - entity: sensor.heat_pump_custom_3
+    label: "Cust3"
 
 buffer_tank:
   supply_temp_entity: sensor.hvac_buffer_tank_supply_temperature
@@ -451,6 +467,54 @@ The metrics panel displays data in a 3-column grid layout below the heat pump. A
 
 *Only shown when active/non-zero
 
+### Custom Metrics (`metrics`)
+
+Add your own custom sensors to be displayed below the core and detailed metrics in the same 3-column grid format. This is perfect for heat pump configurations with additional sensors that aren't covered by the standard entities.
+
+**Configuration:**
+
+Each metric in the array requires:
+- `entity` (string, **required**): Sensor entity ID to display
+- `label` (string, **required**): Custom abbreviation/label (keep short, e.g., "Cust1", "TempA", "P1")
+- `unit` (string, optional): Unit override (default: uses entity's unit_of_measurement)
+- `decimals` (number, optional): Decimal places to display (default: 1)
+
+**Example:**
+```yaml
+metrics:
+  - entity: sensor.heat_pump_custom_sensor_1
+    label: "Custom1"
+    unit: "°C"
+    decimals: 1
+  - entity: sensor.heat_pump_custom_sensor_2
+    label: "Press"
+    unit: "PSI"
+    decimals: 0
+  - entity: sensor.heat_pump_oil_temp
+    label: "Oil T"
+    # unit and decimals will use entity's defaults
+  - entity: sensor.heat_pump_custom_sensor_4
+    label: "Cust4"
+  - entity: sensor.heat_pump_custom_sensor_5
+    label: "Cust5"
+  - entity: sensor.heat_pump_custom_sensor_6
+    label: "Cust6"
+```
+
+**Display:**
+
+Custom metrics are displayed in a 3-column grid below all core and detailed metrics:
+- Automatically arranged into rows of 3 columns
+- Uses the same format as core metrics (label on top, value below)
+- All metrics are clickable to view history graphs
+- Only displays if the entity has a valid value
+
+**Tips:**
+- Keep labels short (6 characters or less) for best appearance
+- Labels are displayed at the top of each metric, so abbreviations work best
+- Use the `unit` parameter to override long default units (e.g., "kW" instead of "kilowatts")
+- Custom metrics appear below core metrics (or below detailed metrics if `show_detailed_metrics: true`)
+
 ### Heat Pump Visual Options (`heat_pump_visual`)
 
 Configure the appearance and behavior of the animated heat pump visualization.
@@ -603,9 +667,9 @@ dhw_tank_2:
   tank_outlet_icon_url: "mdi:faucet-variant"  # MDI icon or custom image URL
 ```
 
-### G2 Valve Options (`g2_valve`)
+### DHW Heating Diverter Valve Options (`g2_valve`)
 
-Diverter valve between buffer tank and DHW tank.
+3-way diverter valve that directs flow between buffer tank (heating mode) and DHW tank (DHW mode).
 
 | Name | Type | Description |
 |------|------|-------------|
@@ -613,7 +677,7 @@ Diverter valve between buffer tank and DHW tank.
 
 ### Auxiliary Heater Options (`aux_heater`)
 
-Inline electric heater between heat pump and G2 valve.
+Inline electric heater between heat pump and DHW heating diverter valve.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
@@ -793,7 +857,7 @@ The card visualizes your heat pump system in real-time:
 
 1. **Heat Pump** (left) - Shows electrical power input, thermal output, COP, and operating state with animated fan
 2. **Auxiliary Heater** (optional) - Inline electric heater with dynamic glow based on power consumption
-3. **G2 Valve** (optional) - Diverter valve showing flow direction (buffer or DHW mode)
+3. **DHW Heating Diverter Valve** (optional) - 3-way valve showing flow direction (buffer or DHW mode)
 4. **Buffer Tank** (center-top) - Stores heated water with gradient visualization showing temperature stratification
 5. **DHW Tank** (center-bottom) - Domestic hot water with heating coil and gradient visualization
 6. **HVAC Load** (right) - Shows thermal power consumed by radiant floors, radiators, or other heating/cooling
@@ -818,7 +882,7 @@ The card visualizes your heat pump system in real-time:
 <!-- SCREENSHOT PLACEHOLDER: Operating Modes - Show the heat pump in different states:
   - Heating mode: Heat pump colored red, hot pipes red, flow animations active
   - Cooling mode: Heat pump colored blue, cold pipes blue
-  - DHW mode: Heat pump colored orange, G2 valve directing to DHW tank
+  - DHW mode: Heat pump colored orange, diverter valve directing to DHW tank
   - Defrost mode: Heat pump colored yellow (if applicable)
   - Idle/Off mode: Everything gray, no animations
   Consider a grid layout showing 3-4 different modes side by side
@@ -875,6 +939,7 @@ For issues, feature requests, or questions:
 Inspired by:
 - [Sunsynk Power Flow Card](https://github.com/slipx06/sunsynk-power-flow-card)
 - [Power Flow Card Plus](https://github.com/flixlix/power-flow-card-plus)
+- [Chiltrix CX34 Heat Pump Control](https://github.com/gonzojive/heatpump) by gonzojive - Tools for communicating with the Chiltrix CX34 heat pump
 
 ## License
 

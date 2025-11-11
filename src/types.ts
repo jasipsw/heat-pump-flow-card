@@ -57,6 +57,15 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     logo_text_color?: string;    // Text color for brand name (default: dynamic based on HP state, e.g., "white", "#2c3e50")
   };
 
+  // Custom Metrics Configuration
+  // Displays additional sensors below the core heat pump metrics in three-column format
+  metrics?: {
+    entity: string;      // Sensor entity ID to display
+    label: string;       // Custom abbreviation/label (e.g., "Cust1", "Temp", etc.)
+    unit?: string;       // Optional unit override (default: use entity's unit_of_measurement)
+    decimals?: number;   // Optional decimal places (default: 1)
+  }[];
+
   // Heat Pump Visual Configuration
   heat_pump_visual?: {
     off_color?: string;         // Color when off (default: #95a5a6 gray)
@@ -164,13 +173,13 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     };
   };
 
-  // G2 Valve Configuration (diverter valve between buffer and DHW)
+  // DHW Heating Diverter Valve Configuration (3-way valve between buffer and DHW)
   g2_valve?: {
     state_entity?: string;         // Entity indicating valve state (on=DHW mode, off=heating mode)
     name?: string;
   };
 
-  // Auxiliary Heater Configuration (inline heater between HP and G2)
+  // Auxiliary Heater Configuration (inline heater between HP and DHW diverter valve)
   aux_heater?: {
     enabled?: boolean;             // Show auxiliary heater visualization (default: false)
     power_entity?: string;         // Power consumption entity (W)

@@ -20,7 +20,7 @@
 # - input_number.test_aux_heater_power (0-18000, step 500, unit: W)
 
 # Input Boolean Helpers:
-# - input_boolean.test_g2_valve_dhw_mode (on = DHW, off = Heating)
+# - input_boolean.test_dhw_diverter_valve (on = DHW, off = Heating)
 
 type: custom:heat-pump-flow-card
 title: TEST - Heat Pump Flow Card
@@ -47,9 +47,9 @@ hvac:
   supply_temp_entity: input_number.test_hvac_supply_temp
   return_temp_entity: input_number.test_hvac_return_temp
 
-# G2 Valve Configuration
+# DHW Heating Diverter Valve Configuration
 g2_valve:
-  state_entity: input_boolean.test_g2_valve_dhw_mode
+  state_entity: input_boolean.test_dhw_diverter_valve
 
 # Auxiliary Heater Configuration
 aux_heater:
@@ -108,7 +108,7 @@ display:
 
 # Suggested Test Values:
 
-# Heating Mode (G2 valve OFF):
+# Heating Mode (DHW diverter valve OFF):
 # - HP Power: 3000 W
 # - HP Thermal: 12000 W (COP = 4.0)
 # - HP Outlet Temp: 45°C
@@ -121,16 +121,16 @@ display:
 # - HVAC Supply: 42°C
 # - HVAC Return: 38°C
 # - Aux Heater Power: 0 W (off)
-# - G2 Valve: OFF (heating mode)
+# - DHW Diverter Valve: OFF (heating mode)
 
-# DHW Mode (G2 valve ON):
+# DHW Mode (DHW diverter valve ON):
 # - HP Power: 4000 W
 # - HP Thermal: 14000 W (COP = 3.5)
 # - HP Outlet Temp: 55°C
 # - HP Inlet Temp: 40°C
 # - HP Flow Rate: 18 L/min
 # - Aux Heater Power: 9000 W (50% power - should show medium glow)
-# - G2 Valve: ON (DHW mode)
+# - DHW Diverter Valve: ON (DHW mode)
 
 # Aux Heater Power Test:
 # - 0 W = Gray coil, no glow
