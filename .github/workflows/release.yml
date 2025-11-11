@@ -3,8 +3,18 @@ name: Create Stable Release
 on:
   workflow_dispatch:
     inputs:
+      bump_type:
+        description: 'Version bump type (leave empty to use current version)'
+        required: false
+        type: choice
+        options:
+          - none
+          - patch
+          - minor
+          - major
+        default: 'none'
       version:
-        description: 'Version to release (leave empty to use package.json version)'
+        description: 'Specific version to release (overrides bump_type, leave empty to use bump_type or current version)'
         required: false
         type: string
 
@@ -20,21 +30,104 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get version from package.json
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Calculate version
         id: version
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ inputs.version }}" ]; then
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $CURRENT_VERSION"
+
+          # Check if specific version is provided
+          if [ -n "${{ inputs.version }}" ]; then
             VERSION="${{ inputs.version }}"
             echo "Using manually specified version: $VERSION"
+            SHOULD_BUMP=true
+          # Check if bump_type is provided and not 'none'
+          elif [ "${{ inputs.bump_type }}" != "none" ] && [ -n "${{ inputs.bump_type }}" ]; then
+            # Parse current version
+            IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+
+            case "${{ inputs.bump_type }}" in
+              major)
+                MAJOR=$((MAJOR + 1))
+                MINOR=0
+                PATCH=0
+                echo "Bumping major version"
+                ;;
+              minor)
+                MINOR=$((MINOR + 1))
+                PATCH=0
+                echo "Bumping minor version"
+                ;;
+              patch)
+                PATCH=$((PATCH + 1))
+                echo "Bumping patch version"
+                ;;
+            esac
+
+            VERSION="$MAJOR.$MINOR.$PATCH"
+            echo "Calculated new version: $VERSION"
+            SHOULD_BUMP=true
           else
-            VERSION=$(node -p "require('./package.json').version")
-            echo "Using version from package.json: $VERSION"
+            VERSION="$CURRENT_VERSION"
+            echo "Using current version from package.json: $VERSION"
+            SHOULD_BUMP=false
           fi
+
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "should_bump=$SHOULD_BUMP" >> $GITHUB_OUTPUT
+
+      - name: Update version in files
+        if: steps.version.outputs.should_bump == 'true'
+        run: |
+          echo "Updating version to ${{ steps.version.outputs.version }}"
+
+          # Update package.json
+          npm version ${{ steps.version.outputs.version }} --no-git-tag-version
+
+          # Update const.ts
+          sed -i "s/CARD_VERSION = '.*'/CARD_VERSION = '${{ steps.version.outputs.version }}'/" src/const.ts
+
+          # Update hacs.json
+          if grep -q '"version"' hacs.json; then
+            sed -i "s/\"version\": \".*\"/\"version\": \"${{ steps.version.outputs.version }}\"/" hacs.json
+          else
+            sed -i "/\"name\":/a\  \"version\": \"${{ steps.version.outputs.version }}\"," hacs.json
+          fi
+
+          echo "Version files updated"
+
+      - name: Build project
+        if: steps.version.outputs.should_bump == 'true'
+        run: |
+          npm ci
+          npm run build
+
+      - name: Commit version bump
+        if: steps.version.outputs.should_bump == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add package.json package-lock.json src/const.ts hacs.json
+          git add -f dist/ *.js *.map
+          git commit -m "chore: bump version to ${{ steps.version.outputs.version }} for stable release" || echo "No changes to commit"
+          git push
+
+      - name: Verify build files
+        run: |
+          echo "Verifying release files exist..."
+          ls -lh heat-pump-flow-card.js heat-pump-flow-card.js.map
+          echo "✓ Build files verified"
 
       - name: Check if version tag exists
         id: check_tag
         run: |
+          # Fetch latest tags after potential push
+          git fetch --tags
           if git rev-parse "v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
             echo "exists=true" >> $GITHUB_OUTPUT
             echo "Tag v${{ steps.version.outputs.version }} already exists"
