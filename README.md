@@ -100,6 +100,12 @@ resources:
     type: module
 ```
 
+4. **(Optional)** To display the Heat Pump Flow Card logo in the card header:
+   - Download `heat-pump-flow.png` from the repository
+   - Copy it to your `config/www` folder
+   - The logo will appear automatically in the top-right corner of the card
+   - Configure with `show_logo`, `logo_path`, and `logo_size` options (see Configuration Options)
+
 ### Updating the Card
 
 When you update to a new version, Home Assistant and your browser may cache the old code. For the most reliable updates:
@@ -350,6 +356,9 @@ labels:
 |------|------|---------|-------------|
 | `type` | string | **Required** | Must be `custom:heat-pump-flow-card` |
 | `title` | string | Optional | Card title |
+| `show_logo` | boolean | `true` | Show Heat Pump Flow Card logo in header |
+| `logo_path` | string | `/local/heat-pump-flow.png` | Path to logo image (requires copying `heat-pump-flow.png` to `config/www/` folder) |
+| `logo_size` | number | `40` | Logo height in pixels |
 
 ### Heat Pump Options (`heat_pump`)
 
