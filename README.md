@@ -356,8 +356,9 @@ labels:
 |------|------|---------|-------------|
 | `type` | string | **Required** | Must be `custom:heat-pump-flow-card` |
 | `title` | string | Optional | Card title |
-| `show_logo` | boolean | `true` | Show Heat Pump Flow Card logo in header |
+| `show_logo` | boolean | `true` | Show Heat Pump Flow Card logo in header (clickable) |
 | `logo_path` | string | `/local/heat-pump-flow.png` | Path to logo image (requires copying `heat-pump-flow.png` to `config/www/` folder) |
+| `logo_url` | string | `GitHub README` | URL to open when clicking the logo (opens in new tab) |
 | `logo_size` | number | `40` | Logo height in pixels |
 
 ### Heat Pump Options (`heat_pump`)

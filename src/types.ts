@@ -5,6 +5,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
   title?: string;
   show_logo?: boolean;          // Show Heat Pump Flow Card logo in header (default: true)
   logo_path?: string;           // Path to logo image (default: '/local/heat-pump-flow.png')
+  logo_url?: string;            // URL to open when clicking logo (default: GitHub README)
   logo_size?: number;           // Logo size in pixels (default: 40)
 
   // Heat Pump Configuration

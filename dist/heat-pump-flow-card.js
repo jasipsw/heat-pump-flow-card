@@ -16,12 +16,24 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
     justify-content: space-between;
   }
 
+  .card-logo-link {
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .card-logo-link:hover {
+    transform: scale(1.05);
+  }
+
   .card-logo {
     height: var(--logo-size, 40px);
     width: auto;
     opacity: 0.9;
     transition: opacity 0.3s ease;
     border-radius: 8px;
+    display: block;
   }
 
   .card-logo:hover {
@@ -273,12 +285,16 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
           href="${t}"
           opacity="${r}"
         />
-      `}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return U``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getDHWTank2State(),r=this.getG2ValveState(),n=this.getAuxHeaterState(),s=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),l=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),h=s.hotPipe,c=s.coldPipe,d=l.hotPipe,p=l.coldPipe,f=this.config.temperature.hot_color,u=this.config.temperature.cold_color,g=this.config.dhw_tank?.inlet_color||this.config.temperature.hot_color,m=this.config.dhw_tank?.outlet_color||this.config.temperature.cold_color,y=this.config.dhw_tank?.tank_inlet_color||"#3498db",_=this.config.dhw_tank?.tank_outlet_color||"#e74c3c",w=this.config.dhw_tank_2?.tank_outlet_color||"#e74c3c",x=e.supplyTemp>e.returnTemp,$=e.supplyTemp,b=this.generateTankGradient("buffer",$,x),k=b.levels,v=b.fillPercentage,S=o.tankTemp??o.inletTemp,A=this.generateTankGradient("dhw",S,!0),T=A.levels,C=A.fillPercentage;let H=[],P=0;if(a.enabled){const t=a.tankTemp??a.inletTemp,e=this.generateTankGradient("dhw_tank_2",t,!0);H=e.levels,P=e.fillPercentage}const M=this.getHeatPumpColor(t),E=this.getContrastTextColor(M),L="var(--primary-text-color)";t.error;const V=n.intensity;let z="#bdc3c7";if(V>0){const t=189,e=195,i=199,o=255,a=68,r=34;z=`rgb(${Math.round(t+(o-t)*V)}, ${Math.round(e+(a-e)*V)}, ${Math.round(i+(r-i)*V)})`}const D=this.config.aux_heater?.glow_size??8,R=224,O=172,F=60,W=R,N=O-D,I=F,Q=16+2*D,B=2,j=2,q=R,Z=O-.75*D,Y=F,X=16+2*D*.75,J=2,K=2,tt=R,et=O-.5*D,it=F,ot=16+2*D*.5,at=2,rt=2,nt=V>0?2-1.4*V:2,st=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),lt=this.config.aux_heater?.shadow_blur??1,ht=V>0?"aux-glow-outer":"aux-heater-layer",ct=V>0?"aux-glow-middle":"aux-heater-layer",dt=V>0?"aux-glow-inner":"aux-heater-layer",pt=V>0?"aux-cylinder-pulse":"",ft=this.config.logo_size||40,gt=!1!==this.config.show_logo,mt=this.config.logo_path||"/local/heat-pump-flow.png";return U`
+      `}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return U``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getDHWTank2State(),r=this.getG2ValveState(),n=this.getAuxHeaterState(),s=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),l=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),h=s.hotPipe,c=s.coldPipe,d=l.hotPipe,p=l.coldPipe,f=this.config.temperature.hot_color,u=this.config.temperature.cold_color,g=this.config.dhw_tank?.inlet_color||this.config.temperature.hot_color,m=this.config.dhw_tank?.outlet_color||this.config.temperature.cold_color,y=this.config.dhw_tank?.tank_inlet_color||"#3498db",_=this.config.dhw_tank?.tank_outlet_color||"#e74c3c",w=this.config.dhw_tank_2?.tank_outlet_color||"#e74c3c",x=e.supplyTemp>e.returnTemp,$=e.supplyTemp,b=this.generateTankGradient("buffer",$,x),k=b.levels,v=b.fillPercentage,S=o.tankTemp??o.inletTemp,A=this.generateTankGradient("dhw",S,!0),T=A.levels,C=A.fillPercentage;let H=[],P=0;if(a.enabled){const t=a.tankTemp??a.inletTemp,e=this.generateTankGradient("dhw_tank_2",t,!0);H=e.levels,P=e.fillPercentage}const M=this.getHeatPumpColor(t),E=this.getContrastTextColor(M),L="var(--primary-text-color)";t.error;const V=n.intensity;let z="#bdc3c7";if(V>0){const t=189,e=195,i=199,o=255,a=68,r=34;z=`rgb(${Math.round(t+(o-t)*V)}, ${Math.round(e+(a-e)*V)}, ${Math.round(i+(r-i)*V)})`}const D=this.config.aux_heater?.glow_size??8,R=224,O=172,F=60,W=R,N=O-D,I=F,Q=16+2*D,B=2,j=2,q=R,Z=O-.75*D,Y=F,X=16+2*D*.75,J=2,K=2,tt=R,et=O-.5*D,it=F,ot=16+2*D*.5,at=2,rt=2,nt=V>0?2-1.4*V:2,st=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),lt=this.config.aux_heater?.shadow_blur??1,ht=V>0?"aux-glow-outer":"aux-heater-layer",ct=V>0?"aux-glow-middle":"aux-heater-layer",dt=V>0?"aux-glow-inner":"aux-heater-layer",pt=V>0?"aux-cylinder-pulse":"",ft=this.config.logo_size||40,gt=!1!==this.config.show_logo,mt=this.config.logo_path||"/local/heat-pump-flow.png",yt=this.config.logo_url||"https://github.com/jasipsw/heat-pump-flow-card#readme";return U`
       <ha-card style="--logo-size: ${ft}px">
         ${this.config.title||gt?U`
           <h1 class="card-header">
             <span>${this.config.title||""}</span>
-            ${gt?U`<img src="${mt}" class="card-logo" alt="Heat Pump Flow Card" />`:""}
+            ${gt?U`
+              <a href="${yt}" target="_blank" rel="noopener noreferrer" class="card-logo-link">
+                <img src="${mt}" class="card-logo" alt="Heat Pump Flow Card" />
+              </a>
+            `:""}
           </h1>
         `:""}
 

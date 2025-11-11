@@ -871,13 +871,18 @@ export class HeatPumpFlowCard extends LitElement {
     const logoSize = this.config.logo_size || 40;
     const showLogo = this.config.show_logo !== false; // Default to true
     const logoPath = this.config.logo_path || '/local/heat-pump-flow.png';
+    const logoUrl = this.config.logo_url || 'https://github.com/jasipsw/heat-pump-flow-card#readme';
 
     return html`
       <ha-card style="--logo-size: ${logoSize}px">
         ${this.config.title || showLogo ? html`
           <h1 class="card-header">
             <span>${this.config.title || ''}</span>
-            ${showLogo ? html`<img src="${logoPath}" class="card-logo" alt="Heat Pump Flow Card" />` : ''}
+            ${showLogo ? html`
+              <a href="${logoUrl}" target="_blank" rel="noopener noreferrer" class="card-logo-link">
+                <img src="${logoPath}" class="card-logo" alt="Heat Pump Flow Card" />
+              </a>
+            ` : ''}
           </h1>
         ` : ''}
 
