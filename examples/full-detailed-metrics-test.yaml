@@ -1,0 +1,229 @@
+# Full Detailed Metrics Test Configuration
+# This configuration includes ALL heat pump options, electrical metrics, and detailed metrics
+# Use this to verify positioning and layout of all metrics in the 3-column grid
+
+type: custom:heat-pump-flow-card
+title: Full Metrics Test - Heat Pump System
+
+# Heat Pump Configuration - ALL OPTIONS
+heat_pump:
+  # Basic required entities
+  power_entity: input_number.test_hp_power
+  thermal_entity: input_number.test_hp_thermal
+  cop_entity: sensor.test_heat_pump_cop
+  outlet_temp_entity: input_number.test_hp_outlet_temp
+  inlet_temp_entity: input_number.test_hp_inlet_temp
+  flow_rate_entity: input_number.test_hp_flow
+
+  # Operating mode and status
+  fan_speed_entity: input_number.test_fan_speed
+  mode_entity: input_select.test_hp_mode
+  defrost_entity: input_boolean.test_hp_running  # Using as placeholder for defrost
+  error_entity: sensor.test_heat_pump_cop  # Using as placeholder for error (won't show if normal value)
+
+  # Energy tracking
+  energy_entity: sensor.test_heat_pump_cop  # Using as placeholder (would need kWh sensor)
+  cost_entity: sensor.test_heat_pump_cop  # Using as placeholder (would need cost sensor)
+  runtime_entity: sensor.test_heat_pump_cop  # Using as placeholder (would need runtime sensor)
+
+  # Temperature setpoints
+  heating_target_temp_entity: input_number.test_buffer_supply_temp
+  dhw_target_temp_entity: input_number.test_dhw_tank_temp
+  cooling_target_temp_entity: input_number.test_buffer_return_temp
+
+  # ELECTRICAL METRICS (Core Metrics Row 2)
+  amps_entity: input_number.test_hp_power  # Would need: input_number.test_hp_amps (0-50A)
+  volts_entity: input_number.test_hp_thermal  # Would need: input_number.test_hp_volts (200-250V)
+
+  # DETAILED METRICS PANEL - Enable to show all detailed sensors
+  show_detailed_metrics: true
+
+  # Detailed Metrics Row 1: Compressor, Discharge, Ambient
+  compressor_frequency_entity: input_number.test_fan_speed  # Would need: input_number.test_compressor_freq (0-120Hz)
+  discharge_temp_entity: input_number.test_hp_outlet_temp  # Would need: input_number.test_discharge_temp (50-100°C)
+  ambient_temp_entity: input_number.test_buffer_return_temp  # Would need: input_number.test_ambient_temp (-20-40°C)
+
+  # Detailed Metrics Row 2: DHW, Outdoor Coil, Suction
+  dhw_temp_entity: input_number.test_dhw_tank_temp
+  outdoor_coil_temp_entity: input_number.test_hp_inlet_temp  # Would need: input_number.test_outdoor_coil_temp (-20-40°C)
+  suction_temp_entity: input_number.test_buffer_supply_temp  # Would need: input_number.test_suction_temp (-10-30°C)
+
+  # Detailed Metrics Row 3: Heat Exchanger, Plate Exchanger, IPM
+  heat_exchanger_temp_entity: input_number.test_hp_outlet_temp  # Would need: input_number.test_hx_temp (30-70°C)
+  plate_exchange_temp_entity: input_number.test_buffer_supply_temp  # Would need: input_number.test_plate_temp (30-70°C)
+  ipm_temp_entity: input_number.test_hp_inlet_temp  # Would need: input_number.test_ipm_temp (30-90°C)
+
+  # Detailed Metrics Row 4: EC Fan Motors, Bus Voltage
+  ec_fan_motor_1_speed_entity: input_number.test_fan_speed  # Would need: input_number.test_ec_fan_1 (0-100%)
+  ec_fan_motor_2_speed_entity: input_number.test_fan_speed  # Would need: input_number.test_ec_fan_2 (0-100%)
+  bus_line_voltage_entity: input_number.test_hp_power  # Would need: input_number.test_bus_voltage (300-400V)
+
+  # Detailed Metrics Row 5: E-Heater, Compressor Hours, Max Compressor %
+  e_heater_power_entity: input_number.test_aux_heater_power
+  compressor_running_time_entity: input_number.test_hp_power  # Would need: input_number.test_comp_hours (0-50000h)
+  compressor_max_percentage_entity: input_number.test_fan_speed  # Would need: input_number.test_comp_max_pct (0-100%)
+
+  # Detailed Metrics Row 6: Pump, Fan Shutdown Code, DIN6
+  pump_enabled_entity: input_boolean.test_hp_running
+  fan_shutdown_code_entity: input_number.test_hp_power  # Would need: input_number.test_fan_code (0-999)
+  din6_mode_switch_entity: input_number.test_hp_power  # Would need: input_number.test_din6 (0-1)
+
+  # Display customization
+  display_name: "TEST CX50-2"
+  logo_background_color: "white"
+  logo_text_color: "#2c3e50"
+
+# Heat Pump Visual Configuration
+heat_pump_visual:
+  off_color: "#95a5a6"
+  heating_color: "#e74c3c"
+  cooling_color: "#3498db"
+  dhw_color: "#e67e22"
+  defrost_color: "#f1c40f"
+  show_metrics: true
+  animate_fan: true
+
+# Custom Metrics - Additional sensors below detailed metrics
+metrics:
+  - entity: input_number.test_street_water_temp
+    label: "Str H2O"
+    unit: "°C"
+    decimals: 1
+  - entity: input_number.test_street_water_flow
+    label: "Str Flw"
+    unit: "L/m"
+    decimals: 1
+  - entity: input_number.test_hvac_thermal
+    label: "HVAC kW"
+    unit: "kW"
+    decimals: 1
+
+# Buffer Tank Configuration
+buffer_tank:
+  supply_temp_entity: input_number.test_buffer_supply_temp
+  return_temp_entity: input_number.test_buffer_return_temp
+  name: "BUFFER TANK"
+  gradient:
+    enabled: true
+    min_temp: 20
+    max_temp: 60
+
+# HVAC Configuration
+hvac:
+  thermal_entity: input_number.test_hvac_thermal
+  flow_rate_entity: input_number.test_hvac_flow
+  supply_temp_entity: input_number.test_buffer_supply_temp
+  return_temp_entity: input_number.test_buffer_return_temp
+  name: "Radiant Floor"
+
+# DHW Tank 1 Configuration
+dhw_tank:
+  inlet_temp_entity: input_number.test_dhw_inlet_temp
+  outlet_temp_entity: input_number.test_dhw_outlet_temp
+  tank_temp_entity: input_number.test_dhw_tank_temp
+  tank_inlet_flow_entity: input_number.test_street_water_flow
+  tank_inlet_temp_entity: input_number.test_street_water_temp
+  tank_outlet_temp_entity: input_number.dhw1_outlet_temp
+  name: "DHW TANK 1"
+  gradient:
+    enabled: true
+    min_temp: 20
+    max_temp: 60
+
+# DHW Tank 2 Configuration (optional second tank)
+dhw_tank_2:
+  enabled: true
+  inlet_temp_entity: input_number.dhw1_outlet_temp
+  outlet_temp_entity: input_number.dhw_2_outlet_temp
+  tank_temp_entity: input_number.dhw_2_tank_temp
+  name: "DHW TANK 2"
+  gradient:
+    enabled: true
+    min_temp: input_number.dhw2_min_temp
+    max_temp: input_number.dhw2_max_temp
+
+# DHW Heating Diverter Valve Configuration
+g2_valve:
+  state_entity: input_boolean.test_g2_valve
+
+# Auxiliary Heater Configuration
+aux_heater:
+  enabled: true
+  power_entity: input_number.test_aux_heater_power
+  max_power: 18000
+  display_name: "V18"
+  show_label: true
+
+# Animation Configuration
+animation:
+  enabled: true
+  min_flow_rate: 15
+  max_flow_rate: 2
+  max_flow_rate_value: 50
+  idle_threshold: 0.5
+
+# Temperature Status Indicators
+temperature_status:
+  enabled: true
+  circle_radius: 12
+
+---
+
+# Additional Test Helper Entities Needed for Full Detailed Metrics Panel:
+# Create these in Home Assistant Configuration > Helpers:
+
+# Electrical Metrics (Core Row 2):
+# - input_number.test_hp_amps (min: 0, max: 50, step: 0.1, unit: A)
+# - input_number.test_hp_volts (min: 200, max: 250, step: 1, unit: V)
+
+# Detailed Row 1:
+# - input_number.test_compressor_freq (min: 0, max: 120, step: 1, unit: Hz)
+# - input_number.test_discharge_temp (min: 50, max: 100, step: 0.5, unit: °C)
+# - input_number.test_ambient_temp (min: -20, max: 40, step: 0.5, unit: °C)
+
+# Detailed Row 2:
+# (dhw_temp uses existing test_dhw_tank_temp)
+# - input_number.test_outdoor_coil_temp (min: -20, max: 40, step: 0.5, unit: °C)
+# - input_number.test_suction_temp (min: -10, max: 30, step: 0.5, unit: °C)
+
+# Detailed Row 3:
+# - input_number.test_hx_temp (min: 30, max: 70, step: 0.5, unit: °C)
+# - input_number.test_plate_temp (min: 30, max: 70, step: 0.5, unit: °C)
+# - input_number.test_ipm_temp (min: 30, max: 90, step: 0.5, unit: °C)
+
+# Detailed Row 4:
+# - input_number.test_ec_fan_1 (min: 0, max: 100, step: 1, unit: %)
+# - input_number.test_ec_fan_2 (min: 0, max: 100, step: 1, unit: %)
+# - input_number.test_bus_voltage (min: 300, max: 400, step: 1, unit: V)
+
+# Detailed Row 5:
+# (e_heater uses existing test_aux_heater_power)
+# - input_number.test_comp_hours (min: 0, max: 50000, step: 1, unit: h)
+# - input_number.test_comp_max_pct (min: 0, max: 100, step: 1, unit: %)
+
+# Detailed Row 6:
+# (pump uses existing test_hp_running)
+# - input_number.test_fan_code (min: 0, max: 999, step: 1)
+# - input_number.test_din6 (min: 0, max: 1, step: 1)
+
+---
+
+# Metrics Display Order (when show_detailed_metrics: true):
+
+# Core Metrics (Always Shown):
+# Row 1: IN (Power) | OUT (Thermal) | COP
+# Row 2: Flow | Amps | Volts
+
+# Detailed Metrics (When show_detailed_metrics: true):
+# Row 3: Comp (Compressor Freq) | Disch (Discharge Temp) | Amb (Ambient Temp)
+# Row 4: DHW (DHW Temp) | O-Coil (Outdoor Coil) | Suct (Suction Temp)
+# Row 5: HX (Heat Exchanger) | Plate (Plate Exchanger) | IPM (IPM Temp)
+# Row 6: Fan1 (EC Fan 1) | Fan2 (EC Fan 2) | Bus V (Bus Voltage)
+# Row 7: E-Htr (E-Heater Power) | Comp H (Compressor Hours) | MaxC% (Max Compressor %)
+# Row 8: Pump (Pump Status) | F-Code (Fan Code) | DIN6 (DIN6 Switch)
+# Row 9: Defrost | Error | —
+
+# Custom Metrics (Below all detailed metrics):
+# Row 10: Str H2O | Str Flw | HVAC kW
+
+# Total: 10 rows with 3 columns each = 30 metric positions
