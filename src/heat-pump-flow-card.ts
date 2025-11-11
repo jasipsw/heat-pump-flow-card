@@ -798,6 +798,7 @@ export class HeatPumpFlowCard extends LitElement {
     // Calculate metrics text colors and positioning
     const hpBgColor = this.getHeatPumpColor(hpState);
     const hpTextColor = this.getContrastTextColor(hpBgColor);
+    const metricsTextColor = 'var(--primary-text-color)'; // Use theme-aware color for metrics panel
     const metricsY = hpState.error ? 126 : 111;
 
     // Calculate aux heater dynamic colors and glow
@@ -1591,13 +1592,13 @@ export class HeatPumpFlowCard extends LitElement {
             <!-- Position below the heat pump box (box is 150px tall, so start at y=255) -->
             <g id="hp-detailed-metrics" transform="translate(50, 255)">
                 <!-- Divider line -->
-                <line x1="8" y1="0" x2="112" y2="0" stroke="${hpTextColor}" stroke-width="0.5" opacity="0.3"/>
+                <line x1="8" y1="0" x2="112" y2="0" stroke="${metricsTextColor}" stroke-width="0.5" opacity="0.3"/>
 
                 <!-- Core Metrics Row 1: Power In, Thermal Out, COP -->
                 ${this.config.heat_pump?.power_entity ? svg`
                   <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.power_entity!)}">
-                    <text x="8" y="8" fill="${hpTextColor}" font-size="7" opacity="0.7">IN</text>
-                    <text x="8" y="15" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                    <text x="8" y="8" fill="${metricsTextColor}" font-size="7" opacity="0.7">IN</text>
+                    <text x="8" y="15" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                       ${this.formatValue(hpState.power/1000, 1)}kW
                     </text>
                   </g>
@@ -1605,8 +1606,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                 ${this.config.heat_pump?.thermal_entity ? svg`
                   <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.thermal_entity!)}">
-                    <text x="42" y="8" fill="${hpTextColor}" font-size="7" opacity="0.7">OUT</text>
-                    <text x="42" y="15" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                    <text x="42" y="8" fill="${metricsTextColor}" font-size="7" opacity="0.7">OUT</text>
+                    <text x="42" y="15" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                       ${this.formatValue(hpState.thermal/1000, 1)}kW
                     </text>
                   </g>
@@ -1614,8 +1615,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                 ${this.config.heat_pump?.cop_entity ? svg`
                   <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.cop_entity!)}">
-                    <text x="76" y="8" fill="${hpTextColor}" font-size="7" opacity="0.7">COP</text>
-                    <text x="76" y="15" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                    <text x="76" y="8" fill="${metricsTextColor}" font-size="7" opacity="0.7">COP</text>
+                    <text x="76" y="15" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                       ${this.formatValue(hpState.cop, 2)}
                     </text>
                   </g>
@@ -1624,8 +1625,8 @@ export class HeatPumpFlowCard extends LitElement {
                 <!-- Core Metrics Row 2: Flow Rate, Amps, Volts -->
                 ${this.config.heat_pump?.flow_rate_entity ? svg`
                   <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.flow_rate_entity!)}">
-                    <text x="8" y="26" fill="${hpTextColor}" font-size="7" opacity="0.7">Flow</text>
-                    <text x="8" y="33" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                    <text x="8" y="26" fill="${metricsTextColor}" font-size="7" opacity="0.7">Flow</text>
+                    <text x="8" y="33" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                       ${this.formatValue(hpState.flowRate, 1)}${this.getStateUnit(this.config.heat_pump?.flow_rate_entity) || 'L/m'}
                     </text>
                   </g>
@@ -1633,8 +1634,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                 ${hpState.amps !== undefined && this.config.heat_pump?.amps_entity ? svg`
                   <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.amps_entity!)}">
-                    <text x="42" y="26" fill="${hpTextColor}" font-size="7" opacity="0.7">Amps</text>
-                    <text x="42" y="33" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                    <text x="42" y="26" fill="${metricsTextColor}" font-size="7" opacity="0.7">Amps</text>
+                    <text x="42" y="33" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                       ${this.formatValue(hpState.amps, 1)}A
                     </text>
                   </g>
@@ -1642,8 +1643,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                 ${hpState.volts !== undefined && this.config.heat_pump?.volts_entity ? svg`
                   <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.volts_entity!)}">
-                    <text x="76" y="26" fill="${hpTextColor}" font-size="7" opacity="0.7">Volts</text>
-                    <text x="76" y="33" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                    <text x="76" y="26" fill="${metricsTextColor}" font-size="7" opacity="0.7">Volts</text>
+                    <text x="76" y="33" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                       ${this.formatValue(hpState.volts, 0)}V
                     </text>
                   </g>
@@ -1652,13 +1653,13 @@ export class HeatPumpFlowCard extends LitElement {
                 <!-- Optional Detailed Metrics (shown only if enabled) -->
                 ${this.config.heat_pump?.show_detailed_metrics ? svg`
                   <!-- Divider line before detailed metrics -->
-                  <line x1="8" y1="42" x2="112" y2="42" stroke="${hpTextColor}" stroke-width="0.5" opacity="0.3"/>
+                  <line x1="8" y1="42" x2="112" y2="42" stroke="${metricsTextColor}" stroke-width="0.5" opacity="0.3"/>
 
                   <!-- Detailed Row 1: Compressor, Discharge, Ambient -->
                   ${hpState.compressorFrequency !== undefined && this.config.heat_pump?.compressor_frequency_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.compressor_frequency_entity!)}">
-                      <text x="8" y="50" fill="${hpTextColor}" font-size="7" opacity="0.7">Comp</text>
-                      <text x="8" y="57" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="8" y="50" fill="${metricsTextColor}" font-size="7" opacity="0.7">Comp</text>
+                      <text x="8" y="57" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.compressorFrequency, 0)}Hz
                       </text>
                     </g>
@@ -1666,8 +1667,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                   ${hpState.dischargeTemp !== undefined && this.config.heat_pump?.discharge_temp_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.discharge_temp_entity!)}">
-                      <text x="42" y="50" fill="${hpTextColor}" font-size="7" opacity="0.7">Disch</text>
-                      <text x="42" y="57" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="42" y="50" fill="${metricsTextColor}" font-size="7" opacity="0.7">Disch</text>
+                      <text x="42" y="57" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.dischargeTemp, 0)}°
                       </text>
                     </g>
@@ -1675,8 +1676,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                   ${hpState.ambientTemp !== undefined && this.config.heat_pump?.ambient_temp_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.ambient_temp_entity!)}">
-                      <text x="76" y="50" fill="${hpTextColor}" font-size="7" opacity="0.7">Amb</text>
-                      <text x="76" y="57" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="76" y="50" fill="${metricsTextColor}" font-size="7" opacity="0.7">Amb</text>
+                      <text x="76" y="57" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.ambientTemp, 0)}°
                       </text>
                     </g>
@@ -1685,8 +1686,8 @@ export class HeatPumpFlowCard extends LitElement {
                   <!-- Detailed Row 2: DHW, Outdoor Coil, Suction -->
                   ${hpState.dhwTemp !== undefined && this.config.heat_pump?.dhw_temp_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.dhw_temp_entity!)}">
-                      <text x="8" y="68" fill="${hpTextColor}" font-size="7" opacity="0.7">DHW</text>
-                      <text x="8" y="75" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="8" y="68" fill="${metricsTextColor}" font-size="7" opacity="0.7">DHW</text>
+                      <text x="8" y="75" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.dhwTemp, 0)}°
                       </text>
                     </g>
@@ -1694,8 +1695,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                   ${hpState.outdoorCoilTemp !== undefined && this.config.heat_pump?.outdoor_coil_temp_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.outdoor_coil_temp_entity!)}">
-                      <text x="42" y="68" fill="${hpTextColor}" font-size="7" opacity="0.7">O-Coil</text>
-                      <text x="42" y="75" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="42" y="68" fill="${metricsTextColor}" font-size="7" opacity="0.7">O-Coil</text>
+                      <text x="42" y="75" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.outdoorCoilTemp, 0)}°
                       </text>
                     </g>
@@ -1703,8 +1704,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                   ${hpState.suctionTemp !== undefined && this.config.heat_pump?.suction_temp_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.suction_temp_entity!)}">
-                      <text x="76" y="68" fill="${hpTextColor}" font-size="7" opacity="0.7">Suct</text>
-                      <text x="76" y="75" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="76" y="68" fill="${metricsTextColor}" font-size="7" opacity="0.7">Suct</text>
+                      <text x="76" y="75" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.suctionTemp, 0)}°
                       </text>
                     </g>
@@ -1713,8 +1714,8 @@ export class HeatPumpFlowCard extends LitElement {
                   <!-- Detailed Row 3: Heat Exchanger, Plate Exchange -->
                   ${hpState.heatExchangerTemp !== undefined && this.config.heat_pump?.heat_exchanger_temp_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.heat_exchanger_temp_entity!)}">
-                      <text x="8" y="86" fill="${hpTextColor}" font-size="7" opacity="0.7">HX</text>
-                      <text x="8" y="93" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="8" y="86" fill="${metricsTextColor}" font-size="7" opacity="0.7">HX</text>
+                      <text x="8" y="93" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.heatExchangerTemp, 0)}°
                       </text>
                     </g>
@@ -1722,8 +1723,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                   ${hpState.plateExchangeTemp !== undefined && this.config.heat_pump?.plate_exchange_temp_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.plate_exchange_temp_entity!)}">
-                      <text x="42" y="86" fill="${hpTextColor}" font-size="7" opacity="0.7">Plate</text>
-                      <text x="42" y="93" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="42" y="86" fill="${metricsTextColor}" font-size="7" opacity="0.7">Plate</text>
+                      <text x="42" y="93" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.plateExchangeTemp, 0)}°
                       </text>
                     </g>
@@ -1731,8 +1732,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                   ${hpState.ipmTemp !== undefined && this.config.heat_pump?.ipm_temp_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.ipm_temp_entity!)}">
-                      <text x="76" y="86" fill="${hpTextColor}" font-size="7" opacity="0.7">IPM</text>
-                      <text x="76" y="93" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="76" y="86" fill="${metricsTextColor}" font-size="7" opacity="0.7">IPM</text>
+                      <text x="76" y="93" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.ipmTemp, 0)}°
                       </text>
                     </g>
@@ -1741,8 +1742,8 @@ export class HeatPumpFlowCard extends LitElement {
                   <!-- Detailed Row 4: Fan Motors -->
                   ${hpState.ecFanMotor1Speed !== undefined && this.config.heat_pump?.ec_fan_motor_1_speed_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.ec_fan_motor_1_speed_entity!)}">
-                      <text x="8" y="104" fill="${hpTextColor}" font-size="7" opacity="0.7">Fan1</text>
-                      <text x="8" y="111" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="8" y="104" fill="${metricsTextColor}" font-size="7" opacity="0.7">Fan1</text>
+                      <text x="8" y="111" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.ecFanMotor1Speed, 0)}
                       </text>
                     </g>
@@ -1750,8 +1751,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                   ${hpState.ecFanMotor2Speed !== undefined && this.config.heat_pump?.ec_fan_motor_2_speed_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.ec_fan_motor_2_speed_entity!)}">
-                      <text x="42" y="104" fill="${hpTextColor}" font-size="7" opacity="0.7">Fan2</text>
-                      <text x="42" y="111" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="42" y="104" fill="${metricsTextColor}" font-size="7" opacity="0.7">Fan2</text>
+                      <text x="42" y="111" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.ecFanMotor2Speed, 0)}
                       </text>
                     </g>
@@ -1759,8 +1760,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                   ${hpState.busLineVoltage !== undefined && this.config.heat_pump?.bus_line_voltage_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.bus_line_voltage_entity!)}">
-                      <text x="76" y="104" fill="${hpTextColor}" font-size="7" opacity="0.7">Bus V</text>
-                      <text x="76" y="111" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="76" y="104" fill="${metricsTextColor}" font-size="7" opacity="0.7">Bus V</text>
+                      <text x="76" y="111" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.busLineVoltage, 0)}V
                       </text>
                     </g>
@@ -1769,8 +1770,8 @@ export class HeatPumpFlowCard extends LitElement {
                   <!-- Detailed Row 5: Additional metrics -->
                   ${hpState.eHeaterPower !== undefined && this.config.heat_pump?.e_heater_power_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.e_heater_power_entity!)}">
-                      <text x="8" y="122" fill="${hpTextColor}" font-size="7" opacity="0.7">E-Htr</text>
-                      <text x="8" y="129" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="8" y="122" fill="${metricsTextColor}" font-size="7" opacity="0.7">E-Htr</text>
+                      <text x="8" y="129" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.eHeaterPower, 0)}W
                       </text>
                     </g>
@@ -1778,8 +1779,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                   ${hpState.compressorRunningTime !== undefined && this.config.heat_pump?.compressor_running_time_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.compressor_running_time_entity!)}">
-                      <text x="42" y="122" fill="${hpTextColor}" font-size="7" opacity="0.7">Comp H</text>
-                      <text x="42" y="129" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="42" y="122" fill="${metricsTextColor}" font-size="7" opacity="0.7">Comp H</text>
+                      <text x="42" y="129" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.compressorRunningTime, 0)}h
                       </text>
                     </g>
@@ -1787,8 +1788,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                   ${hpState.compressorMaxPercentage !== undefined && this.config.heat_pump?.compressor_max_percentage_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.compressor_max_percentage_entity!)}">
-                      <text x="76" y="122" fill="${hpTextColor}" font-size="7" opacity="0.7">MaxC%</text>
-                      <text x="76" y="129" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="76" y="122" fill="${metricsTextColor}" font-size="7" opacity="0.7">MaxC%</text>
+                      <text x="76" y="129" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.compressorMaxPercentage, 0)}%
                       </text>
                     </g>
@@ -1797,8 +1798,8 @@ export class HeatPumpFlowCard extends LitElement {
                   <!-- Detailed Row 6: Status indicators -->
                   ${hpState.pumpEnabled !== undefined && this.config.heat_pump?.pump_enabled_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.pump_enabled_entity!)}">
-                      <text x="8" y="140" fill="${hpTextColor}" font-size="7" opacity="0.7">Pump</text>
-                      <text x="8" y="147" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="8" y="140" fill="${metricsTextColor}" font-size="7" opacity="0.7">Pump</text>
+                      <text x="8" y="147" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${hpState.pumpEnabled ? 'ON' : 'OFF'}
                       </text>
                     </g>
@@ -1806,8 +1807,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                   ${hpState.fanShutdownCode !== undefined && hpState.fanShutdownCode !== 0 && this.config.heat_pump?.fan_shutdown_code_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.fan_shutdown_code_entity!)}">
-                      <text x="42" y="140" fill="${hpTextColor}" font-size="7" opacity="0.7">F-Code</text>
-                      <text x="42" y="147" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="42" y="140" fill="${metricsTextColor}" font-size="7" opacity="0.7">F-Code</text>
+                      <text x="42" y="147" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.fanShutdownCode, 0)}
                       </text>
                     </g>
@@ -1815,8 +1816,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                   ${hpState.din6ModeSwitch !== undefined && this.config.heat_pump?.din6_mode_switch_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.din6_mode_switch_entity!)}">
-                      <text x="76" y="140" fill="${hpTextColor}" font-size="7" opacity="0.7">DIN6</text>
-                      <text x="76" y="147" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="76" y="140" fill="${metricsTextColor}" font-size="7" opacity="0.7">DIN6</text>
+                      <text x="76" y="147" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${this.formatValue(hpState.din6ModeSwitch, 0)}
                       </text>
                     </g>
@@ -1825,8 +1826,8 @@ export class HeatPumpFlowCard extends LitElement {
                   <!-- Detailed Row 7: Defrost and Error Status -->
                   ${hpState.defrost !== undefined && this.config.heat_pump?.defrost_entity ? svg`
                     <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.heat_pump!.defrost_entity!)}">
-                      <text x="8" y="158" fill="${hpTextColor}" font-size="7" opacity="0.7">Defrost</text>
-                      <text x="8" y="165" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                      <text x="8" y="158" fill="${metricsTextColor}" font-size="7" opacity="0.7">Defrost</text>
+                      <text x="8" y="165" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                         ${hpState.defrost ? 'ON' : 'OFF'}
                       </text>
                     </g>
@@ -1856,7 +1857,7 @@ export class HeatPumpFlowCard extends LitElement {
 
                   return svg`
                     <!-- Divider line before custom metrics -->
-                    <line x1="8" y1="${dividerY}" x2="112" y2="${dividerY}" stroke="${hpTextColor}" stroke-width="0.5" opacity="0.3"/>
+                    <line x1="8" y1="${dividerY}" x2="112" y2="${dividerY}" stroke="${metricsTextColor}" stroke-width="0.5" opacity="0.3"/>
 
                     ${rows.map((row, rowIndex) => {
                       const labelY = baseY + (rowIndex * 18);
@@ -1874,8 +1875,8 @@ export class HeatPumpFlowCard extends LitElement {
 
                           return svg`
                             <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, metric.entity)}">
-                              <text x="${x}" y="${labelY}" fill="${hpTextColor}" font-size="7" opacity="0.7">${metric.label}</text>
-                              <text x="${x}" y="${valueY}" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                              <text x="${x}" y="${labelY}" fill="${metricsTextColor}" font-size="7" opacity="0.7">${metric.label}</text>
+                              <text x="${x}" y="${valueY}" fill="${metricsTextColor}" font-size="8" font-weight="bold">
                                 ${this.formatValue(value, decimals)}${unit}
                               </text>
                             </g>

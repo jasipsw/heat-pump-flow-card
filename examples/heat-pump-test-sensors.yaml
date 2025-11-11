@@ -1,0 +1,632 @@
+# Heat Pump Flow Card - Complete Test Sensor Configuration
+#
+# Copy the contents of this file into your configuration.yaml (or include it via !include)
+# Then restart Home Assistant to create all test helpers
+#
+# These sensors work with examples/full-detailed-metrics-test.yaml to provide
+# a complete test environment for the heat pump flow card
+
+# ============================================================================
+# INPUT NUMBERS - Core Heat Pump Sensors
+# ============================================================================
+
+input_number:
+  # Basic Heat Pump Metrics
+  test_hp_power:
+    name: "Test HP - Power Input"
+    min: 0
+    max: 10000
+    step: 100
+    unit_of_measurement: "W"
+    icon: mdi:flash
+    initial: 3000
+
+  test_hp_thermal:
+    name: "Test HP - Thermal Output"
+    min: 0
+    max: 40000
+    step: 100
+    unit_of_measurement: "W"
+    icon: mdi:radiator
+    initial: 12000
+
+  test_hp_outlet_temp:
+    name: "Test HP - Outlet Temperature"
+    min: 0
+    max: 80
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer-high
+    initial: 45
+
+  test_hp_inlet_temp:
+    name: "Test HP - Inlet Temperature"
+    min: 0
+    max: 80
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer-low
+    initial: 35
+
+  test_hp_flow:
+    name: "Test HP - Flow Rate"
+    min: 0
+    max: 100
+    step: 0.5
+    unit_of_measurement: "L/min"
+    icon: mdi:pump
+    initial: 15
+
+  test_fan_speed:
+    name: "Test HP - Fan Speed"
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+    icon: mdi:fan
+    initial: 75
+
+  # ============================================================================
+  # Electrical Metrics (Core Row 2)
+  # ============================================================================
+
+  test_hp_amps:
+    name: "Test HP - Current"
+    min: 0
+    max: 50
+    step: 0.1
+    unit_of_measurement: "A"
+    icon: mdi:current-ac
+    initial: 13.0
+
+  test_hp_volts:
+    name: "Test HP - Voltage"
+    min: 200
+    max: 250
+    step: 1
+    unit_of_measurement: "V"
+    icon: mdi:lightning-bolt
+    initial: 230
+
+  # ============================================================================
+  # Detailed Metrics - Row 3: Compressor, Discharge, Ambient
+  # ============================================================================
+
+  test_compressor_freq:
+    name: "Test HP - Compressor Frequency"
+    min: 0
+    max: 120
+    step: 1
+    unit_of_measurement: "Hz"
+    icon: mdi:sine-wave
+    initial: 75
+
+  test_discharge_temp:
+    name: "Test HP - Discharge Temperature"
+    min: 30
+    max: 120
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer-alert
+    initial: 85
+
+  test_ambient_temp:
+    name: "Test HP - Ambient Temperature"
+    min: -20
+    max: 40
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer
+    initial: 10
+
+  # ============================================================================
+  # Detailed Metrics - Row 4: DHW, Outdoor Coil, Suction
+  # ============================================================================
+
+  # test_dhw_tank_temp is used for DHW temp (defined below in DHW section)
+
+  test_outdoor_coil_temp:
+    name: "Test HP - Outdoor Coil Temperature"
+    min: -20
+    max: 40
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer-lines
+    initial: 5
+
+  test_suction_temp:
+    name: "Test HP - Suction Temperature"
+    min: -20
+    max: 40
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer-minus
+    initial: 0
+
+  # ============================================================================
+  # Detailed Metrics - Row 5: Heat Exchanger, Plate Exchanger, IPM
+  # ============================================================================
+
+  test_hx_temp:
+    name: "Test HP - Heat Exchanger Temperature"
+    min: 20
+    max: 80
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer
+    initial: 50
+
+  test_plate_temp:
+    name: "Test HP - Plate Exchanger Temperature"
+    min: 20
+    max: 80
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer
+    initial: 48
+
+  test_ipm_temp:
+    name: "Test HP - IPM Temperature"
+    min: 20
+    max: 100
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer-alert
+    initial: 65
+
+  # ============================================================================
+  # Detailed Metrics - Row 6: EC Fans, Bus Voltage
+  # ============================================================================
+
+  test_ec_fan_1:
+    name: "Test HP - EC Fan Motor 1 Speed"
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+    icon: mdi:fan
+    initial: 80
+
+  test_ec_fan_2:
+    name: "Test HP - EC Fan Motor 2 Speed"
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+    icon: mdi:fan
+    initial: 75
+
+  test_bus_voltage:
+    name: "Test HP - Bus Line Voltage"
+    min: 250
+    max: 450
+    step: 1
+    unit_of_measurement: "V"
+    icon: mdi:lightning-bolt-outline
+    initial: 350
+
+  # ============================================================================
+  # Detailed Metrics - Row 7: E-Heater, Compressor Hours, Max Compressor %
+  # ============================================================================
+
+  test_aux_heater_power:
+    name: "Test - Auxiliary Heater Power"
+    min: 0
+    max: 18000
+    step: 500
+    unit_of_measurement: "W"
+    icon: mdi:heat-wave
+    initial: 0
+
+  test_comp_hours:
+    name: "Test HP - Compressor Running Hours"
+    min: 0
+    max: 50000
+    step: 1
+    unit_of_measurement: "h"
+    icon: mdi:clock-outline
+    initial: 12450
+
+  test_comp_max_pct:
+    name: "Test HP - Compressor Max Percentage"
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+    icon: mdi:gauge
+    initial: 85
+
+  # ============================================================================
+  # Detailed Metrics - Row 8: Pump, Fan Shutdown Code, DIN6
+  # ============================================================================
+
+  # test_hp_running is used for pump status (defined below in controls section)
+
+  test_fan_code:
+    name: "Test HP - Fan Shutdown Code"
+    min: 0
+    max: 999
+    step: 1
+    icon: mdi:alert-circle-outline
+    initial: 0
+
+  test_din6:
+    name: "Test HP - DIN6 Mode Switch"
+    min: 0
+    max: 1
+    step: 1
+    icon: mdi:electric-switch
+    initial: 0
+
+  # ============================================================================
+  # Buffer Tank Sensors
+  # ============================================================================
+
+  test_buffer_supply_temp:
+    name: "Test Buffer - Supply Temperature"
+    min: 0
+    max: 80
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer-high
+    initial: 43
+
+  test_buffer_return_temp:
+    name: "Test Buffer - Return Temperature"
+    min: 0
+    max: 80
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer-low
+    initial: 37
+
+  # ============================================================================
+  # HVAC Load Sensors
+  # ============================================================================
+
+  test_hvac_thermal:
+    name: "Test HVAC - Thermal Power"
+    min: 0
+    max: 40000
+    step: 100
+    unit_of_measurement: "W"
+    icon: mdi:radiator
+    initial: 10000
+
+  test_hvac_flow:
+    name: "Test HVAC - Flow Rate"
+    min: 0
+    max: 100
+    step: 0.5
+    unit_of_measurement: "L/min"
+    icon: mdi:pump
+    initial: 35
+
+  # ============================================================================
+  # DHW Tank 1 Sensors
+  # ============================================================================
+
+  test_dhw_inlet_temp:
+    name: "Test DHW1 - Coil Inlet Temperature"
+    min: 0
+    max: 80
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer-high
+    initial: 55
+
+  test_dhw_outlet_temp:
+    name: "Test DHW1 - Coil Outlet Temperature"
+    min: 0
+    max: 80
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer-low
+    initial: 40
+
+  test_dhw_tank_temp:
+    name: "Test DHW1 - Tank Temperature"
+    min: 0
+    max: 80
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer
+    initial: 50
+
+  test_street_water_flow:
+    name: "Test DHW1 - Street Water Flow"
+    min: 0
+    max: 50
+    step: 0.1
+    unit_of_measurement: "L/min"
+    icon: mdi:water-pump
+    initial: 8
+
+  test_street_water_temp:
+    name: "Test DHW1 - Street Water Temperature"
+    min: 0
+    max: 40
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer
+    initial: 15
+
+  dhw1_outlet_temp:
+    name: "Test DHW1 - Hot Water Outlet Temperature"
+    min: 0
+    max: 80
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer-high
+    initial: 52
+
+  # ============================================================================
+  # DHW Tank 2 Sensors (Optional Second Tank)
+  # ============================================================================
+
+  dhw_2_outlet_temp:
+    name: "Test DHW2 - Final Outlet Temperature"
+    min: 0
+    max: 80
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer-high
+    initial: 55
+
+  dhw_2_tank_temp:
+    name: "Test DHW2 - Tank Temperature"
+    min: 0
+    max: 80
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer
+    initial: 54
+
+  dhw2_min_temp:
+    name: "Test DHW2 - Gradient Min Temperature"
+    min: 0
+    max: 80
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer-low
+    initial: 20
+
+  dhw2_max_temp:
+    name: "Test DHW2 - Gradient Max Temperature"
+    min: 0
+    max: 80
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer-high
+    initial: 60
+
+# ============================================================================
+# INPUT BOOLEANS - Control Switches
+# ============================================================================
+
+input_boolean:
+  test_hp_running:
+    name: "Test HP - Running Status"
+    icon: mdi:power
+    initial: true
+
+  test_g2_valve:
+    name: "Test - DHW Diverter Valve (G2)"
+    icon: mdi:valve
+    initial: false  # false = heating mode, true = DHW mode
+
+# ============================================================================
+# INPUT SELECT - Operating Mode
+# ============================================================================
+
+input_select:
+  test_hp_mode:
+    name: "Test HP - Operating Mode"
+    options:
+      - "off"
+      - "heating"
+      - "cooling"
+      - "dhw"
+      - "idle"
+      - "defrost"
+    initial: "heating"
+    icon: mdi:heat-pump
+
+# ============================================================================
+# TEMPLATE SENSORS - Calculated Values
+# ============================================================================
+
+template:
+  - sensor:
+      # Calculate COP from power and thermal
+      - name: "Test Heat Pump COP"
+        unique_id: test_heat_pump_cop
+        unit_of_measurement: "COP"
+        state_class: measurement
+        icon: mdi:gauge
+        state: >
+          {% set power = states('input_number.test_hp_power') | float(1) %}
+          {% set thermal = states('input_number.test_hp_thermal') | float(0) %}
+          {% if power > 0 %}
+            {{ (thermal / power) | round(2) }}
+          {% else %}
+            0
+          {% endif %}
+
+# ============================================================================
+# SCRIPTS - Quick Test Scenarios
+# ============================================================================
+
+script:
+  # Heating Mode - HP heating buffer tank, HVAC load active
+  set_test_heating_mode:
+    alias: "Test: Set Heating Mode"
+    icon: mdi:radiator
+    sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.test_hp_running
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.test_g2_valve
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.test_hp_mode
+        data:
+          option: "heating"
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hp_power
+        data:
+          value: 3000
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hp_thermal
+        data:
+          value: 12000
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hp_outlet_temp
+        data:
+          value: 45
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hp_inlet_temp
+        data:
+          value: 35
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hp_flow
+        data:
+          value: 15
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_fan_speed
+        data:
+          value: 75
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_aux_heater_power
+        data:
+          value: 0
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hvac_thermal
+        data:
+          value: 10000
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hvac_flow
+        data:
+          value: 35
+
+  # DHW Mode - HP heating DHW tank via diverter valve
+  set_test_dhw_mode:
+    alias: "Test: Set DHW Mode"
+    icon: mdi:water-boiler
+    sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.test_hp_running
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.test_g2_valve
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.test_hp_mode
+        data:
+          option: "dhw"
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hp_power
+        data:
+          value: 4000
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hp_thermal
+        data:
+          value: 14000
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hp_outlet_temp
+        data:
+          value: 55
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hp_inlet_temp
+        data:
+          value: 40
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hp_flow
+        data:
+          value: 18
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_fan_speed
+        data:
+          value: 85
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_aux_heater_power
+        data:
+          value: 9000
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_street_water_flow
+        data:
+          value: 8
+
+  # HP Off - All systems idle
+  set_test_hp_off:
+    alias: "Test: Set HP Off"
+    icon: mdi:power
+    sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.test_hp_running
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.test_hp_mode
+        data:
+          option: "off"
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hp_power
+        data:
+          value: 0
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hp_thermal
+        data:
+          value: 0
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hp_flow
+        data:
+          value: 0
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_fan_speed
+        data:
+          value: 0
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_aux_heater_power
+        data:
+          value: 0
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hvac_thermal
+        data:
+          value: 0
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_hvac_flow
+        data:
+          value: 0
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.test_street_water_flow
+        data:
+          value: 0
