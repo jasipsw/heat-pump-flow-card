@@ -944,12 +944,32 @@ For issues, feature requests, or questions:
 - [Open an issue on GitHub](https://github.com/jasipsw/heat-pump-flow-card/issues)
 - [Home Assistant Community Forum](https://community.home-assistant.io/)
 
+### Say Thanks
+
+If you find this card helpful and want to say thanks, please consider making a small donation to our local food pantry:
+
+**[The Open Door's Ipswich Pantry](https://giving.foodpantry.org/-/XJXTMZGZ/designation/XJUKVEXB/amount/20)**
+
+Every contribution helps families in our community access fresh, nutritious food.
+
 ## Credits
 
 Inspired by:
 - [Sunsynk Power Flow Card](https://github.com/slipx06/sunsynk-power-flow-card)
 - [Power Flow Card Plus](https://github.com/flixlix/power-flow-card-plus)
 - [Chiltrix CX34 Heat Pump Control](https://github.com/gonzojive/heatpump) by gonzojive - Tools for communicating with the Chiltrix CX34 heat pump
+
+### Special Thanks
+
+- **[Chiltrix](https://www.chiltrix.com/)** - For providing excellent technical information and outstanding customer support that helped make this project possible
+
+## Disclaimer
+
+This integration/card and its development are **not affiliated with, endorsed by, or sponsored by** any of the companies or brands mentioned in this documentation or codebase, including but not limited to Chiltrix, or any heat pump manufacturers.
+
+All trademarks, logos, and brand names are the property of their respective owners. The use of these names, trademarks, and brands does not imply endorsement. Any logos or marks displayed are not the property of this project and are not licensed with this plugin.
+
+This is an independent, community-driven open-source project created to provide visualization tools for Home Assistant users.
 
 ## License
 
