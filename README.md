@@ -2,7 +2,7 @@
 
 A beautiful, animated Home Assistant card that visualizes heat pump water flow between the heat pump, buffer tank, DHW (Domestic Hot Water) tank, and HVAC load with real-time temperature-based color gradients, dynamic flow animations, and temperature status indicators at critical system points.
 
-![Heat Pump Flow Card](screenshot.png)
+![Heat Pump Flow Card](screenshot.gif)
 <!-- SCREENSHOT: Main visualization showing the complete heat pump system with buffer tank, DHW tank, HVAC load, and flowing animations. Capture during active heating mode with visible temperature indicators. -->
 
 ## Table of Contents
