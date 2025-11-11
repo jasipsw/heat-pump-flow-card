@@ -1927,6 +1927,30 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Bottom outlet flange (to DHW) - adjusted for better alignment -->
               <rect x="-25" y="12" width="16" height="10" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
 
+              <!-- 3-Way Valve Symbol (three triangles pointing to center with ball) -->
+              <g id="valve-symbol" opacity="0.8">
+                <!-- Left triangle (from HP inlet) -->
+                <path d="M -28 0 L -20 -4 L -20 4 Z"
+                      fill="#2c3e50"
+                      stroke="#2c3e50"
+                      stroke-width="0.5"/>
+                <!-- Right triangle (to buffer/heating) -->
+                <path d="M -6 0 L -14 -4 L -14 4 Z"
+                      fill="#2c3e50"
+                      stroke="#2c3e50"
+                      stroke-width="0.5"/>
+                <!-- Bottom triangle (to DHW) -->
+                <path d="M -17 8 L -21 4 L -13 4 Z"
+                      fill="#2c3e50"
+                      stroke="#2c3e50"
+                      stroke-width="0.5"/>
+                <!-- Center circle (ball/switching mechanism) -->
+                <circle cx="-17" cy="0" r="2.5"
+                        fill="#34495e"
+                        stroke="#2c3e50"
+                        stroke-width="0.5"/>
+              </g>
+
               <!-- Internal flow path visualization with animations -->
               ${g2ValveState.isActive ? html`
                 <!-- DHW Mode: Flow DOWN (from left inlet to bottom outlet) -->
