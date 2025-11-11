@@ -7,6 +7,17 @@ on:
       - 'src/**'
       - 'package.json'
       - 'rollup.config.js'
+  workflow_dispatch:
+    inputs:
+      bump_type:
+        description: 'Version bump type'
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+        default: 'patch'
 
 jobs:
   bump-version:
@@ -14,14 +25,14 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    # Only run if PR was actually merged (not just closed)
-    if: github.event.pull_request.merged == true
+    # Only run if PR was actually merged (not just closed) OR if manually triggered
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.base.ref }}
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.ref || github.event.pull_request.base.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
@@ -40,9 +51,34 @@ jobs:
           # Parse version
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
 
-          # Bump patch version for merged PRs
-          PATCH=$((PATCH + 1))
-          echo "Bumping patch version"
+          # Determine bump type
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            BUMP_TYPE="${{ inputs.bump_type }}"
+          else
+            # Default to patch for automatic PR merges
+            BUMP_TYPE="patch"
+          fi
+
+          echo "Bump type: $BUMP_TYPE"
+
+          # Bump version based on type
+          case $BUMP_TYPE in
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              echo "Bumping major version"
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              echo "Bumping minor version"
+              ;;
+            patch)
+              PATCH=$((PATCH + 1))
+              echo "Bumping patch version"
+              ;;
+          esac
 
           NEW_VERSION="$MAJOR.$MINOR.$PATCH"
           echo "New version: $NEW_VERSION"
@@ -54,6 +90,15 @@ jobs:
           # Update const.ts
           sed -i "s/CARD_VERSION = '.*'/CARD_VERSION = '$NEW_VERSION'/" src/const.ts
 
+          # Update hacs.json with version field (add if doesn't exist)
+          if grep -q '"version"' hacs.json; then
+            # Version field exists, update it
+            sed -i "s/\"version\": \".*\"/\"version\": \"$NEW_VERSION\"/" hacs.json
+          else
+            # Version field doesn't exist, add it after name field
+            sed -i "/\"name\":/a\  \"version\": \"$NEW_VERSION\"," hacs.json
+          fi
+
       - name: Build project
         run: |
           npm ci
@@ -63,7 +108,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add package.json package-lock.json src/const.ts
+          git add package.json package-lock.json src/const.ts hacs.json
           git add -f dist/ *.js *.map
           git commit -m "chore: bump version to ${{ steps.version.outputs.version }} [skip ci]" || echo "No changes to commit"
 
@@ -71,4 +116,5 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.event.pull_request.base.ref }}
+          branch: ${{ github.event_name == 'workflow_dispatch' && github.ref_name || github.event.pull_request.base.ref }}
+
