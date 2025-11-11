@@ -18,6 +18,7 @@ A beautiful, animated Home Assistant card that visualizes heat pump water flow b
 - [Configuration Options](#configuration-options)
   - [Main Options](#main-options)
   - [Heat Pump Options](#heat-pump-options-heat_pump)
+  - [Custom Metrics](#custom-metrics-metrics)
   - [Heat Pump Visual Options](#heat-pump-visual-options-heat_pump_visual)
   - [Buffer Tank Options](#buffer-tank-options-buffer_tank)
   - [DHW Tank Options](#dhw-tank-options-dhw_tank)
@@ -56,6 +57,8 @@ A beautiful, animated Home Assistant card that visualizes heat pump water flow b
 🛢️ **Dual Tank Support** - Buffer tank and DHW (Domestic Hot Water) tank with gradient temperature visualization
 
 📊 **Real-Time Data** - Shows thermal power, COP, temperatures, flow rates, energy consumption, costs, and runtime. All metrics are clickable to view history graphs.
+
+📈 **Custom Metrics** - Add your own sensors with custom labels below the core metrics in the same 3-column grid format.
 
 🌈 **Tank Gradient Visualization** - Tanks fill with color gradients representing temperature stratification from bottom to top
 
@@ -190,6 +193,19 @@ heat_pump_visual:
   defrost_color: "#f1c40f"
   show_metrics: true
   animate_fan: true
+
+# Custom metrics - add your own sensors below the core metrics
+metrics:
+  - entity: sensor.heat_pump_oil_temp
+    label: "Oil T"
+    unit: "°C"
+    decimals: 1
+  - entity: sensor.heat_pump_pressure
+    label: "Press"
+    unit: "PSI"
+    decimals: 0
+  - entity: sensor.heat_pump_custom_3
+    label: "Cust3"
 
 buffer_tank:
   supply_temp_entity: sensor.hvac_buffer_tank_supply_temperature
@@ -450,6 +466,54 @@ The metrics panel displays data in a 3-column grid layout below the heat pump. A
 - **Row 9:** Defrost (Defrost Status) | Error (Error Status*) | —
 
 *Only shown when active/non-zero
+
+### Custom Metrics (`metrics`)
+
+Add your own custom sensors to be displayed below the core and detailed metrics in the same 3-column grid format. This is perfect for heat pump configurations with additional sensors that aren't covered by the standard entities.
+
+**Configuration:**
+
+Each metric in the array requires:
+- `entity` (string, **required**): Sensor entity ID to display
+- `label` (string, **required**): Custom abbreviation/label (keep short, e.g., "Cust1", "TempA", "P1")
+- `unit` (string, optional): Unit override (default: uses entity's unit_of_measurement)
+- `decimals` (number, optional): Decimal places to display (default: 1)
+
+**Example:**
+```yaml
+metrics:
+  - entity: sensor.heat_pump_custom_sensor_1
+    label: "Custom1"
+    unit: "°C"
+    decimals: 1
+  - entity: sensor.heat_pump_custom_sensor_2
+    label: "Press"
+    unit: "PSI"
+    decimals: 0
+  - entity: sensor.heat_pump_oil_temp
+    label: "Oil T"
+    # unit and decimals will use entity's defaults
+  - entity: sensor.heat_pump_custom_sensor_4
+    label: "Cust4"
+  - entity: sensor.heat_pump_custom_sensor_5
+    label: "Cust5"
+  - entity: sensor.heat_pump_custom_sensor_6
+    label: "Cust6"
+```
+
+**Display:**
+
+Custom metrics are displayed in a 3-column grid below all core and detailed metrics:
+- Automatically arranged into rows of 3 columns
+- Uses the same format as core metrics (label on top, value below)
+- All metrics are clickable to view history graphs
+- Only displays if the entity has a valid value
+
+**Tips:**
+- Keep labels short (6 characters or less) for best appearance
+- Labels are displayed at the top of each metric, so abbreviations work best
+- Use the `unit` parameter to override long default units (e.g., "kW" instead of "kilowatts")
+- Custom metrics appear below core metrics (or below detailed metrics if `show_detailed_metrics: true`)
 
 ### Heat Pump Visual Options (`heat_pump_visual`)
 

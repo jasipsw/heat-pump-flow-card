@@ -1841,6 +1841,50 @@ export class HeatPumpFlowCard extends LitElement {
                     </g>
                   ` : ''}
                 ` : ''}
+
+                <!-- Custom Metrics Section -->
+                ${this.config.metrics && this.config.metrics.length > 0 ? (() => {
+                  // Calculate starting Y position based on whether detailed metrics are shown
+                  const baseY = this.config.heat_pump?.show_detailed_metrics ? 176 : 44;
+                  const dividerY = this.config.heat_pump?.show_detailed_metrics ? 168 : 36;
+
+                  // Organize metrics into rows of 3 columns
+                  const rows: Array<Array<{entity: string, label: string, unit?: string, decimals?: number}>> = [];
+                  for (let i = 0; i < this.config.metrics.length; i += 3) {
+                    rows.push(this.config.metrics.slice(i, i + 3));
+                  }
+
+                  return svg`
+                    <!-- Divider line before custom metrics -->
+                    <line x1="8" y1="${dividerY}" x2="112" y2="${dividerY}" stroke="${hpTextColor}" stroke-width="0.5" opacity="0.3"/>
+
+                    ${rows.map((row, rowIndex) => {
+                      const labelY = baseY + (rowIndex * 18);
+                      const valueY = labelY + 7;
+                      const columns = [8, 42, 76]; // Three column x-positions
+
+                      return svg`
+                        ${row.map((metric, colIndex) => {
+                          const value = this.getStateValue(metric.entity);
+                          if (value === undefined) return '';
+
+                          const x = columns[colIndex];
+                          const decimals = metric.decimals !== undefined ? metric.decimals : 1;
+                          const unit = metric.unit || this.getStateUnit(metric.entity) || '';
+
+                          return svg`
+                            <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, metric.entity)}">
+                              <text x="${x}" y="${labelY}" fill="${hpTextColor}" font-size="7" opacity="0.7">${metric.label}</text>
+                              <text x="${x}" y="${valueY}" fill="${hpTextColor}" font-size="8" font-weight="bold">
+                                ${this.formatValue(value, decimals)}${unit}
+                              </text>
+                            </g>
+                          `;
+                        })}
+                      `;
+                    })}
+                  `;
+                })() : ''}
               </g>
 
             <!-- Heat Pump Metrics (legacy - now moved inside HP box, keeping for optional extra data) -->
