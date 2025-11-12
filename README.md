@@ -81,12 +81,21 @@ A beautiful, animated Home Assistant card that visualizes heat pump water flow b
 
 ### HACS (Recommended)
 
+#### Add as Custom Repository
+
 1. Open HACS in your Home Assistant instance
 2. Click on "Frontend"
-3. Click the "+" button
-4. Search for "Heat Pump Flow Card"
-5. Click "Install"
-6. Restart Home Assistant
+3. Click the three dots menu (⋮) in the top right corner
+4. Select "Custom repositories"
+5. Add the repository URL: `https://github.com/jasipsw/heat-pump-flow-card`
+6. Select category: "Lovelace"
+7. Click "Add"
+8. Click the "+" button in the bottom right
+9. Search for "Heat Pump Flow Card"
+10. Click "Install"
+11. Restart Home Assistant
+
+> **Note:** In the future, this card may be available in the HACS default repository, allowing you to skip steps 3-7 and search for it directly.
 
 ### Manual Installation
 
