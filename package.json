@@ -5,8 +5,11 @@
   "type": "module",
   "main": "dist/heat-pump-flow-card.js",
   "scripts": {
-    "build": "rollup -c && npm run copy-to-root",
+    "build": "rollup -c && rollup -c rollup.next.config.js && npm run copy-to-root && npm run copy-next-to-root",
+    "build:base": "rollup -c",
+    "build:next": "rollup -c rollup.next.config.js",
     "copy-to-root": "cp dist/heat-pump-flow-card.js heat-pump-flow-card.js && cp dist/heat-pump-flow-card.js.map heat-pump-flow-card.js.map",
+    "copy-next-to-root": "cp dist/heat-pump-flow-card-next.js heat-pump-flow-card-next.js && cp dist/heat-pump-flow-card-next.js.map heat-pump-flow-card-next.js.map",
     "watch": "rollup -c -w",
     "lint": "eslint src --ext .ts",
     "format": "prettier --write src/**/*.ts"
