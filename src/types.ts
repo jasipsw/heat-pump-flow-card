@@ -240,11 +240,6 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     max_flow_rate?: number;     // FAST animation duration in seconds (used at high flow)
     max_flow_rate_value?: number;  // Flow rate (L/min) that triggers fastest animation (default: 50)
     idle_threshold?: number;    // Flow rate (L/min) below which animations hide (default: 0)
-    dot_size?: number;          // Size of animated particles in pixels (radius, default: 1.0)
-    dot_spacing?: number;       // Spacing between dots (deprecated, controlled by count)
-    use_temp_color?: boolean;   // Use temperature-based coloring (default: true)
-    dot_color?: string;         // Fixed dot color (overrides temp color if use_temp_color is false)
-    dot_opacity?: number;       // Dot opacity 0-1 (default: 0.9)
   };
 
   // Temperature Color Configuration (Delta-based pipe coloring)
