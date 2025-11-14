@@ -296,10 +296,6 @@ animation:
   max_flow_rate: 1
   max_flow_rate_value: 50
   idle_threshold: 0
-  dot_size: 1.5
-  use_temp_color: false
-  dot_color: "rgba(255, 255, 255, 0.75)"
-  dot_opacity: 1.0
 
 temperature:
   delta_threshold: 10
@@ -765,10 +761,6 @@ Building performance metrics for system efficiency tracking.
 | `max_flow_rate` | number | 1 | FAST animation duration (seconds at high flow) |
 | `max_flow_rate_value` | number | 50 | Flow rate (L/min) that triggers fastest animation |
 | `idle_threshold` | number | 0 | Flow rate (L/min) below which animations hide |
-| `dot_size` | number | 1.5 | Size of animated particles in pixels (radius) |
-| `use_temp_color` | boolean | false | Use temperature-based coloring for dots |
-| `dot_color` | string | rgba(255,255,255,0.75) | Fixed dot color (white) |
-| `dot_opacity` | number | 1.0 | Dot opacity 0-1 |
 
 ### Temperature Options (`temperature`)
 
@@ -915,7 +907,7 @@ The card visualizes your heat pump system in real-time:
 -->
 
 <!-- SCREENSHOT PLACEHOLDER: Flow Animations - Action shot showing:
-  - Animated dots moving along pipes at different speeds
+  - Animated gradient flows moving along pipes at different speeds
   - Flow rate values displayed between pipes
   - Color-coded pipes (red for hot supply, blue for cold return, gray for neutral)
   - Active system with visible water movement
