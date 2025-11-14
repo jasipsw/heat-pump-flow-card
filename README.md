@@ -40,13 +40,15 @@ A beautiful, animated Home Assistant card that visualizes heat pump water flow b
 
 ## Features
 
-✨ **Animated Water Flow** - Dots move along pipes at speeds proportional to actual flow rates, with adaptive animation that hides when flow stops
+✨ **Animated Water Flow** - Gradient-based flow animations move along pipes at speeds proportional to actual flow rates, with adaptive animation that hides when flow stops. GPU-accelerated for smooth 60fps performance.
 
 🌡️ **Temperature-Based Colors** - Pipes change color from blue (cold) to red (hot) based on actual water temperature with configurable thresholds
 
 📍 **Temperature Status Indicators** - Clean circular indicators show real-time temperatures at critical points (HP inlet/outlet, buffer supply/return, HVAC supply/return, DHW coil inlet/outlet, DHW tank inlet/outlet). Click any indicator to view Home Assistant history graphs.
 
 🌀 **Animated Heat Pump** - Spinning fan that rotates based on actual fan speed (0-100%) with customizable brand logos and colors
+
+⚡ **Performance Optimized** - GPU-accelerated animations using transform and opacity only (no expensive filter operations). Automatically pauses animations when tab is hidden to save battery. Supports prefers-reduced-motion for accessibility.
 
 🎨 **State-Based Coloring** - Heat pump changes color based on operating mode (heating=red, cooling=blue, DHW=orange, defrost=yellow, off=gray)
 
@@ -296,10 +298,6 @@ animation:
   max_flow_rate: 1
   max_flow_rate_value: 50
   idle_threshold: 0
-  dot_size: 1.5
-  use_temp_color: false
-  dot_color: "rgba(255, 255, 255, 0.75)"
-  dot_opacity: 1.0
 
 temperature:
   delta_threshold: 10
@@ -758,6 +756,8 @@ Building performance metrics for system efficiency tracking.
 
 ### Animation Options (`animation`)
 
+Flow animations use GPU-accelerated gradient overlays for smooth 60fps performance. Animations automatically pause when the browser tab is hidden to save battery and CPU. The card also respects the `prefers-reduced-motion` accessibility setting.
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `enabled` | boolean | true | Enable/disable all animations |
@@ -765,10 +765,6 @@ Building performance metrics for system efficiency tracking.
 | `max_flow_rate` | number | 1 | FAST animation duration (seconds at high flow) |
 | `max_flow_rate_value` | number | 50 | Flow rate (L/min) that triggers fastest animation |
 | `idle_threshold` | number | 0 | Flow rate (L/min) below which animations hide |
-| `dot_size` | number | 1.5 | Size of animated particles in pixels (radius) |
-| `use_temp_color` | boolean | false | Use temperature-based coloring for dots |
-| `dot_color` | string | rgba(255,255,255,0.75) | Fixed dot color (white) |
-| `dot_opacity` | number | 1.0 | Dot opacity 0-1 |
 
 ### Temperature Options (`temperature`)
 
@@ -915,7 +911,7 @@ The card visualizes your heat pump system in real-time:
 -->
 
 <!-- SCREENSHOT PLACEHOLDER: Flow Animations - Action shot showing:
-  - Animated dots moving along pipes at different speeds
+  - Animated gradient flows moving along pipes at different speeds
   - Flow rate values displayed between pipes
   - Color-coded pipes (red for hot supply, blue for cold return, gray for neutral)
   - Active system with visible water movement

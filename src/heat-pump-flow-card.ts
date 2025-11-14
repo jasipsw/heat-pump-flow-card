@@ -16,11 +16,15 @@ console.info(
 export class HeatPumpFlowCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @state() private config!: HeatPumpFlowCardConfig;
+  @state() private animationsPaused: boolean = false;
 
   @query('#hp-to-buffer-flow') hpToBufferFlow?: SVGGElement;
   @query('#buffer-to-hp-flow') bufferToHpFlow?: SVGGElement;
   @query('#buffer-to-hvac-flow') bufferToHvacFlow?: SVGGElement;
   @query('#hvac-to-buffer-flow') hvacToBufferFlow?: SVGGElement;
+
+  private visibilityChangeHandler?: () => void;
+  private prefersReducedMotionQuery?: MediaQueryList;
 
   public static getConfigElement(): LovelaceCardEditor | undefined {
     // No visual editor yet - users can edit YAML directly
@@ -154,6 +158,12 @@ export class HeatPumpFlowCard extends LitElement {
       }, 100);
     }
 
+    // Setup Page Visibility API to pause animations when tab is hidden
+    this.setupVisibilityListener();
+
+    // Setup prefers-reduced-motion media query
+    this.setupReducedMotionListener();
+
     // Debug helper: expose card instance globally
     (window as any).debugCard = () => {
       const card = document.querySelector('heat-pump-flow-card');
@@ -174,6 +184,86 @@ export class HeatPumpFlowCard extends LitElement {
 
   // Flow animation now uses animated gradient overlays (SVG SMIL animations)
   // No JavaScript animation updates needed - SVG handles animation automatically
+
+  /**
+   * Setup Page Visibility API listener to pause animations when tab is hidden
+   */
+  private setupVisibilityListener(): void {
+    this.visibilityChangeHandler = () => {
+      if (document.hidden) {
+        this.pauseAnimations();
+      } else {
+        this.resumeAnimations();
+      }
+    };
+
+    document.addEventListener('visibilitychange', this.visibilityChangeHandler);
+  }
+
+  /**
+   * Setup prefers-reduced-motion media query listener
+   */
+  private setupReducedMotionListener(): void {
+    if (window.matchMedia) {
+      this.prefersReducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      
+      const handleReducedMotionChange = () => {
+        if (this.prefersReducedMotionQuery?.matches) {
+          this.pauseAnimations();
+        } else if (!document.hidden) {
+          this.resumeAnimations();
+        }
+      };
+
+      // Check initial state
+      handleReducedMotionChange();
+
+      // Listen for changes
+      this.prefersReducedMotionQuery.addEventListener('change', handleReducedMotionChange);
+    }
+  }
+
+  /**
+   * Pause all CSS animations by adding a class to the shadow root
+   */
+  private pauseAnimations(): void {
+    this.animationsPaused = true;
+    const svgElement = this.shadowRoot?.querySelector('svg');
+    if (svgElement) {
+      svgElement.style.setProperty('animation-play-state', 'paused');
+      // Pause all animated elements
+      const animatedElements = svgElement.querySelectorAll('[class*="glow"], [class*="pulse"], .fan-rotating, .g2-valve-active-path');
+      animatedElements.forEach(el => {
+        (el as HTMLElement).style.animationPlayState = 'paused';
+      });
+    }
+  }
+
+  /**
+   * Resume all CSS animations
+   */
+  private resumeAnimations(): void {
+    this.animationsPaused = false;
+    const svgElement = this.shadowRoot?.querySelector('svg');
+    if (svgElement) {
+      svgElement.style.removeProperty('animation-play-state');
+      // Resume all animated elements
+      const animatedElements = svgElement.querySelectorAll('[class*="glow"], [class*="pulse"], .fan-rotating, .g2-valve-active-path');
+      animatedElements.forEach(el => {
+        (el as HTMLElement).style.animationPlayState = 'running';
+      });
+    }
+  }
+
+  /**
+   * Cleanup visibility listeners when component is removed
+   */
+  public disconnectedCallback(): void {
+    super.disconnectedCallback();
+    if (this.visibilityChangeHandler) {
+      document.removeEventListener('visibilitychange', this.visibilityChangeHandler);
+    }
+  }
 
   private updateAnimationVariables(): void {
     // Only update fan animation
