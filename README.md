@@ -572,10 +572,13 @@ heat_pump_visual:
 | `supply_temp_entity` | string | - | Buffer tank supply (hot) temperature |
 | `return_temp_entity` | string | - | Buffer tank return (cold) temperature |
 | `level_entity` | string | - | Tank level sensor (optional) |
+| `tank_temp_entity` | string | - | Tank temperature sensor (optional, required for temperature indicator) |
 | `name` | string | BUFFER | Tank display name/label |
 | `logo_url` | string | - | Logo URL displayed left of label |
 | `label_color` | string | white | Tank label text color |
 | `label_font_size` | number | 12 | Tank label font size in pixels |
+| `show_temp_indicator` | boolean | false | Show temperature indicator circle in center of tank |
+| `temp_indicator_radius` | number | 15 | Temperature indicator circle radius in pixels |
 | `gradient` | object | - | Gradient visualization configuration (see below) |
 
 **Gradient Configuration (`gradient`):**
@@ -610,11 +613,13 @@ Domestic Hot Water tank with heating coil visualization.
 |------|------|---------|-------------|
 | `inlet_temp_entity` | string | - | DHW coil inlet temperature (hot from HP) |
 | `outlet_temp_entity` | string | - | DHW coil outlet temperature (return to HP) |
-| `tank_temp_entity` | string | - | DHW tank temperature (optional) |
+| `tank_temp_entity` | string | - | DHW tank temperature (optional, required for temperature indicator) |
 | `name` | string | DHW | Tank display name/label |
 | `logo_url` | string | - | Logo URL displayed left of label |
 | `label_color` | string | white | Tank label text color |
 | `label_font_size` | number | 12 | Tank label font size in pixels |
+| `show_temp_indicator` | boolean | false | Show temperature indicator circle in center of tank |
+| `temp_indicator_radius` | number | 15 | Temperature indicator circle radius in pixels |
 | `tank_inlet_flow_entity` | string | - | Street water flow rate (L/min) - optional, no animation if not provided |
 | `tank_inlet_temp_entity` | string | - | Street water temperature |
 | `tank_inlet_color` | string | #3498db | Street water pipe color (light blue for cold) |
@@ -652,11 +657,13 @@ Domestic Hot Water tank with heating coil visualization.
 | `enabled` | boolean | false | Enable second DHW tank |
 | `inlet_temp_entity` | string | - | Inlet temperature (from first tank outlet) |
 | `outlet_temp_entity` | string | - | Final outlet temperature (to house) |
-| `tank_temp_entity` | string | - | Tank temperature (optional) |
+| `tank_temp_entity` | string | - | Tank temperature (optional, required for temperature indicator) |
 | `name` | string | DHW 2 | Tank display name/label |
 | `logo_url` | string | - | Logo URL displayed left of label |
 | `label_color` | string | white | Tank label text color |
 | `label_font_size` | number | 12 | Tank label font size in pixels |
+| `show_temp_indicator` | boolean | false | Show temperature indicator circle in center of tank |
+| `temp_indicator_radius` | number | 15 | Temperature indicator circle radius in pixels |
 | `tank_outlet_icon_url` | string | mdi:faucet-variant | Final outlet icon (supports MDI icons or image URLs) |
 | `tank_outlet_color` | string | #e74c3c | Final outlet pipe color (red for hot) |
 | `gradient` | object | - | Gradient visualization configuration (same as dhw_tank) |

@@ -264,6 +264,7 @@ export class HeatPumpFlowCard extends LitElement {
       supplyTemp: this.getStateValue(cfg.supply_temp_entity) || 0,
       returnTemp: this.getStateValue(cfg.return_temp_entity) || 0,
       level: this.getStateValue(cfg.level_entity),
+      tankTemp: this.getStateValue(cfg.tank_temp_entity),
     };
   }
 
@@ -343,6 +344,58 @@ export class HeatPumpFlowCard extends LitElement {
   private formatValue(value: number | undefined, decimals: number = 1): string {
     if (value === undefined) return 'N/A';
     return value.toFixed(decimals);
+  }
+
+  /**
+   * Render tank temperature indicator circle (centered in tank)
+   * Shows the actual tank temperature when available
+   */
+  private renderTankTempIndicator(
+    x: number,
+    y: number,
+    tankTemp: number | undefined,
+    tankTempEntity: string | undefined,
+    showIndicator: boolean | undefined,
+    indicatorRadius: number | undefined,
+    tankColor: string
+  ) {
+    // Check if indicator is enabled and temperature is available
+    if (!showIndicator || !tankTempEntity || tankTemp === undefined || isNaN(tankTemp)) {
+      return svg``;
+    }
+
+    const radius = indicatorRadius || 15;
+
+    return svg`
+      <g class="tank-temp-indicator"
+         style="cursor: pointer;"
+         @click="${(e: Event) => this.handleTemperatureClick(e, tankTempEntity)}">
+        <!-- Circle with white fill and colored border -->
+        <circle
+          cx="${x}"
+          cy="${y}"
+          r="${radius}"
+          fill="white"
+          stroke="${tankColor}"
+          stroke-width="2.5"
+          opacity="0.95"
+          filter="url(#circle-shadow)" />
+
+        <!-- Temperature text -->
+        <text
+          x="${x}"
+          y="${y + 1}"
+          text-anchor="middle"
+          dominant-baseline="middle"
+          fill="${tankColor}"
+          font-size="10"
+          font-weight="bold"
+          letter-spacing="-0.5"
+          font-family="Arial, sans-serif">
+          ${this.formatValue(tankTemp, 1)}°
+        </text>
+      </g>
+    `;
   }
 
   /**
@@ -2054,6 +2107,17 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="45" y="173" text-anchor="middle" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="11" font-weight="bold">
                 ${bufferFillPercentage}%
               </text>
+
+              <!-- Tank temperature indicator (optional, centered in tank) -->
+              ${this.renderTankTempIndicator(
+                45,  // x center of tank
+                90,  // y center of tank body
+                bufferState.tankTemp,
+                this.config.buffer_tank?.tank_temp_entity,
+                this.config.buffer_tank?.show_temp_indicator,
+                this.config.buffer_tank?.temp_indicator_radius,
+                bufferIsHeating ? '#e74c3c' : '#3498db'
+              )}
             </g>
 
             <!-- DHW (Domestic Hot Water) Tank with Coil (center-bottom) -->
@@ -2127,6 +2191,17 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="45" y="173" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
                 ${dhwFillPercentage}%
               </text>
+
+              <!-- Tank temperature indicator (optional, centered in tank) -->
+              ${this.renderTankTempIndicator(
+                45,  // x center of tank
+                90,  // y center of tank body
+                dhwState.tankTemp,
+                this.config.dhw_tank?.tank_temp_entity,
+                this.config.dhw_tank?.show_temp_indicator,
+                this.config.dhw_tank?.temp_indicator_radius,
+                '#e74c3c'  // Red for DHW (always heating)
+              )}
             </g>
 
             <!-- DHW Tank 2 (Secondary/Finishing Heater) - Optional -->
@@ -2175,6 +2250,17 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="45" y="173" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="bold">
                 ${dhwTank2FillPercentage}%
               </text>
+
+              <!-- Tank temperature indicator (optional, centered in tank) -->
+              ${this.renderTankTempIndicator(
+                45,  // x center of tank
+                90,  // y center of tank body
+                dhwTank2State.tankTemp,
+                this.config.dhw_tank_2?.tank_temp_entity,
+                this.config.dhw_tank_2?.show_temp_indicator,
+                this.config.dhw_tank_2?.temp_indicator_radius,
+                '#e74c3c'  // Red for DHW (always heating)
+              )}
             </g>
             ` : ''}
 
