@@ -1,0 +1,140 @@
+type: markdown
+content: |
+  ## HBX SensorLinx Sensors
+
+  <table>
+    <thead>
+      <tr>
+        <th>Zone</th>
+        <th><ha-icon icon="mdi:thermometer"></ha-icon> Room</th>
+        <th><ha-icon icon="mdi:thermometer-water"></ha-icon> Floor</th>
+        <th><ha-icon icon="mdi:thermometer-chevron-up"></ha-icon> Heat</th>
+        <th><ha-icon icon="mdi:thermometer-chevron-down"></ha-icon> Cool</th>
+        <th><ha-icon icon="mdi:water-percent"></ha-icon> Humid</th>
+        <th><ha-icon icon="mdi:gauge"></ha-icon> D1</th>
+        <th><ha-icon icon="mdi:gauge"></ha-icon> D2</th>
+        <th><ha-icon icon="mdi:home-group"></ha-icon> Zone</th>
+        <th><ha-icon icon="mdi:priority-high"></ha-icon> Pri</th>
+        <th><ha-icon icon="mdi:water"></ha-icon> H-On</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Bedroom</td>
+        <td>{{states('sensor.bedroom_room_temperature')|round(1)}}°F</td>
+        <td>{{states('sensor.bedroom_floor_temperature')|round(1)}}°F</td>
+        <td>{{states('sensor.bedroom_heat_target')|round(1)}}°F</td>
+        <td>{{states('sensor.bedroom_cool_target')|round(1)}}°F</td>
+        <td>{{states('sensor.bedroom_humidity')|round(0)}}%</td>
+        <td>{{states('sensor.bedroom_demand_1')}}</td>
+        <td>{{states('sensor.bedroom_demand_2')}}</td>
+        <td>{{states('sensor.bedroom_zone')}}</td>
+        <td>{{states('sensor.bedroom_priority')}}</td>
+        <td>{{states('sensor.bedroom_humidity_on')}}</td>
+      </tr>
+      <tr>
+        <td>Family Room</td>
+        <td>{{states('sensor.family_room_room_temperature')|round(1)}}°F</td>
+        <td>{{states('sensor.family_room_floor_temperature')|round(1)}}°F</td>
+        <td>{{states('sensor.family_room_heat_target')|round(1)}}°F</td>
+        <td>{{states('sensor.family_room_cool_target')|round(1)}}°F</td>
+        <td>{{states('sensor.family_room_humidity_2')|round(0)}}%</td>
+        <td>{{states('sensor.family_room_demand_1')}}</td>
+        <td>{{states('sensor.family_room_demand_2')}}</td>
+        <td>{{states('sensor.family_room_zone')}}</td>
+        <td>{{states('sensor.family_room_priority')}}</td>
+        <td>{{states('sensor.family_room_humidity_on')}}</td>
+      </tr>
+      <tr>
+        <td>Front Bedroom</td>
+        <td>{{states('sensor.front_bedroom_room_temperature')|round(1)}}°F</td>
+        <td>{{states('sensor.front_bedroom_floor_temperature')|round(1)}}°F</td>
+        <td>{{states('sensor.front_bedroom_heat_target')|round(1)}}°F</td>
+        <td>{{states('sensor.front_bedroom_cool_target')|round(1)}}°F</td>
+        <td>{{states('sensor.front_bedroom_humidity')|round(0)}}%</td>
+        <td>{{states('sensor.front_bedroom_demand_1')}}</td>
+        <td>{{states('sensor.front_bedroom_demand_2')}}</td>
+        <td>{{states('sensor.front_bedroom_zone')}}</td>
+        <td>{{states('sensor.front_bedroom_priority')}}</td>
+        <td>{{states('sensor.front_bedroom_humidity_on')}}</td>
+      </tr>
+      <tr>
+        <td>Main Floor</td>
+        <td>{{states('sensor.main_floor_room_temperature')|round(1)}}°F</td>
+        <td>{{states('sensor.main_floor_floor_temperature')|round(1)}}°F</td>
+        <td>{{states('sensor.main_floor_heat_target')|round(1)}}°F</td>
+        <td>{{states('sensor.main_floor_cool_target')|round(1)}}°F</td>
+        <td>{{states('sensor.main_floor_humidity')|round(0)}}%</td>
+        <td>{{states('sensor.main_floor_demand_1')}}</td>
+        <td>{{states('sensor.main_floor_demand_2')}}</td>
+        <td>{{states('sensor.main_floor_zone')}}</td>
+        <td>{{states('sensor.main_floor_priority')}}</td>
+        <td>{{states('sensor.main_floor_humidity_on')}}</td>
+      </tr>
+      <tr>
+        <td>Master Suite</td>
+        <td>{{states('sensor.master_suite_room_temperature')|round(1)}}°F</td>
+        <td>{{states('sensor.master_suite_floor_temperature')|round(1)}}°F</td>
+        <td>{{states('sensor.master_suite_heat_target')|round(1)}}°F</td>
+        <td>{{states('sensor.master_suite_cool_target')|round(1)}}°F</td>
+        <td>{{states('sensor.master_suite_humidity')|round(0)}}%</td>
+        <td>{{states('sensor.master_suite_demand_1')}}</td>
+        <td>{{states('sensor.master_suite_demand_2')}}</td>
+        <td>{{states('sensor.master_suite_zone')}}</td>
+        <td>{{states('sensor.master_suite_priority')}}</td>
+        <td>{{states('sensor.master_suite_humidity_on')}}</td>
+      </tr>
+      <tr>
+        <td>Office 3</td>
+        <td>{{states('sensor.office_3_room_temperature')|round(1)}}°F</td>
+        <td>{{states('sensor.office_3_floor_temperature')|round(1)}}°F</td>
+        <td>{{states('sensor.office_3_heat_target')|round(1)}}°F</td>
+        <td>{{states('sensor.office_3_cool_target')|round(1)}}°F</td>
+        <td>{{states('sensor.office_3_humidity')|round(0)}}%</td>
+        <td>{{states('sensor.office_3_demand_1')}}</td>
+        <td>{{states('sensor.office_3_demand_2')}}</td>
+        <td>{{states('sensor.office_3_zone')}}</td>
+        <td>{{states('sensor.office_3_priority')}}</td>
+        <td>{{states('sensor.office_3_humidity_on')}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <style>
+    ha-markdown table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 12px;
+    }
+    ha-markdown th {
+      background-color: var(--primary-color);
+      color: var(--text-primary-color);
+      padding: 8px 4px;
+      text-align: center;
+      font-weight: bold;
+      border: 1px solid var(--divider-color);
+      font-size: 11px;
+    }
+    ha-markdown td {
+      padding: 8px 4px;
+      border: 1px solid var(--divider-color);
+      text-align: center;
+    }
+    ha-markdown tbody tr:nth-child(odd) {
+      background-color: var(--table-row-background-color, rgba(127, 127, 127, 0.05));
+    }
+    ha-markdown tbody tr:hover {
+      background-color: var(--table-row-alternative-background-color, rgba(127, 127, 127, 0.1));
+    }
+    ha-markdown td:first-child {
+      font-weight: bold;
+      white-space: nowrap;
+      text-align: left;
+      background-color: var(--card-background-color);
+    }
+    ha-markdown ha-icon {
+      vertical-align: middle;
+      color: var(--primary-color);
+    }
+  </style>
