@@ -86,6 +86,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     supply_temp_entity?: string;  // Supply temperature
     return_temp_entity?: string;  // Return temperature
     level_entity?: string;         // Tank level (optional)
+    tank_temp_entity?: string;     // Tank temperature (optional)
     name?: string;                 // Tank display name (default: BUFFER)
     icon?: string;
     logo_url?: string;             // Logo URL (displayed left of label)
@@ -93,6 +94,8 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     logo_drop_shadow?: string;     // Drop shadow color (e.g., "rgba(0,0,0,0.5)")
     label_color?: string;          // Label text color (default: white)
     label_font_size?: number;      // Label font size in pixels (default: 12)
+    show_temp_indicator?: boolean; // Show temperature indicator circle in center (default: false)
+    temp_indicator_radius?: number; // Temperature indicator circle radius in pixels (default: 15)
     gradient?: {
       enabled?: boolean;            // Enable gradient visualization (default: true)
       levels?: number;              // Number of gradient steps (default: 10)
@@ -120,6 +123,8 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     logo_drop_shadow?: string;     // Drop shadow color (e.g., "rgba(0,0,0,0.5)")
     label_color?: string;          // Label text color (default: white)
     label_font_size?: number;      // Label font size in pixels (default: 12)
+    show_temp_indicator?: boolean; // Show temperature indicator circle in center (default: false)
+    temp_indicator_radius?: number; // Temperature indicator circle radius in pixels (default: 15)
     // DHW coil circuit (heat exchanger inside tank)
     inlet_color?: string;             // DHW coil inlet temperature indicator color (default: #3498db blue)
     outlet_color?: string;            // DHW coil outlet temperature indicator color (default: #e74c3c red)
@@ -160,6 +165,8 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     logo_drop_shadow?: string;        // Drop shadow color (e.g., "rgba(0,0,0,0.5)")
     label_color?: string;             // Label text color (default: white)
     label_font_size?: number;         // Label font size in pixels (default: 12)
+    show_temp_indicator?: boolean;    // Show temperature indicator circle in center (default: false)
+    temp_indicator_radius?: number;   // Temperature indicator circle radius in pixels (default: 15)
     tank_outlet_icon_url?: string;    // Final outlet icon URL (default: faucet icon)
     tank_outlet_color?: string;       // Final outlet pipe color (default: #e74c3c red)
     tank_outlet_icon_color?: string;  // Icon color for MDI icons (default: var(--primary-text-color))
@@ -384,6 +391,7 @@ export interface BufferTankState {
   supplyTemp: number;
   returnTemp: number;
   level?: number;
+  tankTemp?: number;
 }
 
 export interface HVACState {
