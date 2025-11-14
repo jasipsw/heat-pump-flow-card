@@ -1,0 +1,141 @@
+type: markdown
+content: |
+  ## HBX SensorLinx Sensors
+
+  <table>
+    <thead>
+      <tr>
+        <th>Sensor</th>
+        <th>Zone 1</th>
+        <th>Zone 2</th>
+        <th>Zone 3</th>
+        <th>Zone 4</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Temperature Sensors -->
+      <tr>
+        <td><ha-icon icon="mdi:thermometer"></ha-icon> Room Temp</td>
+        <td>{{states('sensor.zone1_room')|round(1)}}°F</td>
+        <td>{{states('sensor.zone2_room')|round(1)}}°F</td>
+        <td>{{states('sensor.zone3_room')|round(1)}}°F</td>
+        <td>{{states('sensor.zone4_room')|round(1)}}°F</td>
+      </tr>
+      <tr>
+        <td><ha-icon icon="mdi:thermometer-water"></ha-icon> Floor Temp</td>
+        <td>{{states('sensor.zone1_floor')|round(1)}}°F</td>
+        <td>{{states('sensor.zone2_floor')|round(1)}}°F</td>
+        <td>{{states('sensor.zone3_floor')|round(1)}}°F</td>
+        <td>{{states('sensor.zone4_floor')|round(1)}}°F</td>
+      </tr>
+      <tr>
+        <td><ha-icon icon="mdi:thermometer-chevron-up"></ha-icon> Heat Target</td>
+        <td>{{states('sensor.zone1_heat_target')|round(1)}}°F</td>
+        <td>{{states('sensor.zone2_heat_target')|round(1)}}°F</td>
+        <td>{{states('sensor.zone3_heat_target')|round(1)}}°F</td>
+        <td>{{states('sensor.zone4_heat_target')|round(1)}}°F</td>
+      </tr>
+      <tr>
+        <td><ha-icon icon="mdi:thermometer-chevron-down"></ha-icon> Cool Target</td>
+        <td>{{states('sensor.zone1_cool_target')|round(1)}}°F</td>
+        <td>{{states('sensor.zone2_cool_target')|round(1)}}°F</td>
+        <td>{{states('sensor.zone3_cool_target')|round(1)}}°F</td>
+        <td>{{states('sensor.zone4_cool_target')|round(1)}}°F</td>
+      </tr>
+
+      <!-- Humidity -->
+      <tr>
+        <td><ha-icon icon="mdi:water-percent"></ha-icon> Humidity</td>
+        <td>{{states('sensor.zone1_humidity')|round(0)}}%</td>
+        <td>{{states('sensor.zone2_humidity')|round(0)}}%</td>
+        <td>{{states('sensor.zone3_humidity')|round(0)}}%</td>
+        <td>{{states('sensor.zone4_humidity')|round(0)}}%</td>
+      </tr>
+
+      <!-- Demand Sensors -->
+      <tr>
+        <td><ha-icon icon="mdi:gauge"></ha-icon> Demand 1</td>
+        <td>{{states('sensor.zone1_demand_1')}}</td>
+        <td>{{states('sensor.zone2_demand_1')}}</td>
+        <td>{{states('sensor.zone3_demand_1')}}</td>
+        <td>{{states('sensor.zone4_demand_1')}}</td>
+      </tr>
+      <tr>
+        <td><ha-icon icon="mdi:gauge"></ha-icon> Demand 2</td>
+        <td>{{states('sensor.zone1_demand_2')}}</td>
+        <td>{{states('sensor.zone2_demand_2')}}</td>
+        <td>{{states('sensor.zone3_demand_2')}}</td>
+        <td>{{states('sensor.zone4_demand_2')}}</td>
+      </tr>
+
+      <!-- Zone Info -->
+      <tr>
+        <td><ha-icon icon="mdi:home-group"></ha-icon> Zone</td>
+        <td>{{states('sensor.zone1_zone')}}</td>
+        <td>{{states('sensor.zone2_zone')}}</td>
+        <td>{{states('sensor.zone3_zone')}}</td>
+        <td>{{states('sensor.zone4_zone')}}</td>
+      </tr>
+      <tr>
+        <td><ha-icon icon="mdi:priority-high"></ha-icon> Priority</td>
+        <td>{{states('sensor.zone1_priority')}}</td>
+        <td>{{states('sensor.zone2_priority')}}</td>
+        <td>{{states('sensor.zone3_priority')}}</td>
+        <td>{{states('sensor.zone4_priority')}}</td>
+      </tr>
+      <tr>
+        <td><ha-icon icon="mdi:water"></ha-icon> Humidity On</td>
+        <td>{{states('sensor.zone1_humidity_on')}}</td>
+        <td>{{states('sensor.zone2_humidity_on')}}</td>
+        <td>{{states('sensor.zone3_humidity_on')}}</td>
+        <td>{{states('sensor.zone4_humidity_on')}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <style>
+    ha-markdown table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+    ha-markdown th {
+      background-color: var(--primary-color);
+      color: var(--text-primary-color);
+      padding: 12px 8px;
+      text-align: left;
+      font-weight: bold;
+      border: 1px solid var(--divider-color);
+    }
+    ha-markdown td {
+      padding: 10px 8px;
+      border: 1px solid var(--divider-color);
+      text-align: left;
+    }
+    ha-markdown tbody tr:nth-child(odd) {
+      background-color: var(--table-row-background-color, rgba(127, 127, 127, 0.05));
+    }
+    ha-markdown tbody tr:hover {
+      background-color: var(--table-row-alternative-background-color, rgba(127, 127, 127, 0.1));
+    }
+    ha-markdown td:first-child {
+      font-weight: bold;
+      white-space: nowrap;
+    }
+    ha-markdown ha-icon {
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+  </style>
+
+# INSTRUCTIONS:
+# 1. Replace 'zone1', 'zone2', etc. with your actual device/zone names
+# 2. Update entity IDs to match your HBX SensorLinx entities
+#    Format is usually: sensor.{device_name}_{sensor_type}
+#    Examples:
+#      - sensor.bedroom_room
+#      - sensor.bedroom_floor
+#      - sensor.bedroom_heat_target
+# 3. Add or remove columns based on how many zones/devices you have
+# 4. Remove rows for sensors you don't use
+# 5. Adjust decimal places in round() filters as needed
