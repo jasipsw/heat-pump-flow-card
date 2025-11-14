@@ -39,6 +39,18 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Rename artifacts for refactor branch
+        if: github.ref == 'refs/heads/refactor/css-pipe-animation'
+        run: |
+          if [ -f dist/heat-pump-flow-card.js ]; then
+            mv dist/heat-pump-flow-card.js dist/heat-pump-flow-card-next.js
+            echo "Renamed heat-pump-flow-card.js to heat-pump-flow-card-next.js"
+          fi
+          if [ -f dist/heat-pump-flow-card.js.map ]; then
+            mv dist/heat-pump-flow-card.js.map dist/heat-pump-flow-card-next.js.map
+            echo "Renamed heat-pump-flow-card.js.map to heat-pump-flow-card-next.js.map"
+          fi
+
       - name: Check for changes
         id: verify_diff
         run: |
