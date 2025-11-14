@@ -12,7 +12,7 @@ console.info(
   'color: #95a5a6; font-weight: normal; background: dimgray',
 );
 
-@customElement('heat-pump-flow-card')
+@customElement('heat-pump-flow-card-next')
 export class HeatPumpFlowCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @state() private config!: HeatPumpFlowCardConfig;
@@ -2493,34 +2493,35 @@ export class HeatPumpFlowCard extends LitElement {
   }
 }
 
-// Register the card with Home Assistant
+// At the card registration near the bottom, change to:
 (window as any).customCards = (window as any).customCards || [];
 (window as any).customCards.push({
-  type: 'heat-pump-flow-card',
-  name: 'Heat Pump Flow Card',
-  description: 'Animated heat pump flow visualization card',
+  type: 'heat-pump-flow-card-next',
+  name: 'Heat Pump Flow Card Next',
+  description: 'Animated heat pump flow visualization card (performance test version)',
   preview: true,
   documentationURL: 'https://github.com/YOUR_USERNAME/heat-pump-flow-card',
 });
 
-// Debug helper: Add findHeatPumpCard to window for console debugging
-(window as any).findHeatPumpCard = function(root: Document | ShadowRoot = document): HeatPumpFlowCard | null {
+// And update the debug helper function to:
+(window as any).findHeatPumpCardNext = function(root: Document | ShadowRoot = document): HeatPumpFlowCard | null {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
   let node: Node | null;
   while (node = walker.nextNode()) {
-    if ((node as Element).tagName === 'HEAT-PUMP-FLOW-CARD') {
+    if ((node as Element).tagName === 'HEAT-PUMP-FLOW-CARD-NEXT') {
       return node as HeatPumpFlowCard;
     }
     if ((node as Element).shadowRoot) {
-      const found = (window as any).findHeatPumpCard((node as Element).shadowRoot);
+      const found = (window as any).findHeatPumpCardNext((node as Element).shadowRoot);
       if (found) return found;
     }
   }
   return null;
 };
 
+// And update the global declaration:
 declare global {
   interface HTMLElementTagNameMap {
-    'heat-pump-flow-card': HeatPumpFlowCard;
+    'heat-pump-flow-card-next': HeatPumpFlowCard;
   }
 }
