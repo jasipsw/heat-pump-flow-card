@@ -26,11 +26,11 @@ content: |
         <td>{{states('sensor.bedroom_heat_target')|round(1)}}°F</td>
         <td>{{states('sensor.bedroom_cool_target')|round(1)}}°F</td>
         <td>{{states('sensor.bedroom_humidity')|round(0)}}%</td>
-        <td>{{states('sensor.bedroom_demand_1')}}</td>
-        <td>{{states('sensor.bedroom_demand_2')}}</td>
-        <td>{{states('sensor.bedroom_zone')}}</td>
-        <td>{{states('sensor.bedroom_priority')}}</td>
-        <td>{{states('sensor.bedroom_humidity_on')}}</td>
+        <td>{{states('sensor.bedroom_demand_1')|round(0)}}</td>
+        <td>{{states('sensor.bedroom_demand_2')|round(0)}}</td>
+        <td>{{states('sensor.bedroom_zone')|round(0)}}</td>
+        <td>{{states('sensor.bedroom_priority')|round(0)}}</td>
+        <td>{{states('sensor.bedroom_humidity_on')|round(0)}}</td>
       </tr>
       <tr>
         <td>Family Room</td>
@@ -39,11 +39,11 @@ content: |
         <td>{{states('sensor.family_room_heat_target')|round(1)}}°F</td>
         <td>{{states('sensor.family_room_cool_target')|round(1)}}°F</td>
         <td>{{states('sensor.family_room_humidity_2')|round(0)}}%</td>
-        <td>{{states('sensor.family_room_demand_1')}}</td>
-        <td>{{states('sensor.family_room_demand_2')}}</td>
-        <td>{{states('sensor.family_room_zone')}}</td>
-        <td>{{states('sensor.family_room_priority')}}</td>
-        <td>{{states('sensor.family_room_humidity_on')}}</td>
+        <td>{{states('sensor.family_room_demand_1')|round(0)}}</td>
+        <td>{{states('sensor.family_room_demand_2')|round(0)}}</td>
+        <td>{{states('sensor.family_room_zone')|round(0)}}</td>
+        <td>{{states('sensor.family_room_priority')|round(0)}}</td>
+        <td>{{states('sensor.family_room_humidity_on')|round(0)}}</td>
       </tr>
       <tr>
         <td>Front Bedroom</td>
@@ -52,11 +52,11 @@ content: |
         <td>{{states('sensor.front_bedroom_heat_target')|round(1)}}°F</td>
         <td>{{states('sensor.front_bedroom_cool_target')|round(1)}}°F</td>
         <td>{{states('sensor.front_bedroom_humidity')|round(0)}}%</td>
-        <td>{{states('sensor.front_bedroom_demand_1')}}</td>
-        <td>{{states('sensor.front_bedroom_demand_2')}}</td>
-        <td>{{states('sensor.front_bedroom_zone')}}</td>
-        <td>{{states('sensor.front_bedroom_priority')}}</td>
-        <td>{{states('sensor.front_bedroom_humidity_on')}}</td>
+        <td>{{states('sensor.front_bedroom_demand_1')|round(0)}}</td>
+        <td>{{states('sensor.front_bedroom_demand_2')|round(0)}}</td>
+        <td>{{states('sensor.front_bedroom_zone')|round(0)}}</td>
+        <td>{{states('sensor.front_bedroom_priority')|round(0)}}</td>
+        <td>{{states('sensor.front_bedroom_humidity_on')|round(0)}}</td>
       </tr>
       <tr>
         <td>Main Floor</td>
@@ -65,11 +65,11 @@ content: |
         <td>{{states('sensor.main_floor_heat_target')|round(1)}}°F</td>
         <td>{{states('sensor.main_floor_cool_target')|round(1)}}°F</td>
         <td>{{states('sensor.main_floor_humidity')|round(0)}}%</td>
-        <td>{{states('sensor.main_floor_demand_1')}}</td>
-        <td>{{states('sensor.main_floor_demand_2')}}</td>
-        <td>{{states('sensor.main_floor_zone')}}</td>
-        <td>{{states('sensor.main_floor_priority')}}</td>
-        <td>{{states('sensor.main_floor_humidity_on')}}</td>
+        <td>{{states('sensor.main_floor_demand_1')|round(0)}}</td>
+        <td>{{states('sensor.main_floor_demand_2')|round(0)}}</td>
+        <td>{{states('sensor.main_floor_zone')|round(0)}}</td>
+        <td>{{states('sensor.main_floor_priority')|round(0)}}</td>
+        <td>{{states('sensor.main_floor_humidity_on')|round(0)}}</td>
       </tr>
       <tr>
         <td>Master Suite</td>
@@ -78,11 +78,11 @@ content: |
         <td>{{states('sensor.master_suite_heat_target')|round(1)}}°F</td>
         <td>{{states('sensor.master_suite_cool_target')|round(1)}}°F</td>
         <td>{{states('sensor.master_suite_humidity')|round(0)}}%</td>
-        <td>{{states('sensor.master_suite_demand_1')}}</td>
-        <td>{{states('sensor.master_suite_demand_2')}}</td>
-        <td>{{states('sensor.master_suite_zone')}}</td>
-        <td>{{states('sensor.master_suite_priority')}}</td>
-        <td>{{states('sensor.master_suite_humidity_on')}}</td>
+        <td>{{states('sensor.master_suite_demand_1')|round(0)}}</td>
+        <td>{{states('sensor.master_suite_demand_2')|round(0)}}</td>
+        <td>{{states('sensor.master_suite_zone')|round(0)}}</td>
+        <td>{{states('sensor.master_suite_priority')|round(0)}}</td>
+        <td>{{states('sensor.master_suite_humidity_on')|round(0)}}</td>
       </tr>
       <tr>
         <td>Office 3</td>
@@ -91,11 +91,11 @@ content: |
         <td>{{states('sensor.office_3_heat_target')|round(1)}}°F</td>
         <td>{{states('sensor.office_3_cool_target')|round(1)}}°F</td>
         <td>{{states('sensor.office_3_humidity')|round(0)}}%</td>
-        <td>{{states('sensor.office_3_demand_1')}}</td>
-        <td>{{states('sensor.office_3_demand_2')}}</td>
-        <td>{{states('sensor.office_3_zone')}}</td>
-        <td>{{states('sensor.office_3_priority')}}</td>
-        <td>{{states('sensor.office_3_humidity_on')}}</td>
+        <td>{{states('sensor.office_3_demand_1')|round(0)}}</td>
+        <td>{{states('sensor.office_3_demand_2')|round(0)}}</td>
+        <td>{{states('sensor.office_3_zone')|round(0)}}</td>
+        <td>{{states('sensor.office_3_priority')|round(0)}}</td>
+        <td>{{states('sensor.office_3_humidity_on')|round(0)}}</td>
       </tr>
     </tbody>
   </table>
