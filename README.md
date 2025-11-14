@@ -40,13 +40,15 @@ A beautiful, animated Home Assistant card that visualizes heat pump water flow b
 
 ## Features
 
-✨ **Animated Water Flow** - Dots move along pipes at speeds proportional to actual flow rates, with adaptive animation that hides when flow stops
+✨ **Animated Water Flow** - Gradient-based flow animations move along pipes at speeds proportional to actual flow rates, with adaptive animation that hides when flow stops. GPU-accelerated for smooth 60fps performance.
 
 🌡️ **Temperature-Based Colors** - Pipes change color from blue (cold) to red (hot) based on actual water temperature with configurable thresholds
 
 📍 **Temperature Status Indicators** - Clean circular indicators show real-time temperatures at critical points (HP inlet/outlet, buffer supply/return, HVAC supply/return, DHW coil inlet/outlet, DHW tank inlet/outlet). Click any indicator to view Home Assistant history graphs.
 
 🌀 **Animated Heat Pump** - Spinning fan that rotates based on actual fan speed (0-100%) with customizable brand logos and colors
+
+⚡ **Performance Optimized** - GPU-accelerated animations using transform and opacity only (no expensive filter operations). Automatically pauses animations when tab is hidden to save battery. Supports prefers-reduced-motion for accessibility.
 
 🎨 **State-Based Coloring** - Heat pump changes color based on operating mode (heating=red, cooling=blue, DHW=orange, defrost=yellow, off=gray)
 
@@ -753,6 +755,8 @@ Building performance metrics for system efficiency tracking.
 | `thermal_energy_produced_daily_entity` | string | Daily HP energy produced |
 
 ### Animation Options (`animation`)
+
+Flow animations use GPU-accelerated gradient overlays for smooth 60fps performance. Animations automatically pause when the browser tab is hidden to save battery and CPU. The card also respects the `prefers-reduced-motion` accessibility setting.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
