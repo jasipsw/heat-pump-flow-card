@@ -1999,31 +1999,31 @@ export class HeatPumpFlowCard extends LitElement {
                         stroke="#2c3e50"
                         stroke-width="0.8"/>
 
-                <!-- Left port: line and larger triangle at flange (from HP inlet) -->
+                <!-- Left port: line and larger triangle at flange (from HP inlet) - always active -->
                 <line x1="-17" y1="0" x2="-41" y2="0"
-                      stroke="#2c3e50"
+                      stroke="${hpOutletColor}"
                       stroke-width="2"/>
                 <path d="M -45 0 L -41 -4.5 L -41 4.5 Z"
-                      fill="#2c3e50"
-                      stroke="#2c3e50"
+                      fill="${hpOutletColor}"
+                      stroke="${hpOutletColor}"
                       stroke-width="0.5"/>
 
                 <!-- Right port: line and larger triangle at flange (to buffer/heating) -->
                 <line x1="-17" y1="0" x2="6" y2="0"
-                      stroke="#2c3e50"
+                      stroke="${g2ValveState.isActive ? '#7f8c8d' : hpOutletColor}"
                       stroke-width="2"/>
                 <path d="M 10 0 L 6 -4.5 L 6 4.5 Z"
-                      fill="#2c3e50"
-                      stroke="#2c3e50"
+                      fill="${g2ValveState.isActive ? '#7f8c8d' : hpOutletColor}"
+                      stroke="${g2ValveState.isActive ? '#7f8c8d' : hpOutletColor}"
                       stroke-width="0.5"/>
 
                 <!-- Bottom port: line and larger triangle at flange (to DHW) -->
                 <line x1="-17" y1="0" x2="-17" y2="18"
-                      stroke="#2c3e50"
+                      stroke="${g2ValveState.isActive ? hpOutletColor : '#7f8c8d'}"
                       stroke-width="2"/>
                 <path d="M -17 22 L -21.5 18 L -12.5 18 Z"
-                      fill="#2c3e50"
-                      stroke="#2c3e50"
+                      fill="${g2ValveState.isActive ? hpOutletColor : '#7f8c8d'}"
+                      stroke="${g2ValveState.isActive ? hpOutletColor : '#7f8c8d'}"
                       stroke-width="0.5"/>
               </g>
 
