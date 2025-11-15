@@ -1,4 +1,4 @@
-var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=arguments.length,n=r<3?e:null===o?o=Object.getOwnPropertyDescriptor(e,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(t,e,i,o);else for(var s=t.length-1;s>=0;s--)(a=t[s])&&(n=(r<3?a(n):r>3?a(e,i,n):a(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n}"function"==typeof SuppressedError&&SuppressedError;const i=globalThis,o=i.ShadowRoot&&(void 0===i.ShadyCSS||i.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,a=Symbol(),r=new WeakMap;let n=class{constructor(t,e,i){if(this._$cssResult$=!0,i!==a)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o;const e=this.t;if(o&&void 0===t){const i=void 0!==e&&1===e.length;i&&(t=r.get(e)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),i&&r.set(e,t))}return t}toString(){return this.cssText}};const s=o?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const i of t.cssRules)e+=i.cssText;return(t=>new n("string"==typeof t?t:t+"",void 0,a))(e)})(t):t,{is:l,defineProperty:h,getOwnPropertyDescriptor:c,getOwnPropertyNames:d,getOwnPropertySymbols:p,getPrototypeOf:f}=Object,u=globalThis,g=u.trustedTypes,m=g?g.emptyScript:"",_=u.reactiveElementPolyfillSupport,y=(t,e)=>t,w={toAttribute(t,e){switch(e){case Boolean:t=t?m:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let i=t;switch(e){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t)}catch(t){i=null}}return i}},$=(t,e)=>!l(t,e),x={attribute:!0,type:String,converter:w,reflect:!1,useDefault:!1,hasChanged:$};Symbol.metadata??=Symbol("metadata"),u.litPropertyMetadata??=new WeakMap;let b=class extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=x){if(e.state&&(e.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(t)&&((e=Object.create(e)).wrapped=!0),this.elementProperties.set(t,e),!e.noAccessor){const i=Symbol(),o=this.getPropertyDescriptor(t,i,e);void 0!==o&&h(this.prototype,t,o)}}static getPropertyDescriptor(t,e,i){const{get:o,set:a}=c(this.prototype,t)??{get(){return this[e]},set(t){this[e]=t}};return{get:o,set(e){const r=o?.call(this);a?.call(this,e),this.requestUpdate(t,r,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??x}static _$Ei(){if(this.hasOwnProperty(y("elementProperties")))return;const t=f(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(y("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(y("properties"))){const t=this.properties,e=[...d(t),...p(t)];for(const i of e)this.createProperty(i,t[i])}const t=this[Symbol.metadata];if(null!==t){const e=litPropertyMetadata.get(t);if(void 0!==e)for(const[t,i]of e)this.elementProperties.set(t,i)}this._$Eh=new Map;for(const[t,e]of this.elementProperties){const i=this._$Eu(t,e);void 0!==i&&this._$Eh.set(i,t)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const i=new Set(t.flat(1/0).reverse());for(const t of i)e.unshift(s(t))}else void 0!==t&&e.push(s(t));return e}static _$Eu(t,e){const i=e.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this._$EO??=new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){const t=new Map,e=this.constructor.elementProperties;for(const i of e.keys())this.hasOwnProperty(i)&&(t.set(i,this[i]),delete this[i]);t.size>0&&(this._$Ep=t)}createRenderRoot(){const t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return((t,e)=>{if(o)t.adoptedStyleSheets=e.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const o of e){const e=document.createElement("style"),a=i.litNonce;void 0!==a&&e.setAttribute("nonce",a),e.textContent=o.cssText,t.appendChild(e)}})(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,i){this._$AK(t,i)}_$ET(t,e){const i=this.constructor.elementProperties.get(t),o=this.constructor._$Eu(t,i);if(void 0!==o&&!0===i.reflect){const a=(void 0!==i.converter?.toAttribute?i.converter:w).toAttribute(e,i.type);this._$Em=t,null==a?this.removeAttribute(o):this.setAttribute(o,a),this._$Em=null}}_$AK(t,e){const i=this.constructor,o=i._$Eh.get(t);if(void 0!==o&&this._$Em!==o){const t=i.getPropertyOptions(o),a="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:w;this._$Em=o;const r=a.fromAttribute(e,t.type);this[o]=r??this._$Ej?.get(o)??r,this._$Em=null}}requestUpdate(t,e,i){if(void 0!==t){const o=this.constructor,a=this[t];if(i??=o.getPropertyOptions(t),!((i.hasChanged??$)(a,e)||i.useDefault&&i.reflect&&a===this._$Ej?.get(t)&&!this.hasAttribute(o._$Eu(t,i))))return;this.C(t,e,i)}!1===this.isUpdatePending&&(this._$ES=this._$EP())}C(t,e,{useDefault:i,reflect:o,wrapped:a},r){i&&!(this._$Ej??=new Map).has(t)&&(this._$Ej.set(t,r??e??this[t]),!0!==a||void 0!==r)||(this._$AL.has(t)||(this.hasUpdated||i||(e=void 0),this._$AL.set(t,e)),!0===o&&this._$Em!==t&&(this._$Eq??=new Set).add(t))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(t){Promise.reject(t)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,e]of this._$Ep)this[t]=e;this._$Ep=void 0}const t=this.constructor.elementProperties;if(t.size>0)for(const[e,i]of t){const{wrapped:t}=i,o=this[e];!0!==t||this._$AL.has(e)||void 0===o||this.C(e,void 0,i,o)}}let t=!1;const e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach(t=>t.hostUpdate?.()),this.update(e)):this._$EM()}catch(e){throw t=!1,this._$EM(),e}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach(t=>t.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EM(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Eq&&=this._$Eq.forEach(t=>this._$ET(t,this[t])),this._$EM()}updated(t){}firstUpdated(t){}};b.elementStyles=[],b.shadowRootOptions={mode:"open"},b[y("elementProperties")]=new Map,b[y("finalized")]=new Map,_?.({ReactiveElement:b}),(u.reactiveElementVersions??=[]).push("2.1.1");const k=globalThis,v=k.trustedTypes,S=v?v.createPolicy("lit-html",{createHTML:t=>t}):void 0,A="$lit$",T=`lit$${Math.random().toFixed(9).slice(2)}$`,C="?"+T,H=`<${C}>`,P=document,M=()=>P.createComment(""),E=t=>null===t||"object"!=typeof t&&"function"!=typeof t,L=Array.isArray,V="[ \t\n\f\r]",z=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,D=/-->/g,R=/>/g,O=RegExp(`>|${V}(?:([^\\s"'>=/]+)(${V}*=${V}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),F=/'/g,W=/"/g,N=/^(?:script|style|textarea|title)$/i,I=t=>(e,...i)=>({_$litType$:t,strings:e,values:i}),U=I(1),G=I(2),Q=Symbol.for("lit-noChange"),B=Symbol.for("lit-nothing"),j=new WeakMap,q=P.createTreeWalker(P,129);function Z(t,e){if(!L(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==S?S.createHTML(e):e}const Y=(t,e)=>{const i=t.length-1,o=[];let a,r=2===e?"<svg>":3===e?"<math>":"",n=z;for(let e=0;e<i;e++){const i=t[e];let s,l,h=-1,c=0;for(;c<i.length&&(n.lastIndex=c,l=n.exec(i),null!==l);)c=n.lastIndex,n===z?"!--"===l[1]?n=D:void 0!==l[1]?n=R:void 0!==l[2]?(N.test(l[2])&&(a=RegExp("</"+l[2],"g")),n=O):void 0!==l[3]&&(n=O):n===O?">"===l[0]?(n=a??z,h=-1):void 0===l[1]?h=-2:(h=n.lastIndex-l[2].length,s=l[1],n=void 0===l[3]?O:'"'===l[3]?W:F):n===W||n===F?n=O:n===D||n===R?n=z:(n=O,a=void 0);const d=n===O&&t[e+1].startsWith("/>")?" ":"";r+=n===z?i+H:h>=0?(o.push(s),i.slice(0,h)+A+i.slice(h)+T+d):i+T+(-2===h?e:d)}return[Z(t,r+(t[i]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),o]};class X{constructor({strings:t,_$litType$:e},i){let o;this.parts=[];let a=0,r=0;const n=t.length-1,s=this.parts,[l,h]=Y(t,e);if(this.el=X.createElement(l,i),q.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(o=q.nextNode())&&s.length<n;){if(1===o.nodeType){if(o.hasAttributes())for(const t of o.getAttributeNames())if(t.endsWith(A)){const e=h[r++],i=o.getAttribute(t).split(T),n=/([.?@])?(.*)/.exec(e);s.push({type:1,index:a,name:n[2],strings:i,ctor:"."===n[1]?it:"?"===n[1]?ot:"@"===n[1]?at:et}),o.removeAttribute(t)}else t.startsWith(T)&&(s.push({type:6,index:a}),o.removeAttribute(t));if(N.test(o.tagName)){const t=o.textContent.split(T),e=t.length-1;if(e>0){o.textContent=v?v.emptyScript:"";for(let i=0;i<e;i++)o.append(t[i],M()),q.nextNode(),s.push({type:2,index:++a});o.append(t[e],M())}}}else if(8===o.nodeType)if(o.data===C)s.push({type:2,index:a});else{let t=-1;for(;-1!==(t=o.data.indexOf(T,t+1));)s.push({type:7,index:a}),t+=T.length-1}a++}}static createElement(t,e){const i=P.createElement("template");return i.innerHTML=t,i}}function J(t,e,i=t,o){if(e===Q)return e;let a=void 0!==o?i._$Co?.[o]:i._$Cl;const r=E(e)?void 0:e._$litDirective$;return a?.constructor!==r&&(a?._$AO?.(!1),void 0===r?a=void 0:(a=new r(t),a._$AT(t,i,o)),void 0!==o?(i._$Co??=[])[o]=a:i._$Cl=a),void 0!==a&&(e=J(t,a._$AS(t,e.values),a,o)),e}class K{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:i}=this._$AD,o=(t?.creationScope??P).importNode(e,!0);q.currentNode=o;let a=q.nextNode(),r=0,n=0,s=i[0];for(;void 0!==s;){if(r===s.index){let e;2===s.type?e=new tt(a,a.nextSibling,this,t):1===s.type?e=new s.ctor(a,s.name,s.strings,this,t):6===s.type&&(e=new rt(a,this,t)),this._$AV.push(e),s=i[++n]}r!==s?.index&&(a=q.nextNode(),r++)}return q.currentNode=P,o}p(t){let e=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class tt{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,i,o){this.type=2,this._$AH=B,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=o,this._$Cv=o?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=J(this,t,e),E(t)?t===B||null==t||""===t?(this._$AH!==B&&this._$AR(),this._$AH=B):t!==this._$AH&&t!==Q&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):(t=>L(t)||"function"==typeof t?.[Symbol.iterator])(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==B&&E(this._$AH)?this._$AA.nextSibling.data=t:this.T(P.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:i}=t,o="number"==typeof i?this._$AC(t):(void 0===i.el&&(i.el=X.createElement(Z(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===o)this._$AH.p(e);else{const t=new K(o,this),i=t.u(this.options);t.p(e),this.T(i),this._$AH=t}}_$AC(t){let e=j.get(t.strings);return void 0===e&&j.set(t.strings,e=new X(t)),e}k(t){L(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,o=0;for(const a of t)o===e.length?e.push(i=new tt(this.O(M()),this.O(M()),this,this.options)):i=e[o],i._$AI(a),o++;o<e.length&&(this._$AR(i&&i._$AB.nextSibling,o),e.length=o)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){const e=t.nextSibling;t.remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class et{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,i,o,a){this.type=1,this._$AH=B,this._$AN=void 0,this.element=t,this.name=e,this._$AM=o,this.options=a,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=B}_$AI(t,e=this,i,o){const a=this.strings;let r=!1;if(void 0===a)t=J(this,t,e,0),r=!E(t)||t!==this._$AH&&t!==Q,r&&(this._$AH=t);else{const o=t;let n,s;for(t=a[0],n=0;n<a.length-1;n++)s=J(this,o[i+n],e,n),s===Q&&(s=this._$AH[n]),r||=!E(s)||s!==this._$AH[n],s===B?t=B:t!==B&&(t+=(s??"")+a[n+1]),this._$AH[n]=s}r&&!o&&this.j(t)}j(t){t===B?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class it extends et{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===B?void 0:t}}class ot extends et{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==B)}}class at extends et{constructor(t,e,i,o,a){super(t,e,i,o,a),this.type=5}_$AI(t,e=this){if((t=J(this,t,e,0)??B)===Q)return;const i=this._$AH,o=t===B&&i!==B||t.capture!==i.capture||t.once!==i.once||t.passive!==i.passive,a=t!==B&&(i===B||o);o&&this.element.removeEventListener(this.name,this,i),a&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class rt{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){J(this,t)}}const nt=k.litHtmlPolyfillSupport;nt?.(X,tt),(k.litHtmlVersions??=[]).push("3.3.1");const st=globalThis;class lt extends b{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=((t,e,i)=>{const o=i?.renderBefore??e;let a=o._$litPart$;if(void 0===a){const t=i?.renderBefore??null;o._$litPart$=a=new tt(e.insertBefore(M(),t),t,void 0,i??{})}return a._$AI(t),a})(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return Q}}lt._$litElement$=!0,lt.finalized=!0,st.litElementHydrateSupport?.({LitElement:lt});const ht=st.litElementPolyfillSupport;ht?.({LitElement:lt}),(st.litElementVersions??=[]).push("4.2.1");const ct={attribute:!0,type:String,converter:w,reflect:!1,hasChanged:$},dt=(t=ct,e,i)=>{const{kind:o,metadata:a}=i;let r=globalThis.litPropertyMetadata.get(a);if(void 0===r&&globalThis.litPropertyMetadata.set(a,r=new Map),"setter"===o&&((t=Object.create(t)).wrapped=!0),r.set(i.name,t),"accessor"===o){const{name:o}=i;return{set(i){const a=e.get.call(this);e.set.call(this,i),this.requestUpdate(o,a,t)},init(e){return void 0!==e&&this.C(o,void 0,t,e),e}}}if("setter"===o){const{name:o}=i;return function(i){const a=this[o];e.call(this,i),this.requestUpdate(o,a,t)}}throw Error("Unsupported decorator location: "+o)};function pt(t){return(e,i)=>"object"==typeof i?dt(t,e,i):((t,e,i)=>{const o=e.hasOwnProperty(i);return e.constructor.createProperty(i,t),o?Object.getOwnPropertyDescriptor(e,i):void 0})(t,e,i)}function ft(t,e){return(e,i,o)=>((t,e,i)=>(i.configurable=!0,i.enumerable=!0,Reflect.decorate&&"object"!=typeof e&&Object.defineProperty(t,e,i),i))(e,i,{get(){return(e=>e.renderRoot?.querySelector(t)??null)(this)}})}const ut="1.0.3",gt=(new Date).toISOString(),mt=((t,...e)=>{const i=1===t.length?t[0]:e.reduce((e,i,o)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+t[o+1],t[0]);return new n(i,t,a)})`
+var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=arguments.length,n=r<3?e:null===o?o=Object.getOwnPropertyDescriptor(e,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(t,e,i,o);else for(var s=t.length-1;s>=0;s--)(a=t[s])&&(n=(r<3?a(n):r>3?a(e,i,n):a(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n}"function"==typeof SuppressedError&&SuppressedError;const i=globalThis,o=i.ShadowRoot&&(void 0===i.ShadyCSS||i.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,a=Symbol(),r=new WeakMap;let n=class{constructor(t,e,i){if(this._$cssResult$=!0,i!==a)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o;const e=this.t;if(o&&void 0===t){const i=void 0!==e&&1===e.length;i&&(t=r.get(e)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),i&&r.set(e,t))}return t}toString(){return this.cssText}};const s=o?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const i of t.cssRules)e+=i.cssText;return(t=>new n("string"==typeof t?t:t+"",void 0,a))(e)})(t):t,{is:l,defineProperty:h,getOwnPropertyDescriptor:c,getOwnPropertyNames:d,getOwnPropertySymbols:p,getPrototypeOf:f}=Object,u=globalThis,g=u.trustedTypes,m=g?g.emptyScript:"",_=u.reactiveElementPolyfillSupport,y=(t,e)=>t,w={toAttribute(t,e){switch(e){case Boolean:t=t?m:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let i=t;switch(e){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t)}catch(t){i=null}}return i}},$=(t,e)=>!l(t,e),x={attribute:!0,type:String,converter:w,reflect:!1,useDefault:!1,hasChanged:$};Symbol.metadata??=Symbol("metadata"),u.litPropertyMetadata??=new WeakMap;let b=class extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=x){if(e.state&&(e.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(t)&&((e=Object.create(e)).wrapped=!0),this.elementProperties.set(t,e),!e.noAccessor){const i=Symbol(),o=this.getPropertyDescriptor(t,i,e);void 0!==o&&h(this.prototype,t,o)}}static getPropertyDescriptor(t,e,i){const{get:o,set:a}=c(this.prototype,t)??{get(){return this[e]},set(t){this[e]=t}};return{get:o,set(e){const r=o?.call(this);a?.call(this,e),this.requestUpdate(t,r,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??x}static _$Ei(){if(this.hasOwnProperty(y("elementProperties")))return;const t=f(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(y("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(y("properties"))){const t=this.properties,e=[...d(t),...p(t)];for(const i of e)this.createProperty(i,t[i])}const t=this[Symbol.metadata];if(null!==t){const e=litPropertyMetadata.get(t);if(void 0!==e)for(const[t,i]of e)this.elementProperties.set(t,i)}this._$Eh=new Map;for(const[t,e]of this.elementProperties){const i=this._$Eu(t,e);void 0!==i&&this._$Eh.set(i,t)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const i=new Set(t.flat(1/0).reverse());for(const t of i)e.unshift(s(t))}else void 0!==t&&e.push(s(t));return e}static _$Eu(t,e){const i=e.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this._$EO??=new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){const t=new Map,e=this.constructor.elementProperties;for(const i of e.keys())this.hasOwnProperty(i)&&(t.set(i,this[i]),delete this[i]);t.size>0&&(this._$Ep=t)}createRenderRoot(){const t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return((t,e)=>{if(o)t.adoptedStyleSheets=e.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const o of e){const e=document.createElement("style"),a=i.litNonce;void 0!==a&&e.setAttribute("nonce",a),e.textContent=o.cssText,t.appendChild(e)}})(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,i){this._$AK(t,i)}_$ET(t,e){const i=this.constructor.elementProperties.get(t),o=this.constructor._$Eu(t,i);if(void 0!==o&&!0===i.reflect){const a=(void 0!==i.converter?.toAttribute?i.converter:w).toAttribute(e,i.type);this._$Em=t,null==a?this.removeAttribute(o):this.setAttribute(o,a),this._$Em=null}}_$AK(t,e){const i=this.constructor,o=i._$Eh.get(t);if(void 0!==o&&this._$Em!==o){const t=i.getPropertyOptions(o),a="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:w;this._$Em=o;const r=a.fromAttribute(e,t.type);this[o]=r??this._$Ej?.get(o)??r,this._$Em=null}}requestUpdate(t,e,i){if(void 0!==t){const o=this.constructor,a=this[t];if(i??=o.getPropertyOptions(t),!((i.hasChanged??$)(a,e)||i.useDefault&&i.reflect&&a===this._$Ej?.get(t)&&!this.hasAttribute(o._$Eu(t,i))))return;this.C(t,e,i)}!1===this.isUpdatePending&&(this._$ES=this._$EP())}C(t,e,{useDefault:i,reflect:o,wrapped:a},r){i&&!(this._$Ej??=new Map).has(t)&&(this._$Ej.set(t,r??e??this[t]),!0!==a||void 0!==r)||(this._$AL.has(t)||(this.hasUpdated||i||(e=void 0),this._$AL.set(t,e)),!0===o&&this._$Em!==t&&(this._$Eq??=new Set).add(t))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(t){Promise.reject(t)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,e]of this._$Ep)this[t]=e;this._$Ep=void 0}const t=this.constructor.elementProperties;if(t.size>0)for(const[e,i]of t){const{wrapped:t}=i,o=this[e];!0!==t||this._$AL.has(e)||void 0===o||this.C(e,void 0,i,o)}}let t=!1;const e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach(t=>t.hostUpdate?.()),this.update(e)):this._$EM()}catch(e){throw t=!1,this._$EM(),e}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach(t=>t.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EM(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Eq&&=this._$Eq.forEach(t=>this._$ET(t,this[t])),this._$EM()}updated(t){}firstUpdated(t){}};b.elementStyles=[],b.shadowRootOptions={mode:"open"},b[y("elementProperties")]=new Map,b[y("finalized")]=new Map,_?.({ReactiveElement:b}),(u.reactiveElementVersions??=[]).push("2.1.1");const k=globalThis,v=k.trustedTypes,S=v?v.createPolicy("lit-html",{createHTML:t=>t}):void 0,A="$lit$",T=`lit$${Math.random().toFixed(9).slice(2)}$`,C="?"+T,H=`<${C}>`,P=document,M=()=>P.createComment(""),L=t=>null===t||"object"!=typeof t&&"function"!=typeof t,E=Array.isArray,V="[ \t\n\f\r]",z=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,D=/-->/g,R=/>/g,O=RegExp(`>|${V}(?:([^\\s"'>=/]+)(${V}*=${V}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),F=/'/g,W=/"/g,N=/^(?:script|style|textarea|title)$/i,I=t=>(e,...i)=>({_$litType$:t,strings:e,values:i}),U=I(1),G=I(2),Q=Symbol.for("lit-noChange"),B=Symbol.for("lit-nothing"),j=new WeakMap,q=P.createTreeWalker(P,129);function Z(t,e){if(!E(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==S?S.createHTML(e):e}const Y=(t,e)=>{const i=t.length-1,o=[];let a,r=2===e?"<svg>":3===e?"<math>":"",n=z;for(let e=0;e<i;e++){const i=t[e];let s,l,h=-1,c=0;for(;c<i.length&&(n.lastIndex=c,l=n.exec(i),null!==l);)c=n.lastIndex,n===z?"!--"===l[1]?n=D:void 0!==l[1]?n=R:void 0!==l[2]?(N.test(l[2])&&(a=RegExp("</"+l[2],"g")),n=O):void 0!==l[3]&&(n=O):n===O?">"===l[0]?(n=a??z,h=-1):void 0===l[1]?h=-2:(h=n.lastIndex-l[2].length,s=l[1],n=void 0===l[3]?O:'"'===l[3]?W:F):n===W||n===F?n=O:n===D||n===R?n=z:(n=O,a=void 0);const d=n===O&&t[e+1].startsWith("/>")?" ":"";r+=n===z?i+H:h>=0?(o.push(s),i.slice(0,h)+A+i.slice(h)+T+d):i+T+(-2===h?e:d)}return[Z(t,r+(t[i]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),o]};class X{constructor({strings:t,_$litType$:e},i){let o;this.parts=[];let a=0,r=0;const n=t.length-1,s=this.parts,[l,h]=Y(t,e);if(this.el=X.createElement(l,i),q.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(o=q.nextNode())&&s.length<n;){if(1===o.nodeType){if(o.hasAttributes())for(const t of o.getAttributeNames())if(t.endsWith(A)){const e=h[r++],i=o.getAttribute(t).split(T),n=/([.?@])?(.*)/.exec(e);s.push({type:1,index:a,name:n[2],strings:i,ctor:"."===n[1]?it:"?"===n[1]?ot:"@"===n[1]?at:et}),o.removeAttribute(t)}else t.startsWith(T)&&(s.push({type:6,index:a}),o.removeAttribute(t));if(N.test(o.tagName)){const t=o.textContent.split(T),e=t.length-1;if(e>0){o.textContent=v?v.emptyScript:"";for(let i=0;i<e;i++)o.append(t[i],M()),q.nextNode(),s.push({type:2,index:++a});o.append(t[e],M())}}}else if(8===o.nodeType)if(o.data===C)s.push({type:2,index:a});else{let t=-1;for(;-1!==(t=o.data.indexOf(T,t+1));)s.push({type:7,index:a}),t+=T.length-1}a++}}static createElement(t,e){const i=P.createElement("template");return i.innerHTML=t,i}}function J(t,e,i=t,o){if(e===Q)return e;let a=void 0!==o?i._$Co?.[o]:i._$Cl;const r=L(e)?void 0:e._$litDirective$;return a?.constructor!==r&&(a?._$AO?.(!1),void 0===r?a=void 0:(a=new r(t),a._$AT(t,i,o)),void 0!==o?(i._$Co??=[])[o]=a:i._$Cl=a),void 0!==a&&(e=J(t,a._$AS(t,e.values),a,o)),e}class K{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:i}=this._$AD,o=(t?.creationScope??P).importNode(e,!0);q.currentNode=o;let a=q.nextNode(),r=0,n=0,s=i[0];for(;void 0!==s;){if(r===s.index){let e;2===s.type?e=new tt(a,a.nextSibling,this,t):1===s.type?e=new s.ctor(a,s.name,s.strings,this,t):6===s.type&&(e=new rt(a,this,t)),this._$AV.push(e),s=i[++n]}r!==s?.index&&(a=q.nextNode(),r++)}return q.currentNode=P,o}p(t){let e=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class tt{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,i,o){this.type=2,this._$AH=B,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=o,this._$Cv=o?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=J(this,t,e),L(t)?t===B||null==t||""===t?(this._$AH!==B&&this._$AR(),this._$AH=B):t!==this._$AH&&t!==Q&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):(t=>E(t)||"function"==typeof t?.[Symbol.iterator])(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==B&&L(this._$AH)?this._$AA.nextSibling.data=t:this.T(P.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:i}=t,o="number"==typeof i?this._$AC(t):(void 0===i.el&&(i.el=X.createElement(Z(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===o)this._$AH.p(e);else{const t=new K(o,this),i=t.u(this.options);t.p(e),this.T(i),this._$AH=t}}_$AC(t){let e=j.get(t.strings);return void 0===e&&j.set(t.strings,e=new X(t)),e}k(t){E(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,o=0;for(const a of t)o===e.length?e.push(i=new tt(this.O(M()),this.O(M()),this,this.options)):i=e[o],i._$AI(a),o++;o<e.length&&(this._$AR(i&&i._$AB.nextSibling,o),e.length=o)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){const e=t.nextSibling;t.remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class et{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,i,o,a){this.type=1,this._$AH=B,this._$AN=void 0,this.element=t,this.name=e,this._$AM=o,this.options=a,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=B}_$AI(t,e=this,i,o){const a=this.strings;let r=!1;if(void 0===a)t=J(this,t,e,0),r=!L(t)||t!==this._$AH&&t!==Q,r&&(this._$AH=t);else{const o=t;let n,s;for(t=a[0],n=0;n<a.length-1;n++)s=J(this,o[i+n],e,n),s===Q&&(s=this._$AH[n]),r||=!L(s)||s!==this._$AH[n],s===B?t=B:t!==B&&(t+=(s??"")+a[n+1]),this._$AH[n]=s}r&&!o&&this.j(t)}j(t){t===B?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class it extends et{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===B?void 0:t}}class ot extends et{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==B)}}class at extends et{constructor(t,e,i,o,a){super(t,e,i,o,a),this.type=5}_$AI(t,e=this){if((t=J(this,t,e,0)??B)===Q)return;const i=this._$AH,o=t===B&&i!==B||t.capture!==i.capture||t.once!==i.once||t.passive!==i.passive,a=t!==B&&(i===B||o);o&&this.element.removeEventListener(this.name,this,i),a&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class rt{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){J(this,t)}}const nt=k.litHtmlPolyfillSupport;nt?.(X,tt),(k.litHtmlVersions??=[]).push("3.3.1");const st=globalThis;class lt extends b{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=((t,e,i)=>{const o=i?.renderBefore??e;let a=o._$litPart$;if(void 0===a){const t=i?.renderBefore??null;o._$litPart$=a=new tt(e.insertBefore(M(),t),t,void 0,i??{})}return a._$AI(t),a})(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return Q}}lt._$litElement$=!0,lt.finalized=!0,st.litElementHydrateSupport?.({LitElement:lt});const ht=st.litElementPolyfillSupport;ht?.({LitElement:lt}),(st.litElementVersions??=[]).push("4.2.1");const ct={attribute:!0,type:String,converter:w,reflect:!1,hasChanged:$},dt=(t=ct,e,i)=>{const{kind:o,metadata:a}=i;let r=globalThis.litPropertyMetadata.get(a);if(void 0===r&&globalThis.litPropertyMetadata.set(a,r=new Map),"setter"===o&&((t=Object.create(t)).wrapped=!0),r.set(i.name,t),"accessor"===o){const{name:o}=i;return{set(i){const a=e.get.call(this);e.set.call(this,i),this.requestUpdate(o,a,t)},init(e){return void 0!==e&&this.C(o,void 0,t,e),e}}}if("setter"===o){const{name:o}=i;return function(i){const a=this[o];e.call(this,i),this.requestUpdate(o,a,t)}}throw Error("Unsupported decorator location: "+o)};function pt(t){return(e,i)=>"object"==typeof i?dt(t,e,i):((t,e,i)=>{const o=e.hasOwnProperty(i);return e.constructor.createProperty(i,t),o?Object.getOwnPropertyDescriptor(e,i):void 0})(t,e,i)}function ft(t,e){return(e,i,o)=>((t,e,i)=>(i.configurable=!0,i.enumerable=!0,Reflect.decorate&&"object"!=typeof e&&Object.defineProperty(t,e,i),i))(e,i,{get(){return(e=>e.renderRoot?.querySelector(t)??null)(this)}})}const ut="1.0.3",gt=(new Date).toISOString(),mt=((t,...e)=>{const i=1===t.length?t[0]:e.reduce((e,i,o)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+t[o+1],t[0]);return new n(i,t,a)})`
   ha-card {
     padding: 16px;
     background: var(--ha-card-background, var(--card-background-color, white));
@@ -314,7 +314,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
           href="${t}"
           opacity="${r}"
         />
-      `}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return U``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getDHWTank2State(),r=this.getG2ValveState(),n=this.getAuxHeaterState(),s=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),l=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),h=s.hotPipe,c=s.coldPipe,d=l.hotPipe,p=l.coldPipe,f=this.config.temperature.hot_color,u=this.config.temperature.cold_color,g=this.config.dhw_tank?.inlet_color||this.config.temperature.hot_color,m=this.config.dhw_tank?.outlet_color||this.config.temperature.cold_color,_=this.config.dhw_tank?.tank_inlet_color||"#3498db",y=this.config.dhw_tank?.tank_outlet_color||"#e74c3c",w=this.config.dhw_tank_2?.tank_outlet_color||"#e74c3c",$=e.supplyTemp>e.returnTemp,x=e.supplyTemp,b=this.generateTankGradient("buffer",x,$),k=b.levels,v=b.fillPercentage,S=o.tankTemp??o.inletTemp,A=this.generateTankGradient("dhw",S,!0),T=A.levels,C=A.fillPercentage;let H=[],P=0;if(a.enabled){const t=a.tankTemp??a.inletTemp,e=this.generateTankGradient("dhw_tank_2",t,!0);H=e.levels,P=e.fillPercentage}const M=this.getHeatPumpColor(t),E=this.getContrastTextColor(M),L="var(--primary-text-color)";t.error;const V=n.intensity;let z="#bdc3c7";if(V>0){const t=189,e=195,i=199,o=255,a=68,r=34;z=`rgb(${Math.round(t+(o-t)*V)}, ${Math.round(e+(a-e)*V)}, ${Math.round(i+(r-i)*V)})`}const D=this.config.aux_heater?.glow_size??8,R=224,O=172,F=60,W=R,N=O-D,I=F,Q=16+2*D,B=2,j=2,q=R,Z=O-.75*D,Y=F,X=16+2*D*.75,J=2,K=2,tt=R,et=O-.5*D,it=F,ot=16+2*D*.5,at=2,rt=2,nt=V>0?2-1.4*V:2,st=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),lt=this.config.aux_heater?.shadow_blur??1,ht=V>0?"aux-glow-outer":"aux-heater-layer",ct=V>0?"aux-glow-middle":"aux-heater-layer",dt=V>0?"aux-glow-inner":"aux-heater-layer",pt=V>0?"aux-cylinder-pulse":"",ft=this.config.logo_size||40,gt=!1!==this.config.show_logo,mt=this.config.logo_path||"/local/heat-pump-flow.png",_t=this.config.logo_url||"https://github.com/jasipsw/heat-pump-flow-card#readme";return U`
+      `}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return U``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getDHWTank2State(),r=this.getG2ValveState(),n=this.getAuxHeaterState(),s=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),l=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),h=s.hotPipe,c=s.coldPipe,d=l.hotPipe,p=l.coldPipe,f=this.config.temperature.hot_color,u=this.config.temperature.cold_color,g=this.config.dhw_tank?.inlet_color||this.config.temperature.hot_color,m=this.config.dhw_tank?.outlet_color||this.config.temperature.cold_color,_=this.config.dhw_tank?.tank_inlet_color||"#3498db",y=this.config.dhw_tank?.tank_outlet_color||"#e74c3c",w=this.config.dhw_tank_2?.tank_outlet_color||"#e74c3c",$=e.supplyTemp>e.returnTemp,x=e.supplyTemp,b=this.generateTankGradient("buffer",x,$),k=b.levels,v=b.fillPercentage,S=o.tankTemp??o.inletTemp,A=this.generateTankGradient("dhw",S,!0),T=A.levels,C=A.fillPercentage;let H=[],P=0;if(a.enabled){const t=a.tankTemp??a.inletTemp,e=this.generateTankGradient("dhw_tank_2",t,!0);H=e.levels,P=e.fillPercentage}const M=this.getHeatPumpColor(t),L=this.getContrastTextColor(M),E="var(--primary-text-color)";t.error;const V=n.intensity;let z="#bdc3c7";if(V>0){const t=189,e=195,i=199,o=255,a=68,r=34;z=`rgb(${Math.round(t+(o-t)*V)}, ${Math.round(e+(a-e)*V)}, ${Math.round(i+(r-i)*V)})`}const D=this.config.aux_heater?.glow_size??8,R=224,O=172,F=60,W=R,N=O-D,I=F,Q=16+2*D,B=2,j=2,q=R,Z=O-.75*D,Y=F,X=16+2*D*.75,J=2,K=2,tt=R,et=O-.5*D,it=F,ot=16+2*D*.5,at=2,rt=2,nt=V>0?2-1.4*V:2,st=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),lt=this.config.aux_heater?.shadow_blur??1,ht=V>0?"aux-glow-outer":"aux-heater-layer",ct=V>0?"aux-glow-middle":"aux-heater-layer",dt=V>0?"aux-glow-inner":"aux-heater-layer",pt=V>0?"aux-cylinder-pulse":"",ft=this.config.logo_size||40,gt=!1!==this.config.show_logo,mt=this.config.logo_path||"/local/heat-pump-flow.png",_t=this.config.logo_url||"https://github.com/jasipsw/heat-pump-flow-card#readme";return U`
       <ha-card style="--logo-size: ${ft}px">
         ${this.config.title||gt?U`
           <h1 class="card-header">
@@ -953,7 +953,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   <g id="hp-setpoints" transform="translate(0, 115)">
                     <!-- Setpoints label above circles -->
                     <text x="60" y="-8" text-anchor="middle"
-                          fill="${E}" font-size="5" opacity="0.5"
+                          fill="${L}" font-size="5" opacity="0.5"
                           letter-spacing="0.5" font-family="Arial, sans-serif">
                       SETPOINTS
                     </text>
@@ -971,7 +971,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                         ${this.formatValue(t.heatingTargetTemp,0)}°
                       </text>
                       <text x="24" y="27" text-anchor="middle"
-                            fill="${E}" font-size="6" opacity="${.7*s}">
+                            fill="${L}" font-size="6" opacity="${.7*s}">
                         HEAT
                       </text>
                     `:""}
@@ -989,7 +989,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                         ${this.formatValue(t.dhwTargetTemp,0)}°
                       </text>
                       <text x="60" y="27" text-anchor="middle"
-                            fill="${E}" font-size="6" opacity="${.7*l}">
+                            fill="${L}" font-size="6" opacity="${.7*l}">
                         DHW
                       </text>
                     `:""}
@@ -1007,7 +1007,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                         ${this.formatValue(t.coolingTargetTemp,0)}°
                       </text>
                       <text x="96" y="27" text-anchor="middle"
-                            fill="${E}" font-size="6" opacity="${.7*h}">
+                            fill="${L}" font-size="6" opacity="${.7*h}">
                         COOL
                       </text>
                     `:""}
@@ -1019,13 +1019,13 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Position below the heat pump box (box is 150px tall, so start at y=255) -->
             <g id="hp-detailed-metrics" transform="translate(50, 255)">
                 <!-- Divider line -->
-                <line x1="8" y1="0" x2="112" y2="0" stroke="${L}" stroke-width="0.5" opacity="0.3"/>
+                <line x1="8" y1="0" x2="112" y2="0" stroke="${E}" stroke-width="0.5" opacity="0.3"/>
 
                 <!-- Core Metrics Row 1: Power In, Thermal Out, COP -->
                 ${this.config.heat_pump?.power_entity?G`
                   <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.power_entity)}">
-                    <text x="8" y="8" fill="${L}" font-size="7" opacity="0.7">IN</text>
-                    <text x="8" y="15" fill="${L}" font-size="8" font-weight="bold">
+                    <text x="8" y="8" fill="${E}" font-size="7" opacity="0.7">IN</text>
+                    <text x="8" y="15" fill="${E}" font-size="8" font-weight="bold">
                       ${this.formatValue(t.power/1e3,1)}kW
                     </text>
                   </g>
@@ -1033,8 +1033,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                 ${this.config.heat_pump?.thermal_entity?G`
                   <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.thermal_entity)}">
-                    <text x="42" y="8" fill="${L}" font-size="7" opacity="0.7">OUT</text>
-                    <text x="42" y="15" fill="${L}" font-size="8" font-weight="bold">
+                    <text x="42" y="8" fill="${E}" font-size="7" opacity="0.7">OUT</text>
+                    <text x="42" y="15" fill="${E}" font-size="8" font-weight="bold">
                       ${this.formatValue(t.thermal/1e3,1)}kW
                     </text>
                   </g>
@@ -1042,8 +1042,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                 ${this.config.heat_pump?.cop_entity?G`
                   <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.cop_entity)}">
-                    <text x="76" y="8" fill="${L}" font-size="7" opacity="0.7">COP</text>
-                    <text x="76" y="15" fill="${L}" font-size="8" font-weight="bold">
+                    <text x="76" y="8" fill="${E}" font-size="7" opacity="0.7">COP</text>
+                    <text x="76" y="15" fill="${E}" font-size="8" font-weight="bold">
                       ${this.formatValue(t.cop,2)}
                     </text>
                   </g>
@@ -1052,8 +1052,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <!-- Core Metrics Row 2: Flow Rate, Amps, Volts -->
                 ${this.config.heat_pump?.flow_rate_entity?G`
                   <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.flow_rate_entity)}">
-                    <text x="8" y="26" fill="${L}" font-size="7" opacity="0.7">Flow</text>
-                    <text x="8" y="33" fill="${L}" font-size="8" font-weight="bold">
+                    <text x="8" y="26" fill="${E}" font-size="7" opacity="0.7">Flow</text>
+                    <text x="8" y="33" fill="${E}" font-size="8" font-weight="bold">
                       ${this.formatValue(t.flowRate,1)}${this.getStateUnit(this.config.heat_pump?.flow_rate_entity)||"L/m"}
                     </text>
                   </g>
@@ -1061,8 +1061,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                 ${void 0!==t.amps&&this.config.heat_pump?.amps_entity?G`
                   <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.amps_entity)}">
-                    <text x="42" y="26" fill="${L}" font-size="7" opacity="0.7">Amps</text>
-                    <text x="42" y="33" fill="${L}" font-size="8" font-weight="bold">
+                    <text x="42" y="26" fill="${E}" font-size="7" opacity="0.7">Amps</text>
+                    <text x="42" y="33" fill="${E}" font-size="8" font-weight="bold">
                       ${this.formatValue(t.amps,1)}A
                     </text>
                   </g>
@@ -1070,8 +1070,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                 ${void 0!==t.volts&&this.config.heat_pump?.volts_entity?G`
                   <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.volts_entity)}">
-                    <text x="76" y="26" fill="${L}" font-size="7" opacity="0.7">Volts</text>
-                    <text x="76" y="33" fill="${L}" font-size="8" font-weight="bold">
+                    <text x="76" y="26" fill="${E}" font-size="7" opacity="0.7">Volts</text>
+                    <text x="76" y="33" fill="${E}" font-size="8" font-weight="bold">
                       ${this.formatValue(t.volts,0)}V
                     </text>
                   </g>
@@ -1080,13 +1080,13 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <!-- Optional Detailed Metrics (shown only if enabled) -->
                 ${this.config.heat_pump?.show_detailed_metrics?G`
                   <!-- Divider line before detailed metrics -->
-                  <line x1="8" y1="42" x2="112" y2="42" stroke="${L}" stroke-width="0.5" opacity="0.3"/>
+                  <line x1="8" y1="42" x2="112" y2="42" stroke="${E}" stroke-width="0.5" opacity="0.3"/>
 
                   <!-- Detailed Row 1: Compressor, Discharge, Ambient -->
                   ${void 0!==t.compressorFrequency&&this.config.heat_pump?.compressor_frequency_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.compressor_frequency_entity)}">
-                      <text x="8" y="50" fill="${L}" font-size="7" opacity="0.7">Comp</text>
-                      <text x="8" y="57" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="8" y="50" fill="${E}" font-size="7" opacity="0.7">Comp</text>
+                      <text x="8" y="57" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.compressorFrequency,0)}Hz
                       </text>
                     </g>
@@ -1094,8 +1094,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                   ${void 0!==t.dischargeTemp&&this.config.heat_pump?.discharge_temp_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.discharge_temp_entity)}">
-                      <text x="42" y="50" fill="${L}" font-size="7" opacity="0.7">Disch</text>
-                      <text x="42" y="57" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="42" y="50" fill="${E}" font-size="7" opacity="0.7">Disch</text>
+                      <text x="42" y="57" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.dischargeTemp,0)}°
                       </text>
                     </g>
@@ -1103,8 +1103,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                   ${void 0!==t.ambientTemp&&this.config.heat_pump?.ambient_temp_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.ambient_temp_entity)}">
-                      <text x="76" y="50" fill="${L}" font-size="7" opacity="0.7">Amb</text>
-                      <text x="76" y="57" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="76" y="50" fill="${E}" font-size="7" opacity="0.7">Amb</text>
+                      <text x="76" y="57" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.ambientTemp,0)}°
                       </text>
                     </g>
@@ -1113,8 +1113,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   <!-- Detailed Row 2: DHW, Outdoor Coil, Suction -->
                   ${void 0!==t.dhwTemp&&this.config.heat_pump?.dhw_temp_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.dhw_temp_entity)}">
-                      <text x="8" y="68" fill="${L}" font-size="7" opacity="0.7">DHW</text>
-                      <text x="8" y="75" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="8" y="68" fill="${E}" font-size="7" opacity="0.7">DHW</text>
+                      <text x="8" y="75" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.dhwTemp,0)}°
                       </text>
                     </g>
@@ -1122,8 +1122,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                   ${void 0!==t.outdoorCoilTemp&&this.config.heat_pump?.outdoor_coil_temp_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.outdoor_coil_temp_entity)}">
-                      <text x="42" y="68" fill="${L}" font-size="7" opacity="0.7">O-Coil</text>
-                      <text x="42" y="75" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="42" y="68" fill="${E}" font-size="7" opacity="0.7">O-Coil</text>
+                      <text x="42" y="75" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.outdoorCoilTemp,0)}°
                       </text>
                     </g>
@@ -1131,8 +1131,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                   ${void 0!==t.suctionTemp&&this.config.heat_pump?.suction_temp_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.suction_temp_entity)}">
-                      <text x="76" y="68" fill="${L}" font-size="7" opacity="0.7">Suct</text>
-                      <text x="76" y="75" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="76" y="68" fill="${E}" font-size="7" opacity="0.7">Suct</text>
+                      <text x="76" y="75" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.suctionTemp,0)}°
                       </text>
                     </g>
@@ -1141,8 +1141,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   <!-- Detailed Row 3: Heat Exchanger, Plate Exchange -->
                   ${void 0!==t.heatExchangerTemp&&this.config.heat_pump?.heat_exchanger_temp_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.heat_exchanger_temp_entity)}">
-                      <text x="8" y="86" fill="${L}" font-size="7" opacity="0.7">HX</text>
-                      <text x="8" y="93" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="8" y="86" fill="${E}" font-size="7" opacity="0.7">HX</text>
+                      <text x="8" y="93" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.heatExchangerTemp,0)}°
                       </text>
                     </g>
@@ -1150,8 +1150,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                   ${void 0!==t.plateExchangeTemp&&this.config.heat_pump?.plate_exchange_temp_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.plate_exchange_temp_entity)}">
-                      <text x="42" y="86" fill="${L}" font-size="7" opacity="0.7">Plate</text>
-                      <text x="42" y="93" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="42" y="86" fill="${E}" font-size="7" opacity="0.7">Plate</text>
+                      <text x="42" y="93" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.plateExchangeTemp,0)}°
                       </text>
                     </g>
@@ -1159,8 +1159,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                   ${void 0!==t.ipmTemp&&this.config.heat_pump?.ipm_temp_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.ipm_temp_entity)}">
-                      <text x="76" y="86" fill="${L}" font-size="7" opacity="0.7">IPM</text>
-                      <text x="76" y="93" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="76" y="86" fill="${E}" font-size="7" opacity="0.7">IPM</text>
+                      <text x="76" y="93" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.ipmTemp,0)}°
                       </text>
                     </g>
@@ -1169,8 +1169,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   <!-- Detailed Row 4: Fan Motors -->
                   ${void 0!==t.ecFanMotor1Speed&&this.config.heat_pump?.ec_fan_motor_1_speed_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.ec_fan_motor_1_speed_entity)}">
-                      <text x="8" y="104" fill="${L}" font-size="7" opacity="0.7">Fan1</text>
-                      <text x="8" y="111" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="8" y="104" fill="${E}" font-size="7" opacity="0.7">Fan1</text>
+                      <text x="8" y="111" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.ecFanMotor1Speed,0)}
                       </text>
                     </g>
@@ -1178,8 +1178,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                   ${void 0!==t.ecFanMotor2Speed&&this.config.heat_pump?.ec_fan_motor_2_speed_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.ec_fan_motor_2_speed_entity)}">
-                      <text x="42" y="104" fill="${L}" font-size="7" opacity="0.7">Fan2</text>
-                      <text x="42" y="111" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="42" y="104" fill="${E}" font-size="7" opacity="0.7">Fan2</text>
+                      <text x="42" y="111" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.ecFanMotor2Speed,0)}
                       </text>
                     </g>
@@ -1187,8 +1187,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                   ${void 0!==t.busLineVoltage&&this.config.heat_pump?.bus_line_voltage_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.bus_line_voltage_entity)}">
-                      <text x="76" y="104" fill="${L}" font-size="7" opacity="0.7">Bus V</text>
-                      <text x="76" y="111" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="76" y="104" fill="${E}" font-size="7" opacity="0.7">Bus V</text>
+                      <text x="76" y="111" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.busLineVoltage,0)}V
                       </text>
                     </g>
@@ -1197,8 +1197,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   <!-- Detailed Row 5: Additional metrics -->
                   ${void 0!==t.eHeaterPower&&this.config.heat_pump?.e_heater_power_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.e_heater_power_entity)}">
-                      <text x="8" y="122" fill="${L}" font-size="7" opacity="0.7">E-Htr</text>
-                      <text x="8" y="129" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="8" y="122" fill="${E}" font-size="7" opacity="0.7">E-Htr</text>
+                      <text x="8" y="129" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.eHeaterPower,0)}W
                       </text>
                     </g>
@@ -1206,8 +1206,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                   ${void 0!==t.compressorRunningTime&&this.config.heat_pump?.compressor_running_time_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.compressor_running_time_entity)}">
-                      <text x="42" y="122" fill="${L}" font-size="7" opacity="0.7">Comp H</text>
-                      <text x="42" y="129" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="42" y="122" fill="${E}" font-size="7" opacity="0.7">Comp H</text>
+                      <text x="42" y="129" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.compressorRunningTime,0)}h
                       </text>
                     </g>
@@ -1215,8 +1215,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                   ${void 0!==t.compressorMaxPercentage&&this.config.heat_pump?.compressor_max_percentage_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.compressor_max_percentage_entity)}">
-                      <text x="76" y="122" fill="${L}" font-size="7" opacity="0.7">MaxC%</text>
-                      <text x="76" y="129" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="76" y="122" fill="${E}" font-size="7" opacity="0.7">MaxC%</text>
+                      <text x="76" y="129" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.compressorMaxPercentage,0)}%
                       </text>
                     </g>
@@ -1225,8 +1225,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   <!-- Detailed Row 6: Status indicators -->
                   ${void 0!==t.pumpEnabled&&this.config.heat_pump?.pump_enabled_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.pump_enabled_entity)}">
-                      <text x="8" y="140" fill="${L}" font-size="7" opacity="0.7">Pump</text>
-                      <text x="8" y="147" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="8" y="140" fill="${E}" font-size="7" opacity="0.7">Pump</text>
+                      <text x="8" y="147" fill="${E}" font-size="8" font-weight="bold">
                         ${t.pumpEnabled?"ON":"OFF"}
                       </text>
                     </g>
@@ -1234,8 +1234,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                   ${void 0!==t.fanShutdownCode&&0!==t.fanShutdownCode&&this.config.heat_pump?.fan_shutdown_code_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.fan_shutdown_code_entity)}">
-                      <text x="42" y="140" fill="${L}" font-size="7" opacity="0.7">F-Code</text>
-                      <text x="42" y="147" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="42" y="140" fill="${E}" font-size="7" opacity="0.7">F-Code</text>
+                      <text x="42" y="147" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.fanShutdownCode,0)}
                       </text>
                     </g>
@@ -1243,8 +1243,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
                   ${void 0!==t.din6ModeSwitch&&this.config.heat_pump?.din6_mode_switch_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.din6_mode_switch_entity)}">
-                      <text x="76" y="140" fill="${L}" font-size="7" opacity="0.7">DIN6</text>
-                      <text x="76" y="147" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="76" y="140" fill="${E}" font-size="7" opacity="0.7">DIN6</text>
+                      <text x="76" y="147" fill="${E}" font-size="8" font-weight="bold">
                         ${this.formatValue(t.din6ModeSwitch,0)}
                       </text>
                     </g>
@@ -1253,8 +1253,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   <!-- Detailed Row 7: Defrost and Error Status -->
                   ${void 0!==t.defrost&&this.config.heat_pump?.defrost_entity?G`
                     <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.heat_pump.defrost_entity)}">
-                      <text x="8" y="158" fill="${L}" font-size="7" opacity="0.7">Defrost</text>
-                      <text x="8" y="165" fill="${L}" font-size="8" font-weight="bold">
+                      <text x="8" y="158" fill="${E}" font-size="7" opacity="0.7">Defrost</text>
+                      <text x="8" y="165" fill="${E}" font-size="8" font-weight="bold">
                         ${t.defrost?"ON":"OFF"}
                       </text>
                     </g>
@@ -1273,13 +1273,13 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <!-- Custom Metrics Section -->
                 ${this.config.metrics&&this.config.metrics.length>0?(()=>{const t=this.config.heat_pump?.show_detailed_metrics?176:44,e=this.config.heat_pump?.show_detailed_metrics?168:36,i=[];for(let t=0;t<this.config.metrics.length;t+=3)i.push(this.config.metrics.slice(t,t+3));return G`
                     <!-- Divider line before custom metrics -->
-                    <line x1="8" y1="${e}" x2="112" y2="${e}" stroke="${L}" stroke-width="0.5" opacity="0.3"/>
+                    <line x1="8" y1="${e}" x2="112" y2="${e}" stroke="${E}" stroke-width="0.5" opacity="0.3"/>
 
                     ${i.map((e,i)=>{const o=t+18*i,a=o+7,r=[8,42,76];return G`
                         ${e.map((t,e)=>{const i=this.getStateValue(t.entity);if(void 0===i)return"";const n=r[e],s=void 0!==t.decimals?t.decimals:1,l=t.unit||this.getStateUnit(t.entity)||"";return G`
                             <g style="cursor: pointer;" @click="${e=>this.handleTemperatureClick(e,t.entity)}">
-                              <text x="${n}" y="${o}" fill="${L}" font-size="7" opacity="0.7">${t.label}</text>
-                              <text x="${n}" y="${a}" fill="${L}" font-size="8" font-weight="bold">
+                              <text x="${n}" y="${o}" fill="${E}" font-size="7" opacity="0.7">${t.label}</text>
+                              <text x="${n}" y="${a}" fill="${E}" font-size="8" font-weight="bold">
                                 ${this.formatValue(i,s)}${l}
                               </text>
                             </g>
@@ -1591,13 +1591,29 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <text x="60" y="30" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
                 HVAC LOAD
               </text>
-              <text x="60" y="55" text-anchor="middle" fill="#e74c3c" font-size="20" font-weight="bold">
-                ${this.formatValue(i.thermal,0)} W
-              </text>
+              ${this.config.hvac?.thermal_entity?G`
+                <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.hvac.thermal_entity)}">
+                  <text x="60" y="55" text-anchor="middle" fill="#e74c3c" font-size="20" font-weight="bold">
+                    ${this.formatValue(i.thermal,0)} W
+                  </text>
+                </g>
+              `:G`
+                <text x="60" y="55" text-anchor="middle" fill="#e74c3c" font-size="20" font-weight="bold">
+                  ${this.formatValue(i.thermal,0)} W
+                </text>
+              `}
               <!-- Flow rate display at bottom -->
-              <text x="60" y="85" text-anchor="middle" fill="white" font-size="10">
-                ${this.formatValue(i.flowRate,1)} ${this.getStateUnit(this.config.hvac?.flow_rate_entity)||"L/m"}
-              </text>
+              ${this.config.hvac?.flow_rate_entity?G`
+                <g style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.hvac.flow_rate_entity)}">
+                  <text x="60" y="85" text-anchor="middle" fill="white" font-size="10">
+                    ${this.formatValue(i.flowRate,1)} ${this.getStateUnit(this.config.hvac?.flow_rate_entity)||"L/m"}
+                  </text>
+                </g>
+              `:G`
+                <text x="60" y="85" text-anchor="middle" fill="white" font-size="10">
+                  ${this.formatValue(i.flowRate,1)} ${this.getStateUnit(this.config.hvac?.flow_rate_entity)||"L/m"}
+                </text>
+              `}
             </g>
 
             <!-- Auxiliary Heater - Glowing cylinder with animated pulsing glow -->
