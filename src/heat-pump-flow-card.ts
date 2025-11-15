@@ -1991,28 +1991,40 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Bottom outlet flange (to DHW) - adjusted for better alignment -->
               <rect x="-25" y="12" width="16" height="10" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
 
-              <!-- 3-Way Valve Symbol (three triangles pointing to center with ball) -->
+              <!-- 3-Way Valve Symbol (hydronic standard: triangles with connecting lines) -->
               <g id="valve-symbol" opacity="0.8">
-                <!-- Left triangle (from HP inlet) - pointing right to center -->
-                <path d="M -27 0 L -17 -4 L -17 4 Z"
-                      fill="#2c3e50"
-                      stroke="#2c3e50"
-                      stroke-width="0.5"/>
-                <!-- Right triangle (to buffer/heating) - pointing left to center -->
-                <path d="M -7 0 L -17 4 L -17 -4 Z"
-                      fill="#2c3e50"
-                      stroke="#2c3e50"
-                      stroke-width="0.5"/>
-                <!-- Bottom triangle (to DHW) - pointing up to center -->
-                <path d="M -17 10 L -21 0 L -13 0 Z"
-                      fill="#2c3e50"
-                      stroke="#2c3e50"
-                      stroke-width="0.5"/>
                 <!-- Center circle (ball/switching mechanism) -->
-                <circle cx="-17" cy="0" r="2.5"
+                <circle cx="-17" cy="0" r="3"
                         fill="#34495e"
                         stroke="#2c3e50"
-                        stroke-width="0.5"/>
+                        stroke-width="0.8"/>
+
+                <!-- Left port: line and triangle (from HP inlet) -->
+                <line x1="-17" y1="0" x2="-26" y2="0"
+                      stroke="#2c3e50"
+                      stroke-width="1.2"/>
+                <path d="M -30 0 L -26 -3 L -26 3 Z"
+                      fill="#2c3e50"
+                      stroke="#2c3e50"
+                      stroke-width="0.5"/>
+
+                <!-- Right port: line and triangle (to buffer/heating) -->
+                <line x1="-17" y1="0" x2="-8" y2="0"
+                      stroke="#2c3e50"
+                      stroke-width="1.2"/>
+                <path d="M -4 0 L -8 -3 L -8 3 Z"
+                      fill="#2c3e50"
+                      stroke="#2c3e50"
+                      stroke-width="0.5"/>
+
+                <!-- Bottom port: line and triangle (to DHW) -->
+                <line x1="-17" y1="0" x2="-17" y2="12"
+                      stroke="#2c3e50"
+                      stroke-width="1.2"/>
+                <path d="M -17 16 L -20 12 L -14 12 Z"
+                      fill="#2c3e50"
+                      stroke="#2c3e50"
+                      stroke-width="0.5"/>
               </g>
 
               <!-- Internal flow path visualization with animations -->
