@@ -1455,10 +1455,10 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <!-- Fill percentage display (always shown) -->
               ${void 0!==e.energyReserve?G`
                 <!-- Percentage on left, energy reserve on right -->
-                <text x="20" y="173" text-anchor="start" fill="${x?"#e74c3c":"#3498db"}" font-size="11" font-weight="bold">
+                <text x="20" y="173" text-anchor="start" fill="${x?"#e74c3c":"#3498db"}" font-size="9" font-weight="bold">
                   ${S}%
                 </text>
-                <text x="70" y="173" text-anchor="end" fill="${x?"#e74c3c":"#3498db"}" font-size="10" font-weight="bold"
+                <text x="70" y="173" text-anchor="end" fill="${x?"#e74c3c":"#3498db"}" font-size="9" font-weight="bold"
                       style="cursor: pointer;" @click="${t=>this.handleTemperatureClick(t,this.config.buffer_tank.energy_reserve_entity)}">
                   ${this.formatValue(e.energyReserve,1)} kWh
                 </text>
