@@ -87,6 +87,7 @@ export interface HeatPumpFlowCardConfig extends LovelaceCardConfig {
     return_temp_entity?: string;  // Return temperature
     level_entity?: string;         // Tank level (optional)
     tank_temp_entity?: string;     // Tank temperature (optional)
+    energy_reserve_entity?: string; // Energy reserve in kWh (optional)
     name?: string;                 // Tank display name (default: BUFFER)
     icon?: string;
     logo_url?: string;             // Logo URL (displayed left of label)
@@ -387,6 +388,7 @@ export interface BufferTankState {
   returnTemp: number;
   level?: number;
   tankTemp?: number;
+  energyReserve?: number;
 }
 
 export interface HVACState {

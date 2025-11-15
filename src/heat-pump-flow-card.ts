@@ -259,6 +259,7 @@ export class HeatPumpFlowCard extends LitElement {
       returnTemp: this.getStateValue(cfg.return_temp_entity) || 0,
       level: this.getStateValue(cfg.level_entity),
       tankTemp: this.getStateValue(cfg.tank_temp_entity),
+      energyReserve: this.getStateValue(cfg.energy_reserve_entity),
     };
   }
 
@@ -2113,9 +2114,21 @@ export class HeatPumpFlowCard extends LitElement {
               ` : ''}
 
               <!-- Fill percentage display (always shown) -->
-              <text x="45" y="173" text-anchor="middle" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="11" font-weight="bold">
-                ${bufferFillPercentage}%
-              </text>
+              ${bufferState.energyReserve !== undefined ? svg`
+                <!-- Percentage on left, energy reserve on right -->
+                <text x="20" y="173" text-anchor="start" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="11" font-weight="bold">
+                  ${bufferFillPercentage}%
+                </text>
+                <text x="70" y="173" text-anchor="end" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="10" font-weight="bold"
+                      style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.buffer_tank!.energy_reserve_entity!)}">
+                  ${this.formatValue(bufferState.energyReserve, 1)} kWh
+                </text>
+              ` : svg`
+                <!-- Just percentage, centered -->
+                <text x="45" y="173" text-anchor="middle" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="11" font-weight="bold">
+                  ${bufferFillPercentage}%
+                </text>
+              `}
 
               <!-- Tank temperature indicator (optional, centered in tank) -->
               ${this.renderTankTempIndicator(
