@@ -803,6 +803,9 @@ export class HeatPumpFlowCard extends LitElement {
     const bufferSupplyColor = hvacPipeColors.hotPipe;
     const hvacReturnColor = hvacPipeColors.coldPipe;
 
+    // Check if there's active flow (for valve element coloring)
+    const hasFlow = hpState.flowRate > this.config.animation!.idle_threshold!;
+
     // DHW pipes always use hot/cold colors when active (not calculated from delta)
     // to match the fixed-color flow gradient animations
     const dhwCoilColor = this.config.temperature!.hot_color!;
@@ -1993,37 +1996,37 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- 3-Way Valve Symbol (hydronic standard: triangles at flanges with connecting lines) -->
               <g id="valve-symbol" opacity="0.8">
-                <!-- Center circle (ball/switching mechanism) -->
-                <circle cx="-17" cy="0" r="3"
-                        fill="#34495e"
-                        stroke="#2c3e50"
+                <!-- Center circle (ball/switching mechanism) - bigger and flow-colored -->
+                <circle cx="-17" cy="0" r="5"
+                        fill="${hasFlow ? hpOutletColor : '#7f8c8d'}"
+                        stroke="${hasFlow ? '#2c3e50' : '#7f8c8d'}"
                         stroke-width="0.8"/>
 
-                <!-- Left port: line and larger triangle at flange (from HP inlet) - always active -->
-                <line x1="-17" y1="0" x2="-41" y2="0"
-                      stroke="${hpOutletColor}"
+                <!-- Left port: line and larger centered triangle at flange (from HP inlet) - always active when flow -->
+                <line x1="-17" y1="0" x2="-36" y2="0"
+                      stroke="${hasFlow ? hpOutletColor : '#7f8c8d'}"
                       stroke-width="2"/>
-                <path d="M -45 0 L -41 -4.5 L -41 4.5 Z"
-                      fill="${hpOutletColor}"
-                      stroke="${hpOutletColor}"
+                <path d="M -44 0 L -36 -6 L -36 6 Z"
+                      fill="${hasFlow ? hpOutletColor : '#7f8c8d'}"
+                      stroke="${hasFlow ? hpOutletColor : '#7f8c8d'}"
                       stroke-width="0.5"/>
 
-                <!-- Right port: line and larger triangle at flange (to buffer/heating) -->
-                <line x1="-17" y1="0" x2="6" y2="0"
-                      stroke="${g2ValveState.isActive ? '#7f8c8d' : hpOutletColor}"
+                <!-- Right port: line and larger centered triangle at flange (to buffer/heating) -->
+                <line x1="-17" y1="0" x2="1" y2="0"
+                      stroke="${hasFlow ? (g2ValveState.isActive ? '#7f8c8d' : hpOutletColor) : '#7f8c8d'}"
                       stroke-width="2"/>
-                <path d="M 10 0 L 6 -4.5 L 6 4.5 Z"
-                      fill="${g2ValveState.isActive ? '#7f8c8d' : hpOutletColor}"
-                      stroke="${g2ValveState.isActive ? '#7f8c8d' : hpOutletColor}"
+                <path d="M 9 0 L 1 -6 L 1 6 Z"
+                      fill="${hasFlow ? (g2ValveState.isActive ? '#7f8c8d' : hpOutletColor) : '#7f8c8d'}"
+                      stroke="${hasFlow ? (g2ValveState.isActive ? '#7f8c8d' : hpOutletColor) : '#7f8c8d'}"
                       stroke-width="0.5"/>
 
-                <!-- Bottom port: line and larger triangle at flange (to DHW) -->
-                <line x1="-17" y1="0" x2="-17" y2="18"
-                      stroke="${g2ValveState.isActive ? hpOutletColor : '#7f8c8d'}"
+                <!-- Bottom port: line and larger centered triangle at flange (to DHW) -->
+                <line x1="-17" y1="0" x2="-17" y2="13"
+                      stroke="${hasFlow ? (g2ValveState.isActive ? hpOutletColor : '#7f8c8d') : '#7f8c8d'}"
                       stroke-width="2"/>
-                <path d="M -17 22 L -21.5 18 L -12.5 18 Z"
-                      fill="${g2ValveState.isActive ? hpOutletColor : '#7f8c8d'}"
-                      stroke="${g2ValveState.isActive ? hpOutletColor : '#7f8c8d'}"
+                <path d="M -17 21 L -23 13 L -11 13 Z"
+                      fill="${hasFlow ? (g2ValveState.isActive ? hpOutletColor : '#7f8c8d') : '#7f8c8d'}"
+                      stroke="${hasFlow ? (g2ValveState.isActive ? hpOutletColor : '#7f8c8d') : '#7f8c8d'}"
                       stroke-width="0.5"/>
               </g>
 
