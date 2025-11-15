@@ -1332,12 +1332,6 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
               <!-- 3-Way Valve Symbol (hydronic standard: triangles at flanges with connecting lines) -->
               <g id="valve-symbol" opacity="0.8">
-                <!-- Center circle (ball/switching mechanism) - bigger and flow-colored -->
-                <circle cx="-17" cy="0" r="5"
-                        fill="${f?h:"#7f8c8d"}"
-                        stroke="${f?"#2c3e50":"#7f8c8d"}"
-                        stroke-width="0.8"/>
-
                 <!-- Left port: line and larger centered triangle at flange (from HP inlet) - always active when flow -->
                 <line x1="-17" y1="0" x2="-36" y2="0"
                       stroke="${f?h:"#7f8c8d"}"
@@ -1364,6 +1358,10 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                       fill="${f&&r.isActive?h:"#7f8c8d"}"
                       stroke="${f&&r.isActive?h:"#7f8c8d"}"
                       stroke-width="0.5"/>
+
+                <!-- Center circle (ball/switching mechanism) - bigger and flow-colored, drawn last to cover line ends -->
+                <circle cx="-17" cy="0" r="5"
+                        fill="${f?h:"#7f8c8d"}"/>
               </g>
 
               <!-- Internal flow path visualization with animations -->
