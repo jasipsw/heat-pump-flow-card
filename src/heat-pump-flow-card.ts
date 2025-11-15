@@ -1996,12 +1996,6 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- 3-Way Valve Symbol (hydronic standard: triangles at flanges with connecting lines) -->
               <g id="valve-symbol" opacity="0.8">
-                <!-- Center circle (ball/switching mechanism) - bigger and flow-colored -->
-                <circle cx="-17" cy="0" r="5"
-                        fill="${hasFlow ? hpOutletColor : '#7f8c8d'}"
-                        stroke="${hasFlow ? '#2c3e50' : '#7f8c8d'}"
-                        stroke-width="0.8"/>
-
                 <!-- Left port: line and larger centered triangle at flange (from HP inlet) - always active when flow -->
                 <line x1="-17" y1="0" x2="-36" y2="0"
                       stroke="${hasFlow ? hpOutletColor : '#7f8c8d'}"
@@ -2028,6 +2022,10 @@ export class HeatPumpFlowCard extends LitElement {
                       fill="${hasFlow ? (g2ValveState.isActive ? hpOutletColor : '#7f8c8d') : '#7f8c8d'}"
                       stroke="${hasFlow ? (g2ValveState.isActive ? hpOutletColor : '#7f8c8d') : '#7f8c8d'}"
                       stroke-width="0.5"/>
+
+                <!-- Center circle (ball/switching mechanism) - bigger and flow-colored, drawn last to cover line ends -->
+                <circle cx="-17" cy="0" r="5"
+                        fill="${hasFlow ? hpOutletColor : '#7f8c8d'}"/>
               </g>
 
               <!-- Internal flow path visualization with animations -->
