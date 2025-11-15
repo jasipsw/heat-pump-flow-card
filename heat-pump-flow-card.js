@@ -1330,7 +1330,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <!-- Bottom outlet flange (to DHW) - adjusted for better alignment -->
               <rect x="-25" y="12" width="16" height="10" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
 
-              <!-- 3-Way Valve Symbol (hydronic standard: triangles with connecting lines) -->
+              <!-- 3-Way Valve Symbol (hydronic standard: triangles at flanges with connecting lines) -->
               <g id="valve-symbol" opacity="0.8">
                 <!-- Center circle (ball/switching mechanism) -->
                 <circle cx="-17" cy="0" r="3"
@@ -1338,29 +1338,29 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                         stroke="#2c3e50"
                         stroke-width="0.8"/>
 
-                <!-- Left port: line and triangle (from HP inlet) -->
-                <line x1="-17" y1="0" x2="-26" y2="0"
+                <!-- Left port: line and larger triangle at flange (from HP inlet) -->
+                <line x1="-17" y1="0" x2="-41" y2="0"
                       stroke="#2c3e50"
-                      stroke-width="1.2"/>
-                <path d="M -30 0 L -26 -3 L -26 3 Z"
+                      stroke-width="2"/>
+                <path d="M -45 0 L -41 -4.5 L -41 4.5 Z"
                       fill="#2c3e50"
                       stroke="#2c3e50"
                       stroke-width="0.5"/>
 
-                <!-- Right port: line and triangle (to buffer/heating) -->
-                <line x1="-17" y1="0" x2="-8" y2="0"
+                <!-- Right port: line and larger triangle at flange (to buffer/heating) -->
+                <line x1="-17" y1="0" x2="6" y2="0"
                       stroke="#2c3e50"
-                      stroke-width="1.2"/>
-                <path d="M -4 0 L -8 -3 L -8 3 Z"
+                      stroke-width="2"/>
+                <path d="M 10 0 L 6 -4.5 L 6 4.5 Z"
                       fill="#2c3e50"
                       stroke="#2c3e50"
                       stroke-width="0.5"/>
 
-                <!-- Bottom port: line and triangle (to DHW) -->
-                <line x1="-17" y1="0" x2="-17" y2="12"
+                <!-- Bottom port: line and larger triangle at flange (to DHW) -->
+                <line x1="-17" y1="0" x2="-17" y2="18"
                       stroke="#2c3e50"
-                      stroke-width="1.2"/>
-                <path d="M -17 16 L -20 12 L -14 12 Z"
+                      stroke-width="2"/>
+                <path d="M -17 22 L -21.5 18 L -12.5 18 Z"
                       fill="#2c3e50"
                       stroke="#2c3e50"
                       stroke-width="0.5"/>
