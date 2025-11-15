@@ -1,6 +1,6 @@
 {
   "name": "heat-pump-flow-card",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Animated heat pump flow visualization card for Home Assistant",
   "type": "module",
   "main": "dist/heat-pump-flow-card.js",
