@@ -1317,7 +1317,9 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             </g>
 
             <!-- DHW Heating Diverter Valve (3-way valve between HP and tanks) -->
-            <g id="g2-valve" transform="translate(360, 180) scale(0.7)">
+            <g id="g2-valve" transform="translate(360, 180) scale(0.7)"
+               style="${this.config.g2_valve?.state_entity?"cursor: pointer;":""}"
+               @click="${this.config.g2_valve?.state_entity?t=>this.handleTemperatureClick(t,this.config.g2_valve.state_entity):null}">
               <!-- Valve body - cylindrical with flanges (matching valve idea graphic) -->
               <!-- Left inlet flange -->
               <rect x="-45" y="-8" width="10" height="16" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1.5"/>
@@ -1330,18 +1332,18 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
               <!-- 3-Way Valve Symbol (three triangles pointing to center with ball) -->
               <g id="valve-symbol" opacity="0.8">
-                <!-- Left triangle (from HP inlet) -->
-                <path d="M -28 0 L -20 -4 L -20 4 Z"
+                <!-- Left triangle (from HP inlet) - pointing right to center -->
+                <path d="M -27 0 L -17 -4 L -17 4 Z"
                       fill="#2c3e50"
                       stroke="#2c3e50"
                       stroke-width="0.5"/>
-                <!-- Right triangle (to buffer/heating) -->
-                <path d="M -6 0 L -14 -4 L -14 4 Z"
+                <!-- Right triangle (to buffer/heating) - pointing left to center -->
+                <path d="M -7 0 L -17 4 L -17 -4 Z"
                       fill="#2c3e50"
                       stroke="#2c3e50"
                       stroke-width="0.5"/>
-                <!-- Bottom triangle (to DHW) -->
-                <path d="M -17 8 L -21 4 L -13 4 Z"
+                <!-- Bottom triangle (to DHW) - pointing up to center -->
+                <path d="M -17 10 L -21 0 L -13 0 Z"
                       fill="#2c3e50"
                       stroke="#2c3e50"
                       stroke-width="0.5"/>
@@ -1371,10 +1373,10 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                       opacity="0.4"/>
               `:U`
                 <!-- Heating Mode: Flow ACROSS (from left inlet to right outlet) -->
-                <!-- Active path in green with pulsing animation -->
+                <!-- Active path in red with pulsing animation -->
                 <path class="g2-valve-path g2-valve-active-path"
                       d="M -35 0 L 0 0"
-                      stroke="#16a085"
+                      stroke="${this.config.heat_pump_visual?.dhw_color||"#e74c3c"}"
                       stroke-width="6"
                       fill="none"
                       stroke-linecap="butt"/>
