@@ -2030,10 +2030,10 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Internal flow path visualization with animations -->
               ${g2ValveState.isActive ? html`
                 <!-- DHW Mode: Flow DOWN (from left inlet to bottom outlet) -->
-                <!-- Active path in red with pulsing animation -->
+                <!-- Active path matching hot flow color -->
                 <path class="g2-valve-path g2-valve-active-path"
                       d="M -35 0 L -17 0 L -17 12"
-                      stroke="${this.config.heat_pump_visual?.dhw_color || '#e74c3c'}"
+                      stroke="${hpOutletColor}"
                       stroke-width="6"
                       fill="none"
                       stroke-linecap="butt"
@@ -2046,10 +2046,10 @@ export class HeatPumpFlowCard extends LitElement {
                       opacity="0.4"/>
               ` : html`
                 <!-- Heating Mode: Flow ACROSS (from left inlet to right outlet) -->
-                <!-- Active path in red with pulsing animation -->
+                <!-- Active path matching hot flow color -->
                 <path class="g2-valve-path g2-valve-active-path"
                       d="M -35 0 L 0 0"
-                      stroke="${this.config.heat_pump_visual?.dhw_color || '#e74c3c'}"
+                      stroke="${hpOutletColor}"
                       stroke-width="6"
                       fill="none"
                       stroke-linecap="butt"/>
