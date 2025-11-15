@@ -259,6 +259,7 @@ export class HeatPumpFlowCard extends LitElement {
       returnTemp: this.getStateValue(cfg.return_temp_entity) || 0,
       level: this.getStateValue(cfg.level_entity),
       tankTemp: this.getStateValue(cfg.tank_temp_entity),
+      energyReserve: this.getStateValue(cfg.energy_reserve_entity),
     };
   }
 
@@ -1996,12 +1997,6 @@ export class HeatPumpFlowCard extends LitElement {
 
               <!-- 3-Way Valve Symbol (hydronic standard: triangles at flanges with connecting lines) -->
               <g id="valve-symbol" opacity="0.8">
-                <!-- Center circle (ball/switching mechanism) - bigger and flow-colored -->
-                <circle cx="-17" cy="0" r="5"
-                        fill="${hasFlow ? hpOutletColor : '#7f8c8d'}"
-                        stroke="${hasFlow ? '#2c3e50' : '#7f8c8d'}"
-                        stroke-width="0.8"/>
-
                 <!-- Left port: line and larger centered triangle at flange (from HP inlet) - always active when flow -->
                 <line x1="-17" y1="0" x2="-36" y2="0"
                       stroke="${hasFlow ? hpOutletColor : '#7f8c8d'}"
@@ -2028,6 +2023,10 @@ export class HeatPumpFlowCard extends LitElement {
                       fill="${hasFlow ? (g2ValveState.isActive ? hpOutletColor : '#7f8c8d') : '#7f8c8d'}"
                       stroke="${hasFlow ? (g2ValveState.isActive ? hpOutletColor : '#7f8c8d') : '#7f8c8d'}"
                       stroke-width="0.5"/>
+
+                <!-- Center circle (ball/switching mechanism) - bigger and flow-colored, drawn last to cover line ends -->
+                <circle cx="-17" cy="0" r="5"
+                        fill="${hasFlow ? hpOutletColor : '#7f8c8d'}"/>
               </g>
 
               <!-- Internal flow path visualization with animations -->
@@ -2115,9 +2114,21 @@ export class HeatPumpFlowCard extends LitElement {
               ` : ''}
 
               <!-- Fill percentage display (always shown) -->
-              <text x="45" y="173" text-anchor="middle" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="11" font-weight="bold">
-                ${bufferFillPercentage}%
-              </text>
+              ${bufferState.energyReserve !== undefined ? svg`
+                <!-- Percentage on left, energy reserve on right -->
+                <text x="20" y="173" text-anchor="start" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="11" font-weight="bold">
+                  ${bufferFillPercentage}%
+                </text>
+                <text x="70" y="173" text-anchor="end" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="10" font-weight="bold"
+                      style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.buffer_tank!.energy_reserve_entity!)}">
+                  ${this.formatValue(bufferState.energyReserve, 1)} kWh
+                </text>
+              ` : svg`
+                <!-- Just percentage, centered -->
+                <text x="45" y="173" text-anchor="middle" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="11" font-weight="bold">
+                  ${bufferFillPercentage}%
+                </text>
+              `}
 
               <!-- Tank temperature indicator (optional, centered in tank) -->
               ${this.renderTankTempIndicator(
