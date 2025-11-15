@@ -2276,13 +2276,29 @@ export class HeatPumpFlowCard extends LitElement {
               <text x="60" y="30" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
                 HVAC LOAD
               </text>
-              <text x="60" y="55" text-anchor="middle" fill="#e74c3c" font-size="20" font-weight="bold">
-                ${this.formatValue(hvacState.thermal, 0)} W
-              </text>
+              ${this.config.hvac?.thermal_entity ? svg`
+                <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.hvac!.thermal_entity!)}">
+                  <text x="60" y="55" text-anchor="middle" fill="#e74c3c" font-size="20" font-weight="bold">
+                    ${this.formatValue(hvacState.thermal, 0)} W
+                  </text>
+                </g>
+              ` : svg`
+                <text x="60" y="55" text-anchor="middle" fill="#e74c3c" font-size="20" font-weight="bold">
+                  ${this.formatValue(hvacState.thermal, 0)} W
+                </text>
+              `}
               <!-- Flow rate display at bottom -->
-              <text x="60" y="85" text-anchor="middle" fill="white" font-size="10">
-                ${this.formatValue(hvacState.flowRate, 1)} ${this.getStateUnit(this.config.hvac?.flow_rate_entity) || 'L/m'}
-              </text>
+              ${this.config.hvac?.flow_rate_entity ? svg`
+                <g style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.hvac!.flow_rate_entity!)}">
+                  <text x="60" y="85" text-anchor="middle" fill="white" font-size="10">
+                    ${this.formatValue(hvacState.flowRate, 1)} ${this.getStateUnit(this.config.hvac?.flow_rate_entity) || 'L/m'}
+                  </text>
+                </g>
+              ` : svg`
+                <text x="60" y="85" text-anchor="middle" fill="white" font-size="10">
+                  ${this.formatValue(hvacState.flowRate, 1)} ${this.getStateUnit(this.config.hvac?.flow_rate_entity) || 'L/m'}
+                </text>
+              `}
             </g>
 
             <!-- Auxiliary Heater - Glowing cylinder with animated pulsing glow -->
