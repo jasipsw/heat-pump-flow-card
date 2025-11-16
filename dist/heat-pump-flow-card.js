@@ -1,4 +1,4 @@
-var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=arguments.length,n=r<3?e:null===o?o=Object.getOwnPropertyDescriptor(e,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(t,e,i,o);else for(var s=t.length-1;s>=0;s--)(a=t[s])&&(n=(r<3?a(n):r>3?a(e,i,n):a(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n}"function"==typeof SuppressedError&&SuppressedError;const i=globalThis,o=i.ShadowRoot&&(void 0===i.ShadyCSS||i.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,a=Symbol(),r=new WeakMap;let n=class{constructor(t,e,i){if(this._$cssResult$=!0,i!==a)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o;const e=this.t;if(o&&void 0===t){const i=void 0!==e&&1===e.length;i&&(t=r.get(e)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),i&&r.set(e,t))}return t}toString(){return this.cssText}};const s=o?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const i of t.cssRules)e+=i.cssText;return(t=>new n("string"==typeof t?t:t+"",void 0,a))(e)})(t):t,{is:l,defineProperty:h,getOwnPropertyDescriptor:c,getOwnPropertyNames:d,getOwnPropertySymbols:p,getPrototypeOf:f}=Object,u=globalThis,g=u.trustedTypes,m=g?g.emptyScript:"",y=u.reactiveElementPolyfillSupport,_=(t,e)=>t,w={toAttribute(t,e){switch(e){case Boolean:t=t?m:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let i=t;switch(e){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t)}catch(t){i=null}}return i}},$=(t,e)=>!l(t,e),x={attribute:!0,type:String,converter:w,reflect:!1,useDefault:!1,hasChanged:$};Symbol.metadata??=Symbol("metadata"),u.litPropertyMetadata??=new WeakMap;let b=class extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=x){if(e.state&&(e.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(t)&&((e=Object.create(e)).wrapped=!0),this.elementProperties.set(t,e),!e.noAccessor){const i=Symbol(),o=this.getPropertyDescriptor(t,i,e);void 0!==o&&h(this.prototype,t,o)}}static getPropertyDescriptor(t,e,i){const{get:o,set:a}=c(this.prototype,t)??{get(){return this[e]},set(t){this[e]=t}};return{get:o,set(e){const r=o?.call(this);a?.call(this,e),this.requestUpdate(t,r,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??x}static _$Ei(){if(this.hasOwnProperty(_("elementProperties")))return;const t=f(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(_("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(_("properties"))){const t=this.properties,e=[...d(t),...p(t)];for(const i of e)this.createProperty(i,t[i])}const t=this[Symbol.metadata];if(null!==t){const e=litPropertyMetadata.get(t);if(void 0!==e)for(const[t,i]of e)this.elementProperties.set(t,i)}this._$Eh=new Map;for(const[t,e]of this.elementProperties){const i=this._$Eu(t,e);void 0!==i&&this._$Eh.set(i,t)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const i=new Set(t.flat(1/0).reverse());for(const t of i)e.unshift(s(t))}else void 0!==t&&e.push(s(t));return e}static _$Eu(t,e){const i=e.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this._$EO??=new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){const t=new Map,e=this.constructor.elementProperties;for(const i of e.keys())this.hasOwnProperty(i)&&(t.set(i,this[i]),delete this[i]);t.size>0&&(this._$Ep=t)}createRenderRoot(){const t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return((t,e)=>{if(o)t.adoptedStyleSheets=e.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const o of e){const e=document.createElement("style"),a=i.litNonce;void 0!==a&&e.setAttribute("nonce",a),e.textContent=o.cssText,t.appendChild(e)}})(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,i){this._$AK(t,i)}_$ET(t,e){const i=this.constructor.elementProperties.get(t),o=this.constructor._$Eu(t,i);if(void 0!==o&&!0===i.reflect){const a=(void 0!==i.converter?.toAttribute?i.converter:w).toAttribute(e,i.type);this._$Em=t,null==a?this.removeAttribute(o):this.setAttribute(o,a),this._$Em=null}}_$AK(t,e){const i=this.constructor,o=i._$Eh.get(t);if(void 0!==o&&this._$Em!==o){const t=i.getPropertyOptions(o),a="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:w;this._$Em=o;const r=a.fromAttribute(e,t.type);this[o]=r??this._$Ej?.get(o)??r,this._$Em=null}}requestUpdate(t,e,i){if(void 0!==t){const o=this.constructor,a=this[t];if(i??=o.getPropertyOptions(t),!((i.hasChanged??$)(a,e)||i.useDefault&&i.reflect&&a===this._$Ej?.get(t)&&!this.hasAttribute(o._$Eu(t,i))))return;this.C(t,e,i)}!1===this.isUpdatePending&&(this._$ES=this._$EP())}C(t,e,{useDefault:i,reflect:o,wrapped:a},r){i&&!(this._$Ej??=new Map).has(t)&&(this._$Ej.set(t,r??e??this[t]),!0!==a||void 0!==r)||(this._$AL.has(t)||(this.hasUpdated||i||(e=void 0),this._$AL.set(t,e)),!0===o&&this._$Em!==t&&(this._$Eq??=new Set).add(t))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(t){Promise.reject(t)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,e]of this._$Ep)this[t]=e;this._$Ep=void 0}const t=this.constructor.elementProperties;if(t.size>0)for(const[e,i]of t){const{wrapped:t}=i,o=this[e];!0!==t||this._$AL.has(e)||void 0===o||this.C(e,void 0,i,o)}}let t=!1;const e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach(t=>t.hostUpdate?.()),this.update(e)):this._$EM()}catch(e){throw t=!1,this._$EM(),e}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach(t=>t.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EM(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Eq&&=this._$Eq.forEach(t=>this._$ET(t,this[t])),this._$EM()}updated(t){}firstUpdated(t){}};b.elementStyles=[],b.shadowRootOptions={mode:"open"},b[_("elementProperties")]=new Map,b[_("finalized")]=new Map,y?.({ReactiveElement:b}),(u.reactiveElementVersions??=[]).push("2.1.1");const k=globalThis,v=k.trustedTypes,S=v?v.createPolicy("lit-html",{createHTML:t=>t}):void 0,A="$lit$",T=`lit$${Math.random().toFixed(9).slice(2)}$`,C="?"+T,H=`<${C}>`,P=document,M=()=>P.createComment(""),V=t=>null===t||"object"!=typeof t&&"function"!=typeof t,L=Array.isArray,E="[ \t\n\f\r]",z=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,R=/-->/g,D=/>/g,O=RegExp(`>|${E}(?:([^\\s"'>=/]+)(${E}*=${E}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),F=/'/g,W=/"/g,N=/^(?:script|style|textarea|title)$/i,I=t=>(e,...i)=>({_$litType$:t,strings:e,values:i}),U=I(1),G=I(2),Q=Symbol.for("lit-noChange"),B=Symbol.for("lit-nothing"),j=new WeakMap,q=P.createTreeWalker(P,129);function Z(t,e){if(!L(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==S?S.createHTML(e):e}const Y=(t,e)=>{const i=t.length-1,o=[];let a,r=2===e?"<svg>":3===e?"<math>":"",n=z;for(let e=0;e<i;e++){const i=t[e];let s,l,h=-1,c=0;for(;c<i.length&&(n.lastIndex=c,l=n.exec(i),null!==l);)c=n.lastIndex,n===z?"!--"===l[1]?n=R:void 0!==l[1]?n=D:void 0!==l[2]?(N.test(l[2])&&(a=RegExp("</"+l[2],"g")),n=O):void 0!==l[3]&&(n=O):n===O?">"===l[0]?(n=a??z,h=-1):void 0===l[1]?h=-2:(h=n.lastIndex-l[2].length,s=l[1],n=void 0===l[3]?O:'"'===l[3]?W:F):n===W||n===F?n=O:n===R||n===D?n=z:(n=O,a=void 0);const d=n===O&&t[e+1].startsWith("/>")?" ":"";r+=n===z?i+H:h>=0?(o.push(s),i.slice(0,h)+A+i.slice(h)+T+d):i+T+(-2===h?e:d)}return[Z(t,r+(t[i]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),o]};class J{constructor({strings:t,_$litType$:e},i){let o;this.parts=[];let a=0,r=0;const n=t.length-1,s=this.parts,[l,h]=Y(t,e);if(this.el=J.createElement(l,i),q.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(o=q.nextNode())&&s.length<n;){if(1===o.nodeType){if(o.hasAttributes())for(const t of o.getAttributeNames())if(t.endsWith(A)){const e=h[r++],i=o.getAttribute(t).split(T),n=/([.?@])?(.*)/.exec(e);s.push({type:1,index:a,name:n[2],strings:i,ctor:"."===n[1]?it:"?"===n[1]?ot:"@"===n[1]?at:et}),o.removeAttribute(t)}else t.startsWith(T)&&(s.push({type:6,index:a}),o.removeAttribute(t));if(N.test(o.tagName)){const t=o.textContent.split(T),e=t.length-1;if(e>0){o.textContent=v?v.emptyScript:"";for(let i=0;i<e;i++)o.append(t[i],M()),q.nextNode(),s.push({type:2,index:++a});o.append(t[e],M())}}}else if(8===o.nodeType)if(o.data===C)s.push({type:2,index:a});else{let t=-1;for(;-1!==(t=o.data.indexOf(T,t+1));)s.push({type:7,index:a}),t+=T.length-1}a++}}static createElement(t,e){const i=P.createElement("template");return i.innerHTML=t,i}}function X(t,e,i=t,o){if(e===Q)return e;let a=void 0!==o?i._$Co?.[o]:i._$Cl;const r=V(e)?void 0:e._$litDirective$;return a?.constructor!==r&&(a?._$AO?.(!1),void 0===r?a=void 0:(a=new r(t),a._$AT(t,i,o)),void 0!==o?(i._$Co??=[])[o]=a:i._$Cl=a),void 0!==a&&(e=X(t,a._$AS(t,e.values),a,o)),e}class K{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:i}=this._$AD,o=(t?.creationScope??P).importNode(e,!0);q.currentNode=o;let a=q.nextNode(),r=0,n=0,s=i[0];for(;void 0!==s;){if(r===s.index){let e;2===s.type?e=new tt(a,a.nextSibling,this,t):1===s.type?e=new s.ctor(a,s.name,s.strings,this,t):6===s.type&&(e=new rt(a,this,t)),this._$AV.push(e),s=i[++n]}r!==s?.index&&(a=q.nextNode(),r++)}return q.currentNode=P,o}p(t){let e=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class tt{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,i,o){this.type=2,this._$AH=B,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=o,this._$Cv=o?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=X(this,t,e),V(t)?t===B||null==t||""===t?(this._$AH!==B&&this._$AR(),this._$AH=B):t!==this._$AH&&t!==Q&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):(t=>L(t)||"function"==typeof t?.[Symbol.iterator])(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==B&&V(this._$AH)?this._$AA.nextSibling.data=t:this.T(P.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:i}=t,o="number"==typeof i?this._$AC(t):(void 0===i.el&&(i.el=J.createElement(Z(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===o)this._$AH.p(e);else{const t=new K(o,this),i=t.u(this.options);t.p(e),this.T(i),this._$AH=t}}_$AC(t){let e=j.get(t.strings);return void 0===e&&j.set(t.strings,e=new J(t)),e}k(t){L(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,o=0;for(const a of t)o===e.length?e.push(i=new tt(this.O(M()),this.O(M()),this,this.options)):i=e[o],i._$AI(a),o++;o<e.length&&(this._$AR(i&&i._$AB.nextSibling,o),e.length=o)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){const e=t.nextSibling;t.remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class et{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,i,o,a){this.type=1,this._$AH=B,this._$AN=void 0,this.element=t,this.name=e,this._$AM=o,this.options=a,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=B}_$AI(t,e=this,i,o){const a=this.strings;let r=!1;if(void 0===a)t=X(this,t,e,0),r=!V(t)||t!==this._$AH&&t!==Q,r&&(this._$AH=t);else{const o=t;let n,s;for(t=a[0],n=0;n<a.length-1;n++)s=X(this,o[i+n],e,n),s===Q&&(s=this._$AH[n]),r||=!V(s)||s!==this._$AH[n],s===B?t=B:t!==B&&(t+=(s??"")+a[n+1]),this._$AH[n]=s}r&&!o&&this.j(t)}j(t){t===B?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class it extends et{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===B?void 0:t}}class ot extends et{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==B)}}class at extends et{constructor(t,e,i,o,a){super(t,e,i,o,a),this.type=5}_$AI(t,e=this){if((t=X(this,t,e,0)??B)===Q)return;const i=this._$AH,o=t===B&&i!==B||t.capture!==i.capture||t.once!==i.once||t.passive!==i.passive,a=t!==B&&(i===B||o);o&&this.element.removeEventListener(this.name,this,i),a&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class rt{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){X(this,t)}}const nt=k.litHtmlPolyfillSupport;nt?.(J,tt),(k.litHtmlVersions??=[]).push("3.3.1");const st=globalThis;class lt extends b{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=((t,e,i)=>{const o=i?.renderBefore??e;let a=o._$litPart$;if(void 0===a){const t=i?.renderBefore??null;o._$litPart$=a=new tt(e.insertBefore(M(),t),t,void 0,i??{})}return a._$AI(t),a})(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return Q}}lt._$litElement$=!0,lt.finalized=!0,st.litElementHydrateSupport?.({LitElement:lt});const ht=st.litElementPolyfillSupport;ht?.({LitElement:lt}),(st.litElementVersions??=[]).push("4.2.1");const ct={attribute:!0,type:String,converter:w,reflect:!1,hasChanged:$},dt=(t=ct,e,i)=>{const{kind:o,metadata:a}=i;let r=globalThis.litPropertyMetadata.get(a);if(void 0===r&&globalThis.litPropertyMetadata.set(a,r=new Map),"setter"===o&&((t=Object.create(t)).wrapped=!0),r.set(i.name,t),"accessor"===o){const{name:o}=i;return{set(i){const a=e.get.call(this);e.set.call(this,i),this.requestUpdate(o,a,t)},init(e){return void 0!==e&&this.C(o,void 0,t,e),e}}}if("setter"===o){const{name:o}=i;return function(i){const a=this[o];e.call(this,i),this.requestUpdate(o,a,t)}}throw Error("Unsupported decorator location: "+o)};function pt(t){return(e,i)=>"object"==typeof i?dt(t,e,i):((t,e,i)=>{const o=e.hasOwnProperty(i);return e.constructor.createProperty(i,t),o?Object.getOwnPropertyDescriptor(e,i):void 0})(t,e,i)}function ft(t,e){return(e,i,o)=>((t,e,i)=>(i.configurable=!0,i.enumerable=!0,Reflect.decorate&&"object"!=typeof e&&Object.defineProperty(t,e,i),i))(e,i,{get(){return(e=>e.renderRoot?.querySelector(t)??null)(this)}})}const ut="1.1.0",gt=(new Date).toISOString(),mt=((t,...e)=>{const i=1===t.length?t[0]:e.reduce((e,i,o)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+t[o+1],t[0]);return new n(i,t,a)})`
+var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,n=arguments.length,r=n<3?e:null===o?o=Object.getOwnPropertyDescriptor(e,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)r=Reflect.decorate(t,e,i,o);else for(var s=t.length-1;s>=0;s--)(a=t[s])&&(r=(n<3?a(r):n>3?a(e,i,r):a(e,i))||r);return n>3&&r&&Object.defineProperty(e,i,r),r}"function"==typeof SuppressedError&&SuppressedError;const i=globalThis,o=i.ShadowRoot&&(void 0===i.ShadyCSS||i.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,a=Symbol(),n=new WeakMap;let r=class{constructor(t,e,i){if(this._$cssResult$=!0,i!==a)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o;const e=this.t;if(o&&void 0===t){const i=void 0!==e&&1===e.length;i&&(t=n.get(e)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),i&&n.set(e,t))}return t}toString(){return this.cssText}};const s=o?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const i of t.cssRules)e+=i.cssText;return(t=>new r("string"==typeof t?t:t+"",void 0,a))(e)})(t):t,{is:l,defineProperty:c,getOwnPropertyDescriptor:h,getOwnPropertyNames:d,getOwnPropertySymbols:p,getPrototypeOf:f}=Object,u=globalThis,g=u.trustedTypes,m=g?g.emptyScript:"",y=u.reactiveElementPolyfillSupport,_=(t,e)=>t,w={toAttribute(t,e){switch(e){case Boolean:t=t?m:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let i=t;switch(e){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t)}catch(t){i=null}}return i}},$=(t,e)=>!l(t,e),x={attribute:!0,type:String,converter:w,reflect:!1,useDefault:!1,hasChanged:$};Symbol.metadata??=Symbol("metadata"),u.litPropertyMetadata??=new WeakMap;let b=class extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=x){if(e.state&&(e.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(t)&&((e=Object.create(e)).wrapped=!0),this.elementProperties.set(t,e),!e.noAccessor){const i=Symbol(),o=this.getPropertyDescriptor(t,i,e);void 0!==o&&c(this.prototype,t,o)}}static getPropertyDescriptor(t,e,i){const{get:o,set:a}=h(this.prototype,t)??{get(){return this[e]},set(t){this[e]=t}};return{get:o,set(e){const n=o?.call(this);a?.call(this,e),this.requestUpdate(t,n,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??x}static _$Ei(){if(this.hasOwnProperty(_("elementProperties")))return;const t=f(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(_("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(_("properties"))){const t=this.properties,e=[...d(t),...p(t)];for(const i of e)this.createProperty(i,t[i])}const t=this[Symbol.metadata];if(null!==t){const e=litPropertyMetadata.get(t);if(void 0!==e)for(const[t,i]of e)this.elementProperties.set(t,i)}this._$Eh=new Map;for(const[t,e]of this.elementProperties){const i=this._$Eu(t,e);void 0!==i&&this._$Eh.set(i,t)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const i=new Set(t.flat(1/0).reverse());for(const t of i)e.unshift(s(t))}else void 0!==t&&e.push(s(t));return e}static _$Eu(t,e){const i=e.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this._$EO??=new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){const t=new Map,e=this.constructor.elementProperties;for(const i of e.keys())this.hasOwnProperty(i)&&(t.set(i,this[i]),delete this[i]);t.size>0&&(this._$Ep=t)}createRenderRoot(){const t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return((t,e)=>{if(o)t.adoptedStyleSheets=e.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const o of e){const e=document.createElement("style"),a=i.litNonce;void 0!==a&&e.setAttribute("nonce",a),e.textContent=o.cssText,t.appendChild(e)}})(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,i){this._$AK(t,i)}_$ET(t,e){const i=this.constructor.elementProperties.get(t),o=this.constructor._$Eu(t,i);if(void 0!==o&&!0===i.reflect){const a=(void 0!==i.converter?.toAttribute?i.converter:w).toAttribute(e,i.type);this._$Em=t,null==a?this.removeAttribute(o):this.setAttribute(o,a),this._$Em=null}}_$AK(t,e){const i=this.constructor,o=i._$Eh.get(t);if(void 0!==o&&this._$Em!==o){const t=i.getPropertyOptions(o),a="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:w;this._$Em=o;const n=a.fromAttribute(e,t.type);this[o]=n??this._$Ej?.get(o)??n,this._$Em=null}}requestUpdate(t,e,i){if(void 0!==t){const o=this.constructor,a=this[t];if(i??=o.getPropertyOptions(t),!((i.hasChanged??$)(a,e)||i.useDefault&&i.reflect&&a===this._$Ej?.get(t)&&!this.hasAttribute(o._$Eu(t,i))))return;this.C(t,e,i)}!1===this.isUpdatePending&&(this._$ES=this._$EP())}C(t,e,{useDefault:i,reflect:o,wrapped:a},n){i&&!(this._$Ej??=new Map).has(t)&&(this._$Ej.set(t,n??e??this[t]),!0!==a||void 0!==n)||(this._$AL.has(t)||(this.hasUpdated||i||(e=void 0),this._$AL.set(t,e)),!0===o&&this._$Em!==t&&(this._$Eq??=new Set).add(t))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(t){Promise.reject(t)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,e]of this._$Ep)this[t]=e;this._$Ep=void 0}const t=this.constructor.elementProperties;if(t.size>0)for(const[e,i]of t){const{wrapped:t}=i,o=this[e];!0!==t||this._$AL.has(e)||void 0===o||this.C(e,void 0,i,o)}}let t=!1;const e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach(t=>t.hostUpdate?.()),this.update(e)):this._$EM()}catch(e){throw t=!1,this._$EM(),e}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach(t=>t.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EM(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Eq&&=this._$Eq.forEach(t=>this._$ET(t,this[t])),this._$EM()}updated(t){}firstUpdated(t){}};b.elementStyles=[],b.shadowRootOptions={mode:"open"},b[_("elementProperties")]=new Map,b[_("finalized")]=new Map,y?.({ReactiveElement:b}),(u.reactiveElementVersions??=[]).push("2.1.1");const k=globalThis,v=k.trustedTypes,S=v?v.createPolicy("lit-html",{createHTML:t=>t}):void 0,A="$lit$",T=`lit$${Math.random().toFixed(9).slice(2)}$`,C="?"+T,H=`<${C}>`,P=document,M=()=>P.createComment(""),L=t=>null===t||"object"!=typeof t&&"function"!=typeof t,V=Array.isArray,E="[ \t\n\f\r]",z=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,R=/-->/g,D=/>/g,O=RegExp(`>|${E}(?:([^\\s"'>=/]+)(${E}*=${E}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),F=/'/g,W=/"/g,N=/^(?:script|style|textarea|title)$/i,I=t=>(e,...i)=>({_$litType$:t,strings:e,values:i}),U=I(1),G=I(2),Q=Symbol.for("lit-noChange"),B=Symbol.for("lit-nothing"),j=new WeakMap,q=P.createTreeWalker(P,129);function Z(t,e){if(!V(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==S?S.createHTML(e):e}const J=(t,e)=>{const i=t.length-1,o=[];let a,n=2===e?"<svg>":3===e?"<math>":"",r=z;for(let e=0;e<i;e++){const i=t[e];let s,l,c=-1,h=0;for(;h<i.length&&(r.lastIndex=h,l=r.exec(i),null!==l);)h=r.lastIndex,r===z?"!--"===l[1]?r=R:void 0!==l[1]?r=D:void 0!==l[2]?(N.test(l[2])&&(a=RegExp("</"+l[2],"g")),r=O):void 0!==l[3]&&(r=O):r===O?">"===l[0]?(r=a??z,c=-1):void 0===l[1]?c=-2:(c=r.lastIndex-l[2].length,s=l[1],r=void 0===l[3]?O:'"'===l[3]?W:F):r===W||r===F?r=O:r===R||r===D?r=z:(r=O,a=void 0);const d=r===O&&t[e+1].startsWith("/>")?" ":"";n+=r===z?i+H:c>=0?(o.push(s),i.slice(0,c)+A+i.slice(c)+T+d):i+T+(-2===c?e:d)}return[Z(t,n+(t[i]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),o]};class Y{constructor({strings:t,_$litType$:e},i){let o;this.parts=[];let a=0,n=0;const r=t.length-1,s=this.parts,[l,c]=J(t,e);if(this.el=Y.createElement(l,i),q.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(o=q.nextNode())&&s.length<r;){if(1===o.nodeType){if(o.hasAttributes())for(const t of o.getAttributeNames())if(t.endsWith(A)){const e=c[n++],i=o.getAttribute(t).split(T),r=/([.?@])?(.*)/.exec(e);s.push({type:1,index:a,name:r[2],strings:i,ctor:"."===r[1]?it:"?"===r[1]?ot:"@"===r[1]?at:et}),o.removeAttribute(t)}else t.startsWith(T)&&(s.push({type:6,index:a}),o.removeAttribute(t));if(N.test(o.tagName)){const t=o.textContent.split(T),e=t.length-1;if(e>0){o.textContent=v?v.emptyScript:"";for(let i=0;i<e;i++)o.append(t[i],M()),q.nextNode(),s.push({type:2,index:++a});o.append(t[e],M())}}}else if(8===o.nodeType)if(o.data===C)s.push({type:2,index:a});else{let t=-1;for(;-1!==(t=o.data.indexOf(T,t+1));)s.push({type:7,index:a}),t+=T.length-1}a++}}static createElement(t,e){const i=P.createElement("template");return i.innerHTML=t,i}}function X(t,e,i=t,o){if(e===Q)return e;let a=void 0!==o?i._$Co?.[o]:i._$Cl;const n=L(e)?void 0:e._$litDirective$;return a?.constructor!==n&&(a?._$AO?.(!1),void 0===n?a=void 0:(a=new n(t),a._$AT(t,i,o)),void 0!==o?(i._$Co??=[])[o]=a:i._$Cl=a),void 0!==a&&(e=X(t,a._$AS(t,e.values),a,o)),e}class K{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:i}=this._$AD,o=(t?.creationScope??P).importNode(e,!0);q.currentNode=o;let a=q.nextNode(),n=0,r=0,s=i[0];for(;void 0!==s;){if(n===s.index){let e;2===s.type?e=new tt(a,a.nextSibling,this,t):1===s.type?e=new s.ctor(a,s.name,s.strings,this,t):6===s.type&&(e=new nt(a,this,t)),this._$AV.push(e),s=i[++r]}n!==s?.index&&(a=q.nextNode(),n++)}return q.currentNode=P,o}p(t){let e=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class tt{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,i,o){this.type=2,this._$AH=B,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=o,this._$Cv=o?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=X(this,t,e),L(t)?t===B||null==t||""===t?(this._$AH!==B&&this._$AR(),this._$AH=B):t!==this._$AH&&t!==Q&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):(t=>V(t)||"function"==typeof t?.[Symbol.iterator])(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==B&&L(this._$AH)?this._$AA.nextSibling.data=t:this.T(P.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:i}=t,o="number"==typeof i?this._$AC(t):(void 0===i.el&&(i.el=Y.createElement(Z(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===o)this._$AH.p(e);else{const t=new K(o,this),i=t.u(this.options);t.p(e),this.T(i),this._$AH=t}}_$AC(t){let e=j.get(t.strings);return void 0===e&&j.set(t.strings,e=new Y(t)),e}k(t){V(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,o=0;for(const a of t)o===e.length?e.push(i=new tt(this.O(M()),this.O(M()),this,this.options)):i=e[o],i._$AI(a),o++;o<e.length&&(this._$AR(i&&i._$AB.nextSibling,o),e.length=o)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){const e=t.nextSibling;t.remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class et{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,i,o,a){this.type=1,this._$AH=B,this._$AN=void 0,this.element=t,this.name=e,this._$AM=o,this.options=a,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=B}_$AI(t,e=this,i,o){const a=this.strings;let n=!1;if(void 0===a)t=X(this,t,e,0),n=!L(t)||t!==this._$AH&&t!==Q,n&&(this._$AH=t);else{const o=t;let r,s;for(t=a[0],r=0;r<a.length-1;r++)s=X(this,o[i+r],e,r),s===Q&&(s=this._$AH[r]),n||=!L(s)||s!==this._$AH[r],s===B?t=B:t!==B&&(t+=(s??"")+a[r+1]),this._$AH[r]=s}n&&!o&&this.j(t)}j(t){t===B?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class it extends et{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===B?void 0:t}}class ot extends et{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==B)}}class at extends et{constructor(t,e,i,o,a){super(t,e,i,o,a),this.type=5}_$AI(t,e=this){if((t=X(this,t,e,0)??B)===Q)return;const i=this._$AH,o=t===B&&i!==B||t.capture!==i.capture||t.once!==i.once||t.passive!==i.passive,a=t!==B&&(i===B||o);o&&this.element.removeEventListener(this.name,this,i),a&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class nt{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){X(this,t)}}const rt=k.litHtmlPolyfillSupport;rt?.(Y,tt),(k.litHtmlVersions??=[]).push("3.3.1");const st=globalThis;class lt extends b{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=((t,e,i)=>{const o=i?.renderBefore??e;let a=o._$litPart$;if(void 0===a){const t=i?.renderBefore??null;o._$litPart$=a=new tt(e.insertBefore(M(),t),t,void 0,i??{})}return a._$AI(t),a})(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return Q}}lt._$litElement$=!0,lt.finalized=!0,st.litElementHydrateSupport?.({LitElement:lt});const ct=st.litElementPolyfillSupport;ct?.({LitElement:lt}),(st.litElementVersions??=[]).push("4.2.1");const ht={attribute:!0,type:String,converter:w,reflect:!1,hasChanged:$},dt=(t=ht,e,i)=>{const{kind:o,metadata:a}=i;let n=globalThis.litPropertyMetadata.get(a);if(void 0===n&&globalThis.litPropertyMetadata.set(a,n=new Map),"setter"===o&&((t=Object.create(t)).wrapped=!0),n.set(i.name,t),"accessor"===o){const{name:o}=i;return{set(i){const a=e.get.call(this);e.set.call(this,i),this.requestUpdate(o,a,t)},init(e){return void 0!==e&&this.C(o,void 0,t,e),e}}}if("setter"===o){const{name:o}=i;return function(i){const a=this[o];e.call(this,i),this.requestUpdate(o,a,t)}}throw Error("Unsupported decorator location: "+o)};function pt(t){return(e,i)=>"object"==typeof i?dt(t,e,i):((t,e,i)=>{const o=e.hasOwnProperty(i);return e.constructor.createProperty(i,t),o?Object.getOwnPropertyDescriptor(e,i):void 0})(t,e,i)}function ft(t,e){return(e,i,o)=>((t,e,i)=>(i.configurable=!0,i.enumerable=!0,Reflect.decorate&&"object"!=typeof e&&Object.defineProperty(t,e,i),i))(e,i,{get(){return(e=>e.renderRoot?.querySelector(t)??null)(this)}})}const ut="1.1.0",gt=(new Date).toISOString(),mt=((t,...e)=>{const i=1===t.length?t[0]:e.reduce((e,i,o)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+t[o+1],t[0]);return new r(i,t,a)})`
   ha-card {
     padding: 16px;
     background: var(--ha-card-background, var(--card-background-color, white));
@@ -65,6 +65,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
     transform-origin: 60px 51px;
     animation: fan-spin linear infinite;
     animation-duration: var(--fan-duration, 1s);
+    will-change: transform;
   }
 
   @keyframes fan-spin {
@@ -83,15 +84,17 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
   .g2-valve-active-path {
     animation: valve-flow-pulse 2s ease-in-out infinite;
+    transform-origin: center;
+    will-change: transform, opacity;
   }
 
   @keyframes valve-flow-pulse {
     0%, 100% {
-      stroke-width: 6;
+      transform: scale(1.0);
       opacity: 1;
     }
     50% {
-      stroke-width: 7;
+      transform: scale(1.08);
       opacity: 0.8;
     }
   }
@@ -100,49 +103,49 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
     transition: fill 0.3s ease;
   }
 
-  /* Aux heater pulsing animations - DRAMATIC pulsing with glow effects */
+  * Aux heater pulsing animations - GPU-accelerated with transform + opacity */
   /* Shadow blur sizes are scaled by --aux-shadow-blur CSS variable (default: 1.0) */
   @keyframes aux-glow-outer {
     0%, 100% {
       opacity: 0.2;
-      filter: drop-shadow(0 0 calc(8px * var(--aux-shadow-blur, 1)) rgba(255, 68, 34, 0.5));
+      transform: scale(1.0);
     }
     50% {
       opacity: 0.7;
-      filter: drop-shadow(0 0 calc(16px * var(--aux-shadow-blur, 1)) rgba(255, 68, 34, 0.9));
+      transform: scale(1.15);
     }
   }
 
   @keyframes aux-glow-middle {
     0%, 100% {
       opacity: 0.4;
-      filter: drop-shadow(0 0 calc(6px * var(--aux-shadow-blur, 1)) rgba(255, 102, 68, 0.6));
+      transform: scale(1.0);
     }
     50% {
       opacity: 0.9;
-      filter: drop-shadow(0 0 calc(12px * var(--aux-shadow-blur, 1)) rgba(255, 102, 68, 1.0));
+      transform: scale(1.1);
     }
   }
 
   @keyframes aux-glow-inner {
     0%, 100% {
       opacity: 0.6;
-      filter: drop-shadow(0 0 calc(4px * var(--aux-shadow-blur, 1)) rgba(255, 136, 85, 0.7));
+      transform: scale(1.0);
     }
     50% {
       opacity: 1.0;
-      filter: drop-shadow(0 0 calc(10px * var(--aux-shadow-blur, 1)) rgba(255, 136, 85, 1.0));
+      transform: scale(1.05);
     }
   }
 
   @keyframes aux-cylinder-pulse {
     0%, 100% {
       opacity: 0.7;
-      filter: drop-shadow(0 0 calc(6px * var(--aux-shadow-blur, 1)) rgba(255, 68, 34, 0.6));
+      transform: scale(1.0);
     }
     50% {
       opacity: 1.0;
-      filter: drop-shadow(0 0 calc(12px * var(--aux-shadow-blur, 1)) rgba(255, 68, 34, 1.0));
+      transform: scale(1.02);
     }
   }
 
@@ -152,26 +155,26 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
     filter: none !important; /* Remove default rect drop-shadow */
   }
 
-  /* DHW coil pulsing animations - similar to aux heater but for coil heating */
+   /* DHW coil pulsing animations - GPU-accelerated with transform + opacity */
   @keyframes dhw-coil-glow-outer {
     0%, 100% {
       opacity: 0.15;
-      filter: drop-shadow(0 0 6px rgba(255, 102, 68, 0.4));
+      transform: scale(1.0);
     }
     50% {
       opacity: 0.4;
-      filter: drop-shadow(0 0 12px rgba(255, 102, 68, 0.7));
+      transform: scale(1.08);
     }
   }
 
   @keyframes dhw-coil-glow-inner {
     0%, 100% {
       opacity: 0.3;
-      filter: drop-shadow(0 0 4px rgba(255, 136, 85, 0.5));
+      transform: scale(1.0);
     }
     50% {
       opacity: 0.6;
-      filter: drop-shadow(0 0 8px rgba(255, 136, 85, 0.9));
+      transform: scale(1.05);
     }
   }
 
@@ -186,12 +189,16 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
     opacity: 0.25;
     animation: dhw-coil-glow-outer 1.5s ease-in-out infinite;
     filter: none; /* Will be set by animation */
+    transform-origin: center;
+    will-change: transform, opacity;
   }
 
   .dhw-coil-glow-inner {
     opacity: 0.45;
     animation: dhw-coil-glow-inner 1.2s ease-in-out infinite;
     filter: none; /* Will be set by animation */
+    transform-origin: center;
+    will-change: transform, opacity;
   }
 
   /* When active, show and animate - SPEED INCREASES WITH POWER LEVEL */
@@ -199,24 +206,32 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
     opacity: 0.45;
     animation: aux-glow-outer var(--aux-anim-speed, 1s) ease-in-out infinite;
     filter: none; /* Will be set by animation */
+    transform-origin: center;
+    will-change: transform, opacity;
   }
 
   .aux-glow-middle {
     opacity: 0.65;
     animation: aux-glow-middle calc(var(--aux-anim-speed, 1s) * 0.8) ease-in-out infinite;
     filter: none; /* Will be set by animation */
+    transform-origin: center;
+    will-change: transform, opacity;
   }
 
   .aux-glow-inner {
     opacity: 0.8;
     animation: aux-glow-inner calc(var(--aux-anim-speed, 1s) * 0.6) ease-in-out infinite;
     filter: none; /* Will be set by animation */
+    transform-origin: center;
+    will-change: transform, opacity;
   }
 
   .aux-cylinder-pulse {
     opacity: 0.85;
     animation: aux-cylinder-pulse var(--aux-anim-speed, 1s) ease-in-out infinite;
     filter: none; /* Will be set by animation */
+    transform-origin: center;
+    will-change: transform, opacity;
   }
 
   /* Pipe styling - exclude flow-gradient animations from drop-shadow */
@@ -232,7 +247,33 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
   ellipse {
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
   }
-`;return console.info(`%c  HEAT-PUMP-FLOW-CARD  \n%c  Version ${ut}  \n%c  Built: ${gt}  `,"color: orange; font-weight: bold; background: black","color: white; font-weight: bold; background: dimgray","color: #95a5a6; font-weight: normal; background: dimgray"),t.HeatPumpFlowCard=class extends lt{constructor(){super(...arguments),this.lastRenderTime=0,this.lastHassState={}}static getConfigElement(){}static getStubConfig(){return{type:"custom:heat-pump-flow-card",title:"Heat Pump Flow"}}setConfig(t){if(!t)throw new Error("Invalid configuration");const{animation:e,temperature:i,display:o,heat_pump_visual:a,labels:r,temperature_status:n,...s}=t;this.config={...s,animation:{enabled:!0,min_flow_rate:5,max_flow_rate:1,max_flow_rate_value:50,idle_threshold:0,...e},temperature:{delta_threshold:10,hot_color:"#e74c3c",cold_color:"#3498db",neutral_color:"#95a5a6",unit:"C",...i},display:{show_values:!0,show_labels:!0,show_icons:!0,compact:!1,decimal_places:1,...o},heat_pump_visual:{off_color:"#95a5a6",heating_color:"#e74c3c",cooling_color:"#3498db",dhw_color:"#e67e22",defrost_color:"#f1c40f",show_metrics:!0,animate_fan:!0,...a},labels:{hp_supply:"HP Supply",hp_return:"HP Return",hvac_supply:"HVAC Supply",hvac_return:"HVAC Return",buffer_tank:"BUFFER",dhw_tank:"DHW",power_in:"Power In",thermal_out:"Thermal Out",cop:"COP",flow:"Flow",energy:"Energy",cost:"Cost",...r},temperature_status:{enabled:!1,circle_radius:12,...n,points:{hp_outlet:{enabled:!0},hp_inlet:{enabled:!0},buffer_supply:{enabled:!0},buffer_return:{enabled:!0},hvac_supply:{enabled:!0},hvac_return:{enabled:!0},dhw_inlet:{enabled:!0},dhw_outlet:{enabled:!0},dhw_tank_inlet:{enabled:!0},dhw_tank_outlet:{enabled:!0},dhw_tank_2_outlet:{enabled:!0},...n?.points}}}}shouldUpdate(t){if(t.has("config"))return!0;if(t.has("hass")){const t=Date.now();if(t-this.lastRenderTime<1e3)return this.updateAnimationVariables(),!1;this.lastRenderTime=t}return super.shouldUpdate(t)}updated(t){super.updated(t),t.has("hass")&&this.hass&&this.updateAnimationVariables()}firstUpdated(){this.config.animation.enabled&&setTimeout(()=>{this.updateAnimationVariables()},100),window.debugCard=()=>{const t=document.querySelector("heat-pump-flow-card");return t?(console.log("Card found:",t),console.log("Shadow root:",t.shadowRoot),{card:t,shadowRoot:t.shadowRoot,config:this.config,dhwTank2State:this.getDHWTank2State(),querySelector:e=>t.shadowRoot?.querySelector(e)}):null}}updateAnimationVariables(){this.updateFanAnimation()}updateFanAnimation(){const t=this.shadowRoot?.querySelector("#fan-blades");if(!t||!this.config.heat_pump_visual?.animate_fan)return;const e=this.getHeatPumpState().fanSpeed||0;if(e>0){t.classList.add("fan-rotating");const i=e>0?100/e:999;t.style.setProperty("--fan-duration",`${i}s`)}else t.classList.remove("fan-rotating")}getHeatPumpState(){const t=this.config.heat_pump||{};return{power:this.getStateValue(t.power_entity)||0,thermal:this.getStateValue(t.thermal_entity)||0,cop:this.getStateValue(t.cop_entity)||0,outletTemp:this.getStateValue(t.outlet_temp_entity)||0,inletTemp:this.getStateValue(t.inlet_temp_entity)||0,flowRate:this.getStateValue(t.flow_rate_entity)||0,fanSpeed:this.getStateValue(t.fan_speed_entity),mode:this.getStateString(t.mode_entity),modeDisplay:this.getStateString(t.mode_display_entity),defrost:"on"===this.getStateString(t.defrost_entity),error:this.getStateString(t.error_entity),energy:this.getStateValue(t.energy_entity),cost:this.getStateValue(t.cost_entity),runtime:this.getStateValue(t.runtime_entity),heatingTargetTemp:this.getStateValue(t.heating_target_temp_entity),dhwTargetTemp:this.getStateValue(t.dhw_target_temp_entity),coolingTargetTemp:this.getStateValue(t.cooling_target_temp_entity),amps:this.getStateValue(t.amps_entity),volts:this.getStateValue(t.volts_entity),compressorFrequency:this.getStateValue(t.compressor_frequency_entity),dischargeTemp:this.getStateValue(t.discharge_temp_entity),ambientTemp:this.getStateValue(t.ambient_temp_entity),dhwTemp:this.getStateValue(t.dhw_temp_entity),outdoorCoilTemp:this.getStateValue(t.outdoor_coil_temp_entity),suctionTemp:this.getStateValue(t.suction_temp_entity),heatExchangerTemp:this.getStateValue(t.heat_exchanger_temp_entity),plateExchangeTemp:this.getStateValue(t.plate_exchange_temp_entity),ecFanMotor1Speed:this.getStateValue(t.ec_fan_motor_1_speed_entity),ecFanMotor2Speed:this.getStateValue(t.ec_fan_motor_2_speed_entity),busLineVoltage:this.getStateValue(t.bus_line_voltage_entity),fanShutdownCode:this.getStateValue(t.fan_shutdown_code_entity),ipmTemp:this.getStateValue(t.ipm_temp_entity),compressorRunningTime:this.getStateValue(t.compressor_running_time_entity),eHeaterPower:this.getStateValue(t.e_heater_power_entity),din6ModeSwitch:this.getStateValue(t.din6_mode_switch_entity),din7ModeSwitch:this.getStateValue(t.din7_mode_switch_entity),pumpEnabled:"on"===this.getStateString(t.pump_enabled_entity),compressorMaxPercentage:this.getStateValue(t.compressor_max_percentage_entity)}}getStateString(t){if(!t||!this.hass)return;const e=this.hass.states[t];return e?.state}getBufferTankState(){const t=this.config.buffer_tank||{};return{supplyTemp:this.getStateValue(t.supply_temp_entity)||0,returnTemp:this.getStateValue(t.return_temp_entity)||0,level:this.getStateValue(t.level_entity),tankTemp:this.getStateValue(t.tank_temp_entity),energyReserve:this.getStateValue(t.energy_reserve_entity)}}getHVACState(){const t=this.config.hvac||{};return{thermal:this.getStateValue(t.thermal_entity)||0,flowRate:this.getStateValue(t.flow_rate_entity)||0,supplyTemp:this.getStateValue(t.supply_temp_entity)||0,returnTemp:this.getStateValue(t.return_temp_entity)||0}}getDHWTankState(){const t=this.config.dhw_tank||{};return{inletTemp:this.getStateValue(t.inlet_temp_entity)||0,outletTemp:this.getStateValue(t.outlet_temp_entity)||0,tankTemp:this.getStateValue(t.tank_temp_entity),tankInletFlow:this.getStateValue(t.tank_inlet_flow_entity),tankInletTemp:this.getStateValue(t.tank_inlet_temp_entity),tankOutletTemp:this.getStateValue(t.tank_outlet_temp_entity)}}getDHWTank2State(){const t=this.config.dhw_tank_2||{};return{enabled:t.enabled||!1,inletTemp:this.getStateValue(t.inlet_temp_entity)||0,outletTemp:this.getStateValue(t.outlet_temp_entity)||0,tankTemp:this.getStateValue(t.tank_temp_entity)}}getG2ValveState(){const t=this.config.g2_valve||{},e=this.getStateString(t.state_entity);return{isActive:"on"===e||"true"===e||"1"===e}}getAuxHeaterState(){const t=this.config.aux_heater||{},e=t.enabled||!1,i=this.getStateValue(t.power_entity)||0,o=t.max_power||18e3;return{enabled:e,power:i,maxPower:o,intensity:Math.min(i/o,1),displayName:t.display_name||t.name||"AUX"}}getStateValue(t){if(!t||!this.hass)return;const e=this.hass.states[t];if(!e)return;const i=parseFloat(e.state);return isNaN(i)?void 0:i}getStateUnit(t){if(!t||!this.hass)return"";const e=this.hass.states[t];return e?.attributes?.unit_of_measurement||""}formatValue(t,e=1){return void 0===t?"N/A":t.toFixed(e)}renderTankTempIndicator(t,e,i,o,a,r,n){if(!a||!o||void 0===i||isNaN(i))return G``;return G`
+
+  /* Animation paused state - set via JavaScript when page is hidden */
+  .animations-paused .fan-rotating,
+  .animations-paused .g2-valve-active-path,
+  .animations-paused .aux-glow-outer,
+  .animations-paused .aux-glow-middle,
+  .animations-paused .aux-glow-inner,
+  .animations-paused .aux-cylinder-pulse,
+  .animations-paused .dhw-coil-glow-outer,
+  .animations-paused .dhw-coil-glow-inner {
+    animation-play-state: paused;
+  }
+
+  /* Respect prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    .fan-rotating,
+    .g2-valve-active-path,
+    .aux-glow-outer,
+    .aux-glow-middle,
+    .aux-glow-inner,
+    .aux-cylinder-pulse,
+    .dhw-coil-glow-outer,
+    .dhw-coil-glow-inner {
+      animation: none !important;
+    }
+  }
+`;return console.info(`%c  HEAT-PUMP-FLOW-CARD  \n%c  Version ${ut}  \n%c  Built: ${gt}  `,"color: orange; font-weight: bold; background: black","color: white; font-weight: bold; background: dimgray","color: #95a5a6; font-weight: normal; background: dimgray"),t.HeatPumpFlowCard=class extends lt{constructor(){super(...arguments),this.lastRenderTime=0,this.lastHassState={}}static getConfigElement(){}static getStubConfig(){return{type:"custom:heat-pump-flow-card",title:"Heat Pump Flow"}}setConfig(t){if(!t)throw new Error("Invalid configuration");const{animation:e,temperature:i,display:o,heat_pump_visual:a,labels:n,temperature_status:r,...s}=t;this.config={...s,animation:{enabled:!0,min_flow_rate:5,max_flow_rate:1,max_flow_rate_value:50,idle_threshold:0,...e},temperature:{delta_threshold:10,hot_color:"#e74c3c",cold_color:"#3498db",neutral_color:"#95a5a6",unit:"C",...i},display:{show_values:!0,show_labels:!0,show_icons:!0,compact:!1,decimal_places:1,...o},heat_pump_visual:{off_color:"#95a5a6",heating_color:"#e74c3c",cooling_color:"#3498db",dhw_color:"#e67e22",defrost_color:"#f1c40f",show_metrics:!0,animate_fan:!0,...a},labels:{hp_supply:"HP Supply",hp_return:"HP Return",hvac_supply:"HVAC Supply",hvac_return:"HVAC Return",buffer_tank:"BUFFER",dhw_tank:"DHW",power_in:"Power In",thermal_out:"Thermal Out",cop:"COP",flow:"Flow",energy:"Energy",cost:"Cost",...n},temperature_status:{enabled:!1,circle_radius:12,...r,points:{hp_outlet:{enabled:!0},hp_inlet:{enabled:!0},buffer_supply:{enabled:!0},buffer_return:{enabled:!0},hvac_supply:{enabled:!0},hvac_return:{enabled:!0},dhw_inlet:{enabled:!0},dhw_outlet:{enabled:!0},dhw_tank_inlet:{enabled:!0},dhw_tank_outlet:{enabled:!0},dhw_tank_2_outlet:{enabled:!0},...r?.points}}}}shouldUpdate(t){if(t.has("config"))return!0;if(t.has("hass")){const t=Date.now();if(t-this.lastRenderTime<1e3)return this.updateAnimationVariables(),!1;this.lastRenderTime=t}return super.shouldUpdate(t)}updated(t){super.updated(t),t.has("hass")&&this.hass&&this.updateAnimationVariables()}firstUpdated(){this.config.animation.enabled&&setTimeout(()=>{this.updateAnimationVariables()},100),this.setupVisibilityListener(),window.debugCard=()=>{const t=document.querySelector("heat-pump-flow-card");return t?(console.log("Card found:",t),console.log("Shadow root:",t.shadowRoot),{card:t,shadowRoot:t.shadowRoot,config:this.config,dhwTank2State:this.getDHWTank2State(),querySelector:e=>t.shadowRoot?.querySelector(e)}):null}}setupVisibilityListener(){this.visibilityChangeHandler=()=>{document.hidden?this.pauseAnimations():this.resumeAnimations()},document.addEventListener("visibilitychange",this.visibilityChangeHandler)}pauseAnimations(){const t=this.shadowRoot?.querySelector("svg");t&&t.classList.add("animations-paused")}resumeAnimations(){const t=this.shadowRoot?.querySelector("svg");t&&t.classList.remove("animations-paused")}disconnectedCallback(){super.disconnectedCallback(),this.visibilityChangeHandler&&document.removeEventListener("visibilitychange",this.visibilityChangeHandler)}updateAnimationVariables(){this.updateFanAnimation()}updateFanAnimation(){const t=this.shadowRoot?.querySelector("#fan-blades");if(!t||!this.config.heat_pump_visual?.animate_fan)return;const e=this.getHeatPumpState().fanSpeed||0;if(e>0){t.classList.add("fan-rotating");const i=e>0?100/e:999;t.style.setProperty("--fan-duration",`${i}s`)}else t.classList.remove("fan-rotating")}getHeatPumpState(){const t=this.config.heat_pump||{};return{power:this.getStateValue(t.power_entity)||0,thermal:this.getStateValue(t.thermal_entity)||0,cop:this.getStateValue(t.cop_entity)||0,outletTemp:this.getStateValue(t.outlet_temp_entity)||0,inletTemp:this.getStateValue(t.inlet_temp_entity)||0,flowRate:this.getStateValue(t.flow_rate_entity)||0,fanSpeed:this.getStateValue(t.fan_speed_entity),mode:this.getStateString(t.mode_entity),modeDisplay:this.getStateString(t.mode_display_entity),defrost:"on"===this.getStateString(t.defrost_entity),error:this.getStateString(t.error_entity),energy:this.getStateValue(t.energy_entity),cost:this.getStateValue(t.cost_entity),runtime:this.getStateValue(t.runtime_entity),heatingTargetTemp:this.getStateValue(t.heating_target_temp_entity),dhwTargetTemp:this.getStateValue(t.dhw_target_temp_entity),coolingTargetTemp:this.getStateValue(t.cooling_target_temp_entity),amps:this.getStateValue(t.amps_entity),volts:this.getStateValue(t.volts_entity),compressorFrequency:this.getStateValue(t.compressor_frequency_entity),dischargeTemp:this.getStateValue(t.discharge_temp_entity),ambientTemp:this.getStateValue(t.ambient_temp_entity),dhwTemp:this.getStateValue(t.dhw_temp_entity),outdoorCoilTemp:this.getStateValue(t.outdoor_coil_temp_entity),suctionTemp:this.getStateValue(t.suction_temp_entity),heatExchangerTemp:this.getStateValue(t.heat_exchanger_temp_entity),plateExchangeTemp:this.getStateValue(t.plate_exchange_temp_entity),ecFanMotor1Speed:this.getStateValue(t.ec_fan_motor_1_speed_entity),ecFanMotor2Speed:this.getStateValue(t.ec_fan_motor_2_speed_entity),busLineVoltage:this.getStateValue(t.bus_line_voltage_entity),fanShutdownCode:this.getStateValue(t.fan_shutdown_code_entity),ipmTemp:this.getStateValue(t.ipm_temp_entity),compressorRunningTime:this.getStateValue(t.compressor_running_time_entity),eHeaterPower:this.getStateValue(t.e_heater_power_entity),din6ModeSwitch:this.getStateValue(t.din6_mode_switch_entity),din7ModeSwitch:this.getStateValue(t.din7_mode_switch_entity),pumpEnabled:"on"===this.getStateString(t.pump_enabled_entity),compressorMaxPercentage:this.getStateValue(t.compressor_max_percentage_entity)}}getStateString(t){if(!t||!this.hass)return;const e=this.hass.states[t];return e?.state}getBufferTankState(){const t=this.config.buffer_tank||{};return{supplyTemp:this.getStateValue(t.supply_temp_entity)||0,returnTemp:this.getStateValue(t.return_temp_entity)||0,level:this.getStateValue(t.level_entity),tankTemp:this.getStateValue(t.tank_temp_entity),energyReserve:this.getStateValue(t.energy_reserve_entity)}}getHVACState(){const t=this.config.hvac||{};return{thermal:this.getStateValue(t.thermal_entity)||0,flowRate:this.getStateValue(t.flow_rate_entity)||0,supplyTemp:this.getStateValue(t.supply_temp_entity)||0,returnTemp:this.getStateValue(t.return_temp_entity)||0}}getDHWTankState(){const t=this.config.dhw_tank||{};return{inletTemp:this.getStateValue(t.inlet_temp_entity)||0,outletTemp:this.getStateValue(t.outlet_temp_entity)||0,tankTemp:this.getStateValue(t.tank_temp_entity),tankInletFlow:this.getStateValue(t.tank_inlet_flow_entity),tankInletTemp:this.getStateValue(t.tank_inlet_temp_entity),tankOutletTemp:this.getStateValue(t.tank_outlet_temp_entity)}}getDHWTank2State(){const t=this.config.dhw_tank_2||{};return{enabled:t.enabled||!1,inletTemp:this.getStateValue(t.inlet_temp_entity)||0,outletTemp:this.getStateValue(t.outlet_temp_entity)||0,tankTemp:this.getStateValue(t.tank_temp_entity)}}getG2ValveState(){const t=this.config.g2_valve||{},e=this.getStateString(t.state_entity);return{isActive:"on"===e||"true"===e||"1"===e}}getAuxHeaterState(){const t=this.config.aux_heater||{},e=t.enabled||!1,i=this.getStateValue(t.power_entity)||0,o=t.max_power||18e3;return{enabled:e,power:i,maxPower:o,intensity:Math.min(i/o,1),displayName:t.display_name||t.name||"AUX"}}getStateValue(t){if(!t||!this.hass)return;const e=this.hass.states[t];if(!e)return;const i=parseFloat(e.state);return isNaN(i)?void 0:i}getStateUnit(t){if(!t||!this.hass)return"";const e=this.hass.states[t];return e?.attributes?.unit_of_measurement||""}formatValue(t,e=1){return void 0===t?"N/A":t.toFixed(e)}renderTankTempIndicator(t,e,i,o,a,n,r){if(!a||!o||void 0===i||isNaN(i))return G``;return G`
       <g class="tank-temp-indicator"
          style="cursor: pointer;"
          @click="${t=>this.handleTemperatureClick(t,o)}">
@@ -240,9 +281,9 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
         <circle
           cx="${t}"
           cy="${e}"
-          r="${r||15}"
+          r="${n||15}"
           fill="white"
-          stroke="${n}"
+          stroke="${r}"
           stroke-width="2.5"
           opacity="0.95"
           filter="url(#circle-shadow)" />
@@ -253,7 +294,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
           y="${e+1}"
           text-anchor="middle"
           dominant-baseline="middle"
-          fill="${n}"
+          fill="${r}"
           font-size="10"
           font-weight="bold"
           letter-spacing="-0.5"
@@ -261,7 +302,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
           ${this.formatValue(i,1)}°
         </text>
       </g>
-    `}handleTemperatureClick(t,e){if(t.stopPropagation(),!e||!this.hass)return;const i=new CustomEvent("hass-more-info",{bubbles:!0,composed:!0,detail:{entityId:e}});this.dispatchEvent(i)}renderTemperatureIndicator(t,e,i,o,a,r){if(!this.config.temperature_status?.enabled||!a?.enabled||!i)return G``;if(void 0===o||isNaN(o))return G``;const n=this.config.temperature_status.circle_radius||12;return G`
+    `}handleTemperatureClick(t,e){if(t.stopPropagation(),!e||!this.hass)return;const i=new CustomEvent("hass-more-info",{bubbles:!0,composed:!0,detail:{entityId:e}});this.dispatchEvent(i)}renderTemperatureIndicator(t,e,i,o,a,n){if(!this.config.temperature_status?.enabled||!a?.enabled||!i)return G``;if(void 0===o||isNaN(o))return G``;const r=this.config.temperature_status.circle_radius||12;return G`
       <g class="temp-status-indicator"
          style="cursor: pointer;"
          @click="${t=>this.handleTemperatureClick(t,i)}">
@@ -269,9 +310,9 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
         <circle
           cx="${t}"
           cy="${e}"
-          r="${n}"
+          r="${r}"
           fill="white"
-          stroke="${r}"
+          stroke="${n}"
           stroke-width="2"
           opacity="0.95"
           filter="url(#circle-shadow)" />
@@ -282,7 +323,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
           y="${e+1}"
           text-anchor="middle"
           dominant-baseline="middle"
-          fill="${r}"
+          fill="${n}"
           font-size="7.5"
           font-weight="bold"
           letter-spacing="-0.5"
@@ -290,7 +331,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
           ${this.formatValue(o,1)}°
         </text>
       </g>
-    `}getPipeColors(t,e,i){const o=this.config.temperature,a=Math.abs(t-e);return i<=this.config.animation.idle_threshold||a<o.delta_threshold?{hotPipe:o.neutral_color,coldPipe:o.neutral_color}:t>e?{hotPipe:o.hot_color,coldPipe:o.cold_color}:{hotPipe:o.cold_color,coldPipe:o.hot_color}}generateTankGradient(t,e,i){const o="buffer"===t?this.config.buffer_tank?.gradient:"dhw_tank_2"===t?this.config.dhw_tank_2?.gradient:this.config.dhw_tank?.gradient;let a,r;if(void 0!==o?.min_temp){a=("number"==typeof o.min_temp?o.min_temp:this.getStateValue(o.min_temp))??60}else a=this.getStateValue(o?.min_temp_entity)??o?.min_temp_fallback??60;if(void 0!==o?.max_temp){r=("number"==typeof o.max_temp?o.max_temp:this.getStateValue(o.max_temp))??130}else r=this.getStateValue(o?.max_temp_entity)??o?.max_temp_fallback??130;const n=r-a,s=n>0?Math.max(0,Math.min(1,(e-a)/n)):0,l=Math.round(100*s);if(!1===o?.enabled)return{levels:[],fillPercentage:l};const h=Math.max(2,o?.levels??10),c=o?.bottom_color??this.config.temperature?.neutral_color??"#95a5a6";let d;d="buffer"===t?i?o?.heating_top_color??this.config.temperature?.hot_color??"#e74c3c":o?.cooling_top_color??this.config.temperature?.cold_color??"#3498db":o?.top_color??this.config.temperature?.hot_color??"#e74c3c";const p=130/h,f=[];for(let t=0;t<h;t++){const e=t/(h-1),i=155-(t+1)*p,o=this.interpolateColor(c,d,e),a=(t/h+(t+1)/h)/2<=s?.95:.05;f.push({y:i,height:p,color:o,opacity:a})}return{levels:f,fillPercentage:l}}renderGradientRects(t){const e=[];for(let i=0;i<t.length;i++){const o=t[i];e.push(G`<rect x="15" y="${o.y}" width="60" height="${o.height}" fill="${o.color}" opacity="${o.opacity}"></rect>`)}return e}hexToRgb(t){const e={black:"#000000",white:"#FFFFFF",red:"#FF0000",green:"#008000",blue:"#0000FF",yellow:"#FFFF00",cyan:"#00FFFF",magenta:"#FF00FF",orange:"#FFA500",purple:"#800080",pink:"#FFC0CB",brown:"#A52A2A",gray:"#808080",grey:"#808080"}[t.toLowerCase()]||t,i=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(e);return i?{r:parseInt(i[1],16),g:parseInt(i[2],16),b:parseInt(i[3],16)}:{r:0,g:0,b:0}}interpolateColor(t,e,i){i=Math.max(0,Math.min(1,i));const o=this.hexToRgb(t),a=this.hexToRgb(e),r=Math.round(o.r+(a.r-o.r)*i),n=Math.round(o.g+(a.g-o.g)*i),s=Math.round(o.b+(a.b-o.b)*i);return`#${r.toString(16).padStart(2,"0")}${n.toString(16).padStart(2,"0")}${s.toString(16).padStart(2,"0")}`}getHeatPumpColor(t){const e=this.config.heat_pump_visual;if(t.defrost)return e.defrost_color;if(t.power<=0)return e.off_color;const i=(t.mode||t.modeDisplay)?.toLowerCase();return i?.includes("heat")?e.heating_color:i?.includes("cool")?e.cooling_color:i?.includes("dhw")||i?.includes("hot water")?e.dhw_color:e.off_color}getDisplayMode(t,e){return t.mode?t.mode.toUpperCase():t.modeDisplay?t.modeDisplay.toUpperCase():t.defrost?"DEFROST":t.power<=0&&t.thermal<=0?"OFF":t.power>0?e.isActive?"DHW":"HEATING":"OFF"}getContrastTextColor(t){const e=t.replace("#","");return(.299*parseInt(e.substr(0,2),16)+.587*parseInt(e.substr(2,2),16)+.114*parseInt(e.substr(4,2),16))/255>.35?"#2c3e50":"#ffffff"}renderIcon(t,e,i,o,a,r=.8,n){if(t.startsWith("mdi:")){const s=5;return G`
+    `}getPipeColors(t,e,i){const o=this.config.temperature,a=Math.abs(t-e);return i<=this.config.animation.idle_threshold||a<o.delta_threshold?{hotPipe:o.neutral_color,coldPipe:o.neutral_color}:t>e?{hotPipe:o.hot_color,coldPipe:o.cold_color}:{hotPipe:o.cold_color,coldPipe:o.hot_color}}generateTankGradient(t,e,i){const o="buffer"===t?this.config.buffer_tank?.gradient:"dhw_tank_2"===t?this.config.dhw_tank_2?.gradient:this.config.dhw_tank?.gradient;let a,n;if(void 0!==o?.min_temp){a=("number"==typeof o.min_temp?o.min_temp:this.getStateValue(o.min_temp))??60}else a=this.getStateValue(o?.min_temp_entity)??o?.min_temp_fallback??60;if(void 0!==o?.max_temp){n=("number"==typeof o.max_temp?o.max_temp:this.getStateValue(o.max_temp))??130}else n=this.getStateValue(o?.max_temp_entity)??o?.max_temp_fallback??130;const r=n-a,s=r>0?Math.max(0,Math.min(1,(e-a)/r)):0,l=Math.round(100*s);if(!1===o?.enabled)return{levels:[],fillPercentage:l};const c=Math.max(2,o?.levels??10),h=o?.bottom_color??this.config.temperature?.neutral_color??"#95a5a6";let d;d="buffer"===t?i?o?.heating_top_color??this.config.temperature?.hot_color??"#e74c3c":o?.cooling_top_color??this.config.temperature?.cold_color??"#3498db":o?.top_color??this.config.temperature?.hot_color??"#e74c3c";const p=130/c,f=[];for(let t=0;t<c;t++){const e=t/(c-1),i=155-(t+1)*p,o=this.interpolateColor(h,d,e),a=(t/c+(t+1)/c)/2<=s?.95:.05;f.push({y:i,height:p,color:o,opacity:a})}return{levels:f,fillPercentage:l}}renderGradientRects(t){const e=[];for(let i=0;i<t.length;i++){const o=t[i];e.push(G`<rect x="15" y="${o.y}" width="60" height="${o.height}" fill="${o.color}" opacity="${o.opacity}"></rect>`)}return e}hexToRgb(t){const e={black:"#000000",white:"#FFFFFF",red:"#FF0000",green:"#008000",blue:"#0000FF",yellow:"#FFFF00",cyan:"#00FFFF",magenta:"#FF00FF",orange:"#FFA500",purple:"#800080",pink:"#FFC0CB",brown:"#A52A2A",gray:"#808080",grey:"#808080"}[t.toLowerCase()]||t,i=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(e);return i?{r:parseInt(i[1],16),g:parseInt(i[2],16),b:parseInt(i[3],16)}:{r:0,g:0,b:0}}interpolateColor(t,e,i){i=Math.max(0,Math.min(1,i));const o=this.hexToRgb(t),a=this.hexToRgb(e),n=Math.round(o.r+(a.r-o.r)*i),r=Math.round(o.g+(a.g-o.g)*i),s=Math.round(o.b+(a.b-o.b)*i);return`#${n.toString(16).padStart(2,"0")}${r.toString(16).padStart(2,"0")}${s.toString(16).padStart(2,"0")}`}getHeatPumpColor(t){const e=this.config.heat_pump_visual;if(t.defrost)return e.defrost_color;if(t.power<=0)return e.off_color;const i=(t.mode||t.modeDisplay)?.toLowerCase();return i?.includes("heat")?e.heating_color:i?.includes("cool")?e.cooling_color:i?.includes("dhw")||i?.includes("hot water")?e.dhw_color:e.off_color}getDisplayMode(t,e){return t.mode?t.mode.toUpperCase():t.modeDisplay?t.modeDisplay.toUpperCase():t.defrost?"DEFROST":t.power<=0&&t.thermal<=0?"OFF":t.power>0?e.isActive?"DHW":"HEATING":"OFF"}getContrastTextColor(t){const e=t.replace("#","");return(.299*parseInt(e.substr(0,2),16)+.587*parseInt(e.substr(2,2),16)+.114*parseInt(e.substr(4,2),16))/255>.35?"#2c3e50":"#ffffff"}renderIcon(t,e,i,o,a,n=.8,r){if(t.startsWith("mdi:")){const s=5;return G`
         <foreignObject x="${e-s}" y="${i-s}" width="${o+2*s}" height="${a+2*s}">
           <ha-icon
             icon="${t}"
@@ -299,8 +340,8 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               width: ${o}px;
               height: ${a}px;
               display: block;
-              color: ${n||"var(--primary-text-color)"};
-              opacity: ${r};
+              color: ${r||"var(--primary-text-color)"};
+              opacity: ${n};
               padding: ${s}px;
             "
           ></ha-icon>
@@ -312,9 +353,9 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
           width="${o}"
           height="${a}"
           href="${t}"
-          opacity="${r}"
+          opacity="${n}"
         />
-      `}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return U``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getDHWTank2State(),r=this.getG2ValveState(),n=this.getAuxHeaterState(),s=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),l=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),h=s.hotPipe,c=s.coldPipe,d=l.hotPipe,p=l.coldPipe,f=t.flowRate>this.config.animation.idle_threshold,u=this.config.temperature.hot_color,g=this.config.temperature.cold_color,m=this.config.dhw_tank?.inlet_color||this.config.temperature.hot_color,y=this.config.dhw_tank?.outlet_color||this.config.temperature.cold_color,_=this.config.dhw_tank?.tank_inlet_color||"#3498db",w=this.config.dhw_tank?.tank_outlet_color||"#e74c3c",$=this.config.dhw_tank_2?.tank_outlet_color||"#e74c3c",x=e.supplyTemp>e.returnTemp,b=e.supplyTemp,k=this.generateTankGradient("buffer",b,x),v=k.levels,S=k.fillPercentage,A=o.tankTemp??o.inletTemp,T=this.generateTankGradient("dhw",A,!0),C=T.levels,H=T.fillPercentage;let P=[],M=0;if(a.enabled){const t=a.tankTemp??a.inletTemp,e=this.generateTankGradient("dhw_tank_2",t,!0);P=e.levels,M=e.fillPercentage}const V=this.getHeatPumpColor(t),L=this.getContrastTextColor(V),E="var(--primary-text-color)";t.error;const z=n.intensity;let R="#bdc3c7";if(z>0){const t=189,e=195,i=199,o=255,a=68,r=34;R=`rgb(${Math.round(t+(o-t)*z)}, ${Math.round(e+(a-e)*z)}, ${Math.round(i+(r-i)*z)})`}const D=this.config.aux_heater?.glow_size??8,O=224,F=172,W=60,N=O,I=F-D,Q=W,B=16+2*D,j=2,q=2,Z=O,Y=F-.75*D,J=W,X=16+2*D*.75,K=2,tt=2,et=O,it=F-.5*D,ot=W,at=16+2*D*.5,rt=2,nt=2,st=z>0?2-1.4*z:2,lt=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),ht=this.config.aux_heater?.shadow_blur??1,ct=z>0?"aux-glow-outer":"aux-heater-layer",dt=z>0?"aux-glow-middle":"aux-heater-layer",pt=z>0?"aux-glow-inner":"aux-heater-layer",ft=z>0?"aux-cylinder-pulse":"",gt=this.config.logo_size||40,mt=!1!==this.config.show_logo,yt=this.config.logo_path||"/local/heat-pump-flow.png",_t=this.config.logo_url||"https://github.com/jasipsw/heat-pump-flow-card#readme";return U`
+      `}getAnimationDuration(t){const e=this.config.animation;if(t<=0)return e.min_flow_rate;const i=Math.min(t/e.max_flow_rate_value,1);return e.min_flow_rate-i*(e.min_flow_rate-e.max_flow_rate)}render(){if(!this.config||!this.hass)return U``;const t=this.getHeatPumpState(),e=this.getBufferTankState(),i=this.getHVACState(),o=this.getDHWTankState(),a=this.getDHWTank2State(),n=this.getG2ValveState(),r=this.getAuxHeaterState(),s=this.getPipeColors(t.outletTemp,t.inletTemp,t.flowRate),l=this.getPipeColors(e.supplyTemp,i.returnTemp,i.flowRate),c=s.hotPipe,h=s.coldPipe,d=l.hotPipe,p=l.coldPipe,f=t.flowRate>this.config.animation.idle_threshold,u=this.config.temperature.hot_color,g=this.config.temperature.cold_color,m=this.config.dhw_tank?.inlet_color||this.config.temperature.hot_color,y=this.config.dhw_tank?.outlet_color||this.config.temperature.cold_color,_=this.config.dhw_tank?.tank_inlet_color||"#3498db",w=this.config.dhw_tank?.tank_outlet_color||"#e74c3c",$=this.config.dhw_tank_2?.tank_outlet_color||"#e74c3c",x=e.supplyTemp>e.returnTemp,b=e.supplyTemp,k=this.generateTankGradient("buffer",b,x),v=k.levels,S=k.fillPercentage,A=o.tankTemp??o.inletTemp,T=this.generateTankGradient("dhw",A,!0),C=T.levels,H=T.fillPercentage;let P=[],M=0;if(a.enabled){const t=a.tankTemp??a.inletTemp,e=this.generateTankGradient("dhw_tank_2",t,!0);P=e.levels,M=e.fillPercentage}const L=this.getHeatPumpColor(t),V=this.getContrastTextColor(L),E="var(--primary-text-color)";t.error;const z=r.intensity;let R="#bdc3c7";if(z>0){const t=189,e=195,i=199,o=255,a=68,n=34;R=`rgb(${Math.round(t+(o-t)*z)}, ${Math.round(e+(a-e)*z)}, ${Math.round(i+(n-i)*z)})`}const D=this.config.aux_heater?.glow_size??8,O=224,F=172,W=60,N=O,I=F-D,Q=W,B=16+2*D,j=2,q=2,Z=O,J=F-.75*D,Y=W,X=16+2*D*.75,K=2,tt=2,et=O,it=F-.5*D,ot=W,at=16+2*D*.5,nt=2,rt=2,st=z>0?2-1.4*z:2,lt=Math.max(1.2,Math.min(4,4-.18*t.flowRate)),ct=this.config.aux_heater?.shadow_blur??1,ht=z>0?"aux-glow-outer":"aux-heater-layer",dt=z>0?"aux-glow-middle":"aux-heater-layer",pt=z>0?"aux-glow-inner":"aux-heater-layer",ft=z>0?"aux-cylinder-pulse":"",gt=this.config.logo_size||40,mt=!1!==this.config.show_logo,yt=this.config.logo_path||"/local/heat-pump-flow.png",_t=this.config.logo_url||"https://github.com/jasipsw/heat-pump-flow-card#readme";return U`
       <ha-card style="--logo-size: ${gt}px">
         ${this.config.title||mt?U`
           <h1 class="card-header">
@@ -371,26 +412,26 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Pipe: Buffer to HP (cold return) - BOTTOM - Connects to DHW return junction at x=330 - BEHIND -->
             <path id="buffer-to-hp-path"
                   d="M 390 220 L 330 220"
-                  stroke="${r.isActive?this.config.temperature?.neutral_color||"#95a5a6":c}"
+                  stroke="${n.isActive?this.config.temperature?.neutral_color||"#95a5a6":h}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive?"0.3":"1"}"/>
+                  opacity="${n.isActive?"0.3":"1"}"/>
 
             <!-- Pipe: Junction to HP (cold return continuation) - heating mode only -->
             <path id="junction-to-hp-path"
                   d="M 330 220 L 180 220"
-                  stroke="${c}"
+                  stroke="${h}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive?"0":"1"}"/>
+                  opacity="${n.isActive?"0":"1"}"/>
 
             <!-- Pipe: HP to aux heater (first segment) -->
             <!-- Shows water at HP outlet temperature before aux heater boost -->
             <path id="hp-to-aux-heating-path"
                   d="M 180 180 L 254 180"
-                  stroke="${h}"
+                  stroke="${c}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
@@ -401,7 +442,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Hidden when flow animation is active to prevent color visibility issues -->
             <path id="aux-to-g2-heating-path"
                   d="M 254 180 L 328 180"
-                  stroke="${z>0?this.config.temperature?.hot_color||"#e74c3c":h}"
+                  stroke="${z>0?this.config.temperature?.hot_color||"#e74c3c":c}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
@@ -410,11 +451,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Pipe: G2 to Buffer (continuation) - only active in heating mode -->
             <path id="g2-to-buffer-path"
                   d="M 367 180 L 390 180"
-                  stroke="${r.isActive?this.config.temperature?.neutral_color||"#95a5a6":h}"
+                  stroke="${n.isActive?this.config.temperature?.neutral_color||"#95a5a6":c}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive?"0.3":"1"}"/>
+                  opacity="${n.isActive?"0.3":"1"}"/>
 
             <!-- DHW MODE PIPES (shown when G2 valve is ON - DHW mode) -->
             <!-- Z-ORDER: Return pipes first (behind), then supply pipes (on top) -->
@@ -423,7 +464,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Always visible: gray when inactive, colored when active -->
             <path id="dhw-to-hp-return-path"
                   d="M 418 470 L 330 470 L 330 220 L 180 220"
-                  stroke="${r.isActive?g:this.config.temperature?.neutral_color||"#95a5a6"}"
+                  stroke="${n.isActive?g:this.config.temperature?.neutral_color||"#95a5a6"}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"/>
@@ -432,7 +473,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Always visible: gray when inactive, colored when active -->
             <path id="g2-to-dhw-path"
                   d="M 348 195 L 348 370 L 418 370"
-                  stroke="${r.isActive?u:this.config.temperature?.neutral_color||"#95a5a6"}"
+                  stroke="${n.isActive?u:this.config.temperature?.neutral_color||"#95a5a6"}"
                   stroke-width="12"
                   fill="none"
                   stroke-linecap="butt"/>
@@ -517,11 +558,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- HP to Buffer continuous animation (heating mode) -->
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 180 180 L 283.5 180 L 283.5 180.01 L 390 180"
-                  stroke="${h}"
+                  stroke="${c}"
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${!n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
             <!-- Animated gradient overlay -->
             <defs>
               <linearGradient id="flow-grad-hp-to-buffer" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -540,16 +581,16 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${!n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
 
             <!-- HP to G2 continuous animation (DHW mode) -->
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 180 180 L 254 180 L 254 180.01 L 328 180"
-                  stroke="${h}"
+                  stroke="${c}"
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
             <!-- Animated gradient overlay -->
             <defs>
               <linearGradient id="flow-grad-hp-to-g2" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -568,7 +609,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
 
 
             <!-- Buffer to HVAC (horizontal hot) -->
@@ -602,11 +643,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Buffer to HP return continuous animation (heating mode) -->
             <!-- Solid backing to prevent color bleeding through gradient -->
             <path d="M 390 220 L 285 220 L 285 220.01 L 180 220"
-                  stroke="${c}"
+                  stroke="${h}"
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${!n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
             <!-- Animated gradient overlay -->
             <defs>
               <linearGradient id="flow-grad-buffer-to-hp-return" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -625,7 +666,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${!r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${!n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
 
             <!-- HVAC to buffer return (horizontal cold) -->
             <!-- Solid backing to prevent color bleeding through gradient -->
@@ -664,7 +705,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
             <!-- Animated gradient overlay -->
             <defs>
               <linearGradient id="flow-grad-9a" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -683,7 +724,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
 
             <!-- DHW to HP return - vertical segment (cold) - DHW mode only -->
             <!-- Solid backing to prevent color bleeding through gradient -->
@@ -692,7 +733,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
             <!-- Animated gradient overlay -->
             <defs>
               <linearGradient id="flow-grad-9b" x1="330" y1="470" x2="330" y2="220" gradientUnits="userSpaceOnUse">
@@ -711,7 +752,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
 
             <!-- DHW to HP return - horizontal segment 2 (cold) - DHW mode only -->
             <!-- Solid backing to prevent color bleeding through gradient -->
@@ -720,7 +761,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
             <!-- Animated gradient overlay -->
             <defs>
               <linearGradient id="flow-grad-9c" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -739,7 +780,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
 
             <!-- G2 to DHW - vertical segment (hot) - DHW mode only -->
             <!-- Solid backing to prevent color bleeding through gradient -->
@@ -748,7 +789,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
             <!-- Animated gradient overlay -->
             <defs>
               <linearGradient id="flow-grad-7a" x1="348" y1="195" x2="348" y2="370" gradientUnits="userSpaceOnUse">
@@ -767,7 +808,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
 
             <!-- G2 to DHW - horizontal segment (hot) - DHW mode only -->
             <!-- Solid backing to prevent color bleeding through gradient -->
@@ -776,7 +817,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
             <!-- Animated gradient overlay -->
             <defs>
               <linearGradient id="flow-grad-7b" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -795,7 +836,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
 
             <!-- DHW coil spiral (vertical hot) - DHW mode only -->
             <!-- Solid backing to prevent color bleeding through gradient -->
@@ -804,7 +845,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
             <!-- Animated gradient overlay -->
             <defs>
               <linearGradient id="flow-grad-8" x1="438" y1="370" x2="438" y2="478" gradientUnits="userSpaceOnUse">
@@ -823,7 +864,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                   stroke-width="10"
                   fill="none"
                   stroke-linecap="butt"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></path>
 
             <!-- DHW Tank Inlet (street water) - horizontal cold -->
             <!-- Solid backing to prevent color bleeding through gradient -->
@@ -886,19 +927,19 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <rect x="341" y="363"
                   width="14" height="14"
                   fill="${this.config.temperature?.neutral_color||"#95a5a6"}"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></rect>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></rect>
 
             <!-- Corner at DHW to HP return first turn (330, 470) - horizontal to vertical -->
             <rect x="323" y="463"
                   width="14" height="14"
                   fill="${this.config.temperature?.neutral_color||"#95a5a6"}"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></rect>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></rect>
 
             <!-- Corner at DHW to HP return second turn (330, 220) - vertical to horizontal -->
             <rect x="323" y="213"
                   width="14" height="14"
                   fill="${this.config.temperature?.neutral_color||"#95a5a6"}"
-                  opacity="${r.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></rect>
+                  opacity="${n.isActive&&t.flowRate>this.config.animation.idle_threshold?"1":"0"}"></rect>
 
             <!-- Heat Pump (left side) -->
             <g id="heat-pump" transform="translate(50, 100)" filter="url(#entity-shadow)">
@@ -938,7 +979,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
               <!-- Heat pump label -->
               <text x="60" y="96" text-anchor="middle" fill="${this.getHeatPumpColor(t)}" font-size="10" font-weight="bold">
-                ${this.getDisplayMode(t,r)}
+                ${this.getDisplayMode(t,n)}
               </text>
 
               <!-- Error indicator -->
@@ -949,18 +990,18 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               `:""}
 
               <!-- Temperature Setpoint Indicators (3 circles below mode text, styled like pipe temp sensors) -->
-              ${(()=>{const e=this.getDisplayMode(t,r).toLowerCase(),i=e.includes("heat"),o=e.includes("dhw"),a=e.includes("cool"),n="off"===e||"defrost"===e,s=i||n?.95:.3,l=o||n?.95:.3,h=a||n?.95:.3,c=this.config.temperature_status?.circle_radius||12,d="#e74c3c",p="#e74c3c",f="#3498db";return G`
+              ${(()=>{const e=this.getDisplayMode(t,n).toLowerCase(),i=e.includes("heat"),o=e.includes("dhw"),a=e.includes("cool"),r="off"===e||"defrost"===e,s=i||r?.95:.3,l=o||r?.95:.3,c=a||r?.95:.3,h=this.config.temperature_status?.circle_radius||12,d="#e74c3c",p="#e74c3c",f="#3498db";return G`
                   <g id="hp-setpoints" transform="translate(0, 115)">
                     <!-- Setpoints label above circles -->
                     <text x="60" y="-8" text-anchor="middle"
-                          fill="${L}" font-size="5" opacity="0.5"
+                          fill="${V}" font-size="5" opacity="0.5"
                           letter-spacing="0.5" font-family="Arial, sans-serif">
                       SETPOINTS
                     </text>
 
                     <!-- Heating Target Temperature (red circle, left position) -->
                     ${void 0!==t.heatingTargetTemp?G`
-                      <circle cx="24" cy="8" r="${c}"
+                      <circle cx="24" cy="8" r="${h}"
                               fill="white" stroke="${d}" stroke-width="2"
                               opacity="${s}"
                               filter="url(#circle-shadow)"/>
@@ -971,14 +1012,14 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                         ${this.formatValue(t.heatingTargetTemp,0)}°
                       </text>
                       <text x="24" y="27" text-anchor="middle"
-                            fill="${L}" font-size="6" opacity="${.7*s}">
+                            fill="${V}" font-size="6" opacity="${.7*s}">
                         HEAT
                       </text>
                     `:""}
 
                     <!-- DHW Target Temperature (red circle, center position) -->
                     ${void 0!==t.dhwTargetTemp?G`
-                      <circle cx="60" cy="8" r="${c}"
+                      <circle cx="60" cy="8" r="${h}"
                               fill="white" stroke="${p}" stroke-width="2"
                               opacity="${l}"
                               filter="url(#circle-shadow)"/>
@@ -989,25 +1030,25 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                         ${this.formatValue(t.dhwTargetTemp,0)}°
                       </text>
                       <text x="60" y="27" text-anchor="middle"
-                            fill="${L}" font-size="6" opacity="${.7*l}">
+                            fill="${V}" font-size="6" opacity="${.7*l}">
                         DHW
                       </text>
                     `:""}
 
                     <!-- Cooling Target Temperature (blue circle, right position) -->
                     ${void 0!==t.coolingTargetTemp?G`
-                      <circle cx="96" cy="8" r="${c}"
+                      <circle cx="96" cy="8" r="${h}"
                               fill="white" stroke="${f}" stroke-width="2"
-                              opacity="${h}"
+                              opacity="${c}"
                               filter="url(#circle-shadow)"/>
                       <text x="96" y="9" text-anchor="middle" dominant-baseline="middle"
                             fill="${f}" font-size="7.5" font-weight="bold"
                             letter-spacing="-0.5" font-family="Arial, sans-serif"
-                            opacity="${h}">
+                            opacity="${c}">
                         ${this.formatValue(t.coolingTargetTemp,0)}°
                       </text>
                       <text x="96" y="27" text-anchor="middle"
-                            fill="${L}" font-size="6" opacity="${.7*h}">
+                            fill="${V}" font-size="6" opacity="${.7*c}">
                         COOL
                       </text>
                     `:""}
@@ -1275,11 +1316,11 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                     <!-- Divider line before custom metrics -->
                     <line x1="8" y1="${e}" x2="112" y2="${e}" stroke="${E}" stroke-width="0.5" opacity="0.3"/>
 
-                    ${i.map((e,i)=>{const o=t+18*i,a=o+7,r=[8,42,76];return G`
-                        ${e.map((t,e)=>{const i=this.getStateValue(t.entity);if(void 0===i)return"";const n=r[e],s=void 0!==t.decimals?t.decimals:1,l=t.unit||this.getStateUnit(t.entity)||"";return G`
+                    ${i.map((e,i)=>{const o=t+18*i,a=o+7,n=[8,42,76];return G`
+                        ${e.map((t,e)=>{const i=this.getStateValue(t.entity);if(void 0===i)return"";const r=n[e],s=void 0!==t.decimals?t.decimals:1,l=t.unit||this.getStateUnit(t.entity)||"";return G`
                             <g style="cursor: pointer;" @click="${e=>this.handleTemperatureClick(e,t.entity)}">
-                              <text x="${n}" y="${o}" fill="${E}" font-size="7" opacity="0.7">${t.label}</text>
-                              <text x="${n}" y="${a}" fill="${E}" font-size="8" font-weight="bold">
+                              <text x="${r}" y="${o}" fill="${E}" font-size="7" opacity="0.7">${t.label}</text>
+                              <text x="${r}" y="${a}" fill="${E}" font-size="8" font-weight="bold">
                                 ${this.formatValue(i,s)}${l}
                               </text>
                             </g>
@@ -1334,43 +1375,43 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <g id="valve-symbol" opacity="0.8">
                 <!-- Left port: line and larger centered triangle at flange (from HP inlet) - always active when flow -->
                 <line x1="-17" y1="0" x2="-36" y2="0"
-                      stroke="${f?h:"#7f8c8d"}"
+                      stroke="${f?c:"#7f8c8d"}"
                       stroke-width="2"/>
                 <path d="M -44 0 L -36 -6 L -36 6 Z"
-                      fill="${f?h:"#7f8c8d"}"
-                      stroke="${f?h:"#7f8c8d"}"
+                      fill="${f?c:"#7f8c8d"}"
+                      stroke="${f?c:"#7f8c8d"}"
                       stroke-width="0.5"/>
 
                 <!-- Right port: line and larger centered triangle at flange (to buffer/heating) -->
                 <line x1="-17" y1="0" x2="1" y2="0"
-                      stroke="${f?r.isActive?"#7f8c8d":h:"#7f8c8d"}"
+                      stroke="${f?n.isActive?"#7f8c8d":c:"#7f8c8d"}"
                       stroke-width="2"/>
                 <path d="M 9 0 L 1 -6 L 1 6 Z"
-                      fill="${f?r.isActive?"#7f8c8d":h:"#7f8c8d"}"
-                      stroke="${f?r.isActive?"#7f8c8d":h:"#7f8c8d"}"
+                      fill="${f?n.isActive?"#7f8c8d":c:"#7f8c8d"}"
+                      stroke="${f?n.isActive?"#7f8c8d":c:"#7f8c8d"}"
                       stroke-width="0.5"/>
 
                 <!-- Bottom port: line and larger centered triangle at flange (to DHW) -->
                 <line x1="-17" y1="0" x2="-17" y2="13"
-                      stroke="${f&&r.isActive?h:"#7f8c8d"}"
+                      stroke="${f&&n.isActive?c:"#7f8c8d"}"
                       stroke-width="2"/>
                 <path d="M -17 21 L -23 13 L -11 13 Z"
-                      fill="${f&&r.isActive?h:"#7f8c8d"}"
-                      stroke="${f&&r.isActive?h:"#7f8c8d"}"
+                      fill="${f&&n.isActive?c:"#7f8c8d"}"
+                      stroke="${f&&n.isActive?c:"#7f8c8d"}"
                       stroke-width="0.5"/>
 
                 <!-- Center circle (ball/switching mechanism) - bigger and flow-colored, drawn last to cover line ends -->
                 <circle cx="-17" cy="0" r="5"
-                        fill="${f?h:"#7f8c8d"}"/>
+                        fill="${f?c:"#7f8c8d"}"/>
               </g>
 
               <!-- Internal flow path visualization with animations -->
-              ${r.isActive?U`
+              ${n.isActive?U`
                 <!-- DHW Mode: Flow DOWN (from left inlet to bottom outlet) -->
                 <!-- Active path matching hot flow color -->
                 <path class="g2-valve-path g2-valve-active-path"
                       d="M -35 0 L -17 0 L -17 12"
-                      stroke="${h}"
+                      stroke="${c}"
                       stroke-width="6"
                       fill="none"
                       stroke-linecap="butt"
@@ -1386,7 +1427,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                 <!-- Active path matching hot flow color -->
                 <path class="g2-valve-path g2-valve-active-path"
                       d="M -35 0 L 0 0"
-                      stroke="${h}"
+                      stroke="${c}"
                       stroke-width="6"
                       fill="none"
                       stroke-linecap="butt"/>
@@ -1491,25 +1532,25 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                     stroke="${u}"
                     stroke-width="10"
                     fill="none"
-                    class="${r.isActive?"dhw-coil-glow-outer":"dhw-coil-glow-layer"}"
+                    class="${n.isActive?"dhw-coil-glow-outer":"dhw-coil-glow-layer"}"
                     pointer-events="none"/>
               <!-- Inner glow layer - pulsing when active -->
               <path d="M 28 40 Q 45 48, 62 40 Q 45 60, 28 60 Q 45 76, 62 60 Q 45 92, 28 92 Q 45 108, 62 92 Q 45 124, 28 124 Q 45 132, 62 124 Q 45 140, 28 140"
                     stroke="${u}"
                     stroke-width="7"
                     fill="none"
-                    class="${r.isActive?"dhw-coil-glow-inner":"dhw-coil-glow-layer"}"
+                    class="${n.isActive?"dhw-coil-glow-inner":"dhw-coil-glow-layer"}"
                     pointer-events="none"/>
               <!-- Main coil path -->
               <path d="M 28 40 Q 45 48, 62 40 Q 45 60, 28 60 Q 45 76, 62 60 Q 45 92, 28 92 Q 45 108, 62 92 Q 45 124, 28 124 Q 45 132, 62 124 Q 45 140, 28 140"
-                    stroke="${r.isActive?u:this.config.temperature?.neutral_color||"#95a5a6"}"
+                    stroke="${n.isActive?u:this.config.temperature?.neutral_color||"#95a5a6"}"
                     stroke-width="4"
                     fill="none"
-                    opacity="${r.isActive?"0.9":"0.3"}"/>
+                    opacity="${n.isActive?"0.9":"0.3"}"/>
 
               <!-- Coil inlet/outlet markers - 100px vertical span -->
-              <circle cx="28" cy="40" r="3" fill="${r.isActive?u:this.config.temperature?.neutral_color||"#95a5a6"}"/>
-              <circle cx="28" cy="140" r="3" fill="${r.isActive?u:this.config.temperature?.neutral_color||"#95a5a6"}"/>
+              <circle cx="28" cy="40" r="3" fill="${n.isActive?u:this.config.temperature?.neutral_color||"#95a5a6"}"/>
+              <circle cx="28" cy="140" r="3" fill="${n.isActive?u:this.config.temperature?.neutral_color||"#95a5a6"}"/>
 
               <!-- Structural bands -->
               <line x1="10" y1="55" x2="80" y2="55" stroke="#2c3e50" stroke-width="2"/>
@@ -1646,20 +1687,20 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
             <!-- Animation speed increases with power level for visual feedback -->
             <!-- Shadow blur configurable via aux_heater.shadow_blur (default: 1.0) -->
             <g id="aux-heater"
-               opacity="${n.enabled?"1":"0"}"
-               style="--aux-anim-speed: ${st}s; --aux-shadow-blur: ${ht};">
+               opacity="${r.enabled?"1":"0"}"
+               style="--aux-anim-speed: ${st}s; --aux-shadow-blur: ${ct};">
               <!-- Glow layers - simple solid colors with CSS pulsing animation -->
               <!-- Outermost glow layer - size based on config -->
               ${G`<rect x="${N}" y="${I}"
                     width="${Q}" height="${B}"
                     rx="${j}" ry="${q}"
-                    class="${ct}"
+                    class="${ht}"
                     fill="#ff4422"
                     pointer-events="none"></rect>`}
 
               <!-- Middle glow layer - size based on config -->
-              ${G`<rect x="${Z}" y="${Y}"
-                    width="${J}" height="${X}"
+              ${G`<rect x="${Z}" y="${J}"
+                    width="${Y}" height="${X}"
                     rx="${K}" ry="${tt}"
                     class="${dt}"
                     fill="#ff6644"
@@ -1668,7 +1709,7 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
               <!-- Inner glow layer - size based on config -->
               ${G`<rect x="${et}" y="${it}"
                     width="${ot}" height="${at}"
-                    rx="${rt}" ry="${nt}"
+                    rx="${nt}" ry="${rt}"
                     class="${pt}"
                     fill="#ff8855"
                     pointer-events="none"></rect>`}
@@ -1702,13 +1743,13 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
                        opacity="0.9"></image>`:""}
 
               <!-- Label text (if show_label is not false and displayName exists) - horizontally centered in cylinder, vertically centered -->
-              ${!1!==this.config.aux_heater?.show_label&&n.displayName?G`<text x="${254}"
+              ${!1!==this.config.aux_heater?.show_label&&r.displayName?G`<text x="${254}"
                       y="${180}"
                       text-anchor="middle"
                       dominant-baseline="middle"
                       fill="${this.config.aux_heater?.label_color||"#2c3e50"}"
                       font-size="9"
-                      font-weight="bold">${n.displayName}</text>`:""}
+                      font-weight="bold">${r.displayName}</text>`:""}
             </g>
 
             <!-- Version display (upper right corner) -->
@@ -1718,10 +1759,10 @@ var HeatPumpFlowCard=function(t){"use strict";function e(t,e,i,o){var a,r=argume
 
             <!-- Temperature Status Indicators - Rendered last to appear on top -->
             <!-- HP outlet (on supply pipe at y=180) -->
-            ${this.renderTemperatureIndicator(185,180,this.config.temperature_status?.points?.hp_outlet?.entity||this.config.heat_pump?.outlet_temp_entity,t.outletTemp,this.config.temperature_status?.points?.hp_outlet,h)}
+            ${this.renderTemperatureIndicator(185,180,this.config.temperature_status?.points?.hp_outlet?.entity||this.config.heat_pump?.outlet_temp_entity,t.outletTemp,this.config.temperature_status?.points?.hp_outlet,c)}
 
             <!-- HP inlet (on return pipe at y=220) -->
-            ${this.renderTemperatureIndicator(185,220,this.config.temperature_status?.points?.hp_inlet?.entity||this.config.heat_pump?.inlet_temp_entity,t.inletTemp,this.config.temperature_status?.points?.hp_inlet,c)}
+            ${this.renderTemperatureIndicator(185,220,this.config.temperature_status?.points?.hp_inlet?.entity||this.config.heat_pump?.inlet_temp_entity,t.inletTemp,this.config.temperature_status?.points?.hp_inlet,h)}
 
             <!-- Buffer supply (on supply pipe at y=180, outside buffer tank) -->
             ${this.renderTemperatureIndicator(385,180,this.config.temperature_status?.points?.buffer_supply?.entity||this.config.buffer_tank?.supply_temp_entity,e.supplyTemp,this.config.temperature_status?.points?.buffer_supply,d)}
