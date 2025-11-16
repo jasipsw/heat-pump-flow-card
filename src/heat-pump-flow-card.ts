@@ -2116,10 +2116,10 @@ export class HeatPumpFlowCard extends LitElement {
               <!-- Fill percentage display (always shown) -->
               ${bufferState.energyReserve !== undefined ? svg`
                 <!-- Percentage on left, energy reserve on right -->
-                <text x="20" y="173" text-anchor="start" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="9" font-weight="bold">
+                <text x="15" y="169" text-anchor="start" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="8" font-weight="bold">
                   ${bufferFillPercentage}%
                 </text>
-                <text x="70" y="173" text-anchor="end" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="9" font-weight="bold"
+                <text x="75" y="169" text-anchor="end" fill="${bufferIsHeating ? '#e74c3c' : '#3498db'}" font-size="8" font-weight="bold"
                       style="cursor: pointer;" @click="${(e: Event) => this.handleTemperatureClick(e, this.config.buffer_tank!.energy_reserve_entity!)}">
                   ${this.formatValue(bufferState.energyReserve, 1)} kWh
                 </text>
