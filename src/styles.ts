@@ -67,6 +67,7 @@ export const cardStyles = css`
     transform-origin: 60px 51px;
     animation: fan-spin linear infinite;
     animation-duration: var(--fan-duration, 1s);
+    will-change: transform;
   }
 
   @keyframes fan-spin {
@@ -85,15 +86,17 @@ export const cardStyles = css`
 
   .g2-valve-active-path {
     animation: valve-flow-pulse 2s ease-in-out infinite;
+    transform-origin: center;
+    will-change: transform, opacity;
   }
 
   @keyframes valve-flow-pulse {
     0%, 100% {
-      stroke-width: 6;
+      transform: scale(1.0);
       opacity: 1;
     }
     50% {
-      stroke-width: 7;
+      transform: scale(1.08);
       opacity: 0.8;
     }
   }
@@ -102,49 +105,49 @@ export const cardStyles = css`
     transition: fill 0.3s ease;
   }
 
-  /* Aux heater pulsing animations - DRAMATIC pulsing with glow effects */
+  * Aux heater pulsing animations - GPU-accelerated with transform + opacity */
   /* Shadow blur sizes are scaled by --aux-shadow-blur CSS variable (default: 1.0) */
   @keyframes aux-glow-outer {
     0%, 100% {
       opacity: 0.2;
-      filter: drop-shadow(0 0 calc(8px * var(--aux-shadow-blur, 1)) rgba(255, 68, 34, 0.5));
+      transform: scale(1.0);
     }
     50% {
       opacity: 0.7;
-      filter: drop-shadow(0 0 calc(16px * var(--aux-shadow-blur, 1)) rgba(255, 68, 34, 0.9));
+      transform: scale(1.15);
     }
   }
 
   @keyframes aux-glow-middle {
     0%, 100% {
       opacity: 0.4;
-      filter: drop-shadow(0 0 calc(6px * var(--aux-shadow-blur, 1)) rgba(255, 102, 68, 0.6));
+      transform: scale(1.0);
     }
     50% {
       opacity: 0.9;
-      filter: drop-shadow(0 0 calc(12px * var(--aux-shadow-blur, 1)) rgba(255, 102, 68, 1.0));
+      transform: scale(1.1);
     }
   }
 
   @keyframes aux-glow-inner {
     0%, 100% {
       opacity: 0.6;
-      filter: drop-shadow(0 0 calc(4px * var(--aux-shadow-blur, 1)) rgba(255, 136, 85, 0.7));
+      transform: scale(1.0);
     }
     50% {
       opacity: 1.0;
-      filter: drop-shadow(0 0 calc(10px * var(--aux-shadow-blur, 1)) rgba(255, 136, 85, 1.0));
+      transform: scale(1.05);
     }
   }
 
   @keyframes aux-cylinder-pulse {
     0%, 100% {
       opacity: 0.7;
-      filter: drop-shadow(0 0 calc(6px * var(--aux-shadow-blur, 1)) rgba(255, 68, 34, 0.6));
+      transform: scale(1.0);
     }
     50% {
       opacity: 1.0;
-      filter: drop-shadow(0 0 calc(12px * var(--aux-shadow-blur, 1)) rgba(255, 68, 34, 1.0));
+      transform: scale(1.02);
     }
   }
 
@@ -154,26 +157,26 @@ export const cardStyles = css`
     filter: none !important; /* Remove default rect drop-shadow */
   }
 
-  /* DHW coil pulsing animations - similar to aux heater but for coil heating */
+   /* DHW coil pulsing animations - GPU-accelerated with transform + opacity */
   @keyframes dhw-coil-glow-outer {
     0%, 100% {
       opacity: 0.15;
-      filter: drop-shadow(0 0 6px rgba(255, 102, 68, 0.4));
+      transform: scale(1.0);
     }
     50% {
       opacity: 0.4;
-      filter: drop-shadow(0 0 12px rgba(255, 102, 68, 0.7));
+      transform: scale(1.08);
     }
   }
 
   @keyframes dhw-coil-glow-inner {
     0%, 100% {
       opacity: 0.3;
-      filter: drop-shadow(0 0 4px rgba(255, 136, 85, 0.5));
+      transform: scale(1.0);
     }
     50% {
       opacity: 0.6;
-      filter: drop-shadow(0 0 8px rgba(255, 136, 85, 0.9));
+      transform: scale(1.05);
     }
   }
 
@@ -188,12 +191,16 @@ export const cardStyles = css`
     opacity: 0.25;
     animation: dhw-coil-glow-outer 1.5s ease-in-out infinite;
     filter: none; /* Will be set by animation */
+    transform-origin: center;
+    will-change: transform, opacity;
   }
 
   .dhw-coil-glow-inner {
     opacity: 0.45;
     animation: dhw-coil-glow-inner 1.2s ease-in-out infinite;
     filter: none; /* Will be set by animation */
+    transform-origin: center;
+    will-change: transform, opacity;
   }
 
   /* When active, show and animate - SPEED INCREASES WITH POWER LEVEL */
@@ -201,24 +208,32 @@ export const cardStyles = css`
     opacity: 0.45;
     animation: aux-glow-outer var(--aux-anim-speed, 1s) ease-in-out infinite;
     filter: none; /* Will be set by animation */
+    transform-origin: center;
+    will-change: transform, opacity;
   }
 
   .aux-glow-middle {
     opacity: 0.65;
     animation: aux-glow-middle calc(var(--aux-anim-speed, 1s) * 0.8) ease-in-out infinite;
     filter: none; /* Will be set by animation */
+    transform-origin: center;
+    will-change: transform, opacity;
   }
 
   .aux-glow-inner {
     opacity: 0.8;
     animation: aux-glow-inner calc(var(--aux-anim-speed, 1s) * 0.6) ease-in-out infinite;
     filter: none; /* Will be set by animation */
+    transform-origin: center;
+    will-change: transform, opacity;
   }
 
   .aux-cylinder-pulse {
     opacity: 0.85;
     animation: aux-cylinder-pulse var(--aux-anim-speed, 1s) ease-in-out infinite;
     filter: none; /* Will be set by animation */
+    transform-origin: center;
+    will-change: transform, opacity;
   }
 
   /* Pipe styling - exclude flow-gradient animations from drop-shadow */
@@ -233,5 +248,31 @@ export const cardStyles = css`
 
   ellipse {
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+  }
+
+  /* Animation paused state - set via JavaScript when page is hidden */
+  .animations-paused .fan-rotating,
+  .animations-paused .g2-valve-active-path,
+  .animations-paused .aux-glow-outer,
+  .animations-paused .aux-glow-middle,
+  .animations-paused .aux-glow-inner,
+  .animations-paused .aux-cylinder-pulse,
+  .animations-paused .dhw-coil-glow-outer,
+  .animations-paused .dhw-coil-glow-inner {
+    animation-play-state: paused;
+  }
+
+  /* Respect prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    .fan-rotating,
+    .g2-valve-active-path,
+    .aux-glow-outer,
+    .aux-glow-middle,
+    .aux-glow-inner,
+    .aux-cylinder-pulse,
+    .dhw-coil-glow-outer,
+    .dhw-coil-glow-inner {
+      animation: none !important;
+    }
   }
 `;

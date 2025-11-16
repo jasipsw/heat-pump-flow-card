@@ -21,6 +21,8 @@ export class HeatPumpFlowCard extends LitElement {
   @query('#buffer-to-hp-flow') bufferToHpFlow?: SVGGElement;
   @query('#buffer-to-hvac-flow') bufferToHvacFlow?: SVGGElement;
   @query('#hvac-to-buffer-flow') hvacToBufferFlow?: SVGGElement;
+  
+  private visibilityChangeHandler?: () => void;
 
   public static getConfigElement(): LovelaceCardEditor | undefined {
     // No visual editor yet - users can edit YAML directly
@@ -154,6 +156,9 @@ export class HeatPumpFlowCard extends LitElement {
       }, 100);
     }
 
+    // Setup visibility listener to pause animations when page is hidden
+    this.setupVisibilityListener();
+
     // Debug helper: expose card instance globally
     (window as any).debugCard = () => {
       const card = document.querySelector('heat-pump-flow-card');
@@ -170,6 +175,53 @@ export class HeatPumpFlowCard extends LitElement {
       }
       return null;
     };
+  }
+
+  /**
+   * Setup Visibility API listener to pause/resume animations when page is hidden/shown
+   * This improves performance by stopping animations when the browser tab is not visible
+   */
+  private setupVisibilityListener(): void {
+    this.visibilityChangeHandler = () => {
+      if (document.hidden) {
+        this.pauseAnimations();
+      } else {
+        this.resumeAnimations();
+      }
+    };
+    document.addEventListener('visibilitychange', this.visibilityChangeHandler);
+  }
+
+  /**
+   * Pause all CSS animations when the page is hidden
+   */
+  private pauseAnimations(): void {
+    // Add class to SVG container to pause all animations
+    const svg = this.shadowRoot?.querySelector('svg');
+    if (svg) {
+      svg.classList.add('animations-paused');
+    }
+  }
+
+  /**
+   * Resume all CSS animations when the page becomes visible again
+   */
+  private resumeAnimations(): void {
+    // Remove class from SVG container to resume all animations
+    const svg = this.shadowRoot?.querySelector('svg');
+    if (svg) {
+      svg.classList.remove('animations-paused');
+    }
+  }
+
+  /**
+   * Cleanup visibility listener on component disconnect
+   */
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    if (this.visibilityChangeHandler) {
+      document.removeEventListener('visibilitychange', this.visibilityChangeHandler);
+    }
   }
 
   // Flow animation now uses animated gradient overlays (SVG SMIL animations)
