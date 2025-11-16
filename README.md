@@ -68,6 +68,12 @@ A beautiful, animated Home Assistant card that visualizes heat pump water flow b
 
 ⚙️ **Highly Configurable** - Customize colors, animation speeds, temperature ranges, display options, and labels for internationalization
 
+🚀 **GPU-Accelerated Animations** - All animations use GPU-accelerated transform and opacity properties for smooth performance with minimal CPU usage
+
+⚡ **Smart Animation Pausing** - Automatically pauses animations when browser tab is hidden (Visibility API) to save CPU/GPU resources
+
+♿ **Accessibility** - Respects `prefers-reduced-motion` system preference to disable animations for users who prefer reduced motion
+
 🏠 **HACS Compatible** - Easy installation through Home Assistant Community Store
 
 <!-- SCREENSHOT PLACEHOLDER: Features showcase - Consider adding a multi-panel image showing:
