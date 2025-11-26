@@ -157,26 +157,22 @@ export const cardStyles = css`
     filter: none !important; /* Remove default rect drop-shadow */
   }
 
-   /* DHW coil pulsing animations - GPU-accelerated with transform + opacity */
+   /* DHW coil pulsing animations - opacity-only to prevent position offset */
   @keyframes dhw-coil-glow-outer {
     0%, 100% {
       opacity: 0.15;
-      transform: scale(1.0);
     }
     50% {
-      opacity: 0.4;
-      transform: scale(1.08);
+      opacity: 0.5;
     }
   }
 
   @keyframes dhw-coil-glow-inner {
     0%, 100% {
       opacity: 0.3;
-      transform: scale(1.0);
     }
     50% {
-      opacity: 0.6;
-      transform: scale(1.05);
+      opacity: 0.7;
     }
   }
 
@@ -190,17 +186,13 @@ export const cardStyles = css`
   .dhw-coil-glow-outer {
     opacity: 0.25;
     animation: dhw-coil-glow-outer 1.5s ease-in-out infinite;
-    filter: none; /* Will be set by animation */
-    transform-origin: center;
-    will-change: transform, opacity;
+    will-change: opacity;
   }
 
   .dhw-coil-glow-inner {
     opacity: 0.45;
     animation: dhw-coil-glow-inner 1.2s ease-in-out infinite;
-    filter: none; /* Will be set by animation */
-    transform-origin: center;
-    will-change: transform, opacity;
+    will-change: opacity;
   }
 
   /* When active, show and animate - SPEED INCREASES WITH POWER LEVEL */
